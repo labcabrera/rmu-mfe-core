@@ -1,27 +1,26 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useError } from '../../../ErrorContext';
-import { fetchStrategicGames } from '../../api/strategic-games';
-import type { StrategicGame } from '../../api/strategic-games';
-import { CreateTacticalGameDto } from '../../api/tactical-games';
-import TacticalGameCreationActions from './RaceCreationActions';
-import TacticalGameCreationAttributes from './RaceCreationAttributes';
+import { CreateRaceDto } from '../../api/race';
+import { fetchRealms, Realm } from '../../api/realm';
+import RaceCreationActions from './RaceCreationActions';
+import RaceCreationAttributes from './RaceCreationAttributes';
 
-const TacticalGameCreation: FC = () => {
+const RaceCreation: FC = () => {
   const { showError } = useError();
-  const [strategicGames, setStrategicGames] = useState<StrategicGame[]>([]);
-  const [formData, setFormData] = useState<CreateTacticalGameDto>(null);
+  const [realms, setRealms] = useState<Realm[]>([]);
+  const [formData, setFormData] = useState<CreateRaceDto>(null);
   const [isValid, setIsValid] = useState(false);
 
   const validateForm = () => {
     if (!formData.name) return false;
-    if (!formData.strategicGameId) return false;
+    if (!formData.realmId) return false;
     return true;
   };
 
-  const bindStrategicGames = async () => {
-    fetchStrategicGames('', 0, 20)
+  const bindRealms = async () => {
+    fetchRealms('', 0, 20)
       .then((response) => {
-        setStrategicGames(response);
+        setRealms(response);
       })
       .catch((err: unknown) => {
         if (err instanceof Error) showError(err.message);
@@ -30,7 +29,7 @@ const TacticalGameCreation: FC = () => {
   };
 
   useEffect(() => {
-    bindStrategicGames();
+    bindRealms();
   }, []);
 
   useEffect(() => {
@@ -39,12 +38,12 @@ const TacticalGameCreation: FC = () => {
 
   return (
     <>
-      <TacticalGameCreationActions formData={formData} isValid={isValid} />
-      <TacticalGameCreationAttributes formData={formData} setFormData={setFormData} strategicGames={strategicGames} />
+      <RaceCreationActions formData={formData} isValid={isValid} />
+      <RaceCreationAttributes formData={formData} setFormData={setFormData} realms={realms} />
       {/* <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
       <pre>Strategic Games: {JSON.stringify(strategicGames, null, 2)}</pre> */}
     </>
   );
 };
 
-export default TacticalGameCreation;
+export default RaceCreation;

@@ -1,26 +1,24 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { createTacticalGame, CreateTacticalGameDto } from '../../api/tactical-games';
+import { CreateRaceDto, createRace } from '../../api/race';
 import BackButton from '../../shared/buttons/BackButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
-type TacticalGameCreationActionsProps = {
-  formData: CreateTacticalGameDto;
+const RaceCreationActions: FC<{
+  formData: CreateRaceDto;
   isValid?: boolean;
-};
-
-const TacticalGameCreationActions: React.FC<TacticalGameCreationActionsProps> = ({ formData, isValid = false }) => {
+}> = ({ formData, isValid = false }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { showError } = useError();
 
   const handleSave = async () => {
-    createTacticalGame(formData)
-      .then((game) => {
-        navigate(`/tactical/games/view/${game.id}`);
+    createRace(formData)
+      .then((race) => {
+        navigate(`/core/races/view/${race.id}`);
       })
       .catch((err: unknown) => {
         if (err instanceof Error) showError(err.message);
@@ -39,11 +37,11 @@ const TacticalGameCreationActions: React.FC<TacticalGameCreationActionsProps> = 
           <Link color="inherit" href="/">
             {t('home')}
           </Link>
-          <Link component={RouterLink} to="/tactical/games" color="inherit">
-            {t('tactical')}
+          <Link component={RouterLink} to="/core" color="inherit">
+            {t('core')}
           </Link>
-          <Link component={RouterLink} to="/tactical/games" color="inherit">
-            {t('games')}
+          <Link component={RouterLink} to="/core/races" color="inherit">
+            {t('races')}
           </Link>
           <span>{t('creation')}</span>
         </Breadcrumbs>
@@ -56,4 +54,4 @@ const TacticalGameCreationActions: React.FC<TacticalGameCreationActionsProps> = 
   );
 };
 
-export default TacticalGameCreationActions;
+export default RaceCreationActions;

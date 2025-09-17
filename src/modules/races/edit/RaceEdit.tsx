@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import type { TacticalGame, UpdateTacticalGameDto } from '../../api/tactical-games';
-import TacticalGameEditActions from './TacticalGameEditActions';
-import TacticalGameEditAttributes from './TacticalGameEditAttributes';
+import RaceEditActions from './RaceEditActions';
+import RaceEditAttributes from './RaceEditAttributes';
 
-const TacticalGameEdit: FC = () => {
+const RaceEdit: FC = () => {
   const location = useLocation();
   const tacticalGame = (location.state as { tacticalGame?: TacticalGame })?.tacticalGame;
 
@@ -19,10 +19,10 @@ const TacticalGameEdit: FC = () => {
 
   return (
     <>
-      <TacticalGameEditActions tacticalGame={tacticalGame} formData={formData} />
-      <TacticalGameEditAttributes formData={formData} setFormData={setFormData} />
+      <RaceEditActions tacticalGame={tacticalGame} formData={formData} />
+      <RaceEditAttributes formData={formData} setFormData={setFormData} />
     </>
   );
 };
 
-export default TacticalGameEdit;
+export default RaceEdit;

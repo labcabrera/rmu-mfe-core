@@ -1,15 +1,15 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, TextField } from '@mui/material';
-import type { StrategicGame } from '../../api/strategic-games';
-import { CreateTacticalGameDto } from '../../api/tactical-games';
-import SelectStrategicGame from '../../shared/selects/SelectStrategicGame';
+import { CreateRaceDto } from '../../api/race';
+import { Realm } from '../../api/realm';
+import SelectRealm from '../../shared/selects/SelectRealm';
 
-const TacticalGameCreationAttributes: FC<{
-  formData: CreateTacticalGameDto;
-  setFormData: Dispatch<SetStateAction<CreateTacticalGameDto>>;
-  strategicGames: StrategicGame[];
-}> = ({ formData, setFormData, strategicGames }) => {
+const RaceCreationAttributes: FC<{
+  formData: CreateRaceDto;
+  setFormData: Dispatch<SetStateAction<CreateRaceDto>>;
+  realms: Realm[];
+}> = ({ formData, setFormData, realms }) => {
   const { t } = useTranslation();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -17,14 +17,14 @@ const TacticalGameCreationAttributes: FC<{
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleGameChange = (gameId: string) => {
-    setFormData({ ...formData, strategicGameId: gameId });
+  const handleGameChange = (realmId: string) => {
+    setFormData({ ...formData, realmId: realmId });
   };
 
   return (
     <Grid container spacing={2}>
       <Grid size={4}>
-        <SelectStrategicGame value={formData.strategicGameId} onChange={handleGameChange} strategicGames={strategicGames} />
+        <SelectRealm value={formData.realmId} onChange={handleGameChange} realms={realms} />
       </Grid>
       <Grid size={8}></Grid>
       <Grid size={4}>
@@ -39,4 +39,4 @@ const TacticalGameCreationAttributes: FC<{
   );
 };
 
-export default TacticalGameCreationAttributes;
+export default RaceCreationAttributes;

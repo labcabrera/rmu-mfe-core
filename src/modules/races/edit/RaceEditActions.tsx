@@ -11,12 +11,10 @@ import type { TacticalGame, UpdateTacticalGameDto } from '../../api/tactical-gam
 import BackButton from '../../shared/buttons/BackButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
-type TacticalGameEditActionsProps = {
+const RaceEditActions: FC<{
   tacticalGame: TacticalGame;
   formData: UpdateTacticalGameDto;
-};
-
-const TacticalGameEditActions: FC<TacticalGameEditActionsProps> = ({ tacticalGame, formData }) => {
+}> = ({ tacticalGame, formData }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { showError } = useError();
@@ -68,4 +66,4 @@ const TacticalGameEditActions: FC<TacticalGameEditActionsProps> = ({ tacticalGam
   );
 };
 
-export default TacticalGameEditActions;
+export default RaceEditActions;

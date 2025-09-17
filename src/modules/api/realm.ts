@@ -1,12 +1,17 @@
 import { buildErrorFromResponse } from './api-errors';
 
-export type Faction = {
+export type Realm = {
   id: string;
   [key: string]: any;
 };
 
-export async function fetchFaction(factionId: string): Promise<Faction> {
-  const url = `${process.env.RMU_API_STRATEGIC_URL}/factions/${factionId}`;
+export type CreateRealmDto = {
+  name: string;
+  description?: string;
+};
+
+export async function fetchRealm(realmId: string): Promise<Realm> {
+  const url = `${process.env.RMU_API_CORE_URL}/realms/${realmId}`;
   const response = await fetch(url, { method: 'GET' });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
@@ -14,8 +19,8 @@ export async function fetchFaction(factionId: string): Promise<Faction> {
   return await response.json();
 }
 
-export async function fetchFactions(rsql: string, page: number, size: number): Promise<Faction[]> {
-  const url = `${process.env.RMU_API_STRATEGIC_URL}/factions?q=${rsql}&page=${page}&size=${size}`;
+export async function fetchRealms(rsql: string, page: number, size: number): Promise<Realm[]> {
+  const url = `${process.env.RMU_API_CORE_URL}/realms?q=${rsql}&page=${page}&size=${size}`;
   const response = await fetch(url, { method: 'GET' });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);

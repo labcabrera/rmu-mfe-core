@@ -3,21 +3,20 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Link } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { fetchTacticalGames } from '../../api/tactical-games';
-import type { TacticalGame } from '../../api/tactical-games';
-import GameListItem from '../../shared/list-items/GameListItem';
-import TacticalGameListActions from './TacticalGameListActions';
+import { Race, fetchRaces } from '../../api/race';
+import RaceListActions from './RaceListActions';
+import RaceListItem from './RaceListItem';
 
 const RaceList: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
-  const [games, setGames] = useState<TacticalGame[]>([]);
+  const [races, setRaces] = useState<Race[]>([]);
 
-  const fetchGames = () => {
-    fetchTacticalGames('', 0, 20)
+  const bindRaces = () => {
+    fetchRaces('', 0, 20)
       .then((response) => {
-        setGames(response);
+        setRaces(response);
       })
       .catch((err: unknown) => {
         if (err instanceof Error) showError(err.message);
@@ -30,19 +29,19 @@ const RaceList: FC = () => {
   };
 
   useEffect(() => {
-    fetchGames();
+    bindRaces();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      <TacticalGameListActions />
-      {games.map((game) => (
-        <GameListItem key={game.id} game={game} />
+      <RaceListActions />
+      {races.map((race) => (
+        <RaceListItem key={race.id} race={race} />
       ))}
-      {games.length === 0 ? (
+      {races.length === 0 ? (
         <p>
-          No games found.{' '}
+          No races found.{' '}
           <Link component="button" onClick={handleNewGame}>
             {t('create-new')}
           </Link>

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Typography, Grid, TextField } from '@mui/material';
 import { UpdateTacticalGameDto } from '../../api/tactical-games';
 
-const TacticalGameEditAttributes: FC<{
+const RaceEditAttributes: FC<{
   formData: UpdateTacticalGameDto;
   setFormData: Dispatch<SetStateAction<UpdateTacticalGameDto>>;
 }> = ({ formData, setFormData }) => {
@@ -44,4 +44,4 @@ const TacticalGameEditAttributes: FC<{
   );
 };
 
-export default TacticalGameEditAttributes;
+export default RaceEditAttributes;

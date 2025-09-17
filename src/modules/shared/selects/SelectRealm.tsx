@@ -1,13 +1,13 @@
 import React, { ChangeEvent, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField } from '@mui/material';
-import { StrategicGame } from '../../api/strategic-games';
+import { Realm } from '../../api/realm';
 
-const SelectStrategicGame: FC<{
+const SelectRealm: FC<{
   value: string;
   onChange: (value: string) => void;
-  strategicGames: StrategicGame[];
-}> = ({ value, onChange, strategicGames }) => {
+  realms: Realm[];
+}> = ({ value, onChange, realms }) => {
   const { t } = useTranslation();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -15,20 +15,20 @@ const SelectStrategicGame: FC<{
     onChange(selectedValue);
   };
 
-  if (!strategicGames) {
+  if (!realms) {
     return <p>Loading...</p>;
   }
 
   return (
     <TextField
       select
-      label={t('strategic-game')}
-      value={value === undefined || value === null || strategicGames.length === 0 ? '' : value}
+      label={t('realm')}
+      value={value === undefined || value === null || realms.length === 0 ? '' : value}
       fullWidth
       variant="standard"
       onChange={handleChange}
     >
-      {strategicGames.map((option, index) => (
+      {realms.map((option, index) => (
         <MenuItem key={index} value={option.id}>
           {option.name}
         </MenuItem>
@@ -37,4 +37,4 @@ const SelectStrategicGame: FC<{
   );
 };
 
-export default SelectStrategicGame;
+export default SelectRealm;
