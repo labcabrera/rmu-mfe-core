@@ -1,52 +1,31 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { deleteTacticalGame, startRound } from '../../api/tactical-games';
-import type { TacticalGame } from '../../api/tactical-games';
+import { Race } from '../../api/race';
 import CloseButton from '../../shared/buttons/CloseButton';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
 import PlayButton from '../../shared/buttons/PlayButton';
 import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
-type TacticalGameViewActionsProps = {
-  tacticalGame: TacticalGame;
-};
-
-const TacticalGameViewActions: React.FC<TacticalGameViewActionsProps> = ({ tacticalGame }) => {
+const RaceViewActions: FC<{
+  race: Race;
+}> = ({ race }) => {
   const navigate = useNavigate();
   const { showError } = useError();
   const { t } = useTranslation();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const handleDeleteTacticalGame = async () => {
-    try {
-      await deleteTacticalGame(tacticalGame.id);
-      navigate('/tactical/games');
-    } catch (err: unknown) {
-      if (err instanceof Error) showError(err.message);
-      else showError('An unknown error occurred');
-    }
-  };
+  const handleDeleteTacticalGame = async () => {};
 
   const handleEditClick = () => {
-    navigate(`/tactical/games/edit/${tacticalGame.id}`, { state: { tacticalGame } });
+    navigate(`/core/races/edit/${race.id}`, { state: { race } });
   };
 
   const handleOpenClick = async () => {
-    try {
-      if (tacticalGame.status === 'created') {
-        const game = await startRound(tacticalGame.id);
-        navigate(`/tactical/combat/${game.id}`);
-      } else {
-        navigate(`/tactical/combat/${tacticalGame.id}`, { state: { tacticalGame } });
-      }
-    } catch (err) {
-      if (err instanceof Error) showError('Error starting tactical game: ' + err.message);
-      else showError('Error starting tactical game');
-    }
+    navigate(`/core/races/combat/${race.id}`, { state: { race } });
   };
 
   const handleDeleteClick = () => {
@@ -62,7 +41,7 @@ const TacticalGameViewActions: React.FC<TacticalGameViewActionsProps> = ({ tacti
     setDeleteDialogOpen(false);
   };
 
-  if (!tacticalGame) {
+  if (!race) {
     return <p>Loading...</p>;
   }
 
@@ -80,7 +59,7 @@ const TacticalGameViewActions: React.FC<TacticalGameViewActionsProps> = ({ tacti
             <Link component={RouterLink} color="inherit" to="/tactical/games">
               {t('games')}
             </Link>
-            <span>{tacticalGame.name}</span>
+            <span>{race.name}</span>
           </Breadcrumbs>
         </Box>
         <Stack direction="row" spacing={2}>
@@ -91,7 +70,7 @@ const TacticalGameViewActions: React.FC<TacticalGameViewActionsProps> = ({ tacti
         </Stack>
       </Stack>
       <DeleteDialog
-        message={`Are you sure you want to delete ${tacticalGame.name} game? This action cannot be undone.`}
+        message={`Are you sure you want to delete ${race.name} race? This action cannot be undone.`}
         onDelete={handleDialogDelete}
         open={deleteDialogOpen}
         onClose={handleDialogDeleteClose}
@@ -100,4 +79,4 @@ const TacticalGameViewActions: React.FC<TacticalGameViewActionsProps> = ({ tacti
   );
 };
 
-export default TacticalGameViewActions;
+export default RaceViewActions;

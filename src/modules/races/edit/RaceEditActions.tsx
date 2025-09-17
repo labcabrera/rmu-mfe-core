@@ -6,27 +6,26 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useError } from '../../../ErrorContext';
-import { updateTacticalGame } from '../../api/tactical-games';
-import type { TacticalGame, UpdateTacticalGameDto } from '../../api/tactical-games';
+import { Race, updateRace, UpdateRaceDto } from '../../api/race';
 import BackButton from '../../shared/buttons/BackButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
 const RaceEditActions: FC<{
-  tacticalGame: TacticalGame;
-  formData: UpdateTacticalGameDto;
-}> = ({ tacticalGame, formData }) => {
+  race: Race;
+  formData: UpdateRaceDto;
+}> = ({ race, formData }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { showError } = useError();
 
-  if (!tacticalGame) {
+  if (!race) {
     return <p>Loading...</p>;
   }
 
   const handleSaveButtonClick = async () => {
-    updateTacticalGame(tacticalGame.id, formData)
+    updateRace(race.id, formData)
       .then((data) => {
-        navigate(`/tactical/games/view/${tacticalGame.id}`, { state: { tacticalGame: data } });
+        navigate(`/tactical/games/view/${race.id}`, { state: { tacticalGame: data } });
       })
       .catch((err: unknown) => {
         if (err instanceof Error) showError(err.message);
@@ -35,7 +34,7 @@ const RaceEditActions: FC<{
   };
 
   const handleBackButtonClick = () => {
-    navigate(`/tactical/games/view/${tacticalGame.id}`, { state: { tacticalGame: tacticalGame } });
+    navigate(`/tactical/games/view/${race.id}`, { state: { tacticalGame: race } });
     return;
   };
 
@@ -49,11 +48,11 @@ const RaceEditActions: FC<{
           color="inherit"
           component={RouterLink}
           to={{
-            pathname: `/tactical/view/${tacticalGame.id}`,
-            state: { tacticalGame },
+            pathname: `/tactical/view/${race.id}`,
+            state: { race: race },
           }}
         >
-          {tacticalGame.name}
+          {race.name}
         </Link>
         <Typography sx={{ color: 'text.primary' }}>{t('edit')}</Typography>
       </Breadcrumbs>

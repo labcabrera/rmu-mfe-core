@@ -11,6 +11,13 @@ export type CreateRaceDto = {
   description?: string;
 };
 
+export type UpdateRaceDto = {
+  id: string;
+  name: string;
+  realmId: string;
+  description?: string;
+};
+
 export async function fetchRace(raceId: string): Promise<Race> {
   const url = `${process.env.RMU_API_CORE_URL}/races/${raceId}`;
   const response = await fetch(url, { method: 'GET' });
@@ -40,6 +47,21 @@ export async function createRace(data: CreateRaceDto): Promise<Race> {
     body: JSON.stringify(data),
   });
   if (response.status !== 201) {
+    throw await buildErrorFromResponse(response, url);
+  }
+  return await response.json();
+}
+
+export async function updateRace(raceId: string, data: UpdateRaceDto): Promise<Race> {
+  const url = `${process.env.RMU_API_CORE_URL}/races/${raceId}`;
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
   }
   return await response.json();
