@@ -2,19 +2,46 @@ import { buildErrorFromResponse } from './api-errors';
 
 export type Race = {
   id: string;
+  name: string;
+  realm: string;
+  defaultStatBonus: RaceStatBonus;
+  resistances: RaceResistances;
+  description?: string;
   [key: string]: any;
 };
 
+export type RaceStatBonus = {
+  ag: number;
+  co: number;
+  em: number;
+  in: number;
+  me: number;
+  pr: number;
+  qu: number;
+  re: number;
+  sd: number;
+  st: number;
+};
+
+export type RaceResistances = {
+  channeling: number;
+  mentalism: number;
+  essence: number;
+  physical: number;
+};
+
 export type CreateRaceDto = {
+  id: string;
   name: string;
-  realmId: string;
-  description?: string;
+  realm: string;
+  defaultStatBonus: RaceStatBonus;
+  resistances: RaceResistances;
+  description: string | undefined;
 };
 
 export type UpdateRaceDto = {
   id: string;
   name: string;
-  realmId: string;
   description?: string;
 };
 

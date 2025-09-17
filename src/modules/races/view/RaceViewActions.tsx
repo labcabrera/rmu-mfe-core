@@ -53,11 +53,11 @@ const RaceViewActions: FC<{
             <Link color="inherit" href="/">
               {t('home')}
             </Link>
-            <Link component={RouterLink} color="inherit" to="/tactical/games">
-              {t('tactical')}
+            <Link component={RouterLink} color="inherit" to="/core/">
+              {t('core')}
             </Link>
-            <Link component={RouterLink} color="inherit" to="/tactical/games">
-              {t('games')}
+            <Link component={RouterLink} color="inherit" to="/core/races">
+              {t('races')}
             </Link>
             <span>{race.name}</span>
           </Breadcrumbs>

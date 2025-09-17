@@ -17,7 +17,7 @@ const RaceListItem: FC<{
   }
 
   const getSubtitle = () => {
-    return '';
+    return race.realm ? `${race.realm}` : '';
   };
 
   return (

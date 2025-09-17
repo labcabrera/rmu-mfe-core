@@ -9,7 +9,7 @@ const RaceListActions: FC = () => {
   const { t } = useTranslation();
 
   const handleNewRace = async () => {
-    navigate('/races/create');
+    navigate('/core/races/create');
   };
 
   return (
@@ -19,7 +19,10 @@ const RaceListActions: FC = () => {
           <Link color="inherit" href="/">
             {t('home')}
           </Link>
-          <Link component={RouterLink} color="inherit" to="/races">
+          <Link component={RouterLink} color="inherit" to="/core">
+            {t('core')}
+          </Link>
+          <Link component={RouterLink} color="inherit" to="/core/races">
             {t('races')}
           </Link>
           <span>{t('races')}</span>

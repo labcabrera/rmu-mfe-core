@@ -27,8 +27,8 @@ const RaceView: FC = () => {
   };
 
   useEffect(() => {
-    if (location.state && location.state.tacticalGame) {
-      setRace(location.state.tacticalGame);
+    if (location.state && location.state.race) {
+      setRace(location.state.race);
     } else {
       bindRace(raceId);
     }
