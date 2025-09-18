@@ -7,13 +7,17 @@ import RaceCreation from './modules/races/create/RaceCreation';
 import RaceEdit from './modules/races/edit/RaceEdit';
 import RaceList from './modules/races/list/RaceList';
 import RaceView from './modules/races/view/RaceView';
+import RealmList from './modules/realms/list/RealmList';
+import RealmView from './modules/realms/view/RealmView';
 
 const App = () => {
   return (
     <ErrorProvider>
       <Box sx={{ p: 5 }}>
         <Routes>
-          <Route path="/" element={<RaceList />} />
+          <Route path="/" element={<RealmList />} />
+          <Route path="/realms" element={<RealmList />} />
+          <Route path="/realms/view/:realmId" element={<RealmView />} />
           <Route path="/races" element={<RaceList />} />
           <Route path="/races/create" element={<RaceCreation />} />
           <Route path="/races/view/:raceId" element={<RaceView />} />

@@ -3,14 +3,24 @@ import { buildErrorFromResponse } from './api-errors';
 export type Race = {
   id: string;
   name: string;
-  realm: string;
-  defaultStatBonus: RaceStatBonus;
+  realmId: string;
+  stats: RaceStats;
   resistances: RaceResistances;
+  averageHeight: AverageHeight;
+  averageWeight: AverageWeight;
+  strideBonus: number;
+  enduranceBonus: number;
+  recoveryMultiplier: number;
+  baseHits: number;
+  baseDevPoints: number;
+  baseAt: number;
+  defaultLanguage: string | undefined;
+  availableLanguages: string[];
+  talents: string[];
   description?: string;
-  [key: string]: any;
 };
 
-export type RaceStatBonus = {
+export type RaceStats = {
   ag: number;
   co: number;
   em: number;
@@ -28,15 +38,18 @@ export type RaceResistances = {
   mentalism: number;
   essence: number;
   physical: number;
+  poison: number;
+  disease: number;
 };
 
-export type CreateRaceDto = {
-  id: string;
-  name: string;
-  realm: string;
-  defaultStatBonus: RaceStatBonus;
-  resistances: RaceResistances;
-  description: string | undefined;
+export type AverageHeight = {
+  male: number;
+  female: number;
+};
+
+export type AverageWeight = {
+  male: number;
+  female: number;
 };
 
 export type UpdateRaceDto = {
