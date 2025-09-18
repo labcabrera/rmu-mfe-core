@@ -1,58 +1,17 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useError } from '../../../ErrorContext';
-import { Race } from '../../api/race';
-import { fetchRealms, Realm } from '../../api/realm';
+import { CreateRaceDto, raceCreateTemplate } from '../../api/race.dto';
+import { fetchRealm, Realm } from '../../api/realm';
 import RaceCreationActions from './RaceCreationActions';
-import RaceCreationAttributes from './RaceCreationAttributes';
-
-const template = {
-  id: '',
-  name: '',
-  realmId: '',
-  stats: {
-    ag: 0,
-    co: 0,
-    em: 0,
-    in: 0,
-    me: 0,
-    pr: 0,
-    qu: 0,
-    re: 0,
-    sd: 0,
-    st: 0,
-  },
-  resistances: {
-    channeling: 0,
-    mentalism: 0,
-    essence: 0,
-    physical: 0,
-    poison: 0,
-    disease: 0,
-  },
-  averageHeight: {
-    male: 0,
-    female: 0,
-  },
-  averageWeight: {
-    male: 0,
-    female: 0,
-  },
-  strideBonus: 0,
-  enduranceBonus: 0,
-  recoveryMultiplier: 0,
-  baseHits: 0,
-  baseDevPoints: 0,
-  baseAt: 1,
-  defaultLanguage: '',
-  availableLanguages: [],
-  talents: [],
-  description: '',
-} as Race;
+import RaceCreationForm from './RaceCreationForm';
 
 const RaceCreation: FC = () => {
+  const [searchParams] = useSearchParams();
+  const realmId = searchParams.get('realmId');
   const { showError } = useError();
-  const [realms, setRealms] = useState<Realm[]>([]);
-  const [formData, setFormData] = useState<Race>(template);
+  const [realm, setRealm] = useState<Realm | null>(null);
+  const [formData, setFormData] = useState<CreateRaceDto>(raceCreateTemplate);
   const [isValid, setIsValid] = useState(false);
 
   const validateForm = () => {
@@ -61,10 +20,10 @@ const RaceCreation: FC = () => {
     return true;
   };
 
-  const bindRealms = async () => {
-    fetchRealms('', 0, 20)
+  const bindRealm = (realmId: string) => {
+    fetchRealm(realmId)
       .then((response) => {
-        setRealms(response);
+        setRealm(response);
       })
       .catch((err: unknown) => {
         if (err instanceof Error) showError(err.message);
@@ -73,17 +32,20 @@ const RaceCreation: FC = () => {
   };
 
   useEffect(() => {
-    bindRealms();
-  }, []);
-
-  useEffect(() => {
     setIsValid(validateForm());
   }, [formData]);
 
+  useEffect(() => {
+    if (realmId) {
+      bindRealm(realmId);
+      setFormData({ ...formData, realmId: realmId });
+    }
+  }, [realmId]);
+
   return (
     <>
-      <RaceCreationActions formData={formData} isValid={isValid} />
-      <RaceCreationAttributes formData={formData} setFormData={setFormData} realms={realms} />
+      <RaceCreationActions formData={formData} isValid={isValid} realm={realm} />
+      <RaceCreationForm formData={formData} setFormData={setFormData} />
       <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
     </>
   );

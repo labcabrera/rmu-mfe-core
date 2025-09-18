@@ -3,17 +3,22 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { CreateRaceDto, createRace } from '../../api/race';
+import { createRace } from '../../api/race';
+import { CreateRaceDto } from '../../api/race.dto';
+import { Realm } from '../../api/realm';
 import BackButton from '../../shared/buttons/BackButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
 const RaceCreationActions: FC<{
   formData: CreateRaceDto;
+  realm: Realm;
   isValid?: boolean;
-}> = ({ formData, isValid = false }) => {
+}> = ({ formData, realm, isValid = false }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { showError } = useError();
+
+  if (!realm) return <p>Loading...</p>;
 
   const handleSave = async () => {
     createRace(formData)
@@ -40,9 +45,13 @@ const RaceCreationActions: FC<{
           <Link component={RouterLink} to="/core" color="inherit">
             {t('core')}
           </Link>
-          <Link component={RouterLink} to="/core/races" color="inherit">
-            {t('races')}
+          <Link component={RouterLink} to="/core/realms" color="inherit">
+            {t('realms')}
           </Link>
+          <Link component={RouterLink} to={`/core/realms/${realm.id}`} color="inherit">
+            {realm.name}
+          </Link>
+          <span>{t('race')}</span>
           <span>{t('creation')}</span>
         </Breadcrumbs>
       </Box>
