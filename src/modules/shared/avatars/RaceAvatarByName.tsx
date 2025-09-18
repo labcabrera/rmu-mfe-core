@@ -8,21 +8,33 @@ const RaceAvatarByName: FC<{
 }> = ({ raceName, variant = 'circular', size = 70 }) => {
   const defaultImage = '/static/images/races/unknown.png';
 
+  const raceImageMap: Record<string, string> = {
+    noldor: '/static/images/races/generic-high-elf-01.png',
+    sindar: '/static/images/races/generic-grey-elf-01.png',
+    dúnedain: '/static/images/races/generic-high-human-01.png',
+    dunedain: '/static/images/races/generic-high-human-01.png',
+    uruk: '/static/images/races/generic-high-orc-01.png',
+    olog: '/static/images/races/generic-war-troll-01.png',
+    snaga: '/static/images/races/generic-lesser-orc-01.png',
+    orc: '/static/images/races/generic-orc-01.png',
+    gondor: '/static/images/races/generic-human-02.png',
+    human: '/static/images/races/generic-human-01.png',
+    troll: '/static/images/races/generic-troll-01.png',
+    longbeards: '/static/images/races/generic-dwarf-01.png',
+    dwarf: '/static/images/races/generic-dwarf-01.png',
+    elf: '/static/images/races/generic-elf-01.png',
+  };
+
   const resolveImage = (): string => {
     if (!raceName) {
       return defaultImage;
     }
-    //TODO service map
     const check = raceName.toLowerCase();
-    if (check.includes('noldor')) return '/static/images/races/generic-high-elf-01.png';
-    if (check.includes('sindar')) return '/static/images/races/generic-grey-elf-01.png';
-    if (check.includes('dúnedain')) return '/static/images/races/generic-high-man-01.png';
-
-    if (check.includes('orc')) return '/static/images/races/generic-orc-01.png';
-    if (check.includes('human')) return '/static/images/races/generic-human-01.png';
-    if (check.includes('troll')) return '/static/images/races/generic-troll-01.png';
-    if (check.includes('dwarf')) return '/static/images/races/generic-dwarf-01.png';
-    if (check.includes('elf')) return '/static/images/races/generic-elf-01.png';
+    for (const key in raceImageMap) {
+      if (check.includes(key)) {
+        return raceImageMap[key];
+      }
+    }
     return defaultImage;
   };
 

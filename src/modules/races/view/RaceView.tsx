@@ -49,7 +49,7 @@ const RaceView: FC = () => {
         <Grid size={5}>
           <RaceAvatarByName raceName={race.name} size={120} />
           <Typography variant="h6" color="primary">
-            {t('create-race')}
+            {t('race-info')}
           </Typography>
           <RaceViewAttributes race={race} />
         </Grid>

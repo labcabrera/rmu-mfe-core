@@ -1,13 +1,15 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Typography, Grid, TextField } from '@mui/material';
-import { UpdateTacticalGameDto } from '../../api/tactical-games';
+import { UpdateRaceDto } from '../../api/race.dto';
 
 const RaceEditAttributes: FC<{
-  formData: UpdateTacticalGameDto;
-  setFormData: Dispatch<SetStateAction<UpdateTacticalGameDto>>;
+  formData: UpdateRaceDto;
+  setFormData: Dispatch<SetStateAction<UpdateRaceDto>>;
 }> = ({ formData, setFormData }) => {
   const { t } = useTranslation();
+
+  if (!formData) return <div>Loading...</div>;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -21,7 +23,7 @@ const RaceEditAttributes: FC<{
     <Grid container spacing={2}>
       <Grid size={12}>
         <Typography variant="h6" color="primary">
-          {t('game-info')}
+          {t('race-info')}
         </Typography>
       </Grid>
 

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
 import { useError } from '../../../ErrorContext';
+import { deleteRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
@@ -16,27 +17,26 @@ const RaceViewActions: FC<{
   const { t } = useTranslation();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const handleDeleteTacticalGame = async () => {};
-
   const handleEditClick = () => {
     navigate(`/core/races/edit/${race.id}`, { state: { race } });
-  };
-
-  const handleOpenClick = async () => {
-    navigate(`/core/races/combat/${race.id}`, { state: { race } });
   };
 
   const handleDeleteClick = () => {
     setDeleteDialogOpen(true);
   };
 
-  const handleDialogDeleteClose = () => {
+  const closeDeleteDialog = () => {
     setDeleteDialogOpen(false);
   };
 
-  const handleDialogDelete = () => {
-    handleDeleteTacticalGame();
-    setDeleteDialogOpen(false);
+  const onRaceDelete = () => {
+    deleteRace(race.id)
+      .then(() => {
+        navigate(`/core/realms/view/${race.realmId}`);
+      })
+      .catch((error) => {
+        showError(t('errors.delete', { error }));
+      });
   };
 
   if (!race) {
@@ -70,9 +70,9 @@ const RaceViewActions: FC<{
       </Stack>
       <DeleteDialog
         message={`Are you sure you want to delete ${race.name} race? This action cannot be undone.`}
-        onDelete={handleDialogDelete}
+        onDelete={onRaceDelete}
         open={deleteDialogOpen}
-        onClose={handleDialogDeleteClose}
+        onClose={closeDeleteDialog}
       />
     </>
   );

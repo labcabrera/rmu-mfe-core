@@ -49,3 +49,13 @@ export async function updateRace(raceId: string, data: UpdateRaceDto): Promise<R
   }
   return await response.json();
 }
+
+export async function deleteRace(raceId: string): Promise<void> {
+  const url = `${process.env.RMU_API_CORE_URL}/races/${raceId}`;
+  const response = await fetch(url, {
+    method: 'DELETE',
+  });
+  if (response.status !== 204) {
+    throw await buildErrorFromResponse(response, url);
+  }
+}

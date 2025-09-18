@@ -99,12 +99,6 @@ export type AverageWeight = {
   female: number;
 };
 
-export type UpdateRaceDto = {
-  id: string;
-  name: string;
-  description?: string;
-};
-
 export type CreateRaceDto = {
   name: string;
   realmId: string;
@@ -123,3 +117,5 @@ export type CreateRaceDto = {
   talents: string[];
   description?: string;
 };
+
+export type UpdateRaceDto = Omit<CreateRaceDto, 'realmId'>;
