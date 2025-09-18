@@ -48,7 +48,7 @@ const RaceCreationActions: FC<{
           <Link component={RouterLink} to="/core/realms" color="inherit">
             {t('realms')}
           </Link>
-          <Link component={RouterLink} to={`/core/realms/${realm.id}`} color="inherit">
+          <Link component={RouterLink} to={`/core/realms/view/${realm.id}`} color="inherit">
             {realm.name}
           </Link>
           <span>{t('race')}</span>

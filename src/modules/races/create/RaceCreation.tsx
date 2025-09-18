@@ -2,7 +2,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useError } from '../../../ErrorContext';
 import { CreateRaceDto, raceCreateTemplate } from '../../api/race.dto';
-import { fetchRealm, Realm } from '../../api/realm';
+import { fetchRealm } from '../../api/realm';
+import { Realm } from '../../api/realm.dto';
 import RaceCreationActions from './RaceCreationActions';
 import RaceCreationForm from './RaceCreationForm';
 

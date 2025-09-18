@@ -1,7 +1,8 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Typography, Grid, TextField } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import { UpdateRaceDto } from '../../api/race.dto';
+import { NumericInput } from '../../shared/inputs/NumericInput';
 
 const RaceEditAttributes: FC<{
   formData: UpdateRaceDto;
@@ -21,25 +22,111 @@ const RaceEditAttributes: FC<{
 
   return (
     <Grid container spacing={2}>
-      <Grid size={12}>
-        <Typography variant="h6" color="primary">
-          {t('race-info')}
-        </Typography>
+      <Grid size={4}>
+        <TextField label={t('name')} variant="standard" name="name" value={formData.name} onChange={handleChange} fullWidth />
       </Grid>
-
-      <Grid size={12}>
-        <TextField label="Name" name="name" value={formData.name} onChange={handleChange} variant="standard" fullWidth />
+      <Grid size={12}></Grid>
+      <Grid size={2}></Grid>
+      <Grid size={2}>
+        <NumericInput
+          label={t('base-hit-points')}
+          name="baseHitsMale"
+          value={formData.baseHits}
+          onChange={(value) => setFormData({ ...formData, baseHits: value })}
+        />
       </Grid>
-      <Grid size={12}>
+      <Grid size={2}>
+        <NumericInput
+          label={t('stride-bonus')}
+          name="strideBonusMale"
+          value={formData.strideBonus}
+          onChange={(value) => setFormData({ ...formData, strideBonus: value })}
+        />
+      </Grid>
+      <Grid size={2}>
+        <NumericInput
+          label={t('endurance-bonus')}
+          name="enduranceBonusMale"
+          value={formData.enduranceBonus}
+          onChange={(value) => setFormData({ ...formData, enduranceBonus: value })}
+        />
+      </Grid>
+      <Grid size={2}>
+        <NumericInput
+          label={t('recovery-multiplier')}
+          name="recoveryMultiplierMale"
+          value={formData.recoveryMultiplier}
+          onChange={(value) => setFormData({ ...formData, recoveryMultiplier: value })}
+        />
+      </Grid>
+      <Grid size={12}></Grid>
+      <Grid size={2}>
+        <NumericInput
+          label={t('base-at')}
+          name="baseAtMale"
+          value={formData.baseAt}
+          onChange={(value) => setFormData({ ...formData, baseAt: value })}
+          min={1}
+          max={10}
+          integer
+        />
+      </Grid>
+      <Grid size={2}>
+        <NumericInput
+          label={t('base-dev-points')}
+          name="baseDevPointsMale"
+          value={formData.baseDevPoints}
+          onChange={(value) => setFormData({ ...formData, baseDevPoints: value })}
+          min={0}
+        />
+      </Grid>
+      <Grid size={12}></Grid>
+      <Grid size={4}>
         <TextField
-          label="Description"
-          name="description"
-          multiline
-          rows={4}
-          value={formData.description}
-          onChange={handleChange}
+          label={t('default-language')}
           variant="standard"
+          name="defaultLanguage"
+          value={formData.defaultLanguage}
+          onChange={handleChange}
+          required
           fullWidth
+        />
+      </Grid>
+      <Grid size={12}></Grid>
+      <Grid size={2}>
+        <NumericInput
+          label={t('average-height-male')}
+          name="averageHeightMale"
+          value={formData.averageHeight.male}
+          onChange={(value) => setFormData({ ...formData, averageHeight: { ...formData.averageHeight, male: value } })}
+          min={0}
+        />
+      </Grid>
+      <Grid size={2}>
+        <NumericInput
+          label={t('average-height-female')}
+          name="averageHeightFemale"
+          value={formData.averageHeight.female}
+          onChange={(value) => setFormData({ ...formData, averageHeight: { ...formData.averageHeight, female: value } })}
+          min={0}
+        />
+      </Grid>
+      <Grid size={2}>
+        <NumericInput
+          label={t('average-weight-male')}
+          name="averageWeightMale"
+          value={formData.averageWeight.male}
+          onChange={(value) => setFormData({ ...formData, averageWeight: { ...formData.averageWeight, male: value } })}
+          min={0}
+        />
+      </Grid>
+      <Grid size={2}>
+        <NumericInput
+          label={t('average-weight-female')}
+          name="averageWeightFemale"
+          value={formData.averageWeight.female}
+          onChange={(value) => setFormData({ ...formData, averageWeight: { ...formData.averageWeight, female: value } })}
+          min={0}
         />
       </Grid>
     </Grid>
