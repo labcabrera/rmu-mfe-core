@@ -5,7 +5,6 @@ import { ErrorProvider } from './ErrorContext';
 import './i18n';
 import RaceCreation from './modules/races/create/RaceCreation';
 import RaceEdit from './modules/races/edit/RaceEdit';
-import RaceList from './modules/races/list/RaceList';
 import RaceView from './modules/races/view/RaceView';
 import RealmCreation from './modules/realms/create/RealmCreation';
 import RealmList from './modules/realms/list/RealmList';
@@ -20,7 +19,6 @@ const App = () => {
           <Route path="/realms" element={<RealmList />} />
           <Route path="/realms/create" element={<RealmCreation />} />
           <Route path="/realms/view/:realmId" element={<RealmView />} />
-          <Route path="/races" element={<RaceList />} />
           <Route path="/races/create" element={<RaceCreation />} />
           <Route path="/races/view/:raceId" element={<RaceView />} />
           <Route path="/races/edit/:raceId" element={<RaceEdit />} />

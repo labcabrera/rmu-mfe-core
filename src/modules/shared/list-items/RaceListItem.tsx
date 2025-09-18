@@ -10,13 +10,13 @@ const RaceListItem: React.FC<{
   const navigate = useNavigate();
 
   const handleRaceClick = () => {
-    navigate(`/tactical/races/view/${race.id}`, { state: { race } });
+    navigate(`/core/races/view/${race.id}`, { state: { race } });
   };
 
   return (
     <ListItemButton onClick={handleRaceClick}>
       <ListItemAvatar sx={{ mr: 2 }}>
-        <RaceAvatarByName race={race} />
+        <RaceAvatarByName raceName={race.name} />
       </ListItemAvatar>
       <ListItemText primary={race.name} secondary={race.realmId} />
     </ListItemButton>

@@ -19,6 +19,7 @@ const RaceCreationResistances: FC<{
             name={`resistances.${resistance}`}
             value={formData.resistances[resistance]}
             onChange={(value) => setFormData({ ...formData, resistances: { ...formData.resistances, [resistance]: value } })}
+            integer
           />
         </Grid>
       ))}

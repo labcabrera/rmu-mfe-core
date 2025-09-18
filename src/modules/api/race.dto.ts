@@ -1,6 +1,6 @@
 export const stats = ['ag', 'co', 'em', 'in', 'me', 'pr', 'qu', 're', 'sd', 'st'];
 
-export const resistances = ['channeling', 'mentalism', 'essence', 'physical', 'poison', 'disease'];
+export const resistances = ['channeling', 'mentalism', 'essence', 'physical', 'poison', 'disease', 'fear'];
 
 export const raceCreateTemplate = {
   name: '',
@@ -25,6 +25,7 @@ export const raceCreateTemplate = {
     physical: 0,
     poison: 0,
     disease: 0,
+    fear: 0,
   },
   averageHeight: {
     male: 0,
