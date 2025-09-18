@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import { Race } from '../../api/race.dto';
-import RaceAvatarByName from '../avatars/RaceAvatar';
+import RaceAvatarByName from '../avatars/RaceAvatarByName';
 
 const RaceListItem: React.FC<{
   race: Race;
@@ -18,7 +18,7 @@ const RaceListItem: React.FC<{
       <ListItemAvatar sx={{ mr: 2 }}>
         <RaceAvatarByName raceName={race.name} />
       </ListItemAvatar>
-      <ListItemText primary={race.name} secondary={race.realmId} />
+      <ListItemText primary={race.name} secondary={race.realmName} />
     </ListItemButton>
   );
 };

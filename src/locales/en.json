@@ -40,5 +40,16 @@
   "qu": "Quickness",
   "re": "Reasoning",
   "sd": "Self discipline",
-  "st": "Strength"
+  "st": "Strength",
+
+  "minuscule": "Minuscule",
+  "diminutive": "Diminutive",
+  "tiny": "Tiny",
+  "small": "Small",
+  "medium": "Medium",
+  "big": "Big",
+  "large": "Large",
+  "huge": "Huge",
+  "gigantic": "Gigantic",
+  "enormous": "Enormous"
 }

@@ -5,7 +5,7 @@ import { Grid, TextField, Typography } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
-import RaceAvatarByName from '../../shared/avatars/RaceAvatar';
+import RaceAvatarByName from '../../shared/avatars/RaceAvatarByName';
 import RaceViewActions from './RaceViewActions';
 import RaceViewAttributes from './RaceViewAttributes';
 import RaceViewResistances from './RaceViewResistances';

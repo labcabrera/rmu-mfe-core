@@ -3,9 +3,9 @@ import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchRealm, Realm } from '../../api/realm';
-import RealmRaces from './RealmRaces';
 import RealmViewActions from './RealmViewActions';
 import RealmViewInfo from './RealmViewInfo';
+import RealmViewRaces from './RealmViewRaces';
 
 const RealmView: FC = () => {
   const location = useLocation();
@@ -46,7 +46,7 @@ const RealmView: FC = () => {
         </Grid>
         <Grid size={12}></Grid>
         <Grid size={12}>
-          <RealmRaces realm={realm} />
+          <RealmViewRaces realm={realm} />
         </Grid>
       </Grid>
     </>

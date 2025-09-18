@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import type { TacticalGame, UpdateTacticalGameDto } from '../../api/tactical-games';
 import RaceEditActions from './RaceEditActions';
 import RaceEditAttributes from './RaceEditAttributes';
 

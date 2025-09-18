@@ -22,9 +22,6 @@ const RealmListActions: FC = () => {
           <Link component={RouterLink} color="inherit" to="/core">
             {t('core')}
           </Link>
-          <Link component={RouterLink} color="inherit" to="/core/realms">
-            {t('realms')}
-          </Link>
           <span>{t('realms')}</span>
         </Breadcrumbs>
       </Box>

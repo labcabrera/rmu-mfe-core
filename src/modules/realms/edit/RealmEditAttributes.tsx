@@ -1,11 +1,11 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Typography, Grid, TextField } from '@mui/material';
-import { UpdateTacticalGameDto } from '../../api/tactical-games';
+import { UpdateRealmDto } from '../../api/realm.dto';
 
-const RaceEditAttributes: FC<{
-  formData: UpdateTacticalGameDto;
-  setFormData: Dispatch<SetStateAction<UpdateTacticalGameDto>>;
+const RealmEditAttributes: FC<{
+  formData: UpdateRealmDto;
+  setFormData: Dispatch<SetStateAction<UpdateRealmDto>>;
 }> = ({ formData, setFormData }) => {
   const { t } = useTranslation();
 
@@ -21,7 +21,7 @@ const RaceEditAttributes: FC<{
     <Grid container spacing={2}>
       <Grid size={12}>
         <Typography variant="h6" color="primary">
-          {t('game-info')}
+          {t('realm-info')}
         </Typography>
       </Grid>
 
@@ -44,4 +44,4 @@ const RaceEditAttributes: FC<{
   );
 };
 
-export default RaceEditAttributes;
+export default RealmEditAttributes;

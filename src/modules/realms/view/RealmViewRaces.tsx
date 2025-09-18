@@ -7,7 +7,7 @@ import { Race } from '../../api/race.dto';
 import { Realm } from '../../api/realm';
 import RaceListItem from '../../shared/list-items/RaceListItem';
 
-const RealmRaces: FC<{
+const RealmViewRaces: FC<{
   realm: Realm;
 }> = ({ realm }) => {
   const { t } = useTranslation();
@@ -52,4 +52,4 @@ const RealmRaces: FC<{
   );
 };
 
-export default RealmRaces;
+export default RealmViewRaces;

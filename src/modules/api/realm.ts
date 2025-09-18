@@ -1,15 +1,5 @@
 import { buildErrorFromResponse } from './api-errors';
-
-export type Realm = {
-  id: string;
-  name: string;
-  description: string | undefined;
-};
-
-export type CreateRealmDto = {
-  name: string;
-  description: string | undefined;
-};
+import { CreateRealmDto, Realm } from './realm.dto';
 
 export async function fetchRealm(realmId: string): Promise<Realm> {
   const url = `${process.env.RMU_API_CORE_URL}/realms/${realmId}`;

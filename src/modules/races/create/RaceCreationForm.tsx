@@ -2,7 +2,7 @@ import React, { Dispatch, FC, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, TextField, Typography } from '@mui/material';
 import { CreateRaceDto } from '../../api/race.dto';
-import RaceAvatarByName from '../../shared/avatars/RaceAvatar';
+import RaceAvatarByName from '../../shared/avatars/RaceAvatarByName';
 import RaceCreationAttributes from './RaceCreationAttributes';
 import RaceCreationResistances from './RaceCreationResistances';
 import RaceCreationStats from './RaceCreationStats';

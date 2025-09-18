@@ -6,26 +6,27 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useError } from '../../../ErrorContext';
-import { Race, updateRace, UpdateRaceDto } from '../../api/race';
+import { updateRealm } from '../../api/realm';
+import { Realm, UpdateRealmDto } from '../../api/realm.dto';
 import BackButton from '../../shared/buttons/BackButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
-const RaceEditActions: FC<{
-  race: Race;
-  formData: UpdateRaceDto;
-}> = ({ race, formData }) => {
+const RealmEditActions: FC<{
+  realm: Realm;
+  formData: UpdateRealmDto;
+}> = ({ realm, formData }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { showError } = useError();
 
-  if (!race) {
+  if (!realm) {
     return <p>Loading...</p>;
   }
 
   const handleSaveButtonClick = async () => {
-    updateRace(race.id, formData)
+    updateRealm(realm.id, formData)
       .then((data) => {
-        navigate(`/tactical/games/view/${race.id}`, { state: { tacticalGame: data } });
+        navigate(`/core/realms/view/${realm.id}`, { state: { realm: data } });
       })
       .catch((err: unknown) => {
         if (err instanceof Error) showError(err.message);
@@ -34,7 +35,7 @@ const RaceEditActions: FC<{
   };
 
   const handleBackButtonClick = () => {
-    navigate(`/tactical/games/view/${race.id}`, { state: { tacticalGame: race } });
+    navigate(`/core/realms/view/${realm.id}`, { state: { realm } });
     return;
   };
 
@@ -44,15 +45,8 @@ const RaceEditActions: FC<{
         <Link color="inherit" href="/tactical">
           {t('tactical-games')}
         </Link>
-        <Link
-          color="inherit"
-          component={RouterLink}
-          to={{
-            pathname: `/tactical/view/${race.id}`,
-            state: { race: race },
-          }}
-        >
-          {race.name}
+        <Link color="inherit" component={RouterLink} to={''}>
+          {realm.name}
         </Link>
         <Typography sx={{ color: 'text.primary' }}>{t('edit')}</Typography>
       </Breadcrumbs>
@@ -65,4 +59,4 @@ const RaceEditActions: FC<{
   );
 };
 
-export default RaceEditActions;
+export default RealmEditActions;

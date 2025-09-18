@@ -14,6 +14,10 @@ const RaceAvatarByName: FC<{
     }
     //TODO service map
     const check = raceName.toLowerCase();
+    if (check.includes('noldor')) return '/static/images/races/generic-high-elf-01.png';
+    if (check.includes('sindar')) return '/static/images/races/generic-grey-elf-01.png';
+    if (check.includes('dúnedain')) return '/static/images/races/generic-high-man-01.png';
+
     if (check.includes('orc')) return '/static/images/races/generic-orc-01.png';
     if (check.includes('human')) return '/static/images/races/generic-human-01.png';
     if (check.includes('troll')) return '/static/images/races/generic-troll-01.png';

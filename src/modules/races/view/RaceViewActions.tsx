@@ -3,11 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { Race } from '../../api/race';
-import CloseButton from '../../shared/buttons/CloseButton';
+import { Race } from '../../api/race.dto';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
-import PlayButton from '../../shared/buttons/PlayButton';
 import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
 const RaceViewActions: FC<{
@@ -56,15 +54,16 @@ const RaceViewActions: FC<{
             <Link component={RouterLink} color="inherit" to="/core/">
               {t('core')}
             </Link>
-            <Link component={RouterLink} color="inherit" to="/core/races">
-              {t('races')}
+            <Link component={RouterLink} color="inherit" to="/core/realms">
+              {t('realms')}
+            </Link>
+            <Link component={RouterLink} color="inherit" to={`/core/realms/view/${race.realmId}`}>
+              {race.realmName}
             </Link>
             <span>{race.name}</span>
           </Breadcrumbs>
         </Box>
         <Stack direction="row" spacing={2}>
-          <CloseButton onClick={() => {}} />
-          <PlayButton onClick={handleOpenClick} />
           <EditButton onClick={handleEditClick} />
           <DeleteButton onClick={handleDeleteClick} />
         </Stack>

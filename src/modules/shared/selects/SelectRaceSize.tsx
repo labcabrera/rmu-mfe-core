@@ -10,7 +10,7 @@ const SelectRaceSize: FC<{
 }> = ({ label, value, name, onChange }) => {
   const { t } = useTranslation();
 
-  const values = ['big', 'medium', 'small'];
+  const values = ['minuscule', 'diminutive', 'tiny', 'small', 'medium', 'big', 'large', 'huge', 'gigantic', 'enormous'];
 
   return (
     <TextField
