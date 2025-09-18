@@ -2,12 +2,13 @@ import { buildErrorFromResponse } from './api-errors';
 
 export type Realm = {
   id: string;
-  [key: string]: any;
+  name: string;
+  description: string | undefined;
 };
 
 export type CreateRealmDto = {
   name: string;
-  description?: string;
+  description: string | undefined;
 };
 
 export async function fetchRealm(realmId: string): Promise<Realm> {
@@ -27,4 +28,42 @@ export async function fetchRealms(rsql: string, page: number, size: number): Pro
   }
   const pageContent = await response.json();
   return pageContent.content;
+}
+
+export async function createRealm(realm: CreateRealmDto): Promise<Realm> {
+  const url = `${process.env.RMU_API_CORE_URL}/realms`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(realm),
+  });
+  if (response.status !== 201) {
+    throw await buildErrorFromResponse(response, url);
+  }
+  return await response.json();
+}
+
+export async function updateRealm(realmId: string, realm: Partial<Realm>): Promise<Realm> {
+  const url = `${process.env.RMU_API_CORE_URL}/realms/${realmId}`;
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(realm),
+  });
+  if (response.status !== 200) {
+    throw await buildErrorFromResponse(response, url);
+  }
+  return await response.json();
+}
+
+export async function deleteRealm(realmId: string): Promise<void> {
+  const url = `${process.env.RMU_API_CORE_URL}/realms/${realmId}`;
+  const response = await fetch(url, { method: 'DELETE' });
+  if (response.status !== 204) {
+    throw await buildErrorFromResponse(response, url);
+  }
 }

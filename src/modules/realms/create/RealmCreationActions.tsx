@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { CreateRaceDto, createRace } from '../../api/race';
+import { createRealm, CreateRealmDto } from '../../api/realm';
 import BackButton from '../../shared/buttons/BackButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
-const RaceCreationActions: FC<{
-  formData: CreateRaceDto;
+const RealmCreationActions: FC<{
+  formData: CreateRealmDto;
   isValid?: boolean;
 }> = ({ formData, isValid = false }) => {
   const navigate = useNavigate();
@@ -16,9 +16,9 @@ const RaceCreationActions: FC<{
   const { showError } = useError();
 
   const handleSave = async () => {
-    createRace(formData)
-      .then((race) => {
-        navigate(`/core/races/view/${race.id}`);
+    createRealm(formData)
+      .then((realm) => {
+        navigate(`/core/realms/view/${realm.id}`);
       })
       .catch((err: unknown) => {
         if (err instanceof Error) showError(err.message);
@@ -27,7 +27,7 @@ const RaceCreationActions: FC<{
   };
 
   const handleBack = () => {
-    navigate(`/tactical/games`);
+    navigate(`/core/realms`);
   };
 
   return (
@@ -40,8 +40,8 @@ const RaceCreationActions: FC<{
           <Link component={RouterLink} to="/core" color="inherit">
             {t('core')}
           </Link>
-          <Link component={RouterLink} to="/core/races" color="inherit">
-            {t('races')}
+          <Link component={RouterLink} to="/core/realms" color="inherit">
+            {t('realms')}
           </Link>
           <span>{t('creation')}</span>
         </Breadcrumbs>
@@ -54,4 +54,4 @@ const RaceCreationActions: FC<{
   );
 };
 
-export default RaceCreationActions;
+export default RealmCreationActions;

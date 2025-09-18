@@ -8,18 +8,22 @@ const RealmViewInfo: FC<{
 }> = ({ realm }) => {
   const { t } = useTranslation();
 
+  if (!realm) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <Grid container spacing={1}>
       <Grid size={12}>
         <Typography variant="h6" color="primary">
-          {t('info')}
+          {t('realm-information')}
         </Typography>
       </Grid>
       <Grid size={12}>
-        <TextField label={t('name')} name="name" value={realm?.name || ''} variant="standard" fullWidth />
+        <TextField label={t('name')} name="name" value={realm.name || ''} variant="standard" fullWidth />
       </Grid>
       <Grid size={12}>
-        <TextField label={t('description')} name="description" value={realm?.description || ''} multiline maxRows={4} variant="standard" fullWidth />
+        <TextField label={t('description')} name="description" value={realm.description || ''} multiline maxRows={4} variant="standard" fullWidth />
       </Grid>
     </Grid>
   );

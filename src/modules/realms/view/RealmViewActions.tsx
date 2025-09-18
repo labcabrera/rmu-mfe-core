@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { Realm } from '../../api/realm';
+import { Realm, deleteRealm } from '../../api/realm';
 import CloseButton from '../../shared/buttons/CloseButton';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
@@ -17,7 +17,16 @@ const RealmViewActions: FC<{
   const { t } = useTranslation();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const handleDeleteTacticalGame = async () => {};
+  const handleDeleteTacticalGame = () => {
+    deleteRealm(realm.id)
+      .then(() => {
+        navigate('/core/realms');
+      })
+      .catch((err: unknown) => {
+        if (err instanceof Error) showError(err.message);
+        else showError(String(err));
+      });
+  };
 
   const handleEditClick = () => {
     navigate(`/core/realms/edit/${realm.id}`, { state: { realm } });

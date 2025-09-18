@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
@@ -11,7 +10,6 @@ import RealmViewInfo from './RealmViewInfo';
 const RealmView: FC = () => {
   const location = useLocation();
   const { realmId } = useParams<{ realmId?: string }>();
-  const { t } = useTranslation();
   const { showError } = useError();
   const [realm, setRealm] = useState<Realm | null>(null);
 

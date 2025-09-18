@@ -1,4 +1,11 @@
 {
-    "lotr-orc": "Orco",
-    "lotr-human": "Humano"
+  "id": "Identifier",
+  "description": "Description",
+  "name": "Name",
+  "race": "Race",
+  "races": "Races",
+  "creation": "Creation",
+  "core": "Core",
+  "realm": "Realm",
+  "realms": "Realms"
 }
