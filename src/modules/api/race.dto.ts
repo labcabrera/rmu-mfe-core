@@ -37,7 +37,7 @@ export const raceCreateTemplate = {
   },
   strideBonus: 0,
   enduranceBonus: 0,
-  recoveryMultiplier: 0,
+  recoveryMultiplier: 1,
   baseHits: 0,
   baseDevPoints: 0,
   baseAt: 1,
@@ -99,23 +99,6 @@ export type AverageWeight = {
   female: number;
 };
 
-export type CreateRaceDto = {
-  name: string;
-  realmId: string;
-  sizeId: string;
-  stats: RaceStats;
-  resistances: RaceResistances;
-  averageHeight: AverageHeight;
-  averageWeight: AverageWeight;
-  strideBonus: number;
-  enduranceBonus: number;
-  recoveryMultiplier: number;
-  baseHits: number;
-  baseDevPoints: number;
-  baseAt: number;
-  defaultLanguage: string | undefined;
-  talents: string[];
-  description?: string;
-};
+export type CreateRaceDto = Omit<Race, 'id' | 'realmName'>;
 
-export type UpdateRaceDto = Omit<CreateRaceDto, 'realmId'>;
+export type UpdateRaceDto = Partial<Omit<Race, 'id' | 'realmId' | 'realmName'>>;

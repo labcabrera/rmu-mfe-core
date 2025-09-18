@@ -13,6 +13,7 @@ const RaceAvatarByName: FC<{
     sindar: '/static/images/races/generic-grey-elf-01.png',
     dúnedain: '/static/images/races/generic-high-human-01.png',
     dunedain: '/static/images/races/generic-high-human-01.png',
+    numenorean: '/static/images/races/generic-dark-human-01.png',
     uruk: '/static/images/races/generic-high-orc-01.png',
     olog: '/static/images/races/generic-war-troll-01.png',
     snaga: '/static/images/races/generic-lesser-orc-01.png',
@@ -20,7 +21,7 @@ const RaceAvatarByName: FC<{
     gondor: '/static/images/races/generic-human-02.png',
     human: '/static/images/races/generic-human-01.png',
     troll: '/static/images/races/generic-troll-01.png',
-    longbeards: '/static/images/races/generic-dwarf-01.png',
+    longbeard: '/static/images/races/generic-dwarf-01.png',
     dwarf: '/static/images/races/generic-dwarf-01.png',
     elf: '/static/images/races/generic-elf-01.png',
   };
