@@ -30,6 +30,9 @@ const TraitEditAttributes: FC<{
         </Typography>
       </Grid>
       <Grid size={12}>
+        <TextField label={t('name')} name="name" value={formData.name} onChange={onChange} variant="standard" fullWidth />
+      </Grid>
+      <Grid size={12}>
         <SelectTraitCategory label={t('category')} name="category" value={formData.category} onChange={onChange} />
       </Grid>
       <Grid size={12}>

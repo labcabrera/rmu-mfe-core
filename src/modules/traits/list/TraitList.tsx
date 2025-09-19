@@ -1,15 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Link, Pagination, Box } from '@mui/material';
+import { Link, Pagination, Box, Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedTraits } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
+import TraitCard from '../../shared/cards/trait-card';
 import TraitListActions from './TraitListActions';
-import TraitListItem from './TraitListItem';
 import TraitListSearch from './TraitListSearch';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 24;
 
 const TraitList: FC = () => {
   const { t } = useTranslation();
@@ -71,9 +71,15 @@ const TraitList: FC = () => {
     <>
       <TraitListActions />
       <TraitListSearch onSearch={handleSearch} />
-      {traits.map((trait) => (
-        <TraitListItem key={trait.id} trait={trait} />
-      ))}
+      <Grid container spacing={2} mb={2} alignItems="center">
+        <Grid size={8}>
+          <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
+            {traits.map((trait) => (
+              <TraitCard key={trait.id} trait={trait} />
+            ))}
+          </Box>
+        </Grid>
+      </Grid>
       {traits.length === 0 ? (
         <p>
           No traits found.{' '}

@@ -17,8 +17,11 @@ const TraitViewInfo: FC<{
     <Grid container spacing={1}>
       <Grid size={12}>
         <Typography variant="h6" color="primary">
-          {t(trait.id)}
+          {t('trait')}
         </Typography>
+      </Grid>
+      <Grid size={12}>
+        <TextField label={t('name')} name="name" value={t(trait.name)} variant="standard" fullWidth />
       </Grid>
       <Grid size={12}>
         <TextField label={t('category')} name="category" value={t(trait.category)} variant="standard" fullWidth />

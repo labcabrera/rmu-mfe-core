@@ -8,6 +8,7 @@ import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { Realm } from '../../api/realm.dto';
 import { resolveRaceImage } from '../../services/race-avatar-service';
+import RaceCard from '../../shared/cards/race-card';
 
 const RealmViewRaces: FC<{
   realm: Realm;
@@ -57,47 +58,6 @@ const RealmViewRaces: FC<{
         </Box>
       </Grid>
     </Grid>
-  );
-};
-
-const RaceCard: FC<{
-  race: Race;
-}> = ({ race }) => {
-  const navigate = useNavigate();
-
-  const handleRaceClick = () => {
-    navigate(`/core/races/view/${race.id}`, { state: { race } });
-  };
-
-  if (!race) return <p>Loading...</p>;
-
-  return (
-    <Card
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        //mb: 2,
-        maxWidth: 400,
-        minWidth: 400,
-        cursor: 'pointer',
-        transition: 'box-shadow 0.2s, background 0.2s',
-        '&:hover': {
-          boxShadow: 6,
-          backgroundColor: 'action.hover',
-        },
-      }}
-      onClick={handleRaceClick}
-    >
-      <CardMedia component="img" image={resolveRaceImage(race.name)} alt={race.name} sx={{ width: 100, height: 100, objectFit: 'cover' }} />
-      <CardContent sx={{ flex: 1 }}>
-        <Typography component="div" variant="h6">
-          {race.name}
-        </Typography>
-        <Typography variant="subtitle1" component="div" sx={{ color: 'text.secondary' }}>
-          {t(race.archetype)}
-        </Typography>
-      </CardContent>
-    </Card>
   );
 };
 
