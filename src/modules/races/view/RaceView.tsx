@@ -63,7 +63,7 @@ const RaceView: FC = () => {
           </Typography>
           <RaceViewResistances race={race} />
           <Typography variant="h6" color="primary">
-            {t('info')}
+            {t('race-features')}
           </Typography>
           <RaceViewAttributes race={race} />
         </Grid>

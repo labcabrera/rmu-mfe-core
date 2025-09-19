@@ -15,7 +15,7 @@ const RealmCard: FC<{
 
   if (!realm) return <p>Loading...</p>;
 
-  return <CardListItem title={realm.name} subtitle={t(realm.description)} image="/static/images/generic/realm.png" onClick={handleRealmClick} />;
+  return <CardListItem title={realm.name} subtitle={t(realm.shortDescription)} image="/static/images/generic/realm.png" onClick={handleRealmClick} />;
 };
 
 export default RealmCard;

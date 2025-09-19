@@ -1,10 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchRealm, Realm } from '../../api/realm';
+import { fetchRealm } from '../../api/realm';
+import { Realm } from '../../api/realm.dto';
 import RealmViewActions from './RealmViewActions';
-import RealmViewInfo from './RealmViewInfo';
+import RealmViewLanguages from './RealmViewLanguages';
 import RealmViewRaces from './RealmViewRaces';
 
 const RealmView: FC = () => {
@@ -40,13 +42,24 @@ const RealmView: FC = () => {
   return (
     <>
       <RealmViewActions realm={realm} />
-      <Grid container spacing={1}>
-        <Grid size={4}>
-          <RealmViewInfo realm={realm} />
-        </Grid>
-        <Grid size={12}></Grid>
+      <Grid container spacing={2}>
         <Grid size={12}>
+          <Typography variant="h6" color="primary">
+            {realm.name}
+          </Typography>
+          <Typography variant="body1">{realm.shortDescription}</Typography>
+        </Grid>
+        <Grid size={9}>
           <RealmViewRaces realm={realm} />
+          <RealmViewLanguages realm={realm} />
+        </Grid>
+        <Grid size={3}>
+          <Typography variant="h6" color="primary">
+            {t('description')}
+          </Typography>
+          <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
+            {realm.description}
+          </Typography>
         </Grid>
       </Grid>
     </>

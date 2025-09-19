@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 
-const NumericCard: FC<{
-  value: number;
+const TextCard: FC<{
+  value: string;
   subtitle: string;
   image: string;
   maxWidth?: number;
@@ -10,18 +10,7 @@ const NumericCard: FC<{
   height?: number;
   imageSize?: number;
   grayscale?: number;
-  applyColor?: boolean;
-}> = ({ value, subtitle, image, maxWidth = 250, minWidth = 250, height = 70, imageSize = 70, grayscale = 0.5, applyColor = true }) => {
-  const red = '#ffab91';
-  const green = '#a5d6a7';
-
-  const getColor = (): string => {
-    if (!applyColor) return 'inherit';
-    if (value > 0) return green;
-    if (value < 0) return red;
-    return 'inherit';
-  };
-
+}> = ({ value, subtitle, image, maxWidth = 250, minWidth = 250, height = 70, imageSize = 70, grayscale = 0.5 }) => {
   return (
     <Card
       sx={{
@@ -36,7 +25,7 @@ const NumericCard: FC<{
         component="img"
         image={image}
         alt={subtitle}
-        sx={{ width: imageSize, height: imageSize, objectFit: 'cover', filter: `grayscale(${grayscale})` }}
+        sx={{ width: imageSize, height: imageSize, objectFit: 'cover', filter: `grayscale(${value ? grayscale : 1})` }}
       />
       <CardContent
         sx={{
@@ -55,8 +44,6 @@ const NumericCard: FC<{
           variant="h6"
           sx={{
             mt: 2,
-            color: getColor(),
-            // fontSize: '1rem',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -65,7 +52,7 @@ const NumericCard: FC<{
             display: 'block',
           }}
         >
-          {value}
+          {value ? value : '...'}
         </Typography>
         <Typography
           variant="subtitle1"
@@ -88,4 +75,4 @@ const NumericCard: FC<{
   );
 };
 
-export default NumericCard;
+export default TextCard;

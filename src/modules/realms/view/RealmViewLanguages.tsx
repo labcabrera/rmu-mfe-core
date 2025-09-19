@@ -3,22 +3,22 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Box, Grid, IconButton, Typography } from '@mui/material';
-import { fetchRaces } from '../../api/race';
-import { Race } from '../../api/race.dto';
+import { Language } from '../../api/language.dto';
+import { fetchLanguages } from '../../api/languages';
 import { Realm } from '../../api/realm.dto';
-import RaceCard from '../../shared/cards/RaceCard';
+import LanguageCard from '../../shared/cards/LanguageCard';
 
-const RealmViewRaces: FC<{
+const RealmViewLanguages: FC<{
   realm: Realm;
 }> = ({ realm }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [races, setRaces] = useState<Race[]>([]);
+  const [languages, setLanguages] = useState<Language[]>([]);
 
-  const bindRaces = async (realmId: string) => {
-    fetchRaces(`realmId==${realmId}`, 0, 50)
+  const bindLanguages = async (realmId: string) => {
+    fetchLanguages(`realmId==${realmId}`, 0, 50)
       .then((response) => {
-        setRaces(response);
+        setLanguages(response);
       })
       .catch((err: unknown) => {
         if (err instanceof Error) console.error(err.message);
@@ -26,13 +26,13 @@ const RealmViewRaces: FC<{
       });
   };
 
-  const onAddRace = () => {
-    navigate(`/core/races/create?realmId=${realm.id}`);
+  const onAddLanguage = () => {
+    navigate(`/core/languages/create?realmId=${realm.id}`);
   };
 
   useEffect(() => {
     if (realm) {
-      bindRaces(realm.id);
+      bindLanguages(realm.id);
     }
   }, [realm]);
 
@@ -41,17 +41,17 @@ const RealmViewRaces: FC<{
       <Grid size={12}>
         <Box display="flex" alignItems="center">
           <Typography variant="h6" color="primary" display="inline">
-            {t('races')}
+            {t('languages')}
           </Typography>
-          <IconButton onClick={onAddRace} sx={{ ml: 1 }}>
+          <IconButton onClick={onAddLanguage} sx={{ ml: 1 }}>
             <AddCircleIcon />
           </IconButton>
         </Box>
       </Grid>
       <Grid size={12}>
         <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
-          {races.map((race) => (
-            <RaceCard key={race.id} race={race} />
+          {languages.map((language) => (
+            <LanguageCard key={language.id} language={language} />
           ))}
         </Box>
       </Grid>
@@ -59,4 +59,4 @@ const RealmViewRaces: FC<{
   );
 };
 
-export default RealmViewRaces;
+export default RealmViewLanguages;

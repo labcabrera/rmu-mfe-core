@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { Realm, deleteRealm } from '../../api/realm';
-import CloseButton from '../../shared/buttons/CloseButton';
+import { deleteRealm } from '../../api/realm';
+import { Realm } from '../../api/realm.dto';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
 import DeleteDialog from '../../shared/dialogs/DeleteDialog';
@@ -67,7 +67,6 @@ const RealmViewActions: FC<{
           </Breadcrumbs>
         </Box>
         <Stack direction="row" spacing={2}>
-          <CloseButton onClick={() => {}} />
           <EditButton onClick={handleEditClick} />
           <DeleteButton onClick={handleDeleteClick} />
         </Stack>

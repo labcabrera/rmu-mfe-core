@@ -11,6 +11,7 @@ const RealmEdit: FC = () => {
 
   const [formData, setFormData] = useState<UpdateRealmDto>({
     name: realm?.name || '',
+    shortDescription: realm?.shortDescription || '',
     description: realm?.description || '',
   });
 
