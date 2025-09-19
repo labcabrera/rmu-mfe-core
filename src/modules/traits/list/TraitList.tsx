@@ -7,6 +7,7 @@ import { fetchTraits } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
 import TraitListActions from './TraitListActions';
 import TraitListItem from './TraitListItem';
+import TraitListSearch from './TraitListSearch';
 
 const TraitList: FC = () => {
   const { t } = useTranslation();
@@ -14,8 +15,14 @@ const TraitList: FC = () => {
   const { showError } = useError();
   const [traits, setTraits] = useState<Trait[]>([]);
 
-  const bindTraits = () => {
-    fetchTraits('', 0, 20)
+  const bindTraits = (id: string, category: string) => {
+    let query = '';
+    if (id) query += `id=re=${id}`;
+    if (category && category !== '') {
+      if (query !== '') query += ';';
+      query += `category==${category}`;
+    }
+    fetchTraits(query, 0, 20)
       .then((response) => {
         setTraits(response);
       })
@@ -30,12 +37,13 @@ const TraitList: FC = () => {
   };
 
   useEffect(() => {
-    bindTraits();
+    bindTraits(undefined, undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
+      <TraitListSearch onSearch={(id, category) => bindTraits(id, category)} />
       <TraitListActions />
       {traits.map((trait) => (
         <TraitListItem key={trait.id} trait={trait} />

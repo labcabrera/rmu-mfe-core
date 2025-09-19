@@ -6,8 +6,9 @@ const SelectTraitCategory: FC<{
   label: string;
   value: string;
   name: string;
+  displayAll?: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-}> = ({ label, value, name, onChange }) => {
+}> = ({ label, value, name, onChange, displayAll }) => {
   const { t } = useTranslation();
 
   const values = ['combat', 'discipline', 'magical', 'physical', 'racial', 'senses', 'other'];
@@ -22,6 +23,7 @@ const SelectTraitCategory: FC<{
       variant="standard"
       onChange={onChange}
     >
+      {displayAll ? <MenuItem value="">{t('all')}</MenuItem> : null}
       {values.map((option, index) => (
         <MenuItem key={index} value={option}>
           {t(option)}
