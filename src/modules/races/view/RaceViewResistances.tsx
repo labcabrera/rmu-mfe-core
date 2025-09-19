@@ -9,18 +9,22 @@ const RaceViewResistances: FC<{
 }> = ({ race }) => {
   const { t } = useTranslation();
 
+  const getImage = (resistance: string) => {
+    switch (resistance) {
+      case 'poison':
+      case 'disease':
+      case 'fear':
+      case 'physical':
+        return `/static/images/generic/${resistance}.png`;
+      default:
+        return `/static/images/generic/stat-st.png`;
+    }
+  };
+
   return (
     <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
       {resistances.map((resistance) => (
-        <NumericCard
-          value={race.resistances[resistance]}
-          subtitle={t(resistance)}
-          image={`/static/images/generic/stat-st.png`}
-          maxWidth={220}
-          minWidth={220}
-          height={80}
-          imageSize={80}
-        />
+        <NumericCard value={race.resistances[resistance]} subtitle={t(resistance)} image={getImage(resistance)} />
       ))}
     </Box>
   );

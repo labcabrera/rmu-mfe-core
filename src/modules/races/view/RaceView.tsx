@@ -45,15 +45,15 @@ const RaceView: FC = () => {
   return (
     <>
       <RaceViewActions race={race} />
-      <Grid container spacing={2}>
-        <Grid size={6}>
-          <RaceAvatarByName raceName={race.name} size={120} />
+      <Grid container spacing={12}>
+        <Grid size={2}>
+          <RaceAvatarByName raceName={race.name} size={200} />
           <Typography variant="h6" color="primary">
-            {t('race-info')}
+            {t(race.name)}
           </Typography>
-          <RaceViewAttributes race={race} />
+          <Typography variant="body1">{t(race.archetype)}</Typography>
         </Grid>
-        <Grid size={6}>
+        <Grid size={7}>
           <Typography variant="h6" color="primary">
             {t('statistics')}
           </Typography>
@@ -62,8 +62,13 @@ const RaceView: FC = () => {
             {t('resistances')}
           </Typography>
           <RaceViewResistances race={race} />
+          <Typography variant="h6" color="primary">
+            {t('info')}
+          </Typography>
+          <RaceViewAttributes race={race} />
         </Grid>
-        <Grid size={6}>
+        <Grid size={4}></Grid>
+        <Grid size={12}>
           <TextField label={t('description')} variant="standard" name="description" value={race.description} multiline rows={6} fullWidth />
         </Grid>
       </Grid>

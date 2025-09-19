@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Race } from '../../api/race';
+import { Race } from '../../api/race.dto';
 
 type RaceViewInfoProps = {
   race: Race;

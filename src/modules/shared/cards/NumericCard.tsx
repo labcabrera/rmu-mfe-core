@@ -10,8 +10,7 @@ const NumericCard: FC<{
   height?: number;
   imageSize?: number;
   grayscale?: number;
-  onClick?: () => void;
-}> = ({ value, subtitle, image, onClick, maxWidth = 200, minWidth = 200, height = 100, imageSize = 100, grayscale = 0.75 }) => {
+}> = ({ value, subtitle, image, maxWidth = 250, minWidth = 250, height = 70, imageSize = 70, grayscale = 0.6 }) => {
   const getColor = (): string => {
     const red = '#ffab91';
     const green = '#a5d6a7';
@@ -23,19 +22,12 @@ const NumericCard: FC<{
 
   return (
     <Card
-      onClick={onClick}
       sx={{
         display: 'flex',
-        alignItems: 'stretch',
+        alignItems: 'center',
         maxWidth: { maxWidth },
         minWidth: { minWidth },
         height: { height },
-        cursor: 'pointer',
-        transition: 'box-shadow 0.2s, background 0.2s',
-        '&:hover': {
-          boxShadow: 6,
-          backgroundColor: 'action.hover',
-        },
       }}
     >
       <CardMedia
@@ -60,7 +52,9 @@ const NumericCard: FC<{
           component="div"
           variant="h6"
           sx={{
+            mt: 2,
             color: getColor(),
+            // fontSize: '1rem',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -75,7 +69,7 @@ const NumericCard: FC<{
           variant="subtitle1"
           component="div"
           sx={{
-            //fontSize: '0.9rem',
+            fontSize: '1rem',
             color: 'text.secondary',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
