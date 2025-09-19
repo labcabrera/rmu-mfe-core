@@ -1,5 +1,6 @@
 export type Trait = {
   id: string;
+  category: string;
   isTalent: boolean;
   requiresSpecialization: boolean;
   isTierBased: boolean;

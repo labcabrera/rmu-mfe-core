@@ -21,6 +21,9 @@ const TraitViewInfo: FC<{
         </Typography>
       </Grid>
       <Grid size={12}>
+        <TextField label={t('category')} name="category" value={t(trait.category)} variant="standard" fullWidth />
+      </Grid>
+      <Grid size={12}>
         <NumericReadonlyInput label={t('cost')} name="cost" value={trait.cost} />
       </Grid>
       <Grid size={12}>

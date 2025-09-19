@@ -40,6 +40,9 @@ const TraitEditActions: FC<{
         <Link color="inherit" href="/">
           {t('home')}
         </Link>
+        <Link color="inherit" component={RouterLink} to={'/core/'}>
+          {t('core')}
+        </Link>
         <Link color="inherit" component={RouterLink} to={'/core/traits'}>
           {t('traits')}
         </Link>

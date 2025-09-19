@@ -19,7 +19,7 @@ const TraitListItem: FC<{
   }
 
   const getSubtitle = () => {
-    return trait.isTalent ? t('talent') : t('flaw');
+    return `${t(trait.category)} - ${trait.isTalent ? t('talent') : t('flaw')}`;
   };
 
   return (

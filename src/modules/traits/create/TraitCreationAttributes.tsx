@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { FormControl, FormControlLabel, Grid, Switch, TextField, Typography } from '@mui/material';
 import { CreateTraitDto } from '../../api/trait.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
+import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';
 
 const TraitCreationAttributes: FC<{
   formData: CreateTraitDto;
@@ -26,6 +27,9 @@ const TraitCreationAttributes: FC<{
       </Grid>
       <Grid size={12}>
         <TextField label={t('trait')} name="id" value={formData.id || ''} variant="standard" fullWidth onChange={onChange} />
+      </Grid>
+      <Grid size={12}>
+        <SelectTraitCategory label={t('category')} name="category" value={formData.category} onChange={onChange} />
       </Grid>
       <Grid size={12}>
         <NumericInput label={t('cost')} name="cost" value={formData.cost} onChange={(e) => setFormData({ ...formData, cost: e })} integer />
