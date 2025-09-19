@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 import { Race, resistances } from '../../api/race.dto';
-import CardListItem from '../../shared/cards/CardListItem';
+import NumericCard from '../../shared/cards/NumericCard';
 
 const RaceViewResistances: FC<{
   race: Race;
@@ -12,8 +12,8 @@ const RaceViewResistances: FC<{
   return (
     <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
       {resistances.map((resistance) => (
-        <CardListItem
-          title={race.resistances[resistance]}
+        <NumericCard
+          value={race.resistances[resistance]}
           subtitle={t(resistance)}
           image={`/static/images/generic/stat-st.png`}
           maxWidth={220}
