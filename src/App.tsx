@@ -4,6 +4,10 @@ import { Box } from '@mui/material';
 import { ErrorProvider } from './ErrorContext';
 import HomePage from './HomePage';
 import './i18n';
+import LanguageCreation from './modules/languages/create/LanguageCreation';
+import LanguageEdit from './modules/languages/edit/LanguageEdit';
+import LanguageList from './modules/languages/list/LanguageList';
+import LanguageView from './modules/languages/view/LanguageView';
 import RaceCreation from './modules/races/create/RaceCreation';
 import RaceEdit from './modules/races/edit/RaceEdit';
 import RaceList from './modules/races/list/RaceList';
@@ -35,6 +39,10 @@ const App = () => {
           <Route path="/traits/view/:traitId" element={<TraitView />} />
           <Route path="/traits/create" element={<TraitCreation />} />
           <Route path="/traits/edit/:traitId" element={<TraitEdit />} />
+          <Route path="/languages" element={<LanguageList />} />
+          <Route path="/languages/create" element={<LanguageCreation />} />
+          <Route path="/languages/view/:languageId" element={<LanguageView />} />
+          <Route path="/languages/edit/:languageId" element={<LanguageEdit />} />
         </Routes>
       </Box>
     </ErrorProvider>

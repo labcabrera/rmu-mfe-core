@@ -28,6 +28,12 @@ const HomePage: FC = () => {
             <CardListItem title="Realms" subtitle="Manage realms" image="/static/images/generic/realm.png" onClick={() => navigate(`/core/realms`)} />
             <CardListItem title="Races" subtitle="Manage races" image="/static/images/races/unknown.png" onClick={() => navigate(`/core/races`)} />
             <CardListItem title="Traits" subtitle="Manage traits" image="/static/images/generic/trait.png" onClick={() => navigate(`/core/traits`)} />
+            <CardListItem
+              title="Languages"
+              subtitle="Manage languages"
+              image="/static/images/generic/language.png"
+              onClick={() => navigate(`/core/languages`)}
+            />
           </Box>
         </Grid>
       </Grid>
