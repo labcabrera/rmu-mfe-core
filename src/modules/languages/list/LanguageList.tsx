@@ -3,21 +3,21 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Box, Grid, Link } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { fetchRealms } from '../../api/realm';
-import { Realm } from '../../api/realm.dto';
-import RealmCard from '../../shared/cards/realm-card';
-import RealmListActions from './RealmListActions';
+import { Language } from '../../api/language.dto';
+import { fetchLanguages } from '../../api/languages';
+import LanguageCard from '../../shared/cards/language-card';
+import RealmListActions from './LanguageListActions';
 
-const RealmList: FC = () => {
+const LanguageList: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
-  const [realms, setRealms] = useState<Realm[]>([]);
+  const [languages, setLanguages] = useState<Language[]>([]);
 
-  const bindRealms = () => {
-    fetchRealms('', 0, 20)
+  const bindLanguages = () => {
+    fetchLanguages('', 0, 20)
       .then((response) => {
-        setRealms(response);
+        setLanguages(response);
       })
       .catch((err: unknown) => {
         if (err instanceof Error) showError(err.message);
@@ -25,12 +25,12 @@ const RealmList: FC = () => {
       });
   };
 
-  const handleNewRealm = () => {
-    navigate('/core/realms/create');
+  const handleNewLanguage = () => {
+    navigate('/core/languages/create');
   };
 
   useEffect(() => {
-    bindRealms();
+    bindLanguages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -40,16 +40,16 @@ const RealmList: FC = () => {
       <Grid container spacing={2} mb={2} alignItems="center">
         <Grid size={8}>
           <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
-            {realms.map((realm) => (
-              <RealmCard key={realm.id} realm={realm} />
+            {languages.map((language) => (
+              <LanguageCard key={language.id} language={language} />
             ))}
           </Box>
         </Grid>
       </Grid>
-      {realms.length === 0 ? (
+      {languages.length === 0 ? (
         <p>
-          No realms found.{' '}
-          <Link component="button" onClick={handleNewRealm}>
+          No languages found.{' '}
+          <Link component="button" onClick={handleNewLanguage}>
             {t('create-new')}
           </Link>
         </p>
@@ -58,4 +58,4 @@ const RealmList: FC = () => {
   );
 };
 
-export default RealmList;
+export default LanguageList;

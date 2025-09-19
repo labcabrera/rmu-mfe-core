@@ -4,12 +4,6 @@ export type Realm = {
   description: string | undefined;
 };
 
-export type CreateRealmDto = {
-  name: string;
-  description: string | undefined;
-};
+export type CreateRealmDto = Omit<Realm, 'id'>;
 
-export type UpdateRealmDto = {
-  name: string | undefined;
-  description: string | undefined;
-};
+export type UpdateRealmDto = Partial<Omit<Realm, 'id'>>;

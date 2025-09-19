@@ -1,11 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Button, List, Typography } from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { Box, Card, CardContent, CardMedia, Grid, IconButton, List, Typography } from '@mui/material';
+import { t } from 'i18next';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
-import { Realm } from '../../api/realm';
-import RaceListItem from '../../shared/list-items/RaceListItem';
+import { Realm } from '../../api/realm.dto';
+import { resolveRaceImage } from '../../services/race-avatar-service';
+import RaceCard from '../../shared/cards/race-card';
 
 const RealmViewRaces: FC<{
   realm: Realm;
@@ -36,19 +39,25 @@ const RealmViewRaces: FC<{
   }, [realm]);
 
   return (
-    <>
-      <Typography variant="h6" color="primary">
-        {t('races')}
-      </Typography>
-      <List>
-        {races.map((race) => (
-          <RaceListItem key={race.id} race={race} />
-        ))}
-      </List>
-      <Button variant="contained" color="primary" onClick={onAddRace}>
-        {t('add-race')}
-      </Button>
-    </>
+    <Grid container spacing={2} direction="column">
+      <Grid size={12}>
+        <Box display="flex" alignItems="center">
+          <Typography variant="h6" color="primary" display="inline">
+            {t('races')}
+          </Typography>
+          <IconButton onClick={onAddRace} sx={{ ml: 1 }}>
+            <AddCircleIcon />
+          </IconButton>
+        </Box>
+      </Grid>
+      <Grid size={6}>
+        <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
+          {races.map((race) => (
+            <RaceCard key={race.id} race={race} />
+          ))}
+        </Box>
+      </Grid>
+    </Grid>
   );
 };
 

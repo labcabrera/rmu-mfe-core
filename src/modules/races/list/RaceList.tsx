@@ -3,21 +3,21 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Box, Grid, Link } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { fetchRealms } from '../../api/realm';
-import { Realm } from '../../api/realm.dto';
-import RealmCard from '../../shared/cards/realm-card';
-import RealmListActions from './RealmListActions';
+import { fetchRaces } from '../../api/race';
+import { Race } from '../../api/race.dto';
+import RaceCard from '../../shared/cards/race-card';
+import RaceListActions from './RaceListActions';
 
-const RealmList: FC = () => {
+const RaceList: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
-  const [realms, setRealms] = useState<Realm[]>([]);
+  const [races, setRaces] = useState<Race[]>([]);
 
-  const bindRealms = () => {
-    fetchRealms('', 0, 20)
+  const bindRaces = () => {
+    fetchRaces('', 0, 20)
       .then((response) => {
-        setRealms(response);
+        setRaces(response);
       })
       .catch((err: unknown) => {
         if (err instanceof Error) showError(err.message);
@@ -25,31 +25,31 @@ const RealmList: FC = () => {
       });
   };
 
-  const handleNewRealm = () => {
-    navigate('/core/realms/create');
+  const handleNewRace = () => {
+    navigate('/core/races/create');
   };
 
   useEffect(() => {
-    bindRealms();
+    bindRaces();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      <RealmListActions />
+      <RaceListActions />
       <Grid container spacing={2} mb={2} alignItems="center">
         <Grid size={8}>
           <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
-            {realms.map((realm) => (
-              <RealmCard key={realm.id} realm={realm} />
+            {races.map((race) => (
+              <RaceCard key={race.id} race={race} />
             ))}
           </Box>
         </Grid>
       </Grid>
-      {realms.length === 0 ? (
+      {races.length === 0 ? (
         <p>
-          No realms found.{' '}
-          <Link component="button" onClick={handleNewRealm}>
+          No races found.{' '}
+          <Link component="button" onClick={handleNewRace}>
             {t('create-new')}
           </Link>
         </p>
@@ -58,4 +58,4 @@ const RealmList: FC = () => {
   );
 };
 
-export default RealmList;
+export default RaceList;
