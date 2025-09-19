@@ -16,6 +16,9 @@ const RaceViewAttributes: FC<{
       </Grid>
       <Grid size={12}></Grid>
       <Grid size={2}>
+        <TextField label={t('race-archetype')} name="archetype" value={t(race.archetype)} variant="standard" fullWidth />
+      </Grid>
+      <Grid size={2}>
         <TextField label={t('race-size')} name="sizeId" value={t(race.sizeId)} variant="standard" fullWidth />
       </Grid>
       <Grid size={2}>

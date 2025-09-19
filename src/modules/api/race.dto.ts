@@ -5,6 +5,7 @@ export const resistances = ['channeling', 'mentalism', 'essence', 'physical', 'p
 export const raceCreateTemplate = {
   name: '',
   realmId: '',
+  archetype: '',
   sizeId: 'medium',
   stats: {
     ag: 0,
@@ -49,6 +50,7 @@ export const raceCreateTemplate = {
 export type Race = {
   id: string;
   name: string;
+  archetype: string | undefined;
   realmId: string;
   realmName: string;
   sizeId: string;

@@ -1,11 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Button, List, Typography } from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { Box, Card, CardContent, CardMedia, Grid, IconButton, List, Typography } from '@mui/material';
+import { t } from 'i18next';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
-import { Realm } from '../../api/realm';
-import RaceListItem from '../../shared/list-items/RaceListItem';
+import { Realm } from '../../api/realm.dto';
+import { resolveRaceImage } from '../../services/race-avatar-service';
 
 const RealmViewRaces: FC<{
   realm: Realm;
@@ -36,19 +38,66 @@ const RealmViewRaces: FC<{
   }, [realm]);
 
   return (
-    <>
-      <Typography variant="h6" color="primary">
-        {t('races')}
-      </Typography>
-      <List>
-        {races.map((race) => (
-          <RaceListItem key={race.id} race={race} />
-        ))}
-      </List>
-      <Button variant="contained" color="primary" onClick={onAddRace}>
-        {t('add-race')}
-      </Button>
-    </>
+    <Grid container spacing={2} direction="column">
+      <Grid size={12}>
+        <Box display="flex" alignItems="center">
+          <Typography variant="h6" color="primary" display="inline">
+            {t('races')}
+          </Typography>
+          <IconButton onClick={onAddRace} sx={{ ml: 1 }}>
+            <AddCircleIcon />
+          </IconButton>
+        </Box>
+      </Grid>
+      <Grid size={6}>
+        <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
+          {races.map((race) => (
+            <RaceCard key={race.id} race={race} />
+          ))}
+        </Box>
+      </Grid>
+    </Grid>
+  );
+};
+
+const RaceCard: FC<{
+  race: Race;
+}> = ({ race }) => {
+  const navigate = useNavigate();
+
+  const handleRaceClick = () => {
+    navigate(`/core/races/view/${race.id}`, { state: { race } });
+  };
+
+  if (!race) return <p>Loading...</p>;
+
+  return (
+    <Card
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        //mb: 2,
+        maxWidth: 400,
+        minWidth: 400,
+        cursor: 'pointer',
+        transition: 'box-shadow 0.2s, background 0.2s',
+        '&:hover': {
+          boxShadow: 6,
+          backgroundColor: 'action.hover',
+        },
+      }}
+      onClick={handleRaceClick}
+    >
+      <CardMedia component="img" image={resolveRaceImage(race.name)} alt={race.name} sx={{ width: 100, height: 100, objectFit: 'cover' }} />
+      <CardContent sx={{ flex: 1 }}>
+        <Typography component="div" variant="h6">
+          {race.name}
+        </Typography>
+        <Typography variant="subtitle1" component="div" sx={{ color: 'text.secondary' }}>
+          {t(race.archetype)}
+        </Typography>
+      </CardContent>
+    </Card>
   );
 };
 

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Grid, TextField } from '@mui/material';
 import { CreateRaceDto } from '../../api/race.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
+import SelectRaceArchetype from '../../shared/selects/SelectRaceArchetype';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
 
 const RaceCreationAttributes: FC<{
@@ -22,6 +23,9 @@ const RaceCreationAttributes: FC<{
         <TextField label={t('name')} variant="standard" name="name" value={formData.name} onChange={handleChange} fullWidth />
       </Grid>
       <Grid size={12}></Grid>
+      <Grid size={2}>
+        <SelectRaceArchetype label={t('race-archetype')} name="archetype" value={formData.archetype} onChange={handleChange} />
+      </Grid>
       <Grid size={2}>
         <SelectRaceSize label={t('race-size')} name="sizeId" value={formData.sizeId} onChange={handleChange} />
       </Grid>
