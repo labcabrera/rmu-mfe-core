@@ -1,4 +1,5 @@
 import { buildErrorFromResponse } from './api-errors';
+import { Page } from './common.dto';
 import { CreateTraitDto, Trait, UpdateTraitDto } from './trait.dto';
 
 export async function fetchTrait(traitId: string): Promise<Trait> {
@@ -18,6 +19,16 @@ export async function fetchTraits(rsql: string, page: number, size: number): Pro
   }
   const pageContent = await response.json();
   return pageContent.content;
+}
+
+export async function fetchPagedTraits(rsql: string, page: number, size: number): Promise<Page<Trait>> {
+  const url = `${process.env.RMU_API_CORE_URL}/traits?q=${rsql}&page=${page}&size=${size}`;
+  const response = await fetch(url, { method: 'GET' });
+  if (response.status !== 200) {
+    throw await buildErrorFromResponse(response, url);
+  }
+  const pageContent = await response.json();
+  return pageContent;
 }
 
 export async function createTrait(trait: CreateTraitDto): Promise<Trait> {
