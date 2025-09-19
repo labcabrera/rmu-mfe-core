@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { Trait } from '../../api/trait.dto';
-import CardListItem from './card-list-item';
+import CardListItem from './CardListItem';
 
 const TraitCard: FC<{
   trait: Trait;

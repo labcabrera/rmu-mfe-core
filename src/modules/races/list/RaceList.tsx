@@ -5,7 +5,7 @@ import { Box, Grid, Link } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
-import RaceCard from '../../shared/cards/race-card';
+import RaceCard from '../../shared/cards/RaceCard';
 import RaceListActions from './RaceListActions';
 
 const RaceList: FC = () => {

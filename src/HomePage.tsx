@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Breadcrumbs, Grid, IconButton, Link, Stack, Typography } from '@mui/material';
-import CardListItem from './modules/shared/cards/card-list-item';
+import CardListItem from './modules/shared/cards/CardListItem';
 
 const HomePage: FC = () => {
   const { t } = useTranslation();

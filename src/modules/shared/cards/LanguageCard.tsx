@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Language } from '../../api/language.dto';
-import CardListItem from './card-list-item';
+import CardListItem from './CardListItem';
 
 const LanguageCard: FC<{
   language: Language;

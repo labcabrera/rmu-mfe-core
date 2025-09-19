@@ -5,7 +5,7 @@ import { Link, Pagination, Box, Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedTraits } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
-import TraitCard from '../../shared/cards/trait-card';
+import TraitCard from '../../shared/cards/TraitCard';
 import TraitListActions from './TraitListActions';
 import TraitListSearch from './TraitListSearch';
 

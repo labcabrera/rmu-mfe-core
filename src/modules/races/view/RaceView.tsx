@@ -46,27 +46,25 @@ const RaceView: FC = () => {
     <>
       <RaceViewActions race={race} />
       <Grid container spacing={2}>
-        <Grid size={5}>
+        <Grid size={6}>
           <RaceAvatarByName raceName={race.name} size={120} />
           <Typography variant="h6" color="primary">
             {t('race-info')}
           </Typography>
           <RaceViewAttributes race={race} />
         </Grid>
-        <Grid size={2}>
+        <Grid size={6}>
           <Typography variant="h6" color="primary">
             {t('statistics')}
           </Typography>
           <RaceViewStats race={race} />
-        </Grid>
-        <Grid size={2}>
           <Typography variant="h6" color="primary">
             {t('resistances')}
           </Typography>
           <RaceViewResistances race={race} />
         </Grid>
-        <Grid size={4}>
-          <TextField label={t('description')} variant="standard" name="description" value={race.description} fullWidth />
+        <Grid size={6}>
+          <TextField label={t('description')} variant="standard" name="description" value={race.description} multiline rows={6} fullWidth />
         </Grid>
       </Grid>
     </>

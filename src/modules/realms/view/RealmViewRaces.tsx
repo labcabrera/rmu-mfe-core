@@ -8,7 +8,7 @@ import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { Realm } from '../../api/realm.dto';
 import { resolveRaceImage } from '../../services/race-avatar-service';
-import RaceCard from '../../shared/cards/race-card';
+import RaceCard from '../../shared/cards/RaceCard';
 
 const RealmViewRaces: FC<{
   realm: Realm;

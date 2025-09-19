@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import { Race, resistances } from '../../api/race.dto';
-import NumericReadonlyInput from '../../shared/inputs/NumericReadonlyInput';
+import CardListItem from '../../shared/cards/CardListItem';
 
 const RaceViewResistances: FC<{
   race: Race;
@@ -10,13 +10,19 @@ const RaceViewResistances: FC<{
   const { t } = useTranslation();
 
   return (
-    <Grid container spacing={1}>
+    <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
       {resistances.map((resistance) => (
-        <Grid key={resistance} size={12}>
-          <NumericReadonlyInput label={t(resistance)} name={`resistances.${resistance}`} value={race.resistances[resistance]} />
-        </Grid>
+        <CardListItem
+          title={race.resistances[resistance]}
+          subtitle={t(resistance)}
+          image={`/static/images/generic/stat-st.png`}
+          maxWidth={220}
+          minWidth={220}
+          height={80}
+          imageSize={80}
+        />
       ))}
-    </Grid>
+    </Box>
   );
 };
 

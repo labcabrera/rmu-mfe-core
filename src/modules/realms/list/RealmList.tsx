@@ -5,7 +5,7 @@ import { Box, Grid, Link } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchRealms } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
-import RealmCard from '../../shared/cards/realm-card';
+import RealmCard from '../../shared/cards/RealmCard';
 import RealmListActions from './RealmListActions';
 
 const RealmList: FC = () => {
