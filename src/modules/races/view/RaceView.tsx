@@ -51,7 +51,10 @@ const RaceView: FC = () => {
           <Typography variant="h6" color="primary">
             {t(race.name)}
           </Typography>
-          <Typography variant="body1">{t(race.archetype)}</Typography>
+          <Typography variant="h6">{t(race.archetype)}</Typography>
+          <Typography variant="body1" color="textSecondary" sx={{ mt: 2, whiteSpace: 'pre-line' }}>
+            {race.description}
+          </Typography>
         </Grid>
         <Grid size={7}>
           <Typography variant="h6" color="primary">
@@ -68,9 +71,6 @@ const RaceView: FC = () => {
           <RaceViewAttributes race={race} />
         </Grid>
         <Grid size={4}></Grid>
-        <Grid size={12}>
-          <TextField label={t('description')} variant="standard" name="description" value={race.description} multiline rows={6} fullWidth />
-        </Grid>
       </Grid>
     </>
   );
