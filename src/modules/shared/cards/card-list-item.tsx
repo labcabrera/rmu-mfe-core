@@ -33,12 +33,37 @@ const CardListItem: FC<{
           flexDirection: 'column',
           justifyContent: 'center',
           ml: 2,
+          maxWidth: '100%',
+          minWidth: 0,
         }}
       >
-        <Typography component="div" variant="h6">
+        <Typography
+          component="div"
+          variant="h6"
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            width: '100%',
+            maxWidth: '100%',
+            display: 'block',
+          }}
+        >
           {title}
         </Typography>
-        <Typography variant="subtitle1" component="div" sx={{ color: 'text.secondary' }}>
+        <Typography
+          variant="subtitle1"
+          component="div"
+          sx={{
+            color: 'text.secondary',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            width: '100%',
+            maxWidth: '100%',
+            display: 'block',
+          }}
+        >
           {subtitle}
         </Typography>
       </CardContent>
