@@ -6,11 +6,12 @@ const SelectTraitType: FC<{
   label: string;
   value: string;
   name: string;
+  addAllOption?: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-}> = ({ label, value, name, onChange }) => {
+}> = ({ label, value, name, onChange, addAllOption = false }) => {
   const { t } = useTranslation();
 
-  const values = ['all', 'talent', 'flaw'];
+  const values = ['talent', 'flaw'];
 
   return (
     <TextField
@@ -22,6 +23,11 @@ const SelectTraitType: FC<{
       variant="standard"
       onChange={onChange}
     >
+      {addAllOption && (
+        <MenuItem key="all" value="all">
+          {t('all')}
+        </MenuItem>
+      )}
       {values.map((option, index) => (
         <MenuItem key={index} value={option}>
           {t(option)}

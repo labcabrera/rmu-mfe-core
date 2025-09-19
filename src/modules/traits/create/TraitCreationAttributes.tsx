@@ -26,13 +26,28 @@ const TraitCreationAttributes: FC<{
         </Typography>
       </Grid>
       <Grid size={12}>
-        <TextField label={t('trait')} name="id" value={formData.id || ''} variant="standard" fullWidth onChange={onChange} />
+        <TextField label={t('name')} name="name" value={formData.name || ''} variant="standard" fullWidth onChange={onChange} />
       </Grid>
       <Grid size={12}>
         <SelectTraitCategory label={t('category')} name="category" value={formData.category} onChange={onChange} />
       </Grid>
       <Grid size={12}>
-        <NumericInput label={t('cost')} name="cost" value={formData.cost} onChange={(e) => setFormData({ ...formData, cost: e })} integer />
+        <NumericInput
+          label={t('adquisition-cost')}
+          name="adquisitionCost"
+          value={formData.adquisitionCost}
+          onChange={(e) => setFormData({ ...formData, adquisitionCost: e })}
+          integer
+        />
+      </Grid>
+      <Grid size={12}>
+        <NumericInput
+          label={t('tier-cost')}
+          name="tierCost"
+          value={formData.tierCost}
+          onChange={(e) => setFormData({ ...formData, tierCost: e })}
+          integer
+        />
       </Grid>
       <Grid size={12}>
         <NumericInput

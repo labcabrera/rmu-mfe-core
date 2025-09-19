@@ -1,4 +1,5 @@
 {
+  "adquisition-cost": "Adquisition cost",
   "all": "All",
   "average-height-male": "Average male height",
   "average-height-female": "Average female height",
@@ -33,6 +34,7 @@
   "is-talent": "Is talent",
   "is-tier-based": "Is tier based",
   "description": "Description",
+  "lesser-orc": "Lesser orc",
   "magical": "Magical",
   "max-tier": "Max tier",
   "name": "Name",
@@ -56,6 +58,7 @@
   "stride-bonus": "Stride bonus",
   "orc": "Orc",
   "talent": "Talent",
+  "tier-cost": "Tier cost",
   "trait": "Trait",
   "traits": "Traits",
   "trait-info": "Trait Information",

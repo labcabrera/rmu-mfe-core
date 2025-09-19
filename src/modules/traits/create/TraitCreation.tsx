@@ -5,12 +5,13 @@ import TraitCreationActions from './TraitCreationActions';
 import TraitCreationAttributes from './TraitCreationAttributes';
 
 const template = {
-  id: '',
+  name: '',
   isTalent: true,
   requiresSpecialization: false,
   isTierBased: false,
   maxTier: null,
-  cost: null,
+  adquisitionCost: null,
+  tierCost: null,
   description: '',
 } as Trait;
 
@@ -19,7 +20,7 @@ const TraitCreation: FC = () => {
   const [isValid, setIsValid] = useState(false);
 
   const validateForm = () => {
-    if (!formData.id) return false;
+    if (!formData.name) return false;
     return true;
   };
 

@@ -24,7 +24,10 @@ const TraitViewInfo: FC<{
         <TextField label={t('category')} name="category" value={t(trait.category)} variant="standard" fullWidth />
       </Grid>
       <Grid size={12}>
-        <NumericReadonlyInput label={t('cost')} name="cost" value={trait.cost} />
+        <NumericReadonlyInput label={t('adquisition-cost')} name="adquisition-cost" value={trait.adquisitionCost} />
+      </Grid>
+      <Grid size={12}>
+        <NumericReadonlyInput label={t('tier-cost')} name="tier-cost" value={trait.tierCost} />
       </Grid>
       <Grid size={12}>
         <NumericReadonlyInput label={t('max-tier')} name="max-tier" value={trait.maxTier} />
