@@ -6,7 +6,6 @@ import { useError } from '../../../ErrorContext';
 import { fetchTraits } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
 import TraitListActions from './TraitListActions';
-import RealmListItem from './TraitListItem';
 import TraitListItem from './TraitListItem';
 
 const TraitList: FC = () => {
@@ -26,8 +25,8 @@ const TraitList: FC = () => {
       });
   };
 
-  const handleNewRealm = () => {
-    navigate('/core/realms/create');
+  const handleNewTrait = () => {
+    navigate('/core/traits/create');
   };
 
   useEffect(() => {
@@ -44,7 +43,7 @@ const TraitList: FC = () => {
       {traits.length === 0 ? (
         <p>
           No traits found.{' '}
-          <Link component="button" onClick={handleNewRealm}>
+          <Link component="button" onClick={handleNewTrait}>
             {t('create-new')}
           </Link>
         </p>

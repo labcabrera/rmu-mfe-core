@@ -8,8 +8,8 @@ const TraitListActions: FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleNewRealm = async () => {
-    navigate('/core/realms/create');
+  const onNewTrait = async () => {
+    navigate('/core/traits/create');
   };
 
   return (
@@ -26,7 +26,7 @@ const TraitListActions: FC = () => {
         </Breadcrumbs>
       </Box>
       <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-        <IconButton onClick={handleNewRealm}>
+        <IconButton onClick={onNewTrait}>
           <AddCircleIcon />
         </IconButton>
       </Stack>

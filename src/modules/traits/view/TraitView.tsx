@@ -39,7 +39,7 @@ const TraitView: FC = () => {
     <>
       <TraitViewActions trait={trait} />
       <Grid container spacing={1}>
-        <Grid size={4}>
+        <Grid size={6}>
           <TraitViewInfo trait={trait} />
         </Grid>
         <Grid size={12}></Grid>

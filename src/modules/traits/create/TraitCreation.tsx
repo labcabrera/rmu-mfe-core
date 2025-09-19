@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { Grid } from '@mui/material';
 import { CreateTraitDto, Trait } from '../../api/trait.dto';
 import TraitCreationActions from './TraitCreationActions';
 import TraitCreationAttributes from './TraitCreationAttributes';
@@ -7,7 +8,9 @@ const template = {
   id: '',
   isTalent: true,
   requiresSpecialization: false,
-  cost: undefined,
+  isTierBased: false,
+  maxTier: null,
+  cost: null,
   description: '',
 } as Trait;
 
@@ -27,7 +30,11 @@ const TraitCreation: FC = () => {
   return (
     <>
       <TraitCreationActions formData={formData} isValid={isValid} />
-      <TraitCreationAttributes formData={formData} setFormData={setFormData} />
+      <Grid container spacing={1}>
+        <Grid size={6}>
+          <TraitCreationAttributes formData={formData} setFormData={setFormData} />
+        </Grid>
+      </Grid>
       <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
     </>
   );

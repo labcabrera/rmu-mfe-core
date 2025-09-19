@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, TextField, Typography } from '@mui/material';
+import { FormControl, FormControlLabel, Grid, Switch, TextField, Typography } from '@mui/material';
 import { Trait } from '../../api/trait.dto';
+import NumericReadonlyInput from '../../shared/inputs/NumericReadonlyInput';
 
 const TraitViewInfo: FC<{
   trait: Trait;
@@ -20,22 +21,35 @@ const TraitViewInfo: FC<{
         </Typography>
       </Grid>
       <Grid size={12}>
-        <TextField label={t('is-talent')} name="isTalent" value={trait.isTalent || ''} variant="standard" fullWidth />
+        <NumericReadonlyInput label={t('cost')} name="cost" value={trait.cost} />
       </Grid>
       <Grid size={12}>
-        <TextField
-          label={t('requires-specialization')}
-          name="requiresSpecialization"
-          value={trait.requiresSpecialization || ''}
-          variant="standard"
-          fullWidth
-        />
+        <NumericReadonlyInput label={t('max-tier')} name="max-tier" value={trait.maxTier} />
       </Grid>
       <Grid size={12}>
-        <TextField label={t('cost')} name="cost" value={trait.cost || ''} variant="standard" fullWidth />
+        <FormControl>
+          <FormControlLabel
+            control={<Switch value={trait.isTalent} defaultChecked={trait.isTalent} />}
+            label={t('is-talent')}
+            labelPlacement="start"
+            disabled
+          />
+          <FormControlLabel
+            control={<Switch value={trait.requiresSpecialization} defaultChecked={trait.requiresSpecialization} />}
+            label={t('requires-specialization')}
+            labelPlacement="start"
+            disabled
+          />
+          <FormControlLabel
+            control={<Switch value={trait.isTierBased} defaultChecked={trait.isTierBased} />}
+            label={t('is-tier-based')}
+            labelPlacement="start"
+            disabled
+          />
+        </FormControl>
       </Grid>
       <Grid size={12}>
-        <TextField label={t('description')} name="description" value={trait.description || ''} multiline maxRows={4} variant="standard" fullWidth />
+        <TextField label={t('description')} name="description" value={trait.description || ''} multiline maxRows={6} variant="standard" fullWidth />
       </Grid>
     </Grid>
   );

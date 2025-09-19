@@ -1,16 +1,17 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Typography, Grid, TextField } from '@mui/material';
+import { Typography, Grid, TextField, FormControl, FormControlLabel, Switch } from '@mui/material';
 import { UpdateTraitDto } from '../../api/trait.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
 
 const TraitEditAttributes: FC<{
+  traitId: string;
   formData: UpdateTraitDto;
   setFormData: Dispatch<SetStateAction<UpdateTraitDto>>;
-}> = ({ formData, setFormData }) => {
+}> = ({ traitId, formData, setFormData }) => {
   const { t } = useTranslation();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -24,20 +25,67 @@ const TraitEditAttributes: FC<{
     <Grid container spacing={2}>
       <Grid size={12}>
         <Typography variant="h6" color="primary">
-          {t('trait-info')}
+          {t(traitId)}
         </Typography>
       </Grid>
       <Grid size={12}>
-        <NumericInput label={t('cost')} name="cost" value={formData.cost} onChange={(e) => setFormData({ ...formData, cost: e })} />
+        <NumericInput label={t('cost')} name="cost" value={formData.cost} onChange={(e) => setFormData({ ...formData, cost: e })} integer />
+      </Grid>
+      <Grid size={12}>
+        <NumericInput
+          label={t('max-tier')}
+          name="maxTier"
+          value={formData.maxTier}
+          onChange={(e) => setFormData({ ...formData, maxTier: e })}
+          min={1}
+          integer
+        />
+      </Grid>
+      <Grid size={12}>
+        <FormControl>
+          <FormControlLabel
+            control={
+              <Switch
+                value={formData.isTalent}
+                defaultChecked={formData.isTalent}
+                onChange={(e) => setFormData({ ...formData, isTalent: e.target.checked })}
+              />
+            }
+            label={t('is-talent')}
+            labelPlacement="start"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                value={formData.requiresSpecialization}
+                defaultChecked={formData.requiresSpecialization}
+                onChange={(e) => setFormData({ ...formData, requiresSpecialization: e.target.checked })}
+              />
+            }
+            label={t('requires-specialization')}
+            labelPlacement="start"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                value={formData.isTierBased}
+                defaultChecked={formData.isTierBased}
+                onChange={(e) => setFormData({ ...formData, isTierBased: e.target.checked })}
+              />
+            }
+            label={t('is-tier-based')}
+            labelPlacement="start"
+          />
+        </FormControl>
       </Grid>
       <Grid size={12}>
         <TextField
           label={t('description')}
           name="description"
+          value={formData.description || ''}
+          onChange={onChange}
           multiline
-          rows={4}
-          value={formData.description}
-          onChange={handleChange}
+          maxRows={6}
           variant="standard"
           fullWidth
         />
