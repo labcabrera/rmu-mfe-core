@@ -2,16 +2,15 @@ import React, { ChangeEvent, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField } from '@mui/material';
 
-const SelectTraitCategory: FC<{
+const SelectTraitType: FC<{
   label: string;
   value: string;
   name: string;
-  displayAll?: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-}> = ({ label, value, name, onChange, displayAll }) => {
+}> = ({ label, value, name, onChange }) => {
   const { t } = useTranslation();
 
-  const values = ['combat', 'discipline', 'magical', 'physical', 'racial', 'senses', 'other'];
+  const values = ['all', 'talent', 'flaw'];
 
   return (
     <TextField
@@ -23,7 +22,6 @@ const SelectTraitCategory: FC<{
       variant="standard"
       onChange={onChange}
     >
-      {displayAll ? <MenuItem value="all">{t('all')}</MenuItem> : null}
       {values.map((option, index) => (
         <MenuItem key={index} value={option}>
           {t(option)}
@@ -33,4 +31,4 @@ const SelectTraitCategory: FC<{
   );
 };
 
-export default SelectTraitCategory;
+export default SelectTraitType;

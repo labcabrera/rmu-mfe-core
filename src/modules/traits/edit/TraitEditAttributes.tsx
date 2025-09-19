@@ -89,7 +89,8 @@ const TraitEditAttributes: FC<{
           value={formData.description || ''}
           onChange={onChange}
           multiline
-          maxRows={6}
+          minRows={4}
+          maxRows={8}
           variant="standard"
           fullWidth
         />

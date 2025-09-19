@@ -20,13 +20,19 @@ const TraitList: FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [searchId, setSearchId] = useState<string>('');
   const [searchCategory, setSearchCategory] = useState<string>('');
+  const [searchType, setSearchType] = useState<string>('');
 
-  const bindTraits = (id: string, category: string, pageNumber: number = 0) => {
+  const bindTraits = (id: string, category: string, type: string, pageNumber: number = 0) => {
     let query = '';
     if (id) query += `id=re=${id}`;
-    if (category && category !== '') {
+    if (category && category !== 'all') {
       if (query !== '') query += ';';
       query += `category==${category}`;
+    }
+    if (type && type !== 'all') {
+      console.log(type);
+      if (query !== '') query += ';';
+      query += `isTalent==${type === 'talent'}`;
     }
     fetchPagedTraits(query, pageNumber, PAGE_SIZE)
       .then((response) => {
@@ -43,20 +49,21 @@ const TraitList: FC = () => {
     navigate('/core/traits/create');
   };
 
-  const handleSearch = (id: string, category: string) => {
+  const handleSearch = (id: string, category: string, type: string) => {
     setSearchId(id);
     setSearchCategory(category);
+    setSearchType(type);
     setPage(0);
-    bindTraits(id, category, 0);
+    bindTraits(id, category, type, 0);
   };
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value - 1);
-    bindTraits(searchId, searchCategory, value - 1);
+    bindTraits(searchId, searchCategory, searchType, value - 1);
   };
 
   useEffect(() => {
-    bindTraits('', '', 0);
+    bindTraits('', '', '', 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

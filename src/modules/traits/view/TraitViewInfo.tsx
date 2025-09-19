@@ -52,7 +52,16 @@ const TraitViewInfo: FC<{
         </FormControl>
       </Grid>
       <Grid size={12}>
-        <TextField label={t('description')} name="description" value={trait.description || ''} multiline maxRows={6} variant="standard" fullWidth />
+        <TextField
+          label={t('description')}
+          name="description"
+          value={trait.description || ''}
+          multiline
+          minRows={4}
+          maxRows={8}
+          variant="standard"
+          fullWidth
+        />
       </Grid>
     </Grid>
   );
