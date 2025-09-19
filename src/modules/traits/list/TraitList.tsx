@@ -62,8 +62,8 @@ const TraitList: FC = () => {
 
   return (
     <>
-      <TraitListSearch onSearch={handleSearch} />
       <TraitListActions />
+      <TraitListSearch onSearch={handleSearch} />
       {traits.map((trait) => (
         <TraitListItem key={trait.id} trait={trait} />
       ))}
