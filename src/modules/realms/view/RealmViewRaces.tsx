@@ -43,7 +43,7 @@ const RealmViewRaces: FC<{
           <Typography variant="h6" color="primary" display="inline">
             {t('races')}
           </Typography>
-          <IconButton onClick={onAddRace} sx={{ ml: 1 }}>
+          <IconButton onClick={onAddRace} sx={{ ml: 1 }} color="primary">
             <AddCircleIcon />
           </IconButton>
         </Box>

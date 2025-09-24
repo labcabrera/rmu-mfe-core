@@ -38,7 +38,7 @@ const RealmList: FC = () => {
     <>
       <RealmListActions />
       <Grid container spacing={2} mb={2} alignItems="center">
-        <Grid size={8}>
+        <Grid size={12}>
           <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
             {realms.map((realm) => (
               <RealmCard key={realm.id} realm={realm} />

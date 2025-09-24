@@ -54,13 +54,13 @@ const RealmViewActions: FC<{
       <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
         <Box>
           <Breadcrumbs aria-label="breadcrumb">
-            <Link color="inherit" href="/">
+            <Link color="primary" underline="hover" href="/">
               {t('home')}
             </Link>
-            <Link component={RouterLink} color="inherit" to="/core/">
+            <Link component={RouterLink} color="primary" underline="hover" to="/core/">
               {t('core')}
             </Link>
-            <Link component={RouterLink} color="inherit" to="/core/realms">
+            <Link component={RouterLink} color="primary" underline="hover" to="/core/realms">
               {t('realms')}
             </Link>
             <span>{realm.name}</span>

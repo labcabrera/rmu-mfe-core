@@ -56,7 +56,7 @@ const RaceView: FC = () => {
             {race.description}
           </Typography>
         </Grid>
-        <Grid size={7}>
+        <Grid size={10}>
           <Typography variant="h6" color="primary">
             {t('statistics')}
           </Typography>

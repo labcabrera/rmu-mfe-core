@@ -43,7 +43,7 @@ const RealmViewLanguages: FC<{
           <Typography variant="h6" color="primary" display="inline">
             {t('languages')}
           </Typography>
-          <IconButton onClick={onAddLanguage} sx={{ ml: 1 }}>
+          <IconButton onClick={onAddLanguage} sx={{ ml: 1 }} color="primary">
             <AddCircleIcon />
           </IconButton>
         </Box>
