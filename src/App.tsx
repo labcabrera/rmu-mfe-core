@@ -8,6 +8,7 @@ import LanguageCreation from './modules/languages/create/LanguageCreation';
 import LanguageEdit from './modules/languages/edit/LanguageEdit';
 import LanguageList from './modules/languages/list/LanguageList';
 import LanguageView from './modules/languages/view/LanguageView';
+import ManeuversView from './modules/maneuvers/ManeuversView';
 import RaceCreation from './modules/races/create/RaceCreation';
 import RaceEdit from './modules/races/edit/RaceEdit';
 import RaceList from './modules/races/list/RaceList';
@@ -43,6 +44,7 @@ const App = () => {
           <Route path="/languages/create" element={<LanguageCreation />} />
           <Route path="/languages/view/:languageId" element={<LanguageView />} />
           <Route path="/languages/edit/:languageId" element={<LanguageEdit />} />
+          <Route path="/maneuvers" element={<ManeuversView />} />
         </Routes>
       </Box>
     </ErrorProvider>

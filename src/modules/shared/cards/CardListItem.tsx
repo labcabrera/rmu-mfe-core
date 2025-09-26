@@ -20,15 +20,22 @@ const CardListItem: FC<{
         maxWidth: { maxWidth },
         minWidth: { minWidth },
         height: { height },
-        cursor: 'pointer',
-        transition: 'box-shadow 0.2s, background 0.2s',
-        '&:hover': {
-          boxShadow: 6,
-          backgroundColor: 'action.hover',
-        },
+        cursor: onClick ? 'pointer' : 'default',
+        ...(onClick && {
+          transition: 'box-shadow 0.2s, background 0.2s',
+          '&:hover': {
+            boxShadow: 6,
+            backgroundColor: 'action.hover',
+          },
+        }),
       }}
     >
-      <CardMedia component="img" image={image} alt={title} sx={{ width: imageSize, height: imageSize, objectFit: 'cover' }} />
+      <CardMedia
+        component="img"
+        image={image}
+        alt={title}
+        sx={{ width: imageSize, height: imageSize, objectFit: 'cover' }}
+      />
       <CardContent
         sx={{
           flex: 1,

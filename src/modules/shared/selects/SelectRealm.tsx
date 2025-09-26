@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField } from '@mui/material';
+import { t } from 'i18next';
 import { Realm } from '../../api/realm';
 
 const SelectRealm: FC<{
@@ -8,8 +8,6 @@ const SelectRealm: FC<{
   onChange: (value: string) => void;
   realms: Realm[];
 }> = ({ value, onChange, realms }) => {
-  const { t } = useTranslation();
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedValue = event.target.value;
     onChange(selectedValue);
