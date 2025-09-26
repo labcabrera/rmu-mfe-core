@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Pagination, Box, Grid } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedSkills } from '../../api/skill';
 import { fetchSkillCategories } from '../../api/skill-category';
@@ -81,8 +82,8 @@ const TraitList: FC = () => {
           <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
             {skills.map((skill) => (
               <CardListItem
-                title={skill.id}
-                subtitle={skill.categoryId}
+                title={t(skill.id)}
+                subtitle={t(skill.categoryId)}
                 image="/static/images/generic/configuration.png"
                 onClick={() => handleSkillClick(skill)}
               />

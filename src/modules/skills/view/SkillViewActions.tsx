@@ -20,8 +20,8 @@ const SkillViewActions: FC<{
             <Link component={RouterLink} color="primary" underline="hover" to="/core/">
               {t('core')}
             </Link>
-            <Link component={RouterLink} color="primary" underline="hover" to="/core/traits">
-              {t('traits')}
+            <Link component={RouterLink} color="primary" underline="hover" to="/core/skills">
+              {t('skills')}
             </Link>
             <span>{t(skill.id)}</span>
           </Breadcrumbs>

@@ -8,6 +8,10 @@ const SkillViewInfo: FC<{
 }> = ({ skill }) => {
   if (!skill) return <p>Loading...</p>;
 
+  const getDescriptionKey = () => {
+    return skill.id.includes('@') ? `skill-${skill.id.split('@')[0]}-description` : `skill-${skill.id}-description`;
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid size={12}>
@@ -20,8 +24,8 @@ const SkillViewInfo: FC<{
           Specialization: {skill.specialization}
         </Typography>
       </Grid>
-      <Typography variant="body1" gutterBottom>
-        {t(`skill-${skill.id}-description`)}
+      <Typography variant="body1" gutterBottom sx={{ whiteSpace: 'pre-wrap' }}>
+        {t(getDescriptionKey())}
       </Typography>
     </Grid>
   );
