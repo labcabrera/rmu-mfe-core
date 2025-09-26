@@ -16,7 +16,7 @@ const TraitCard: FC<{
 
   if (!trait) return <p>Loading...</p>;
 
-  const subtitle = `${t(trait.isTalent ? t('trait') : t('flaw'))} - ${t(trait.category)}`;
+  const subtitle = `${t(trait.isTalent ? t('trait') : t('flaw'))} • ${t(trait.category)} • ${trait.adquisitionCost}`;
 
   return (
     <CardListItem title={trait.name} subtitle={subtitle} image={getTraitImage(trait)} onClick={handleTraitClick} />

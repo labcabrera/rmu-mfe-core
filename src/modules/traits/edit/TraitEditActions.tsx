@@ -4,24 +4,24 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Breadcrumbs, Link, Stack, Typography } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { updateTrait } from '../../api/trait';
-import { UpdateTraitDto } from '../../api/trait.dto';
+import { Trait, UpdateTraitDto } from '../../api/trait.dto';
 import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
 const TraitEditActions: FC<{
-  traitId: string;
+  trait: Trait;
   formData: UpdateTraitDto;
-}> = ({ traitId, formData }) => {
+}> = ({ trait, formData }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { showError } = useError();
 
-  if (!traitId) return <p>Loading...</p>;
+  if (!trait) return <p>Loading...</p>;
 
   const handleSaveButtonClick = async () => {
-    updateTrait(traitId, formData)
+    updateTrait(trait.id, formData)
       .then((data) => {
-        navigate(`/core/traits/view/${traitId}`, { state: { trait: data } });
+        navigate(`/core/traits/view/${trait.id}`, { state: { trait: data } });
       })
       .catch((err: unknown) => {
         if (err instanceof Error) showError(err.message);
@@ -30,8 +30,7 @@ const TraitEditActions: FC<{
   };
 
   const handleBackButtonClick = () => {
-    navigate(`/core/traits/view/${traitId}`, { state: { traitId } });
-    return;
+    navigate(`/core/traits/view/${trait.id}`, { state: { trait } });
   };
 
   return (
@@ -46,8 +45,8 @@ const TraitEditActions: FC<{
         <Link component={RouterLink} color="primary" underline="hover" to={'/core/traits'}>
           {t('traits')}
         </Link>
-        <Link component={RouterLink} color="primary" underline="hover" to={`/core/traits/view/${traitId}`}>
-          {t(traitId)}
+        <Link component={RouterLink} color="primary" underline="hover" to={`/core/traits/view/${trait.id}`}>
+          {t(trait.name)}
         </Link>
         <span>{t('edit')}</span>
       </Breadcrumbs>

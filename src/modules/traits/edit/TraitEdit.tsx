@@ -37,7 +37,7 @@ const TraitEdit: FC = () => {
 
   return (
     <>
-      <RealmEditActions traitId={traitId} formData={formData} />
+      <RealmEditActions trait={trait} formData={formData} />
       <Grid container spacing={2}>
         <Grid size={2}>
           <GenericAvatar imageUrl={getTraitImage(trait)} size={300} />
@@ -46,7 +46,7 @@ const TraitEdit: FC = () => {
         <Grid size={8}>
           <TraitEditAttributes formData={formData} setFormData={setFormData} />
         </Grid>
-        {/* <pre>{JSON.stringify(formData, null, 2)}</pre> */}
+        <pre>{JSON.stringify(formData, null, 2)}</pre>
       </Grid>
     </>
   );

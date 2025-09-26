@@ -61,7 +61,7 @@ const TraitViewActions: FC<{
             <Link component={RouterLink} color="primary" underline="hover" to="/core/traits">
               {t('traits')}
             </Link>
-            <span>{t(trait.id)}</span>
+            <span>{t(trait.name)}</span>
           </Breadcrumbs>
         </Box>
         <Stack direction="row" spacing={2}>

@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Box, Breadcrumbs, IconButton, Link, Stack } from '@mui/material';
+import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
+import { t } from 'i18next';
+import AddButton from '../../shared/buttons/AddButton';
 
 const TraitListActions: FC = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const onNewTrait = async () => {
     navigate('/core/traits/create');
@@ -26,9 +25,7 @@ const TraitListActions: FC = () => {
         </Breadcrumbs>
       </Box>
       <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-        <IconButton onClick={onNewTrait}>
-          <AddCircleIcon />
-        </IconButton>
+        <AddButton onClick={onNewTrait} />
       </Stack>
     </Stack>
   );

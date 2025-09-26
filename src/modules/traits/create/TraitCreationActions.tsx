@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { createTrait } from '../../api/trait';
 import { CreateTraitDto } from '../../api/trait.dto';
@@ -13,7 +13,6 @@ const TraitCreationActions: FC<{
   isValid?: boolean;
 }> = ({ formData, isValid = false }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const { showError } = useError();
 
   const handleSave = async () => {
@@ -35,13 +34,13 @@ const TraitCreationActions: FC<{
     <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
       <Box>
         <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/">
+          <Link color="primary" underline="hover" href="/">
             {t('home')}
           </Link>
-          <Link component={RouterLink} to="/core" color="inherit">
+          <Link component={RouterLink} color="primary" underline="hover" to="/core">
             {t('core')}
           </Link>
-          <Link component={RouterLink} to="/core/traits" color="inherit">
+          <Link component={RouterLink} color="primary" underline="hover" to="/core/traits">
             {t('traits')}
           </Link>
           <span>{t('creation')}</span>

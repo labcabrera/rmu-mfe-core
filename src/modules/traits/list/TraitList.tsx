@@ -80,14 +80,7 @@ const TraitList: FC = () => {
           </Box>
         </Grid>
       </Grid>
-      {traits.length === 0 ? (
-        <p>
-          No traits found.{' '}
-          <Link component="button" onClick={handleNewTrait}>
-            {t('create-new')}
-          </Link>
-        </p>
-      ) : null}
+      {traits.length === 0 ? <p>No traits found.</p> : null}
       <Box mt={2} display="flex" justifyContent="center">
         <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
       </Box>

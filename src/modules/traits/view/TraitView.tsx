@@ -45,6 +45,7 @@ const TraitView: FC = () => {
           <TraitViewInfo trait={trait} />
         </Grid>
       </Grid>
+      <pre>{JSON.stringify(trait, null, 2)}</pre>
     </>
   );
 };

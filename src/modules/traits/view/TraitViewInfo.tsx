@@ -13,12 +13,18 @@ const TraitViewInfo: FC<{
   return (
     <Grid container spacing={1}>
       <Grid size={12}>
-        <Typography variant="h6" color="primary">
-          {trait.isTalent ? t('trait') : t('flaw')}
-        </Typography>
-      </Grid>
-      <Grid size={12}>
         <Typography variant="body1">{trait.description}</Typography>
+      </Grid>
+      <Grid size={12} mt={5}>
+        <Box display="flex" gap={2} flexWrap="wrap">
+          <TextCard
+            value={t(trait.specialization)}
+            subtitle={t('specialization')}
+            image="/static/images/generic/dev-points.png"
+            minWidth={400}
+            maxWidth={400}
+          />
+        </Box>
       </Grid>
       <Grid size={12} mt={5}>
         <Box display="flex" gap={2} flexWrap="wrap">
@@ -47,11 +53,6 @@ const TraitViewInfo: FC<{
               />
             </>
           )}
-          <TextCard
-            value={trait.requiresSpecialization ? t('Yes') : t('No')}
-            subtitle={t('requires-specialization')}
-            image="/static/images/generic/dev-points.png"
-          />
         </Box>
       </Grid>
     </Grid>

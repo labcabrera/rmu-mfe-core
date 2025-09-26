@@ -3,6 +3,7 @@ import { Typography, Grid, TextField, FormControl, FormControlLabel, Switch } fr
 import { t } from 'i18next';
 import { UpdateTraitDto } from '../../api/trait.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
+import SelectTraitSpecialization from '../../shared/selects/SelectTraitSpecialization';
 
 const TraitEditAttributes: FC<{
   formData: UpdateTraitDto;
@@ -48,6 +49,15 @@ const TraitEditAttributes: FC<{
         />
       </Grid>
       <Grid size={2}>
+        <SelectTraitSpecialization
+          label={t('specialization')}
+          value={formData.specialization}
+          name={'specialization'}
+          onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
+        />
+      </Grid>
+      <Grid size={12}></Grid>
+      <Grid size={2}>
         <NumericInput
           label={t('adquisition-cost')}
           name="adquisitionCost"
@@ -81,17 +91,6 @@ const TraitEditAttributes: FC<{
       )}
       <Grid size={12}>
         <FormControl>
-          <FormControlLabel
-            control={
-              <Switch
-                value={formData.requiresSpecialization}
-                defaultChecked={formData.requiresSpecialization}
-                onChange={(e) => setFormData({ ...formData, requiresSpecialization: e.target.checked })}
-              />
-            }
-            label={t('requires-specialization')}
-            labelPlacement="start"
-          />
           <FormControlLabel
             control={
               <Switch
