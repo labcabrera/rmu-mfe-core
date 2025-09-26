@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Box, Grid, IconButton, Typography } from '@mui/material';
+import { t } from 'i18next';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { Realm } from '../../api/realm.dto';
@@ -11,7 +11,6 @@ import RaceCard from '../../shared/cards/RaceCard';
 const RealmViewRaces: FC<{
   realm: Realm;
 }> = ({ realm }) => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const [races, setRaces] = useState<Race[]>([]);
 
@@ -54,6 +53,7 @@ const RealmViewRaces: FC<{
             <RaceCard key={race.id} race={race} />
           ))}
         </Box>
+        {races.length === 0 && <p>No races found.</p>}
       </Grid>
     </Grid>
   );
