@@ -9,6 +9,16 @@ export interface PercentManeuverResult {
 export interface AbsoluteManeuverResult {
   result: string;
   message: string;
+  penaltyUntilAbsoluteSuccess?: number;
+  bonusUntilAbsoluteFailure?: number;
+}
+
+export interface EnduranceManeuverResult {
+  result: string;
+  message: string;
+  fatigue: number;
+  hitPoints: number;
+  bonus: number;
 }
 
 export interface ManeuverDifficulty {
@@ -32,7 +42,7 @@ export const MANEUVER_DIFFICULTIES: ManeuverDifficulty[] = [
 ];
 
 export async function fetchPercentManeuver(roll: number): Promise<PercentManeuverResult> {
-  const url = `${process.env.RMU_API_CORE_URL}/maneuvers/percent/${roll}`;
+  const url = `${process.env.RMU_API_CORE_URL}/maneuvers/percent?roll=${roll}`;
   const response = await fetch(url, { method: 'GET' });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
@@ -40,8 +50,35 @@ export async function fetchPercentManeuver(roll: number): Promise<PercentManeuve
   return await response.json();
 }
 
-export async function fetchAbsoluteManeuver(roll: number): Promise<AbsoluteManeuverResult> {
-  const url = `${process.env.RMU_API_CORE_URL}/maneuvers/absolute/${roll}`;
+export async function fetchAbsoluteManeuver(
+  roll: number,
+  table: string | undefined,
+  unusualEvent: boolean | undefined
+): Promise<AbsoluteManeuverResult> {
+  let query = `?roll=${roll}`;
+  if (table) {
+    query += `&table=${table}`;
+  }
+  if (unusualEvent) {
+    query += `&unusualEvent=${unusualEvent}`;
+  }
+  const url = `${process.env.RMU_API_CORE_URL}/maneuvers/absolute${query}`;
+  const response = await fetch(url, { method: 'GET' });
+  if (response.status !== 200) {
+    throw await buildErrorFromResponse(response, url);
+  }
+  return await response.json();
+}
+
+export async function fetchEnduranceManeuver(
+  roll: number,
+  unusualEvent: boolean | undefined
+): Promise<EnduranceManeuverResult> {
+  let query = `?roll=${roll}`;
+  if (unusualEvent) {
+    query += `&unusualEvent=${unusualEvent}`;
+  }
+  const url = `${process.env.RMU_API_CORE_URL}/maneuvers/endurance${query}`;
   const response = await fetch(url, { method: 'GET' });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
