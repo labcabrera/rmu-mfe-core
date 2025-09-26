@@ -29,7 +29,7 @@ const RealmEditAttributes: FC<{
           label={t('description')}
           name="description"
           multiline
-          rows={24}
+          rows={10}
           value={formData.description}
           onChange={handleChange}
           variant="standard"

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { createRealm } from '../../api/realm';
 import { CreateRealmDto } from '../../api/realm.dto';
@@ -10,24 +10,18 @@ import SaveButton from '../../shared/buttons/SaveButton';
 
 const RealmCreationActions: FC<{
   formData: CreateRealmDto;
-  isValid?: boolean;
-}> = ({ formData, isValid = false }) => {
+  isValid: boolean;
+}> = ({ formData, isValid }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const { showError } = useError();
 
-  const handleSave = async () => {
+  const onSaveClick = async () => {
     createRealm(formData)
-      .then((realm) => {
-        navigate(`/core/realms/view/${realm.id}`);
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError('Unknown error occurred');
-      });
+      .then((realm) => navigate(`/core/realms/view/${realm.id}`))
+      .catch((err) => showError(err.message));
   };
 
-  const handleBack = () => {
+  const onBackClick = () => {
     navigate(`/core/realms`);
   };
 
@@ -35,21 +29,21 @@ const RealmCreationActions: FC<{
     <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
       <Box>
         <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/">
+          <Link color="primary" underline="hover" href="/">
             {t('home')}
           </Link>
-          <Link component={RouterLink} to="/core" color="inherit">
+          <Link component={RouterLink} to="/core" color="primary" underline="hover">
             {t('core')}
           </Link>
-          <Link component={RouterLink} to="/core/realms" color="inherit">
+          <Link component={RouterLink} to="/core/realms" color="primary" underline="hover">
             {t('realms')}
           </Link>
           <span>{t('creation')}</span>
         </Breadcrumbs>
       </Box>
-      <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-        <CancelButton onClick={handleBack} />
-        <SaveButton onClick={handleSave} disabled={!isValid} />
+      <Stack spacing={1} direction="row">
+        <CancelButton onClick={onBackClick} />
+        <SaveButton onClick={onSaveClick} disabled={!isValid} />
       </Stack>
     </Stack>
   );

@@ -1,32 +1,42 @@
 import React, { FC, useEffect, useState } from 'react';
-import { CreateRealmDto, Realm } from '../../api/realm.dto';
+import { Grid } from '@mui/material';
+import { CreateRealmDto } from '../../api/realm.dto';
+import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import RealmCreationActions from './RealmCreationActions';
 import RealmCreationAttributes from './RealmCreationAttributes';
-
-const template = {
-  name: '',
-  description: '',
-} as Realm;
+import RealmCreationResume from './RealmCreationResume';
 
 const RealmCreation: FC = () => {
-  const [formData, setFormData] = useState<CreateRealmDto>(template);
+  const [formData, setFormData] = useState<CreateRealmDto>({
+    name: null,
+    shortDescription: null,
+    description: null,
+  });
   const [isValid, setIsValid] = useState(false);
 
-  const validateForm = () => {
+  const validateForm = (formData: CreateRealmDto) => {
     if (!formData.name) return false;
     return true;
   };
 
   useEffect(() => {
-    setIsValid(validateForm());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setIsValid(validateForm(formData));
   }, [formData]);
+
+  if (!formData) return <div>Loading...</div>;
 
   return (
     <>
       <RealmCreationActions formData={formData} isValid={isValid} />
-      <RealmCreationAttributes formData={formData} setFormData={setFormData} />
-      <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
+      <Grid container spacing={2}>
+        <Grid size={2}>
+          <GenericAvatar imageUrl="/static/images/generic/realm.png" size={300} />
+          <RealmCreationResume formData={formData!} setFormData={setFormData} />
+        </Grid>
+        <Grid size={8}>
+          <RealmCreationAttributes formData={formData} setFormData={setFormData} />
+        </Grid>
+      </Grid>
     </>
   );
 };
