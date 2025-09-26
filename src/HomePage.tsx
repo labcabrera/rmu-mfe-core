@@ -54,6 +54,12 @@ const HomePage: FC = () => {
               image="/static/images/generic/configuration.png"
               onClick={() => navigate(`/core/maneuvers`)}
             />
+            <CardListItem
+              title="Skills"
+              subtitle="Skill consultation"
+              image="/static/images/generic/configuration.png"
+              onClick={() => navigate(`/core/skills`)}
+            />
           </Box>
         </Grid>
       </Grid>
