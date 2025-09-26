@@ -50,9 +50,10 @@ const RealmEditActions: FC<{
         </Link>
         <Typography sx={{ color: 'text.primary' }}>{t('edit')}</Typography>
       </Breadcrumbs>
-      <div style={{ flexGrow: 1 }} />
-      <CancelButton onClick={handleBackButtonClick} />
-      <SaveButton onClick={handleSaveButtonClick} />
+      <Stack direction="row" spacing={1}>
+        <CancelButton onClick={handleBackButtonClick} />
+        <SaveButton onClick={handleSaveButtonClick} />
+      </Stack>
     </Stack>
   );
 };

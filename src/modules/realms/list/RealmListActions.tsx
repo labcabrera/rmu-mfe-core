@@ -35,7 +35,7 @@ const RealmListActions: FC<{ setRealms: Dispatch<SetStateAction<Realm[]>> }> = (
           <span>{t('realms')}</span>
         </Breadcrumbs>
       </Box>
-      <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}>
+      <Stack spacing={1} direction="row">
         <RefreshButton onClick={() => onRefreshButtonClick()} />
         <AddButton onClick={() => onAddRealmClick()} />
       </Stack>

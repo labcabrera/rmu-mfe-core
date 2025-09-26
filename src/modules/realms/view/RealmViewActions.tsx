@@ -66,7 +66,7 @@ const RealmViewActions: FC<{
             <span>{realm.name}</span>
           </Breadcrumbs>
         </Box>
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={1}>
           <RefreshButton onClick={() => onRefreshButtonClick()} />
           <EditButton onClick={() => onEditButtonClick()} />
           <DeleteButton onClick={() => onDeleteButtonClick()} />
