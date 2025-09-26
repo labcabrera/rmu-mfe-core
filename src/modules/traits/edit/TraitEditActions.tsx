@@ -5,7 +5,7 @@ import { Breadcrumbs, Link, Stack, Typography } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { updateTrait } from '../../api/trait';
 import { UpdateTraitDto } from '../../api/trait.dto';
-import BackButton from '../../shared/buttons/BackButton';
+import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
 const TraitEditActions: FC<{
@@ -37,24 +37,22 @@ const TraitEditActions: FC<{
   return (
     <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
       <Breadcrumbs aria-label="breadcrumb">
-        <Link color="inherit" href="/">
+        <Link color="primary" underline="hover" href="/">
           {t('home')}
         </Link>
-        <Link color="inherit" component={RouterLink} to={'/core/'}>
+        <Link component={RouterLink} color="primary" underline="hover" to={'/core/'}>
           {t('core')}
         </Link>
-        <Link color="inherit" component={RouterLink} to={'/core/traits'}>
+        <Link component={RouterLink} color="primary" underline="hover" to={'/core/traits'}>
           {t('traits')}
         </Link>
-        <Link color="inherit" component={RouterLink} to={`/core/traits/view/${traitId}`}>
+        <Link component={RouterLink} color="primary" underline="hover" to={`/core/traits/view/${traitId}`}>
           {t(traitId)}
         </Link>
-        <Typography sx={{ color: 'text.primary' }}>{t('edit')}</Typography>
+        <span>{t('edit')}</span>
       </Breadcrumbs>
-
       <div style={{ flexGrow: 1 }} />
-
-      <BackButton onClick={handleBackButtonClick} />
+      <CancelButton onClick={handleBackButtonClick} />
       <SaveButton onClick={handleSaveButtonClick} />
     </Stack>
   );

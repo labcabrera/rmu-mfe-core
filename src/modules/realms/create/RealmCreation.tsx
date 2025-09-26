@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { CreateRealmDto, Realm } from '../../api/realm';
+import { CreateRealmDto, Realm } from '../../api/realm.dto';
 import RealmCreationActions from './RealmCreationActions';
 import RealmCreationAttributes from './RealmCreationAttributes';
 
@@ -19,6 +19,7 @@ const RealmCreation: FC = () => {
 
   useEffect(() => {
     setIsValid(validateForm());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
   return (

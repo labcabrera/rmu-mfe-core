@@ -1,73 +1,58 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
-import { FormControl, FormControlLabel, Grid, Switch, TextField, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
+import { t } from 'i18next';
 import { Trait } from '../../api/trait.dto';
-import NumericReadonlyInput from '../../shared/inputs/NumericReadonlyInput';
+import NumericCard from '../../shared/cards/NumericCard';
+import TextCard from '../../shared/cards/TextCard';
 
 const TraitViewInfo: FC<{
   trait: Trait;
 }> = ({ trait }) => {
-  const { t } = useTranslation();
-
-  if (!trait) {
-    return <p>Loading...</p>;
-  }
+  if (!trait) return <p>Loading...</p>;
 
   return (
     <Grid container spacing={1}>
       <Grid size={12}>
         <Typography variant="h6" color="primary">
-          {t('trait')}
+          {trait.isTalent ? t('trait') : t('flaw')}
         </Typography>
       </Grid>
       <Grid size={12}>
-        <TextField label={t('name')} name="name" value={t(trait.name)} variant="standard" fullWidth />
+        <Typography variant="body1">{trait.description}</Typography>
       </Grid>
-      <Grid size={12}>
-        <TextField label={t('category')} name="category" value={t(trait.category)} variant="standard" fullWidth />
-      </Grid>
-      <Grid size={12}>
-        <NumericReadonlyInput label={t('adquisition-cost')} name="adquisition-cost" value={trait.adquisitionCost} />
-      </Grid>
-      <Grid size={12}>
-        <NumericReadonlyInput label={t('tier-cost')} name="tier-cost" value={trait.tierCost} />
-      </Grid>
-      <Grid size={12}>
-        <NumericReadonlyInput label={t('max-tier')} name="max-tier" value={trait.maxTier} />
-      </Grid>
-      <Grid size={12}>
-        <FormControl>
-          <FormControlLabel
-            control={<Switch value={trait.isTalent} defaultChecked={trait.isTalent} />}
-            label={t('is-talent')}
-            labelPlacement="start"
-            disabled
+      <Grid size={12} mt={5}>
+        <Box display="flex" gap={2} flexWrap="wrap">
+          <TextCard
+            value={trait.isTierBased ? t('Yes') : t('No')}
+            subtitle={t('tier-based')}
+            image="/static/images/generic/dev-points.png"
           />
-          <FormControlLabel
-            control={<Switch value={trait.requiresSpecialization} defaultChecked={trait.requiresSpecialization} />}
-            label={t('requires-specialization')}
-            labelPlacement="start"
-            disabled
+          <NumericCard
+            value={trait.adquisitionCost}
+            subtitle={t('adquisition-cost')}
+            image="/static/images/generic/dev-points.png"
           />
-          <FormControlLabel
-            control={<Switch value={trait.isTierBased} defaultChecked={trait.isTierBased} />}
-            label={t('is-tier-based')}
-            labelPlacement="start"
-            disabled
+          {trait.isTierBased && (
+            <>
+              <NumericCard
+                value={trait.tierCost}
+                subtitle={t('tier-cost')}
+                image="/static/images/generic/dev-points.png"
+              />
+              <NumericCard
+                value={trait.maxTier}
+                subtitle={t('max-tier')}
+                image="/static/images/generic/dev-points.png"
+                applyColor={false}
+              />
+            </>
+          )}
+          <TextCard
+            value={trait.requiresSpecialization ? t('Yes') : t('No')}
+            subtitle={t('requires-specialization')}
+            image="/static/images/generic/dev-points.png"
           />
-        </FormControl>
-      </Grid>
-      <Grid size={12}>
-        <TextField
-          label={t('description')}
-          name="description"
-          value={trait.description || ''}
-          multiline
-          minRows={4}
-          maxRows={8}
-          variant="standard"
-          fullWidth
-        />
+        </Box>
       </Grid>
     </Grid>
   );

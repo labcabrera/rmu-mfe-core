@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { useError } from '../../../ErrorContext';
 import { updateRace } from '../../api/race';
 import { Race, UpdateRaceDto } from '../../api/race.dto';
-import BackButton from '../../shared/buttons/BackButton';
+import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
 const RaceEditActions: FC<{
@@ -57,10 +57,8 @@ const RaceEditActions: FC<{
         </Link>
         <Typography sx={{ color: 'text.primary' }}>{t('edit')}</Typography>
       </Breadcrumbs>
-
       <div style={{ flexGrow: 1 }} />
-
-      <BackButton onClick={handleBackButtonClick} />
+      <CancelButton onClick={handleBackButtonClick} />
       <SaveButton onClick={handleSaveButtonClick} />
     </Stack>
   );

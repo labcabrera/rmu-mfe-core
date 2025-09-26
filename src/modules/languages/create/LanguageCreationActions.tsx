@@ -5,7 +5,7 @@ import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { CreateLanguageDto } from '../../api/language.dto';
 import { createLanguage } from '../../api/languages';
-import BackButton from '../../shared/buttons/BackButton';
+import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
 const LanguageCreationActions: FC<{
@@ -48,8 +48,8 @@ const LanguageCreationActions: FC<{
         </Breadcrumbs>
       </Box>
       <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-        <BackButton onClick={handleBack} size={80} />
-        <SaveButton onClick={handleSave} size={80} disabled={!isValid} />
+        <CancelButton onClick={handleBack} />
+        <SaveButton onClick={handleSave} disabled={!isValid} />
       </Stack>
     </Stack>
   );

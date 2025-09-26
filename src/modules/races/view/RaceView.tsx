@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
-import { Grid, TextField, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
@@ -47,7 +47,7 @@ const RaceView: FC = () => {
       <RaceViewActions race={race} />
       <Grid container spacing={12}>
         <Grid size={2}>
-          <RaceAvatarByName raceName={race.name} size={200} />
+          <RaceAvatarByName raceName={race.name} size={300} />
           <Typography variant="h6" color="primary">
             {t(race.name)}
           </Typography>

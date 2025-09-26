@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { useError } from '../../../ErrorContext';
 import { updateRealm } from '../../api/realm';
 import { Realm, UpdateRealmDto } from '../../api/realm.dto';
-import BackButton from '../../shared/buttons/BackButton';
+import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
 const RealmEditActions: FC<{
@@ -50,10 +50,8 @@ const RealmEditActions: FC<{
         </Link>
         <Typography sx={{ color: 'text.primary' }}>{t('edit')}</Typography>
       </Breadcrumbs>
-
       <div style={{ flexGrow: 1 }} />
-
-      <BackButton onClick={handleBackButtonClick} />
+      <CancelButton onClick={handleBackButtonClick} />
       <SaveButton onClick={handleSaveButtonClick} />
     </Stack>
   );
