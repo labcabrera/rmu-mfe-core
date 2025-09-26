@@ -5,7 +5,7 @@ import { Box, Grid, Link } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
-import RaceCard from '../../shared/cards/race-card';
+import RaceCard from '../../shared/cards/RaceCard';
 import RaceListActions from './RaceListActions';
 
 const RaceList: FC = () => {
@@ -38,7 +38,7 @@ const RaceList: FC = () => {
     <>
       <RaceListActions />
       <Grid container spacing={2} mb={2} alignItems="center">
-        <Grid size={8}>
+        <Grid size={12}>
           <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
             {races.map((race) => (
               <RaceCard key={race.id} race={race} />

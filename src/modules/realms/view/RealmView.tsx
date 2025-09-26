@@ -1,10 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { fetchRealm, Realm } from '../../api/realm';
+import { fetchRealm } from '../../api/realm';
+import { Realm } from '../../api/realm.dto';
 import RealmViewActions from './RealmViewActions';
-import RealmViewInfo from './RealmViewInfo';
+import RealmViewLanguages from './RealmViewLanguages';
 import RealmViewRaces from './RealmViewRaces';
 
 const RealmView: FC = () => {
@@ -40,13 +41,18 @@ const RealmView: FC = () => {
   return (
     <>
       <RealmViewActions realm={realm} />
-      <Grid container spacing={1}>
-        <Grid size={4}>
-          <RealmViewInfo realm={realm} />
+      <Grid container spacing={2}>
+        <Grid size={2}>
+          <Typography variant="h6" color="primary">
+            {realm.name}
+          </Typography>
+          <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }} mt={5}>
+            {realm.description}
+          </Typography>
         </Grid>
-        <Grid size={12}></Grid>
-        <Grid size={12}>
+        <Grid size={9}>
           <RealmViewRaces realm={realm} />
+          <RealmViewLanguages realm={realm} />
         </Grid>
       </Grid>
     </>

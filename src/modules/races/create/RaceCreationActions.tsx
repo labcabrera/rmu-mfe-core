@@ -5,8 +5,8 @@ import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { createRace } from '../../api/race';
 import { CreateRaceDto } from '../../api/race.dto';
-import { Realm } from '../../api/realm';
-import BackButton from '../../shared/buttons/BackButton';
+import { Realm } from '../../api/realm.dto';
+import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
 const RaceCreationActions: FC<{
@@ -56,8 +56,8 @@ const RaceCreationActions: FC<{
         </Breadcrumbs>
       </Box>
       <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-        <BackButton onClick={handleBack} size={80} />
-        <SaveButton onClick={handleSave} size={80} disabled={!isValid} />
+        <CancelButton onClick={handleBack} />
+        <SaveButton onClick={handleSave} disabled={!isValid} />
       </Stack>
     </Stack>
   );

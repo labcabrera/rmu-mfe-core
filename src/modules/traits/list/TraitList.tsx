@@ -5,7 +5,7 @@ import { Link, Pagination, Box, Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedTraits } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
-import TraitCard from '../../shared/cards/trait-card';
+import TraitCard from '../../shared/cards/TraitCard';
 import TraitListActions from './TraitListActions';
 import TraitListSearch from './TraitListSearch';
 
@@ -72,7 +72,7 @@ const TraitList: FC = () => {
       <TraitListActions />
       <TraitListSearch onSearch={handleSearch} />
       <Grid container spacing={2} mb={2} alignItems="center">
-        <Grid size={8}>
+        <Grid size={12}>
           <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
             {traits.map((trait) => (
               <TraitCard key={trait.id} trait={trait} />
@@ -80,14 +80,7 @@ const TraitList: FC = () => {
           </Box>
         </Grid>
       </Grid>
-      {traits.length === 0 ? (
-        <p>
-          No traits found.{' '}
-          <Link component="button" onClick={handleNewTrait}>
-            {t('create-new')}
-          </Link>
-        </p>
-      ) : null}
+      {traits.length === 0 ? <p>No traits found.</p> : null}
       <Box mt={2} display="flex" justifyContent="center">
         <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
       </Box>

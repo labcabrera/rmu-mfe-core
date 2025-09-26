@@ -5,7 +5,6 @@ import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { Language } from '../../api/language.dto';
 import { deleteLanguage } from '../../api/languages';
-import CloseButton from '../../shared/buttons/CloseButton';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
 import DeleteDialog from '../../shared/dialogs/DeleteDialog';
@@ -53,20 +52,19 @@ const LanguageViewActions: FC<{
       <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
         <Box>
           <Breadcrumbs aria-label="breadcrumb">
-            <Link color="inherit" href="/">
+            <Link color="primary" underline="hover" href="/">
               {t('home')}
             </Link>
-            <Link component={RouterLink} color="inherit" to="/core/">
+            <Link component={RouterLink} color="primary" underline="hover" to="/core/">
               {t('core')}
             </Link>
-            <Link component={RouterLink} color="inherit" to="/core/languages">
+            <Link component={RouterLink} color="primary" underline="hover" to="/core/languages">
               {t('languages')}
             </Link>
             <span>{language.name}</span>
           </Breadcrumbs>
         </Box>
         <Stack direction="row" spacing={2}>
-          <CloseButton onClick={() => {}} />
           <EditButton onClick={handleEditClick} />
           <DeleteButton onClick={handleDeleteClick} />
         </Stack>

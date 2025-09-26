@@ -1,22 +1,32 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import { Race, resistances } from '../../api/race.dto';
-import NumericReadonlyInput from '../../shared/inputs/NumericReadonlyInput';
+import NumericCard from '../../shared/cards/NumericCard';
 
 const RaceViewResistances: FC<{
   race: Race;
 }> = ({ race }) => {
   const { t } = useTranslation();
 
+  const getImage = (resistance: string) => {
+    switch (resistance) {
+      case 'poison':
+      case 'disease':
+      case 'fear':
+      case 'physical':
+        return `/static/images/generic/${resistance}.png`;
+      default:
+        return `/static/images/generic/stat-st.png`;
+    }
+  };
+
   return (
-    <Grid container spacing={1}>
+    <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
       {resistances.map((resistance) => (
-        <Grid key={resistance} size={12}>
-          <NumericReadonlyInput label={t(resistance)} name={`resistances.${resistance}`} value={race.resistances[resistance]} />
-        </Grid>
+        <NumericCard value={race.resistances[resistance]} subtitle={t(resistance)} image={getImage(resistance)} />
       ))}
-    </Grid>
+    </Box>
   );
 };
 

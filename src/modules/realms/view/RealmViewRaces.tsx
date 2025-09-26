@@ -2,13 +2,11 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Box, Card, CardContent, CardMedia, Grid, IconButton, List, Typography } from '@mui/material';
-import { t } from 'i18next';
+import { Box, Grid, IconButton, Typography } from '@mui/material';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { Realm } from '../../api/realm.dto';
-import { resolveRaceImage } from '../../services/race-avatar-service';
-import RaceCard from '../../shared/cards/race-card';
+import RaceCard from '../../shared/cards/RaceCard';
 
 const RealmViewRaces: FC<{
   realm: Realm;
@@ -45,12 +43,12 @@ const RealmViewRaces: FC<{
           <Typography variant="h6" color="primary" display="inline">
             {t('races')}
           </Typography>
-          <IconButton onClick={onAddRace} sx={{ ml: 1 }}>
+          <IconButton onClick={onAddRace} sx={{ ml: 1 }} color="primary">
             <AddCircleIcon />
           </IconButton>
         </Box>
       </Grid>
-      <Grid size={6}>
+      <Grid size={12}>
         <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
           {races.map((race) => (
             <RaceCard key={race.id} race={race} />

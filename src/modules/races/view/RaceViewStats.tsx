@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import { Race, stats } from '../../api/race.dto';
-import NumericReadonlyInput from '../../shared/inputs/NumericReadonlyInput';
+import NumericCard from '../../shared/cards/NumericCard';
 
 const RaceViewStats: FC<{
   race: Race;
@@ -10,13 +10,11 @@ const RaceViewStats: FC<{
   const { t } = useTranslation();
 
   return (
-    <Grid container columns={12} spacing={1}>
+    <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
       {stats.map((stat) => (
-        <Grid key={stat} size={12}>
-          <NumericReadonlyInput label={t(stat)} name={`stats.${stat}`} value={race.stats[stat]} />
-        </Grid>
+        <NumericCard value={race.stats[stat]} subtitle={t(stat)} image={`/static/images/generic/stat-${stat}.png`} />
       ))}
-    </Grid>
+    </Box>
   );
 };
 

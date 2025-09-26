@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
-import { Grid, TextField, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
@@ -45,29 +45,32 @@ const RaceView: FC = () => {
   return (
     <>
       <RaceViewActions race={race} />
-      <Grid container spacing={2}>
-        <Grid size={5}>
-          <RaceAvatarByName raceName={race.name} size={120} />
-          <Typography variant="h6" color="primary">
-            {t('race-info')}
-          </Typography>
-          <RaceViewAttributes race={race} />
-        </Grid>
+      <Grid container spacing={12}>
         <Grid size={2}>
+          <RaceAvatarByName raceName={race.name} size={300} />
+          <Typography variant="h6" color="primary">
+            {t(race.name)}
+          </Typography>
+          <Typography variant="h6">{t(race.archetype)}</Typography>
+          <Typography variant="body1" color="textSecondary" sx={{ mt: 2, whiteSpace: 'pre-line' }}>
+            {race.description}
+          </Typography>
+        </Grid>
+        <Grid size={10}>
           <Typography variant="h6" color="primary">
             {t('statistics')}
           </Typography>
           <RaceViewStats race={race} />
-        </Grid>
-        <Grid size={2}>
           <Typography variant="h6" color="primary">
             {t('resistances')}
           </Typography>
           <RaceViewResistances race={race} />
+          <Typography variant="h6" color="primary">
+            {t('race-features')}
+          </Typography>
+          <RaceViewAttributes race={race} />
         </Grid>
-        <Grid size={4}>
-          <TextField label={t('description')} variant="standard" name="description" value={race.description} fullWidth />
-        </Grid>
+        <Grid size={4}></Grid>
       </Grid>
     </>
   );

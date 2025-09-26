@@ -24,16 +24,25 @@ const RealmEditAttributes: FC<{
           {t('realm-info')}
         </Typography>
       </Grid>
-
       <Grid size={12}>
         <TextField label="Name" name="name" value={formData.name} onChange={handleChange} variant="standard" fullWidth />
+      </Grid>
+      <Grid size={12}>
+        <TextField
+          label="Short Description"
+          name="shortDescription"
+          value={formData.shortDescription}
+          onChange={handleChange}
+          variant="standard"
+          fullWidth
+        />
       </Grid>
       <Grid size={12}>
         <TextField
           label="Description"
           name="description"
           multiline
-          rows={4}
+          rows={24}
           value={formData.description}
           onChange={handleChange}
           variant="standard"

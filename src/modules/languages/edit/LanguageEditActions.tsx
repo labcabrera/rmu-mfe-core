@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { useError } from '../../../ErrorContext';
 import { Language, UpdateLanguageDto } from '../../api/language.dto';
 import { updateLanguage } from '../../api/languages';
-import BackButton from '../../shared/buttons/BackButton';
+import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
 const LanguageEditActions: FC<{
@@ -58,7 +58,7 @@ const LanguageEditActions: FC<{
         <Typography sx={{ color: 'text.primary' }}>{t('edit')}</Typography>
       </Breadcrumbs>
       <div style={{ flexGrow: 1 }} />
-      <BackButton onClick={handleBackButtonClick} />
+      <CancelButton onClick={handleBackButtonClick} />
       <SaveButton onClick={handleSaveButtonClick} />
     </Stack>
   );

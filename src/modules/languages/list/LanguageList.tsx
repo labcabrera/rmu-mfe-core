@@ -5,7 +5,7 @@ import { Box, Grid, Link } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { Language } from '../../api/language.dto';
 import { fetchLanguages } from '../../api/languages';
-import LanguageCard from '../../shared/cards/language-card';
+import LanguageCard from '../../shared/cards/LanguageCard';
 import RealmListActions from './LanguageListActions';
 
 const LanguageList: FC = () => {
