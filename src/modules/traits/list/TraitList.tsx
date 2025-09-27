@@ -1,7 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { Link, Pagination, Box, Grid } from '@mui/material';
+import { Pagination, Box, Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedTraits } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
@@ -12,8 +10,6 @@ import TraitListSearch from './TraitListSearch';
 const PAGE_SIZE = 24;
 
 const TraitList: FC = () => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
   const { showError } = useError();
   const [traits, setTraits] = useState<Trait[]>([]);
   const [page, setPage] = useState(0);
@@ -30,7 +26,6 @@ const TraitList: FC = () => {
       query += `category==${category}`;
     }
     if (type && type !== 'all') {
-      console.log(type);
       if (query !== '') query += ';';
       query += `isTalent==${type === 'talent'}`;
     }
@@ -43,10 +38,6 @@ const TraitList: FC = () => {
         if (err instanceof Error) showError(err.message);
         else showError('An unknown error occurred');
       });
-  };
-
-  const handleNewTrait = () => {
-    navigate('/core/traits/create');
   };
 
   const handleSearch = (id: string, category: string, type: string) => {

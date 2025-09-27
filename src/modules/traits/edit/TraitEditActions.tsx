@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Breadcrumbs, Link, Stack, Typography } from '@mui/material';
+import { Breadcrumbs, Link, Stack } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { updateTrait } from '../../api/trait';
 import { Trait, UpdateTraitDto } from '../../api/trait.dto';
@@ -13,7 +13,6 @@ const TraitEditActions: FC<{
   formData: UpdateTraitDto;
 }> = ({ trait, formData }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const { showError } = useError();
 
   if (!trait) return <p>Loading...</p>;
