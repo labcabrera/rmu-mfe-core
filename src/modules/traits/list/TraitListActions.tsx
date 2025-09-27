@@ -24,7 +24,7 @@ const TraitListActions: FC = () => {
           <span>{t('traits')}</span>
         </Breadcrumbs>
       </Box>
-      <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}>
+      <Stack spacing={1} direction="row">
         <AddButton onClick={onNewTrait} />
       </Stack>
     </Stack>

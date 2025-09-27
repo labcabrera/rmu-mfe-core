@@ -31,10 +31,13 @@ const RealmView: FC = () => {
       <RealmViewActions realm={realm} setRealm={setRealm} />
       <Grid container spacing={2}>
         <Grid size={2}>
-          <Typography variant="h6" color="primary">
+          <Typography variant="h6" color="primary" gutterBottom>
             {realm.name}
           </Typography>
-          <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }} mt={5}>
+          <Typography variant="body1" gutterBottom>
+            {realm.shortDescription}
+          </Typography>
+          <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
             {realm.description}
           </Typography>
         </Grid>

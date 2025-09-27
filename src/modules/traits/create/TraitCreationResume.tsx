@@ -1,6 +1,6 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Grid, MenuItem, Select, TextField } from '@mui/material';
+import { Grid, MenuItem, TextField } from '@mui/material';
+import { t } from 'i18next';
 import { CreateTraitDto } from '../../api/trait.dto';
 import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';
 
@@ -8,8 +8,6 @@ const TraitCreationResume: FC<{
   formData: CreateTraitDto;
   setFormData: Dispatch<SetStateAction<CreateTraitDto>>;
 }> = ({ formData, setFormData }) => {
-  const { t } = useTranslation();
-
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });

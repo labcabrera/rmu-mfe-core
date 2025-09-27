@@ -6,8 +6,6 @@ import { Trait } from '../../api/trait.dto';
 const TraitViewResume: FC<{
   trait: Trait;
 }> = ({ trait }) => {
-  if (!trait) return <p>Loading...</p>;
-
   return (
     <Grid container spacing={1} mt={3}>
       <Grid size={12}>

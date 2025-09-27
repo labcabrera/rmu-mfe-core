@@ -8,8 +8,6 @@ import TextCard from '../../shared/cards/TextCard';
 const TraitViewInfo: FC<{
   trait: Trait;
 }> = ({ trait }) => {
-  if (!trait) return <p>Loading...</p>;
-
   return (
     <Grid container spacing={1}>
       <Grid size={12}>

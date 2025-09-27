@@ -1,9 +1,7 @@
 import React, { FC } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Percent } from '@mui/icons-material';
+import { Link as RouterLink } from 'react-router-dom';
 import { Box, Breadcrumbs, Grid, Link, Stack, Typography } from '@mui/material';
 import { t } from 'i18next';
-import CardListItem from '../shared/cards/CardListItem';
 import AbsoluteManeuverView from './AbsoluteManeuverView';
 import EnduranceManeuverView from './EnduranceManeuverView';
 import PercentManeuverView from './PercentManeuverView';

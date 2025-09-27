@@ -3,7 +3,7 @@ import { Grid, TextField } from '@mui/material';
 import { t } from 'i18next';
 import { CreateLanguageDto } from '../../api/language.dto';
 
-const LanguageCreationAttributes: FC<{
+const LanguageCreationResume: FC<{
   formData: CreateLanguageDto;
   setFormData: Dispatch<SetStateAction<CreateLanguageDto>>;
 }> = ({ formData, setFormData }) => {
@@ -16,18 +16,18 @@ const LanguageCreationAttributes: FC<{
     <Grid container spacing={1}>
       <Grid size={12}>
         <TextField
-          label={t('description')}
+          label={t('name')}
           variant="standard"
-          name="description"
-          value={formData.description}
+          name="name"
+          value={formData.name}
           onChange={handleChange}
           fullWidth
-          multiline
-          rows={4}
+          error={!formData.name}
+          helperText={!formData.name ? t('name-is-required') : ''}
         />
       </Grid>
     </Grid>
   );
 };
 
-export default LanguageCreationAttributes;
+export default LanguageCreationResume;

@@ -1,28 +1,51 @@
-import React, { FC, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { FC, useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { useError } from '../../../ErrorContext';
 import { Language, UpdateLanguageDto } from '../../api/language.dto';
+import { fetchLanguage } from '../../api/languages';
+import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import LanguageEditActions from './LanguageEditActions';
 import LanguageEditAttributes from './LanguageEditAttributes';
+import LanguageEditResume from './LanguageEditResume';
 
 const LanguageEdit: FC = () => {
   const location = useLocation();
-  const language = (location.state as { language?: Language })?.language;
+  const { showError } = useError();
+  const [language, setLanguage] = useState<Language | null>(null);
+  const { languageId } = useParams<{ languageId?: string }>();
+  const [formData, setFormData] = useState<UpdateLanguageDto | null>(null);
 
-  const [formData, setFormData] = useState<UpdateLanguageDto>({
-    name: language?.name || '',
-    description: language?.description || '',
-  });
+  useEffect(() => {
+    if (language) {
+      setFormData({
+        name: language.name,
+        description: language.description,
+      });
+    }
+  }, [language]);
 
-  if (!language) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    if (location.state && location.state.language) {
+      setLanguage(location.state.language);
+    } else if (languageId) {
+      fetchLanguage(languageId)
+        .then((response) => setLanguage(response))
+        .catch((err) => showError(err.message));
+    }
+  }, [location.state, languageId, showError]);
+
+  if (!language || !formData) return <div>Loading...</div>;
 
   return (
     <>
       <LanguageEditActions language={language} formData={formData} />
       <Grid container spacing={1}>
-        <Grid size={4}>
+        <Grid size={2}>
+          <GenericAvatar imageUrl="/static/images/generic/language.png" size={300} />
+          <LanguageEditResume formData={formData} setFormData={setFormData} />
+        </Grid>
+        <Grid size={8}>
           <LanguageEditAttributes formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>

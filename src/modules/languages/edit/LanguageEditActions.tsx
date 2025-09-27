@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { Language, UpdateLanguageDto } from '../../api/language.dto';
 import { updateLanguage } from '../../api/languages';
@@ -14,52 +13,50 @@ import SaveButton from '../../shared/buttons/SaveButton';
 const LanguageEditActions: FC<{
   language: Language;
   formData: UpdateLanguageDto;
-}> = ({ language: realm, formData }) => {
+}> = ({ language, formData }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const { showError } = useError();
 
-  if (!realm) {
-    return <p>Loading...</p>;
-  }
-
-  const handleSaveButtonClick = async () => {
-    updateLanguage(realm.id, formData)
-      .then((data) => {
-        navigate(`/core/languages/view/${realm.id}`, { state: { realm: data } });
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError('An unknown error occurred');
-      });
+  const onSave = async () => {
+    updateLanguage(language.id, formData)
+      .then((data) => navigate(`/core/languages/view/${data.id}`, { state: { language: data } }))
+      .catch((err) => showError(err.message));
   };
 
-  const handleBackButtonClick = () => {
-    navigate(`/core/languages/view/${realm.id}`, { state: { realm } });
-    return;
+  const onCancel = () => {
+    navigate(`/core/languages/view/${language.id}`, { state: { language } });
   };
 
   return (
     <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
       <Breadcrumbs aria-label="breadcrumb">
-        <Link color="inherit" href="/">
+        <Link color="primary" underline="hover" href="/">
           {t('home')}
         </Link>
-        <Link color="inherit" component={RouterLink} to={'/core'}>
+        <Link color="primary" underline="hover" component={RouterLink} to={'/core'}>
           {t('core')}
         </Link>
-        <Link color="inherit" component={RouterLink} to={'/core/languages'}>
-          {t('languages')}
+        <Link color="primary" underline="hover" component={RouterLink} to={'/core/realms'}>
+          {t('realms')}
         </Link>
-        <Link color="inherit" component={RouterLink} to={''}>
-          {realm.name}
+        <Link color="primary" underline="hover" component={RouterLink} to={`/core/realms/view/${language.realmId}`}>
+          {language.realmName}
+        </Link>
+        <Link
+          color="primary"
+          underline="hover"
+          component={RouterLink}
+          to={`/core/languages/view/${language.id}`}
+          state={{ language }}
+        >
+          {language.name}
         </Link>
         <span>{t('edit')}</span>
-        <Typography sx={{ color: 'text.primary' }}>{t('edit')}</Typography>
       </Breadcrumbs>
-      <div style={{ flexGrow: 1 }} />
-      <CancelButton onClick={handleBackButtonClick} />
-      <SaveButton onClick={handleSaveButtonClick} />
+      <Stack direction="row" spacing={1}>
+        <CancelButton onClick={onCancel} />
+        <SaveButton onClick={onSave} />
+      </Stack>
     </Stack>
   );
 };

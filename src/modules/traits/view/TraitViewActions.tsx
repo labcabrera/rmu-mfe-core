@@ -17,7 +17,7 @@ const TraitViewActions: FC<{
   const { t } = useTranslation();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const handleDeleteTrait = () => {
+  const onDelete = () => {
     deleteTrait(trait.id)
       .then(() => {
         navigate('/core/traits');
@@ -28,24 +28,22 @@ const TraitViewActions: FC<{
       });
   };
 
-  const handleEditClick = () => {
+  const onEdit = () => {
     navigate(`/core/traits/edit/${trait.id}`, { state: { trait } });
   };
 
-  const handleDeleteClick = () => {
+  const onOpenDeleteDialog = () => {
     setDeleteDialogOpen(true);
   };
 
-  const handleDialogDeleteClose = () => {
+  const onCloseDeleteDiaglog = () => {
     setDeleteDialogOpen(false);
   };
 
-  const handleDialogDelete = () => {
-    handleDeleteTrait();
+  const onDeleteDialogClick = () => {
+    onDelete();
     setDeleteDialogOpen(false);
   };
-
-  if (!trait) return <p>Loading...</p>;
 
   return (
     <>
@@ -64,16 +62,16 @@ const TraitViewActions: FC<{
             <span>{t(trait.name)}</span>
           </Breadcrumbs>
         </Box>
-        <Stack direction="row" spacing={2}>
-          <EditButton onClick={handleEditClick} />
-          <DeleteButton onClick={handleDeleteClick} />
+        <Stack direction="row" spacing={1}>
+          <EditButton onClick={onEdit} />
+          <DeleteButton onClick={onOpenDeleteDialog} />
         </Stack>
       </Stack>
       <DeleteDialog
         message={`Are you sure you want to delete ${t(trait.id)} trait? This action cannot be undone.`}
-        onDelete={handleDialogDelete}
+        onDelete={onDeleteDialogClick}
         open={deleteDialogOpen}
-        onClose={handleDialogDeleteClose}
+        onClose={onCloseDeleteDiaglog}
       />
     </>
   );

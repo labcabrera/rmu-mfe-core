@@ -1,51 +1,45 @@
 import React, { FC, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { Language } from '../../api/language.dto';
 import { deleteLanguage } from '../../api/languages';
+import { Realm } from '../../api/realm.dto';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
 import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
 const LanguageViewActions: FC<{
   language: Language;
-}> = ({ language }) => {
+  realm: Realm;
+}> = ({ language, realm }) => {
   const navigate = useNavigate();
   const { showError } = useError();
-  const { t } = useTranslation();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const handleDeleteLanguage = () => {
+  const onDelete = () => {
     deleteLanguage(language.id)
-      .then(() => {
-        navigate('/core/languages');
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError(String(err));
-      });
+      .then(() => navigate(`/core/realms/view/${realm.id}`, { state: { realm } }))
+      .catch((err) => showError(err.message));
   };
 
-  const handleEditClick = () => {
+  const onEdit = () => {
     navigate(`/core/languages/edit/${language.id}`, { state: { language } });
   };
 
-  const handleDeleteClick = () => {
+  const onOpenDeleteDialog = () => {
     setDeleteDialogOpen(true);
   };
 
-  const handleDialogDeleteClose = () => {
+  const onCloseDeleteDialog = () => {
     setDeleteDialogOpen(false);
   };
 
-  const handleDialogDelete = () => {
-    handleDeleteLanguage();
+  const onDeleteDialogClick = () => {
+    onDelete();
     setDeleteDialogOpen(false);
   };
-
-  if (!language) return <p>Loading...</p>;
 
   return (
     <>
@@ -58,22 +52,31 @@ const LanguageViewActions: FC<{
             <Link component={RouterLink} color="primary" underline="hover" to="/core/">
               {t('core')}
             </Link>
-            <Link component={RouterLink} color="primary" underline="hover" to="/core/languages">
-              {t('languages')}
+            <Link component={RouterLink} color="primary" underline="hover" to="/core/realms">
+              {t('realms')}
+            </Link>
+            <Link
+              component={RouterLink}
+              color="primary"
+              underline="hover"
+              to={`/core/realms/view/${realm.id}`}
+              state={{ realm }}
+            >
+              {realm.name}
             </Link>
             <span>{language.name}</span>
           </Breadcrumbs>
         </Box>
-        <Stack direction="row" spacing={2}>
-          <EditButton onClick={handleEditClick} />
-          <DeleteButton onClick={handleDeleteClick} />
+        <Stack direction="row" spacing={1}>
+          <EditButton onClick={onEdit} />
+          <DeleteButton onClick={onOpenDeleteDialog} />
         </Stack>
       </Stack>
       <DeleteDialog
         message={`Are you sure you want to delete ${language.name} language? This action cannot be undone.`}
-        onDelete={handleDialogDelete}
+        onDelete={onDeleteDialogClick}
         open={deleteDialogOpen}
-        onClose={handleDialogDeleteClose}
+        onClose={onCloseDeleteDialog}
       />
     </>
   );

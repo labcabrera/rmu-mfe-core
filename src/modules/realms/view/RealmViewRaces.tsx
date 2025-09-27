@@ -16,19 +16,15 @@ const RealmViewRaces: FC<{
   const { showError } = useError();
   const [races, setRaces] = useState<Race[]>([]);
 
-  const bindRaces = async (realmId: string) => {
-    fetchRaces(`realmId==${realmId}`, 0, 50)
-      .then((response) => setRaces(response))
-      .catch((err) => showError(err.message));
-  };
-
   const onAddRace = () => {
     navigate(`/core/races/create?realmId=${realm.id}`);
   };
 
   useEffect(() => {
     if (realm) {
-      bindRaces(realm.id);
+      fetchRaces(`realmId==${realm.id}`, 0, 50)
+        .then((response) => setRaces(response))
+        .catch((err) => showError(err.message));
     }
   }, [realm]);
 
