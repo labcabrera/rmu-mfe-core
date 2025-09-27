@@ -1,30 +1,25 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Grid, TextField } from '@mui/material';
+import { Grid, TextField, Typography } from '@mui/material';
+import { t } from 'i18next';
 import { CreateRaceDto } from '../../api/race.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
-import SelectRaceArchetype from '../../shared/selects/SelectRaceArchetype';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
 
 const RaceCreationAttributes: FC<{
   formData: CreateRaceDto;
   setFormData: Dispatch<SetStateAction<CreateRaceDto>>;
 }> = ({ formData, setFormData }) => {
-  const { t } = useTranslation();
-
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid size={4}>
-        <TextField label={t('name')} variant="standard" name="name" value={formData.name} onChange={handleChange} fullWidth />
-      </Grid>
-      <Grid size={12}></Grid>
-      <Grid size={2}>
-        <SelectRaceArchetype label={t('race-archetype')} name="archetype" value={formData.archetype} onChange={handleChange} />
+    <Grid container spacing={2} mt={5}>
+      <Grid size={12}>
+        <Typography variant="h6" color="primary">
+          {t('race-info')}
+        </Typography>
       </Grid>
       <Grid size={2}>
         <SelectRaceSize label={t('race-size')} name="sizeId" value={formData.sizeId} onChange={handleChange} />
@@ -58,19 +53,10 @@ const RaceCreationAttributes: FC<{
           label={t('recovery-multiplier')}
           name="recoveryMultiplierMale"
           value={formData.recoveryMultiplier}
+          integer={false}
+          min={0}
+          maxFractionDigits={2}
           onChange={(value) => setFormData({ ...formData, recoveryMultiplier: value })}
-        />
-      </Grid>
-      <Grid size={12}></Grid>
-      <Grid size={2}>
-        <NumericInput
-          label={t('base-at')}
-          name="baseAtMale"
-          value={formData.baseAt}
-          onChange={(value) => setFormData({ ...formData, baseAt: value })}
-          min={1}
-          max={10}
-          integer
         />
       </Grid>
       <Grid size={2}>
@@ -82,19 +68,17 @@ const RaceCreationAttributes: FC<{
           min={0}
         />
       </Grid>
-      <Grid size={12}></Grid>
-      <Grid size={4}>
-        <TextField
-          label={t('default-language')}
-          variant="standard"
-          name="defaultLanguage"
-          value={formData.defaultLanguage}
-          onChange={handleChange}
-          required
-          fullWidth
+      <Grid size={2}>
+        <NumericInput
+          label={t('base-at')}
+          name="baseAtMale"
+          value={formData.baseAt}
+          onChange={(value) => setFormData({ ...formData, baseAt: value })}
+          min={1}
+          max={10}
+          integer
         />
       </Grid>
-      <Grid size={12}></Grid>
       <Grid size={2}>
         <NumericInput
           label={t('average-height-male')}
@@ -109,7 +93,9 @@ const RaceCreationAttributes: FC<{
           label={t('average-height-female')}
           name="averageHeightFemale"
           value={formData.averageHeight.female}
-          onChange={(value) => setFormData({ ...formData, averageHeight: { ...formData.averageHeight, female: value } })}
+          onChange={(value) =>
+            setFormData({ ...formData, averageHeight: { ...formData.averageHeight, female: value } })
+          }
           min={0}
         />
       </Grid>
@@ -127,8 +113,21 @@ const RaceCreationAttributes: FC<{
           label={t('average-weight-female')}
           name="averageWeightFemale"
           value={formData.averageWeight.female}
-          onChange={(value) => setFormData({ ...formData, averageWeight: { ...formData.averageWeight, female: value } })}
+          onChange={(value) =>
+            setFormData({ ...formData, averageWeight: { ...formData.averageWeight, female: value } })
+          }
           min={0}
+        />
+      </Grid>
+      <Grid size={12}></Grid>
+      <Grid size={4}>
+        <TextField
+          label={t('default-language')}
+          variant="standard"
+          name="defaultLanguage"
+          value={formData.defaultLanguage}
+          onChange={handleChange}
+          fullWidth
         />
       </Grid>
     </Grid>

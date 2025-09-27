@@ -70,6 +70,8 @@
   "races": "Races",
   "recovery-multiplier": "Recovery multiplier",
   "race-archetype": "Archetype",
+  "race-archetype-is-required": "Race archetype is required",
+  "race-creation": "Race creation",
   "race-features": "Race features",
   "race-info": "Race Information",
   "race-size": "Race size",

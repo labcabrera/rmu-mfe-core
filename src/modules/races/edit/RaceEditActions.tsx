@@ -35,16 +35,16 @@ const RaceEditActions: FC<{
         <Link color="primary" underline="hover" href="/">
           {t('home')}
         </Link>
-        <Link color="primary" component={RouterLink} to={'/core/'}>
+        <Link color="primary" underline="hover" component={RouterLink} to={'/core/'}>
           {t('core')}
         </Link>
-        <Link color="primary" component={RouterLink} to={'/core/realms'}>
+        <Link color="primary" underline="hover" component={RouterLink} to={'/core/realms'}>
           {t('realms')}
         </Link>
-        <Link color="primary" component={RouterLink} to={`/core/realms/view/${race.realmId}`}>
+        <Link color="primary" underline="hover" component={RouterLink} to={`/core/realms/view/${race.realmId}`}>
           {race.realmName}
         </Link>
-        <Link color="primary" component={RouterLink} to={`/core/races/view/${race.id}`}>
+        <Link color="primary" underline="hover" component={RouterLink} to={`/core/races/view/${race.id}`}>
           {race.name}
         </Link>
         <span>{t('edit')}</span>

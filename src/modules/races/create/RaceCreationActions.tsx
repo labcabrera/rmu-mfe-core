@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { createRace } from '../../api/race';
 import { CreateRaceDto } from '../../api/race.dto';
@@ -12,26 +12,18 @@ import SaveButton from '../../shared/buttons/SaveButton';
 const RaceCreationActions: FC<{
   formData: CreateRaceDto;
   realm: Realm;
-  isValid?: boolean;
-}> = ({ formData, realm, isValid = false }) => {
+  isValid: boolean;
+}> = ({ formData, realm, isValid }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const { showError } = useError();
 
-  if (!realm) return <p>Loading...</p>;
-
-  const handleSave = async () => {
+  const onSave = () => {
     createRace(formData)
-      .then((race) => {
-        navigate(`/core/races/view/${race.id}`);
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError('Unknown error occurred');
-      });
+      .then((race) => navigate(`/core/races/view/${race.id}`))
+      .catch((err) => showError(err.message));
   };
 
-  const handleBack = () => {
+  const onCancel = () => {
     navigate(`/tactical/games`);
   };
 
@@ -39,25 +31,24 @@ const RaceCreationActions: FC<{
     <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
       <Box>
         <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/">
+          <Link color="primary" underline="hover" href="/">
             {t('home')}
           </Link>
-          <Link component={RouterLink} to="/core" color="inherit">
+          <Link component={RouterLink} underline="hover" to="/core" color="primary">
             {t('core')}
           </Link>
-          <Link component={RouterLink} to="/core/realms" color="inherit">
+          <Link component={RouterLink} underline="hover" to="/core/realms" color="primary">
             {t('realms')}
           </Link>
-          <Link component={RouterLink} to={`/core/realms/view/${realm.id}`} color="inherit">
+          <Link component={RouterLink} underline="hover" to={`/core/realms/view/${realm.id}`} color="primary">
             {realm.name}
           </Link>
-          <span>{t('race')}</span>
-          <span>{t('creation')}</span>
+          <span>{t('race-creation')}</span>
         </Breadcrumbs>
       </Box>
       <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-        <CancelButton onClick={handleBack} />
-        <SaveButton onClick={handleSave} disabled={!isValid} />
+        <CancelButton onClick={onCancel} />
+        <SaveButton onClick={onSave} disabled={!isValid} />
       </Stack>
     </Stack>
   );

@@ -66,7 +66,15 @@ const RaceEditAttributes: FC<{
           onChange={(value) => setFormData({ ...formData, recoveryMultiplier: value })}
         />
       </Grid>
-      <Grid size={12}></Grid>
+      <Grid size={2}>
+        <NumericInput
+          label={t('base-dev-points')}
+          name="baseDevPointsMale"
+          value={formData.baseDevPoints}
+          onChange={(value) => setFormData({ ...formData, baseDevPoints: value })}
+          min={0}
+        />
+      </Grid>
       <Grid size={2}>
         <NumericInput
           label={t('base-at')}
@@ -78,17 +86,6 @@ const RaceEditAttributes: FC<{
           integer
         />
       </Grid>
-      <Grid size={2}>
-        <NumericInput
-          label={t('base-dev-points')}
-          name="baseDevPointsMale"
-          value={formData.baseDevPoints}
-          onChange={(value) => setFormData({ ...formData, baseDevPoints: value })}
-          min={0}
-        />
-      </Grid>
-      <Grid size={12}></Grid>
-      <Grid size={12}></Grid>
       <Grid size={2}>
         <NumericInput
           label={t('average-height-male')}

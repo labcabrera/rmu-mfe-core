@@ -10,7 +10,19 @@ const SelectRaceArchetype: FC<{
 }> = ({ label, value, name, onChange }) => {
   const { t } = useTranslation();
 
-  const values = ['human', 'high-human', 'high-elf', 'grey-elf', 'wood-elf', 'dwarf', 'halfling', 'lesser-orc', 'orc', 'high-orc', 'troll'];
+  const values = [
+    'human',
+    'high-human',
+    'high-elf',
+    'grey-elf',
+    'wood-elf',
+    'dwarf',
+    'halfling',
+    'lesser-orc',
+    'orc',
+    'high-orc',
+    'troll',
+  ];
 
   return (
     <TextField
@@ -21,6 +33,8 @@ const SelectRaceArchetype: FC<{
       fullWidth
       variant="standard"
       onChange={onChange}
+      error={!value}
+      helperText={!value ? t('race-archetype-is-required') : ''}
     >
       {values.map((option, index) => (
         <MenuItem key={index} value={option}>
