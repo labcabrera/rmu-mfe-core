@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC } from 'react';
 import { MenuItem, TextField } from '@mui/material';
 import { t } from 'i18next';
-import { Realm } from '../../api/realm';
+import { Realm } from '../../api/realm.dto';
 
 const SelectRealm: FC<{
   value: string;

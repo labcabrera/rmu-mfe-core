@@ -40,7 +40,7 @@ export const raceCreateTemplate = {
   enduranceBonus: 0,
   recoveryMultiplier: 1,
   baseHits: 0,
-  baseDevPoints: 0,
+  baseDevPoints: 60,
   baseAt: 1,
   defaultLanguage: '',
   talents: [],

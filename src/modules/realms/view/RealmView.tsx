@@ -10,37 +10,25 @@ import RealmViewRaces from './RealmViewRaces';
 
 const RealmView: FC = () => {
   const location = useLocation();
-  const { realmId } = useParams<{ realmId?: string }>();
   const { showError } = useError();
+  const { realmId } = useParams<{ realmId?: string }>();
   const [realm, setRealm] = useState<Realm | null>(null);
-
-  const bindRealm = async (realmId?: string) => {
-    if (!realmId) return;
-    fetchRealm(realmId)
-      .then((response) => {
-        setRealm(response);
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError(String(err));
-      });
-  };
 
   useEffect(() => {
     if (location.state && location.state.realm) {
       setRealm(location.state.realm);
-    } else {
-      bindRealm(realmId);
+    } else if (realmId) {
+      fetchRealm(realmId)
+        .then((response) => setRealm(response))
+        .catch((err) => showError(err.message));
     }
-  }, [location.state, realmId]);
+  }, [location.state, realmId, showError]);
 
-  if (!realm) {
-    return <p>Loading...</p>;
-  }
+  if (!realm) return <p>Loading realm...</p>;
 
   return (
     <>
-      <RealmViewActions realm={realm} />
+      <RealmViewActions realm={realm} setRealm={setRealm} />
       <Grid container spacing={2}>
         <Grid size={2}>
           <Typography variant="h6" color="primary">

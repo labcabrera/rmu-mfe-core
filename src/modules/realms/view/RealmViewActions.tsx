@@ -1,53 +1,53 @@
-import React, { FC, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { deleteRealm } from '../../api/realm';
+import { deleteRealm, fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
+import RefreshButton from '../../shared/buttons/RefreshButton';
 import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
 const RealmViewActions: FC<{
   realm: Realm;
-}> = ({ realm }) => {
+  setRealm: Dispatch<SetStateAction<Realm | null>>;
+}> = ({ realm, setRealm }) => {
   const navigate = useNavigate();
   const { showError } = useError();
-  const { t } = useTranslation();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const handleDeleteTacticalGame = () => {
+  const onDeleteRealm = () => {
     deleteRealm(realm.id)
-      .then(() => {
-        navigate('/core/realms');
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError(String(err));
-      });
+      .then(() => navigate('/core/realms'))
+      .catch((err) => showError(err.message));
   };
 
-  const handleEditClick = () => {
+  const onRefreshButtonClick = () => {
+    fetchRealm(realm.id)
+      .then((response) => setRealm(response))
+      .catch((err) => showError(err.message));
+  };
+
+  const onEditButtonClick = () => {
     navigate(`/core/realms/edit/${realm.id}`, { state: { realm } });
   };
 
-  const handleDeleteClick = () => {
+  const onDeleteButtonClick = () => {
     setDeleteDialogOpen(true);
   };
 
-  const handleDialogDeleteClose = () => {
+  const onCloseDialogClick = () => {
     setDeleteDialogOpen(false);
   };
 
-  const handleDialogDelete = () => {
-    handleDeleteTacticalGame();
+  const onDeleteDialogClick = () => {
+    onDeleteRealm();
     setDeleteDialogOpen(false);
   };
 
-  if (!realm) {
-    return <p>Loading...</p>;
-  }
+  if (!realm) return <p>Loading realm...</p>;
 
   return (
     <>
@@ -66,16 +66,17 @@ const RealmViewActions: FC<{
             <span>{realm.name}</span>
           </Breadcrumbs>
         </Box>
-        <Stack direction="row" spacing={2}>
-          <EditButton onClick={handleEditClick} />
-          <DeleteButton onClick={handleDeleteClick} />
+        <Stack direction="row" spacing={1}>
+          <RefreshButton onClick={() => onRefreshButtonClick()} />
+          <EditButton onClick={() => onEditButtonClick()} />
+          <DeleteButton onClick={() => onDeleteButtonClick()} />
         </Stack>
       </Stack>
       <DeleteDialog
-        message={`Are you sure you want to delete ${realm.name} realm? This action cannot be undone.`}
-        onDelete={handleDialogDelete}
         open={deleteDialogOpen}
-        onClose={handleDialogDeleteClose}
+        message={`Are you sure you want to delete ${realm.name} realm? This action cannot be undone.`}
+        onDelete={() => onDeleteDialogClick()}
+        onClose={() => onCloseDialogClick()}
       />
     </>
   );

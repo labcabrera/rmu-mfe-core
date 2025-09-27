@@ -17,6 +17,8 @@ import RealmCreation from './modules/realms/create/RealmCreation';
 import RealmEdit from './modules/realms/edit/RealmEdit';
 import RealmList from './modules/realms/list/RealmList';
 import RealmView from './modules/realms/view/RealmView';
+import SkillList from './modules/skills/list/SkillList';
+import SkillView from './modules/skills/view/SkillView';
 import TraitCreation from './modules/traits/create/TraitCreation';
 import TraitEdit from './modules/traits/edit/TraitEdit';
 import TraitList from './modules/traits/list/TraitList';
@@ -45,6 +47,8 @@ const App = () => {
           <Route path="/languages/view/:languageId" element={<LanguageView />} />
           <Route path="/languages/edit/:languageId" element={<LanguageEdit />} />
           <Route path="/maneuvers" element={<ManeuversView />} />
+          <Route path="/skills" element={<SkillList />} />
+          <Route path="/skills/view/:skillId" element={<SkillView />} />
         </Routes>
       </Box>
     </ErrorProvider>

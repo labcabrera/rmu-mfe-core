@@ -1,47 +1,48 @@
 import React, { FC, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { deleteRace } from '../../api/race';
+import { deleteRace, fetchRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
+import RefreshButton from '../../shared/buttons/RefreshButton';
 import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
 const RaceViewActions: FC<{
   race: Race;
-}> = ({ race }) => {
+  setRace: React.Dispatch<React.SetStateAction<Race | null>>;
+}> = ({ race, setRace }) => {
   const navigate = useNavigate();
   const { showError } = useError();
-  const { t } = useTranslation();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleEditClick = () => {
     navigate(`/core/races/edit/${race.id}`, { state: { race } });
   };
 
-  const handleDeleteClick = () => {
+  const onOpenDeleteDialog = () => {
     setDeleteDialogOpen(true);
   };
 
-  const closeDeleteDialog = () => {
+  const onCloseDialog = () => {
     setDeleteDialogOpen(false);
   };
 
-  const onRaceDelete = () => {
-    deleteRace(race.id)
-      .then(() => {
-        navigate(`/core/realms/view/${race.realmId}`);
-      })
-      .catch((error) => {
-        showError(t('errors.delete', { error }));
-      });
+  const onRefresh = () => {
+    fetchRace(race.id)
+      .then((response) => setRace(response))
+      .catch((err) => showError(err.message));
   };
 
-  if (!race) {
-    return <p>Loading...</p>;
-  }
+  const onDelete = () => {
+    deleteRace(race.id)
+      .then(() => navigate(`/core/realms/view/${race.realmId}`))
+      .catch((err) => showError(err.message));
+  };
+
+  if (!race) return <p>Loading...</p>;
 
   return (
     <>
@@ -64,15 +65,16 @@ const RaceViewActions: FC<{
           </Breadcrumbs>
         </Box>
         <Stack direction="row" spacing={2}>
+          <RefreshButton onClick={onRefresh} />
           <EditButton onClick={handleEditClick} />
-          <DeleteButton onClick={handleDeleteClick} />
+          <DeleteButton onClick={onOpenDeleteDialog} />
         </Stack>
       </Stack>
       <DeleteDialog
         message={`Are you sure you want to delete ${race.name} race? This action cannot be undone.`}
-        onDelete={onRaceDelete}
+        onDelete={onDelete}
         open={deleteDialogOpen}
-        onClose={closeDeleteDialog}
+        onClose={onCloseDialog}
       />
     </>
   );

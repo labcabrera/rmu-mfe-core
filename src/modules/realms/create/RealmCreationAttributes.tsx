@@ -1,26 +1,25 @@
-import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Grid, TextField } from '@mui/material';
-import { CreateRealmDto } from '../../api/realm';
+import { t } from 'i18next';
+import { CreateRealmDto } from '../../api/realm.dto';
 
 const RealmCreationAttributes: FC<{
   formData: CreateRealmDto;
   setFormData: Dispatch<SetStateAction<CreateRealmDto>>;
 }> = ({ formData, setFormData }) => {
-  const { t } = useTranslation();
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={2}>
       <Grid size={12}>
-        <TextField label={t('name')} variant="standard" name="name" value={formData.name} onChange={handleChange} required fullWidth />
-      </Grid>
-      <Grid size={12}>
-        <TextField label={t('description')} variant="standard" name="description" value={formData.description} onChange={handleChange} fullWidth />
+        <TextField
+          label={t('description')}
+          variant="standard"
+          name="description"
+          value={formData.description}
+          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          multiline
+          rows={10}
+          fullWidth
+        />
       </Grid>
     </Grid>
   );
