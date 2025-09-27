@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
@@ -14,38 +14,25 @@ import RaceViewStats from './RaceViewStats';
 const RaceView: FC = () => {
   const location = useLocation();
   const { raceId: raceId } = useParams<{ raceId?: string }>();
-  const { t } = useTranslation();
   const { showError } = useError();
   const [race, setRace] = useState<Race | null>(null);
-
-  const bindRace = async (raceId?: string) => {
-    if (!raceId) return;
-    fetchRace(raceId)
-      .then((response) => {
-        setRace(response);
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError(String(err));
-      });
-  };
 
   useEffect(() => {
     if (location.state && location.state.race) {
       setRace(location.state.race);
-    } else {
-      bindRace(raceId);
+    } else if (raceId) {
+      fetchRace(raceId)
+        .then((response) => setRace(response))
+        .catch((err) => showError(err.message));
     }
-  }, [location.state, raceId]);
+  }, [location.state, raceId, showError]);
 
-  if (!race) {
-    return <p>Loading...</p>;
-  }
+  if (!race) return <p>Loading race...</p>;
 
   return (
     <>
-      <RaceViewActions race={race} />
-      <Grid container spacing={12}>
+      <RaceViewActions race={race} setRace={setRace} />
+      <Grid container spacing={2}>
         <Grid size={2}>
           <RaceAvatarByName raceName={race.name} size={300} />
           <Typography variant="h6" color="primary">
@@ -70,7 +57,6 @@ const RaceView: FC = () => {
           </Typography>
           <RaceViewAttributes race={race} />
         </Grid>
-        <Grid size={4}></Grid>
       </Grid>
     </>
   );

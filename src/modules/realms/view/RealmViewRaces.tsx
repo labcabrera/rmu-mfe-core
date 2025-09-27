@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Box, Grid, IconButton, Typography } from '@mui/material';
 import { t } from 'i18next';
+import { useError } from '../../../ErrorContext';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { Realm } from '../../api/realm.dto';
@@ -12,17 +13,13 @@ const RealmViewRaces: FC<{
   realm: Realm;
 }> = ({ realm }) => {
   const navigate = useNavigate();
+  const { showError } = useError();
   const [races, setRaces] = useState<Race[]>([]);
 
   const bindRaces = async (realmId: string) => {
     fetchRaces(`realmId==${realmId}`, 0, 50)
-      .then((response) => {
-        setRaces(response);
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) console.error(err.message);
-        else console.error(String(err));
-      });
+      .then((response) => setRaces(response))
+      .catch((err) => showError(err.message));
   };
 
   const onAddRace = () => {
