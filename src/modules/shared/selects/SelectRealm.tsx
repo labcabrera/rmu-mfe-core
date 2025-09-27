@@ -13,9 +13,7 @@ const SelectRealm: FC<{
     onChange(selectedValue);
   };
 
-  if (!realms) {
-    return <p>Loading...</p>;
-  }
+  if (!realms) return <p>Loading...</p>;
 
   return (
     <TextField
