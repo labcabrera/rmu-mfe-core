@@ -2,19 +2,21 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { Language } from '../../api/language.dto';
 import { deleteLanguage } from '../../api/languages';
+import { Realm } from '../../api/realm.dto';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
 import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
 const LanguageViewActions: FC<{
   language: Language;
-}> = ({ language }) => {
+  realm: Realm;
+}> = ({ language, realm }) => {
   const navigate = useNavigate();
   const { showError } = useError();
-  const { t } = useTranslation();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleDeleteLanguage = () => {
@@ -58,8 +60,17 @@ const LanguageViewActions: FC<{
             <Link component={RouterLink} color="primary" underline="hover" to="/core/">
               {t('core')}
             </Link>
-            <Link component={RouterLink} color="primary" underline="hover" to="/core/languages">
-              {t('languages')}
+            <Link component={RouterLink} color="primary" underline="hover" to="/core/realms">
+              {t('realms')}
+            </Link>
+            <Link
+              component={RouterLink}
+              color="primary"
+              underline="hover"
+              to={`/core/realms/view/${realm.id}`}
+              state={{ realm }}
+            >
+              {realm.name}
             </Link>
             <span>{language.name}</span>
           </Breadcrumbs>
