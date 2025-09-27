@@ -20,7 +20,7 @@ const LanguageViewActions: FC<{
 
   const onDelete = () => {
     deleteLanguage(language.id)
-      .then(() => navigate('/core/languages'))
+      .then(() => navigate(`/core/realms/view/${realm.id}`, { state: { realm } }))
       .catch((err) => showError(err.message));
   };
 

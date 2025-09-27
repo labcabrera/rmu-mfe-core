@@ -1,9 +1,9 @@
-import React, { FC, use, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { CreateLanguageDto, Language } from '../../api/language.dto';
-import { fetchRealm, fetchRealms } from '../../api/realm';
+import { CreateLanguageDto } from '../../api/language.dto';
+import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import LanguageCreationActions from './LanguageCreationActions';
@@ -14,7 +14,7 @@ const template = {
   name: '',
   realmId: '',
   description: '',
-} as Language;
+} as CreateLanguageDto;
 
 const LanguageCreation: FC = () => {
   const { showError } = useError();
@@ -24,7 +24,7 @@ const LanguageCreation: FC = () => {
   const [isValid, setIsValid] = useState(false);
   const [realm, setRealm] = useState<Realm | null>(null);
 
-  const validateForm = (formData) => {
+  const validateForm = (formData: CreateLanguageDto) => {
     if (!formData.name) return false;
     if (!formData.realmId) return false;
     return true;
@@ -64,7 +64,7 @@ const LanguageCreation: FC = () => {
           <LanguageCreationAttributes formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
-      <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
+      {/* <pre>Form: {JSON.stringify(formData, null, 2)}</pre> */}
     </>
   );
 };

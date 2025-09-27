@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
 import { t } from 'i18next';
@@ -20,13 +19,8 @@ const LanguageCreationActions: FC<{
 
   const handleSave = async () => {
     createLanguage(formData)
-      .then((language) => {
-        navigate(`/core/languages/view/${language.id}`);
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError('Unknown error occurred');
-      });
+      .then((language) => navigate(`/core/languages/view/${language.id}`, { state: { language, realm } }))
+      .catch((err) => showError(err.message));
   };
 
   const handleBack = () => {
@@ -58,7 +52,7 @@ const LanguageCreationActions: FC<{
           <span>{t('language-creation')}</span>
         </Breadcrumbs>
       </Box>
-      <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}>
+      <Stack direction="row" spacing={1}>
         <CancelButton onClick={handleBack} />
         <SaveButton onClick={handleSave} disabled={!isValid} />
       </Stack>
