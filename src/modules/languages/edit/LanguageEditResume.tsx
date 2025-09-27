@@ -1,9 +1,8 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Grid, TextField } from '@mui/material';
-import { t } from 'i18next';
 import { UpdateLanguageDto } from '../../api/language.dto';
 
-const LanguageEditAttributes: FC<{
+const LanguageEditResume: FC<{
   formData: UpdateLanguageDto;
   setFormData: Dispatch<SetStateAction<UpdateLanguageDto>>;
 }> = ({ formData, setFormData }) => {
@@ -11,18 +10,16 @@ const LanguageEditAttributes: FC<{
     <Grid container spacing={2}>
       <Grid size={12}>
         <TextField
-          label={t('Description')}
-          name="description"
-          value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          label="Name"
+          name="name"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           variant="standard"
           fullWidth
-          multiline
-          rows={4}
         />
       </Grid>
     </Grid>
   );
 };
 
-export default LanguageEditAttributes;
+export default LanguageEditResume;

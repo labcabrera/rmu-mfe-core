@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
+import { Language } from '../../api/language.dto';
 import { fetchLanguage } from '../../api/languages';
 import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
@@ -20,7 +21,7 @@ const LanguageView: FC = () => {
   useEffect(() => {
     if (language && language.realmId) {
       fetchRealm(language.realmId)
-        .then((response) => setRealm(response))
+        .then((data) => setRealm(data))
         .catch((err) => showError(err.message));
     }
   }, [language, showError]);
@@ -30,7 +31,7 @@ const LanguageView: FC = () => {
       setLanguage(location.state.language);
     } else {
       fetchLanguage(languageId)
-        .then((response) => setLanguage(response))
+        .then((data) => setLanguage(data))
         .catch((err) => showError(err.message));
     }
   }, [location.state, languageId, showError]);
@@ -43,7 +44,7 @@ const LanguageView: FC = () => {
       <Grid container spacing={2}>
         <Grid size={2}>
           <GenericAvatar imageUrl="/static/images/generic/language.png" size={300} />
-          <LanguageViewResume language={language} />
+          <LanguageViewResume language={language} realm={realm} />
         </Grid>
         <Grid size={8}>
           <LanguageViewInfo language={language} />

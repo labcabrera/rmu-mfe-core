@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
 import { t } from 'i18next';
@@ -19,35 +18,28 @@ const LanguageViewActions: FC<{
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const handleDeleteLanguage = () => {
+  const onDelete = () => {
     deleteLanguage(language.id)
-      .then(() => {
-        navigate('/core/languages');
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError(String(err));
-      });
+      .then(() => navigate('/core/languages'))
+      .catch((err) => showError(err.message));
   };
 
-  const handleEditClick = () => {
+  const onEdit = () => {
     navigate(`/core/languages/edit/${language.id}`, { state: { language } });
   };
 
-  const handleDeleteClick = () => {
+  const onOpenDeleteDialog = () => {
     setDeleteDialogOpen(true);
   };
 
-  const handleDialogDeleteClose = () => {
+  const onCloseDeleteDialog = () => {
     setDeleteDialogOpen(false);
   };
 
-  const handleDialogDelete = () => {
-    handleDeleteLanguage();
+  const onDeleteDialogClick = () => {
+    onDelete();
     setDeleteDialogOpen(false);
   };
-
-  if (!language) return <p>Loading...</p>;
 
   return (
     <>
@@ -75,16 +67,16 @@ const LanguageViewActions: FC<{
             <span>{language.name}</span>
           </Breadcrumbs>
         </Box>
-        <Stack direction="row" spacing={2}>
-          <EditButton onClick={handleEditClick} />
-          <DeleteButton onClick={handleDeleteClick} />
+        <Stack direction="row" spacing={1}>
+          <EditButton onClick={onEdit} />
+          <DeleteButton onClick={onOpenDeleteDialog} />
         </Stack>
       </Stack>
       <DeleteDialog
         message={`Are you sure you want to delete ${language.name} language? This action cannot be undone.`}
-        onDelete={handleDialogDelete}
+        onDelete={onDeleteDialogClick}
         open={deleteDialogOpen}
-        onClose={handleDialogDeleteClose}
+        onClose={onCloseDeleteDialog}
       />
     </>
   );
