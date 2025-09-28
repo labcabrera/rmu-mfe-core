@@ -1,5 +1,5 @@
 {
-  "name": "rmu-fe-core",
+  "name": "rmu-mfe-core",
   "version": "0.2.5",
   "scripts": {
     "build": "webpack --mode production",
