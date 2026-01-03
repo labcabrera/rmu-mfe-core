@@ -1,4 +1,4 @@
-= RMU Engine Core MFE
+= RMU Engine MFE Core
 :linkattrs:
 :icons: font
 
