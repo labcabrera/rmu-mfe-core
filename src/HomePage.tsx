@@ -33,7 +33,7 @@ const HomePage: FC = () => {
             <CardListItem
               title="Races"
               subtitle="Manage races"
-              image="/static/images/races/unknown.png"
+              image="/static/images/generic/races.png"
               onClick={() => navigate(`/core/races`)}
             />
             <CardListItem

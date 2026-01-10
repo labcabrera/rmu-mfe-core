@@ -22,7 +22,7 @@ const raceImageMap: Record<string, string> = {
   hobbit: '/static/images/races/generic-halfling-01.png',
 };
 
-const defaultImage = '/static/images/races/unknown.png';
+const defaultImage = '/static/images/generic/races.png';
 
 export const resolveRaceImage = (raceName: string): string => {
   if (!raceName) {
