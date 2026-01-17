@@ -12,11 +12,11 @@ export async function fetchSkillCategory(skillCategoryId: string): Promise<Skill
 }
 
 export async function fetchSkillCategories(): Promise<SkillCategory[]> {
-  const url = `${process.env.RMU_API_CORE_URL}/skill-categories`;
+  const url = `${process.env.RMU_API_CORE_URL}/skill-categories?page=0&size=100`;
   const response = await fetch(url, { method: 'GET' });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
   }
   const json = await response.json();
-  return json as SkillCategory[];
+  return json.content as SkillCategory[];
 }
