@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Box, Grid, Link } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
@@ -9,20 +9,14 @@ import RaceCard from '../../shared/cards/RaceCard';
 import RaceListActions from './RaceListActions';
 
 const RaceList: FC = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
   const [races, setRaces] = useState<Race[]>([]);
 
   const bindRaces = () => {
     fetchRaces('', 0, 20)
-      .then((response) => {
-        setRaces(response);
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError('An unknown error occurred');
-      });
+      .then((response) => setRaces(response))
+      .catch((err: Error) => showError('err' + err.message));
   };
 
   const handleNewRace = () => {
@@ -31,8 +25,7 @@ const RaceList: FC = () => {
 
   useEffect(() => {
     bindRaces();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   return (
     <>

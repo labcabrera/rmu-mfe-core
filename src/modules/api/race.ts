@@ -12,10 +12,12 @@ export async function fetchRace(raceId: string): Promise<Race> {
 
 export async function fetchRaces(rsql: string, page: number, size: number): Promise<Race[]> {
   const url = `${process.env.RMU_API_CORE_URL}/races?q=${rsql}&page=${page}&size=${size}`;
+  console.log('fetchRaces url:', url);
   const response = await fetch(url, { method: 'GET' });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
   }
+  console.log('fetchRaces response:', response);
   const pageContent = await response.json();
   return pageContent.content;
 }
