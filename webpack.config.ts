@@ -145,6 +145,9 @@ export default (_env: unknown, argv: { mode?: string }): Configuration => {
         silent: false,
         defaults: './.env',
       }),
+      new webpack.DefinePlugin({
+        'process.env.RMU_API_CORE_URL': JSON.stringify(process.env.RMU_API_CORE_URL || ''),
+      }),
     ],
   };
 };

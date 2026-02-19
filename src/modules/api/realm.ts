@@ -11,6 +11,7 @@ export async function fetchRealm(realmId: string): Promise<Realm> {
 }
 
 export async function fetchRealms(rsql: string, page: number, size: number): Promise<Realm[]> {
+  // const url = `${getApiBase()}/realms?q=${rsql}&page=${page}&size=${size}`;
   const url = `${process.env.RMU_API_CORE_URL}/realms?q=${rsql}&page=${page}&size=${size}`;
   const response = await fetch(url, { method: 'GET' });
   if (response.status !== 200) {
