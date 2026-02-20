@@ -1,10 +1,11 @@
+import { getAuthHeaders, mergeJsonHeaders } from '../services/auth-token-service';
 import { buildErrorFromResponse } from './api-errors';
 import { Page } from './common.dto';
 import { CreateLanguageDto, Language, UpdateLanguageDto } from './language.dto';
 
 export async function fetchLanguage(LanguageId: string): Promise<Language> {
   const url = `${process.env.RMU_API_CORE_URL}/Languages/${LanguageId}`;
-  const response = await fetch(url, { method: 'GET' });
+  const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
   }
@@ -13,7 +14,7 @@ export async function fetchLanguage(LanguageId: string): Promise<Language> {
 
 export async function fetchLanguages(rsql: string, page: number, size: number): Promise<Language[]> {
   const url = `${process.env.RMU_API_CORE_URL}/Languages?q=${rsql}&page=${page}&size=${size}`;
-  const response = await fetch(url, { method: 'GET' });
+  const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
   }
@@ -23,7 +24,7 @@ export async function fetchLanguages(rsql: string, page: number, size: number): 
 
 export async function fetchPagedLanguages(rsql: string, page: number, size: number): Promise<Page<Language>> {
   const url = `${process.env.RMU_API_CORE_URL}/Languages?q=${rsql}&page=${page}&size=${size}`;
-  const response = await fetch(url, { method: 'GET' });
+  const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
   }
@@ -35,9 +36,7 @@ export async function createLanguage(Language: CreateLanguageDto): Promise<Langu
   const url = `${process.env.RMU_API_CORE_URL}/Languages`;
   const response = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: mergeJsonHeaders(),
     body: JSON.stringify(Language),
   });
   if (response.status !== 201) {
@@ -50,9 +49,7 @@ export async function updateLanguage(LanguageId: string, dto: UpdateLanguageDto)
   const url = `${process.env.RMU_API_CORE_URL}/Languages/${LanguageId}`;
   const response = await fetch(url, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: mergeJsonHeaders(),
     body: JSON.stringify(dto),
   });
   if (response.status !== 200) {
@@ -63,7 +60,7 @@ export async function updateLanguage(LanguageId: string, dto: UpdateLanguageDto)
 
 export async function deleteLanguage(realmId: string): Promise<void> {
   const url = `${process.env.RMU_API_CORE_URL}/Languages/${realmId}`;
-  const response = await fetch(url, { method: 'DELETE' });
+  const response = await fetch(url, { method: 'DELETE', headers: getAuthHeaders() });
   if (response.status !== 204) {
     throw await buildErrorFromResponse(response, url);
   }

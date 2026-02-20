@@ -1,3 +1,4 @@
+import { getAuthHeaders } from '../services/auth-token-service';
 import { buildErrorFromResponse } from './api-errors';
 
 export interface PercentManeuverResult {
@@ -43,7 +44,7 @@ export const MANEUVER_DIFFICULTIES: ManeuverDifficulty[] = [
 
 export async function fetchPercentManeuver(roll: number): Promise<PercentManeuverResult> {
   const url = `${process.env.RMU_API_CORE_URL}/maneuvers/percent?roll=${roll}`;
-  const response = await fetch(url, { method: 'GET' });
+  const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
   }
@@ -63,7 +64,7 @@ export async function fetchAbsoluteManeuver(
     query += `&unusualEvent=${unusualEvent}`;
   }
   const url = `${process.env.RMU_API_CORE_URL}/maneuvers/absolute${query}`;
-  const response = await fetch(url, { method: 'GET' });
+  const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
   }
@@ -79,7 +80,7 @@ export async function fetchEnduranceManeuver(
     query += `&unusualEvent=${unusualEvent}`;
   }
   const url = `${process.env.RMU_API_CORE_URL}/maneuvers/endurance${query}`;
-  const response = await fetch(url, { method: 'GET' });
+  const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
   }
