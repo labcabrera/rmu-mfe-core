@@ -11,6 +11,8 @@ import LanguageViewActions from './LanguageViewActions';
 import LanguageViewInfo from './LanguageViewInfo';
 import LanguageViewResume from './LanguageViewResume';
 
+const imageBaseUrl = process.env.RMU_MFE_ASSETS!;
+
 const LanguageView: FC = () => {
   const location = useLocation();
   const { showError } = useError();
@@ -43,7 +45,7 @@ const LanguageView: FC = () => {
       <LanguageViewActions language={language} realm={realm} />
       <Grid container spacing={2}>
         <Grid size={2}>
-          <GenericAvatar imageUrl="/static/images/generic/language.png" size={300} />
+          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/language.png`} size={300} />
           <LanguageViewResume language={language} realm={realm} />
         </Grid>
         <Grid size={8}>

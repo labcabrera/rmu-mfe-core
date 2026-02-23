@@ -21,13 +21,12 @@ interface Configuration extends WebpackConfiguration {
 
 export default (_env: unknown, argv: { mode?: string }): Configuration => {
   const mode = argv.mode || 'development';
-
-  // Load environment variables for this mode so we can use them in the config
   dotenv.config({ path: path.resolve(__dirname, `.env.${mode}`) });
 
   // Use runtime-determined public path by default so federated chunks
   // load from the script's origin. Allow override via env var when needed.
-  const publicPath = process.env.RMU_MFE_CORE_PUBLIC_PATH || 'auto';
+  const publicPath = 'http://localhost:8089/';
+  // const publicPath = process.env.RMU_MFE_CORE_PUBLIC_PATH || 'auto';
   // const mfeShellRemote = process.env.RMU_MFE_SHELL_PUBLIC_PATH || 'host@http://localhost:8080/host.js';
   const mfeShellRemote = 'shell@https://labcabrera.com/main.js';
 

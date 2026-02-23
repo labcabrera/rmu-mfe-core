@@ -38,7 +38,7 @@ const RaceView: FC = () => {
           <Typography variant="h6" color="primary">
             {t(race.name)}
           </Typography>
-          <Typography variant="h6">{t(race.archetype)}</Typography>
+          {race.archetype && <Typography variant="h6">{t(race.archetype)}</Typography>}
           <Typography variant="body1" color="textSecondary" sx={{ mt: 2, whiteSpace: 'pre-line' }}>
             {race.description}
           </Typography>

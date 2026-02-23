@@ -4,6 +4,8 @@ import { Box } from '@mui/material';
 import { Race, resistances } from '../../api/race.dto';
 import NumericCard from '../../shared/cards/NumericCard';
 
+const imageBaseUrl = process.env.RMU_MFE_ASSETS!;
+
 const RaceViewResistances: FC<{
   race: Race;
 }> = ({ race }) => {
@@ -15,9 +17,9 @@ const RaceViewResistances: FC<{
       case 'disease':
       case 'fear':
       case 'physical':
-        return `/static/images/generic/${resistance}.png`;
+        return `${imageBaseUrl}images/generic/${resistance}.png`;
       default:
-        return `/static/images/generic/stat-st.png`;
+        return `${imageBaseUrl}images/generic/stat-st.png`;
     }
   };
 

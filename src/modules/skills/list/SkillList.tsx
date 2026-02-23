@@ -12,6 +12,7 @@ import SkillListActions from './SkillListActions';
 import SkillListSearch from './SkillListSearch';
 
 const PAGE_SIZE = 24;
+const imageBaseUrl = process.env.RMU_MFE_ASSETS!;
 
 const TraitList: FC = () => {
   const navigate = useNavigate();
@@ -68,7 +69,6 @@ const TraitList: FC = () => {
   useEffect(() => {
     bindSkills('', '', 0);
     bindSkillCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!skills) return <p>Loading...</p>;
@@ -84,7 +84,7 @@ const TraitList: FC = () => {
               <CardListItem
                 title={t(skill.id)}
                 subtitle={t(skill.categoryId)}
-                image="/static/images/generic/configuration.png"
+                image={`${imageBaseUrl}images/generic/configuration.png`}
                 onClick={() => handleSkillClick(skill)}
               />
             ))}
