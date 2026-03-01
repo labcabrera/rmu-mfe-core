@@ -22,14 +22,7 @@ interface Configuration extends WebpackConfiguration {
 export default (_env: unknown, argv: { mode?: string }): Configuration => {
   const mode = argv.mode || 'development';
   dotenv.config({ path: path.resolve(__dirname, `.env.${mode}`) });
-
-  // Use runtime-determined public path by default so federated chunks
-  // load from the script's origin. Allow override via env var when needed.
-  const publicPath = 'http://localhost:8089/';
-  // const publicPath = process.env.RMU_MFE_CORE_PUBLIC_PATH || 'auto';
-  // const mfeShellRemote = process.env.RMU_MFE_SHELL_PUBLIC_PATH || 'host@http://localhost:8080/host.js';
-  const mfeShellRemote = 'shell@https://labcabrera.com/main.js';
-
+  const publicPath = process.env.RMU_MFE_CORE_PUBLIC_PATH;
   return {
     output: {
       publicPath,
@@ -118,9 +111,6 @@ export default (_env: unknown, argv: { mode?: string }): Configuration => {
       new (webpack as any).container.ModuleFederationPlugin({
         name: 'core',
         filename: 'core-app.js',
-        remotes: {
-          host: mfeShellRemote,
-        },
         exposes: {
           './CoreApp': './src/App.tsx',
         },
@@ -145,7 +135,7 @@ export default (_env: unknown, argv: { mode?: string }): Configuration => {
         defaults: './.env',
       }),
       new webpack.DefinePlugin({
-        'process.env.RMU_API_CORE_URL': JSON.stringify(process.env.RMU_API_CORE_URL || ''),
+        'process.env. ': JSON.stringify(process.env.RMU_API_CORE_URL || ''),
       }),
     ],
   };

@@ -18,7 +18,7 @@ const RaceEditResistances: FC<{
         </Typography>
       </Grid>
       {resistances.map((resistance) => (
-        <Grid key={resistance} size={2}>
+        <Grid key={resistance} size={{ xs: 12, md: 2 }}>
           <NumericInput
             label={t(resistance)}
             name={`resistances.${resistance}`}

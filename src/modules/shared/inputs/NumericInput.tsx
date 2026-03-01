@@ -127,7 +127,7 @@ export function NumericInput({
       autoFocus={autoFocus}
       className={className}
       fullWidth
-      variant="standard"
+      variant="outlined"
       sx={{
         '& input': {
           textAlign: 'right',

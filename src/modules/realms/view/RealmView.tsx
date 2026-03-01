@@ -29,8 +29,8 @@ const RealmView: FC = () => {
   return (
     <>
       <RealmViewActions realm={realm} setRealm={setRealm} />
-      <Grid container spacing={2}>
-        <Grid size={2}>
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <Typography variant="h6" color="primary" gutterBottom>
             {realm.name}
           </Typography>
@@ -41,7 +41,7 @@ const RealmView: FC = () => {
             {realm.description}
           </Typography>
         </Grid>
-        <Grid size={9}>
+        <Grid size={{ xs: 12, md: 9 }}>
           <RealmViewRaces realm={realm} />
           <RealmViewLanguages realm={realm} />
         </Grid>

@@ -15,7 +15,7 @@ const RaceEditResume: FC<{
       <Grid size={12}>
         <TextField
           label={t('name')}
-          variant="standard"
+          variant="outlined"
           name="name"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -33,7 +33,7 @@ const RaceEditResume: FC<{
       <Grid size={12}>
         <TextField
           label={t('description')}
-          variant="standard"
+          variant="outlined"
           name="description"
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}

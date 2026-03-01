@@ -33,7 +33,7 @@ const RaceView: FC = () => {
     <>
       <RaceViewActions race={race} setRace={setRace} />
       <Grid container spacing={2}>
-        <Grid size={2}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <RaceAvatarByName raceName={race.name} size={300} />
           <Typography variant="h6" color="primary">
             {t(race.name)}
@@ -43,7 +43,7 @@ const RaceView: FC = () => {
             {race.description}
           </Typography>
         </Grid>
-        <Grid size={10}>
+        <Grid size={{ xs: 12, md: 9 }}>
           <Typography variant="h6" color="primary">
             {t('statistics')}
           </Typography>
