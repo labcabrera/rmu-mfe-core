@@ -37,11 +37,11 @@ const TraitView: FC = () => {
     <>
       <TraitViewActions trait={trait} />
       <Grid container spacing={2}>
-        <Grid size={2}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <GenericAvatar imageUrl={getTraitImage(trait)} size={300} />
           <TraitViewResume trait={trait} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <TraitViewInfo trait={trait} />
         </Grid>
       </Grid>

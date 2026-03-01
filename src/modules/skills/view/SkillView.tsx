@@ -36,11 +36,11 @@ const SkillView: FC = () => {
     <>
       <SkillViewActions skill={skill} />
       <Grid container spacing={2}>
-        <Grid size={2}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} size={300} />
           <SkillViewResume skill={skill} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <SkillViewInfo skill={skill} />
         </Grid>
       </Grid>
