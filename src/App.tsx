@@ -27,7 +27,7 @@ import TraitView from './modules/traits/view/TraitView';
 const App = () => {
   return (
     <ErrorProvider>
-      <Box sx={{ p: 5 }}>
+      <Box sx={{ p: { xs: 0.5, md: 1 } }} id="test-asdasd">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/realms" element={<RealmList />} />

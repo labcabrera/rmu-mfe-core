@@ -2,9 +2,8 @@ import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { Realm } from '../../api/realm.dto';
+import { imageBaseUrl } from '../../services/config';
 import CardListItem from './CardListItem';
-
-const imageBaseUrl = process.env.RMU_MFE_ASSETS!;
 
 const RealmCard: FC<{
   realm: Realm;

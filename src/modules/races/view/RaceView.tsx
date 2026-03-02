@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
@@ -12,20 +12,17 @@ import RaceViewResistances from './RaceViewResistances';
 import RaceViewStats from './RaceViewStats';
 
 const RaceView: FC = () => {
-  const location = useLocation();
-  const { raceId: raceId } = useParams<{ raceId?: string }>();
+  const { raceId } = useParams<{ raceId: string | undefined }>();
   const { showError } = useError();
   const [race, setRace] = useState<Race | null>(null);
 
   useEffect(() => {
-    if (location.state && location.state.race) {
-      setRace(location.state.race);
-    } else if (raceId) {
+    if (raceId) {
       fetchRace(raceId)
         .then((response) => setRace(response))
         .catch((err) => showError(err.message));
     }
-  }, [location.state, raceId, showError]);
+  }, [raceId, showError]);
 
   if (!race) return <p>Loading race...</p>;
 

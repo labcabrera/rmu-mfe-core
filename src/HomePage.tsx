@@ -2,22 +2,25 @@ import React, { FC } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Breadcrumbs, Grid, Link, Stack } from '@mui/material';
 import { t } from 'i18next';
+import { imageBaseUrl } from './modules/services/config';
 import CardListItem from './modules/shared/cards/CardListItem';
-
-const imageBaseUrl = process.env.RMU_MFE_ASSETS!;
 
 const HomePage: FC = () => {
   const navigate = useNavigate();
 
   return (
     <>
-      <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
+      <Stack
+        spacing={1}
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={1}
+        sx={{ minHeight: 60 }}
+      >
         <Box>
           <Breadcrumbs aria-label="breadcrumb">
-            <Link color="primary" underline="hover" href="/">
-              {t('home')}
-            </Link>
-            <Link component={RouterLink} color="primary" underline="hover" to="/core">
+            <Link component={RouterLink} color="primary" underline="always" to="/core">
               {t('core')}
             </Link>
           </Breadcrumbs>

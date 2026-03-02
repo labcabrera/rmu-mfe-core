@@ -136,7 +136,7 @@ export default (_env: unknown, argv: { mode?: string }): Configuration => {
       }),
       new webpack.DefinePlugin({
         'process.env.RMU_MFE_ASSETS': JSON.stringify(process.env.RMU_MFE_ASSETS || ''),
-        'process.env. ': JSON.stringify(process.env.RMU_API_CORE_URL || ''),
+        'process.env.RMU_API_CORE_URL': JSON.stringify(process.env.RMU_API_CORE_URL || ''),
       }),
     ],
   };

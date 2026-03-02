@@ -50,11 +50,11 @@ const RaceCreation: FC = () => {
     <>
       <RaceCreationActions formData={formData} isValid={isValid} realm={realm} />
       <Grid container spacing={2}>
-        <Grid size={2}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <RaceAvatarByName raceName={formData.name} size={300} />
           <RaceCreationResume formData={formData} setFormData={setFormData} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <RaceCreationStats formData={formData} setFormData={setFormData} />
           <RaceCreationResistances formData={formData} setFormData={setFormData} />
           <RaceCreationAttributes formData={formData} setFormData={setFormData} />

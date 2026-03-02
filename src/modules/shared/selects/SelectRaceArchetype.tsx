@@ -34,7 +34,6 @@ const SelectRaceArchetype: FC<{
       variant="outlined"
       onChange={onChange}
       error={!value}
-      helperText={!value ? t('race-archetype-is-required') : ''}
     >
       {values.map((option, index) => (
         <MenuItem key={index} value={option}>

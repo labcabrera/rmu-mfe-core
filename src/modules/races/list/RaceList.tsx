@@ -25,7 +25,7 @@ const RaceList: FC = () => {
 
   useEffect(() => {
     bindRaces();
-  });
+  }, [showError]);
 
   return (
     <>

@@ -13,13 +13,12 @@ const RaceCreationResume: FC<{
       <Grid size={12}>
         <TextField
           label={t('name')}
-          variant="standard"
+          variant="outlined"
           name="name"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           fullWidth
           error={!formData.name}
-          helperText={!formData.name ? t('name-is-required') : ''}
         />
       </Grid>
       <Grid size={12}>
