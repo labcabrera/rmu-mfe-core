@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Box, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { Language } from '../../api/language.dto';
 import { fetchLanguages } from '../../api/languages';
 import { Realm } from '../../api/realm.dto';
+import AddButton from '../../shared/buttons/AddButton';
 import LanguageCard from '../../shared/cards/LanguageCard';
 
 const RealmViewLanguages: FC<{
@@ -29,15 +29,13 @@ const RealmViewLanguages: FC<{
   }, [realm, showError]);
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1} mt={5}>
       <Grid size={12}>
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
           <Typography variant="h6" color="primary" display="inline">
             {t('languages')}
           </Typography>
-          <IconButton onClick={onAddLanguage} sx={{ ml: 1 }} color="primary">
-            <AddCircleIcon />
-          </IconButton>
+          <AddButton onClick={onAddLanguage} />
         </Box>
       </Grid>
       <Grid size={12}>
@@ -45,7 +43,11 @@ const RealmViewLanguages: FC<{
           {languages.map((language) => (
             <LanguageCard key={language.id} language={language} />
           ))}
-          {languages.length === 0 && <p>No languages found.</p>}
+          {languages.length === 0 && (
+            <Typography variant="body1" color="textSecondary">
+              No languages added
+            </Typography>
+          )}
         </Box>
       </Grid>
     </Grid>

@@ -21,7 +21,6 @@ const RaceViewActions: FC<{
     { name: t('core'), link: '/core' },
     { name: t('realms'), link: '/core/realms  ' },
     { name: race.realmName, link: `/core/realms/view/${race.realmId}` },
-    { name: race.name },
   ];
 
   const handleEditClick = () => {
@@ -52,7 +51,7 @@ const RaceViewActions: FC<{
 
   return (
     <>
-      <RmuBreadcrumbs items={breadcrumbs}>
+      <RmuBreadcrumbs items={breadcrumbs} maxNameLength={35}>
         <RefreshButton onClick={onRefresh} />
         <EditButton onClick={handleEditClick} />
         <DeleteButton onClick={onOpenDeleteDialog} />
