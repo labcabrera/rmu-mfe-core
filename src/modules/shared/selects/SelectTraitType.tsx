@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField } from '@mui/material';
+import { t } from 'i18next';
 
 const SelectTraitType: FC<{
   label: string;
@@ -9,8 +9,6 @@ const SelectTraitType: FC<{
   addAllOption?: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }> = ({ label, value, name, onChange, addAllOption = false }) => {
-  const { t } = useTranslation();
-
   const values = ['talent', 'flaw'];
 
   return (
@@ -20,7 +18,6 @@ const SelectTraitType: FC<{
       name={name}
       value={value === undefined || value === null ? '' : value}
       fullWidth
-      variant="standard"
       onChange={onChange}
     >
       {addAllOption && (

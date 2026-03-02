@@ -5,10 +5,10 @@ import { useError } from '../../../ErrorContext';
 import { CreateLanguageDto } from '../../api/language.dto';
 import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
+import { imageBaseUrl } from '../../services/config';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import LanguageCreationActions from './LanguageCreationActions';
 import LanguageCreationAttributes from './LanguageCreationAttributes';
-import LanguageCreationResume from './LanguageCreationResume';
 
 const template = {
   name: '',
@@ -56,11 +56,10 @@ const LanguageCreation: FC = () => {
     <>
       <LanguageCreationActions formData={formData} realm={realm} isValid={isValid} />
       <Grid container spacing={2}>
-        <Grid size={2}>
-          <GenericAvatar imageUrl="/static/images/generic/language.png" size={300} />
-          <LanguageCreationResume formData={formData} setFormData={setFormData} />
+        <Grid size={{ xs: 12, md: 2 }}>
+          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/language.png`} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <LanguageCreationAttributes formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>

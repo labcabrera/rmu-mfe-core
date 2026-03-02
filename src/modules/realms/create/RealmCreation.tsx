@@ -30,7 +30,7 @@ const RealmCreation: FC = () => {
       <RealmCreationActions formData={formData} isValid={isValid} />
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 2 }}>
-          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/realm.png`} size={300} />
+          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/realm.png`} />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <RealmCreationAttributes formData={formData} setFormData={setFormData} />

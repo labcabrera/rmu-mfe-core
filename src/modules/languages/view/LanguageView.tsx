@@ -40,11 +40,11 @@ const LanguageView: FC = () => {
     <>
       <LanguageViewActions language={language} realm={realm} />
       <Grid container spacing={2}>
-        <Grid size={2}>
-          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/language.png`} size={300} />
-          <LanguageViewResume language={language} realm={realm} />
+        <Grid size={{ xs: 12, md: 2 }}>
+          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/language.png`} />
+          <LanguageViewResume realm={realm} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <LanguageViewInfo language={language} />
         </Grid>
       </Grid>

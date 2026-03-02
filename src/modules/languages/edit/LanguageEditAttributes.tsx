@@ -11,6 +11,15 @@ const LanguageEditAttributes: FC<{
     <Grid container spacing={2}>
       <Grid size={12}>
         <TextField
+          label={t('name')}
+          name="name"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          fullWidth
+        />
+      </Grid>
+      <Grid size={12}>
+        <TextField
           label={t('Description')}
           name="description"
           value={formData.description}

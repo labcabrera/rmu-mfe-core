@@ -4,10 +4,10 @@ import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { Language, UpdateLanguageDto } from '../../api/language.dto';
 import { fetchLanguage } from '../../api/languages';
+import { imageBaseUrl } from '../../services/config';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import LanguageEditActions from './LanguageEditActions';
 import LanguageEditAttributes from './LanguageEditAttributes';
-import LanguageEditResume from './LanguageEditResume';
 
 const LanguageEdit: FC = () => {
   const location = useLocation();
@@ -41,11 +41,10 @@ const LanguageEdit: FC = () => {
     <>
       <LanguageEditActions language={language} formData={formData} />
       <Grid container spacing={1}>
-        <Grid size={2}>
-          <GenericAvatar imageUrl="/static/images/generic/language.png" size={300} />
-          <LanguageEditResume formData={formData} setFormData={setFormData} />
+        <Grid size={{ xs: 12, md: 2 }}>
+          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/language.png`} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <LanguageEditAttributes formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>

@@ -8,6 +8,12 @@ const LanguageViewInfo: FC<{
   return (
     <Grid container spacing={2}>
       <Grid size={12}>
+        <Typography variant="h6" color="primary">
+          {language.name}
+        </Typography>
+        {/* <Typography variant="body1">{language.name}</Typography> */}
+      </Grid>
+      <Grid size={12}>
         <Typography variant="body1">{language.description}</Typography>
       </Grid>
     </Grid>
