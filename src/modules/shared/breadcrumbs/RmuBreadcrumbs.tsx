@@ -30,8 +30,14 @@ const RmuBreadcrumbs: FC<RmuBreadcrumbsProps> = ({ items, children, maxNameLengt
   };
 
   return (
-    <Stack spacing={1} direction="row" justifyContent="space-between" alignItems="center" mb={1}>
-      <Box>
+    <Stack
+      spacing={1}
+      direction={{ xs: 'column', sm: 'row' }}
+      justifyContent="space-between"
+      alignItems="center"
+      mb={1}
+    >
+      <Box sx={{ width: '100%' }}>
         <Breadcrumbs aria-label="breadcrumb">
           {crumbs.map((it, idx) => {
             const display = isMobile ? truncate(it.name) : it.name;
@@ -47,7 +53,7 @@ const RmuBreadcrumbs: FC<RmuBreadcrumbsProps> = ({ items, children, maxNameLengt
           })}
         </Breadcrumbs>
       </Box>
-      <Stack spacing={1} direction="row">
+      <Stack spacing={1} direction="row" sx={{ alignSelf: { xs: 'flex-end', sm: 'auto' }, mt: { xs: 1, sm: 0 } }}>
         {children}
       </Stack>
     </Stack>

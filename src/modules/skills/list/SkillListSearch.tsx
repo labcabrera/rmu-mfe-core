@@ -22,7 +22,7 @@ const SkillListSearch: FC<{
 
   return (
     <Box display="flex" gap={2} alignItems="center" mb={2}>
-      <TextField label={t('name')} value={id} onChange={(e) => setId(e.target.value)} variant="standard" fullWidth />
+      <TextField label={t('name')} value={id} onChange={(e) => setId(e.target.value)} fullWidth />
       <SelectSkillCategory
         value={category}
         onChange={(e: React.ChangeEvent<{ value: unknown }>) => setCategory(e.target.value as string)}

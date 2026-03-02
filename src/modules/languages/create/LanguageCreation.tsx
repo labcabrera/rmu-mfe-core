@@ -64,7 +64,6 @@ const LanguageCreation: FC = () => {
           <LanguageCreationAttributes formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
-      {/* <pre>Form: {JSON.stringify(formData, null, 2)}</pre> */}
     </>
   );
 };

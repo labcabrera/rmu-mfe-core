@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { createRace } from '../../api/race';
 import { CreateRaceDto } from '../../api/race.dto';
 import { Realm } from '../../api/realm.dto';
+import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
@@ -16,6 +16,12 @@ const RaceCreationActions: FC<{
 }> = ({ formData, realm, isValid }) => {
   const navigate = useNavigate();
   const { showError } = useError();
+  const breadcrumbs = [
+    { name: t('core'), link: '/core' },
+    { name: t('realms'), link: '/core/realms' },
+    { name: realm.name, link: `/core/realms/view/${realm.id}` },
+    { name: t('race-creation') },
+  ];
 
   const onSave = () => {
     createRace(formData)
@@ -28,29 +34,10 @@ const RaceCreationActions: FC<{
   };
 
   return (
-    <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
-      <Box>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="primary" underline="hover" href="/">
-            {t('home')}
-          </Link>
-          <Link component={RouterLink} underline="hover" to="/core" color="primary">
-            {t('core')}
-          </Link>
-          <Link component={RouterLink} underline="hover" to="/core/realms" color="primary">
-            {t('realms')}
-          </Link>
-          <Link component={RouterLink} underline="hover" to={`/core/realms/view/${realm.id}`} color="primary">
-            {realm.name}
-          </Link>
-          <span>{t('race-creation')}</span>
-        </Breadcrumbs>
-      </Box>
-      <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-        <CancelButton onClick={onCancel} />
-        <SaveButton onClick={onSave} disabled={!isValid} />
-      </Stack>
-    </Stack>
+    <RmuBreadcrumbs items={breadcrumbs}>
+      <CancelButton onClick={onCancel} />
+      <SaveButton onClick={onSave} disabled={!isValid} />
+    </RmuBreadcrumbs>
   );
 };
 

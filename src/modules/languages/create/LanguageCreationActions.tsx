@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { CreateLanguageDto } from '../../api/language.dto';
 import { createLanguage } from '../../api/languages';
 import { Realm } from '../../api/realm.dto';
+import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
@@ -16,6 +16,12 @@ const LanguageCreationActions: FC<{
 }> = ({ formData, realm, isValid }) => {
   const navigate = useNavigate();
   const { showError } = useError();
+  const breadcrumbs = [
+    { name: t('core'), link: '/core' },
+    { name: t('realms'), link: '/core/realms' },
+    { name: realm.name, link: `/core/realms/view/${realm.id}` },
+    { name: t('language-creation') },
+  ];
 
   const handleSave = async () => {
     createLanguage(formData)
@@ -28,35 +34,10 @@ const LanguageCreationActions: FC<{
   };
 
   return (
-    <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
-      <Box>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="primary" underline="hover" href="/">
-            {t('home')}
-          </Link>
-          <Link component={RouterLink} to="/core" color="primary" underline="hover">
-            {t('core')}
-          </Link>
-          <Link component={RouterLink} to="/core/realms" color="primary" underline="hover">
-            {t('realms')}
-          </Link>
-          <Link
-            component={RouterLink}
-            color="primary"
-            underline="hover"
-            to={`/core/realms/view/${realm.id}`}
-            state={{ realm }}
-          >
-            {realm.name}
-          </Link>
-          <span>{t('language-creation')}</span>
-        </Breadcrumbs>
-      </Box>
-      <Stack direction="row" spacing={1}>
-        <CancelButton onClick={handleBack} />
-        <SaveButton onClick={handleSave} disabled={!isValid} />
-      </Stack>
-    </Stack>
+    <RmuBreadcrumbs items={breadcrumbs}>
+      <CancelButton onClick={handleBack} />
+      <SaveButton onClick={handleSave} disabled={!isValid} />
+    </RmuBreadcrumbs>
   );
 };
 

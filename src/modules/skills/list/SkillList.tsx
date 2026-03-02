@@ -7,12 +7,12 @@ import { fetchPagedSkills } from '../../api/skill';
 import { fetchSkillCategories } from '../../api/skill-category';
 import { SkillCategory } from '../../api/skill-category.dto';
 import { Skill } from '../../api/skill.dto';
+import { imageBaseUrl } from '../../services/config';
 import CardListItem from '../../shared/cards/CardListItem';
 import SkillListActions from './SkillListActions';
 import SkillListSearch from './SkillListSearch';
 
 const PAGE_SIZE = 24;
-const imageBaseUrl = process.env.RMU_MFE_ASSETS!;
 
 const TraitList: FC = () => {
   const navigate = useNavigate();

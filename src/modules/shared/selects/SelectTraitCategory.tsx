@@ -20,7 +20,6 @@ const SelectTraitCategory: FC<{
       name={name}
       value={value === undefined || value === null ? '' : value}
       fullWidth
-      variant="standard"
       onChange={onChange}
     >
       {addAllOption ? <MenuItem value="all">{t('all')}</MenuItem> : null}

@@ -17,7 +17,6 @@ const LanguageCreationAttributes: FC<{
       <Grid size={12}>
         <TextField
           label={t('description')}
-          variant="standard"
           name="description"
           value={formData.description}
           onChange={handleChange}

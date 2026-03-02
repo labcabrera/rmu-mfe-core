@@ -1,12 +1,10 @@
 import React, { FC } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
+import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { updateRace } from '../../api/race';
 import { Race, UpdateRaceDto } from '../../api/race.dto';
+import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
@@ -16,6 +14,13 @@ const RaceEditActions: FC<{
 }> = ({ race, formData }) => {
   const navigate = useNavigate();
   const { showError } = useError();
+  const breadcrumbs = [
+    { name: t('core'), link: '/core' },
+    { name: t('realms'), link: '/core/realms' },
+    { name: race.realmName, link: `/core/realms/view/${race.realmId}` },
+    { name: race.name, link: `/core/races/view/${race.id}` },
+    { name: t('edit') },
+  ];
 
   if (!race || !formData) return <p>Loading race...</p>;
 
@@ -30,29 +35,10 @@ const RaceEditActions: FC<{
   };
 
   return (
-    <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link color="primary" underline="hover" href="/">
-          {t('home')}
-        </Link>
-        <Link color="primary" underline="hover" component={RouterLink} to={'/core/'}>
-          {t('core')}
-        </Link>
-        <Link color="primary" underline="hover" component={RouterLink} to={'/core/realms'}>
-          {t('realms')}
-        </Link>
-        <Link color="primary" underline="hover" component={RouterLink} to={`/core/realms/view/${race.realmId}`}>
-          {race.realmName}
-        </Link>
-        <Link color="primary" underline="hover" component={RouterLink} to={`/core/races/view/${race.id}`}>
-          {race.name}
-        </Link>
-        <span>{t('edit')}</span>
-      </Breadcrumbs>
-      <div style={{ flexGrow: 1 }} />
+    <RmuBreadcrumbs items={breadcrumbs}>
       <CancelButton onClick={onCancel} />
       <SaveButton onClick={onSave} />
-    </Stack>
+    </RmuBreadcrumbs>
   );
 };
 

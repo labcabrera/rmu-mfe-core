@@ -1,20 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { Language } from '../../api/language.dto';
 import { fetchLanguage } from '../../api/languages';
 import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
+import { imageBaseUrl } from '../../services/config';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import LanguageViewActions from './LanguageViewActions';
 import LanguageViewInfo from './LanguageViewInfo';
 import LanguageViewResume from './LanguageViewResume';
 
-const imageBaseUrl = process.env.RMU_MFE_ASSETS!;
-
 const LanguageView: FC = () => {
-  const location = useLocation();
   const { showError } = useError();
   const { languageId } = useParams<{ languageId?: string }>();
   const [language, setLanguage] = useState<Language | null>(null);
@@ -29,14 +27,12 @@ const LanguageView: FC = () => {
   }, [language, showError]);
 
   useEffect(() => {
-    if (location.state && location.state.language) {
-      setLanguage(location.state.language);
-    } else {
+    if (languageId) {
       fetchLanguage(languageId)
         .then((data) => setLanguage(data))
         .catch((err) => showError(err.message));
     }
-  }, [location.state, languageId, showError]);
+  }, [languageId, showError]);
 
   if (!language || !realm) return <p>Loading...</p>;
 

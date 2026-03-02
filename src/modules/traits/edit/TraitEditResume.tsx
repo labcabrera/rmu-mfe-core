@@ -23,14 +23,7 @@ const TraitEditResume: FC<{
   return (
     <Grid container spacing={2}>
       <Grid size={12}>
-        <TextField
-          label={t('name')}
-          name="name"
-          value={formData.name}
-          onChange={onChange}
-          variant="standard"
-          fullWidth
-        />
+        <TextField label={t('name')} name="name" value={formData.name} onChange={onChange} fullWidth />
       </Grid>
       <Grid size={12}>
         <SelectTraitCategory label={t('category')} name="category" value={formData.category} onChange={onChange} />
@@ -41,7 +34,6 @@ const TraitEditResume: FC<{
           name="isTalent"
           value={String(formData.isTalent)}
           onChange={(e) => setFormData({ ...formData, isTalent: e.target.value === 'true' })}
-          variant="standard"
           fullWidth
         >
           <MenuItem value="true">{t('trait')}</MenuItem>

@@ -17,13 +17,11 @@ const LanguageCreationResume: FC<{
       <Grid size={12}>
         <TextField
           label={t('name')}
-          variant="standard"
           name="name"
           value={formData.name}
           onChange={handleChange}
           fullWidth
           error={!formData.name}
-          helperText={!formData.name ? t('name-is-required') : ''}
         />
       </Grid>
     </Grid>

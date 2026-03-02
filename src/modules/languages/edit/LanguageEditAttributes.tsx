@@ -15,7 +15,6 @@ const LanguageEditAttributes: FC<{
           name="description"
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          variant="standard"
           fullWidth
           multiline
           rows={4}
