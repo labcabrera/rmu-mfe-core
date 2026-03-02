@@ -1,16 +1,16 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { CreateRealmDto } from '../../api/realm.dto';
+import { imageBaseUrl } from '../../services/config';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import RealmCreationActions from './RealmCreationActions';
 import RealmCreationAttributes from './RealmCreationAttributes';
-import RealmCreationResume from './RealmCreationResume';
 
 const RealmCreation: FC = () => {
   const [formData, setFormData] = useState<CreateRealmDto>({
-    name: null,
-    shortDescription: null,
-    description: null,
+    name: '',
+    shortDescription: undefined,
+    description: undefined,
   });
   const [isValid, setIsValid] = useState(false);
 
@@ -29,11 +29,10 @@ const RealmCreation: FC = () => {
     <>
       <RealmCreationActions formData={formData} isValid={isValid} />
       <Grid container spacing={2}>
-        <Grid size={2}>
-          <GenericAvatar imageUrl="/static/images/generic/realm.png" size={300} />
-          <RealmCreationResume formData={formData!} setFormData={setFormData} />
+        <Grid size={{ xs: 12, md: 2 }}>
+          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/realm.png`} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <RealmCreationAttributes formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>

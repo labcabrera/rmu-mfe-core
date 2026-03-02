@@ -9,6 +9,8 @@ import SkillViewActions from './SkillViewActions';
 import SkillViewInfo from './SkillViewInfo';
 import SkillViewResume from './SkillViewResume';
 
+const imageBaseUrl = process.env.RMU_MFE_ASSETS!;
+
 const SkillView: FC = () => {
   const location = useLocation();
   const { skillId } = useParams<{ skillId?: string }>();
@@ -34,11 +36,11 @@ const SkillView: FC = () => {
     <>
       <SkillViewActions skill={skill} />
       <Grid container spacing={2}>
-        <Grid size={2}>
-          <GenericAvatar imageUrl="/static/images/generic/configuration.png" size={300} />
+        <Grid size={{ xs: 12, md: 4 }}>
+          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} size={300} />
           <SkillViewResume skill={skill} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <SkillViewInfo skill={skill} />
         </Grid>
       </Grid>

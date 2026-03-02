@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { deleteTrait } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
+import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
 import DeleteDialog from '../../shared/dialogs/DeleteDialog';
@@ -14,8 +14,12 @@ const TraitViewActions: FC<{
 }> = ({ trait }) => {
   const navigate = useNavigate();
   const { showError } = useError();
-  const { t } = useTranslation();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const breadcrumbs = [
+    { name: t('core'), link: '/core' },
+    { name: t('traits'), link: '/core/traits' },
+    { name: t(trait.name) },
+  ];
 
   const onDelete = () => {
     deleteTrait(trait.id)
@@ -47,26 +51,10 @@ const TraitViewActions: FC<{
 
   return (
     <>
-      <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
-        <Box>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link color="primary" underline="hover" href="/">
-              {t('home')}
-            </Link>
-            <Link component={RouterLink} color="primary" underline="hover" to="/core/">
-              {t('core')}
-            </Link>
-            <Link component={RouterLink} color="primary" underline="hover" to="/core/traits">
-              {t('traits')}
-            </Link>
-            <span>{t(trait.name)}</span>
-          </Breadcrumbs>
-        </Box>
-        <Stack direction="row" spacing={1}>
-          <EditButton onClick={onEdit} />
-          <DeleteButton onClick={onOpenDeleteDialog} />
-        </Stack>
-      </Stack>
+      <RmuBreadcrumbs items={breadcrumbs}>
+        <EditButton onClick={onEdit} />
+        <DeleteButton onClick={onOpenDeleteDialog} />
+      </RmuBreadcrumbs>
       <DeleteDialog
         message={`Are you sure you want to delete ${t(trait.id)} trait? This action cannot be undone.`}
         onDelete={onDeleteDialogClick}

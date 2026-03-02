@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Breadcrumbs, Link, Stack } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { updateTrait } from '../../api/trait';
 import { Trait, UpdateTraitDto } from '../../api/trait.dto';
+import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
@@ -14,6 +14,12 @@ const TraitEditActions: FC<{
 }> = ({ trait, formData }) => {
   const navigate = useNavigate();
   const { showError } = useError();
+  const breadcrumbs = [
+    { name: t('core'), link: '/core' },
+    { name: t('traits'), link: '/core/traits' },
+    { name: t(trait.name), link: `/core/traits/view/${trait.id}` },
+    { name: t('edit') },
+  ];
 
   if (!trait) return <p>Loading...</p>;
 
@@ -33,26 +39,10 @@ const TraitEditActions: FC<{
   };
 
   return (
-    <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link color="primary" underline="hover" href="/">
-          {t('home')}
-        </Link>
-        <Link component={RouterLink} color="primary" underline="hover" to={'/core/'}>
-          {t('core')}
-        </Link>
-        <Link component={RouterLink} color="primary" underline="hover" to={'/core/traits'}>
-          {t('traits')}
-        </Link>
-        <Link component={RouterLink} color="primary" underline="hover" to={`/core/traits/view/${trait.id}`}>
-          {t(trait.name)}
-        </Link>
-        <span>{t('edit')}</span>
-      </Breadcrumbs>
-      <div style={{ flexGrow: 1 }} />
+    <RmuBreadcrumbs items={breadcrumbs}>
       <CancelButton onClick={handleBackButtonClick} />
       <SaveButton onClick={handleSaveButtonClick} />
-    </Stack>
+    </RmuBreadcrumbs>
   );
 };
 

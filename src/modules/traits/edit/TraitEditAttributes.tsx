@@ -44,7 +44,6 @@ const TraitEditAttributes: FC<{
           multiline
           minRows={4}
           maxRows={10}
-          variant="standard"
           fullWidth
         />
       </Grid>

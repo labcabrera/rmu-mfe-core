@@ -15,12 +15,19 @@ const RaceCard: FC<{
   };
 
   const getSubtitle = () => {
-    return `${race.realmName} - ${t(race.archetype)}`;
+    return `${race.realmName}${race.archetype ? ` - ${t(race.archetype)}` : ''}`;
   };
 
   if (!race) return <p>Loading...</p>;
 
-  return <CardListItem title={race.name} subtitle={getSubtitle()} image={resolveRaceImage(race.name)} onClick={handleRaceClick} />;
+  return (
+    <CardListItem
+      title={race.name}
+      subtitle={getSubtitle()}
+      image={resolveRaceImage(race.name)}
+      onClick={handleRaceClick}
+    />
+  );
 };
 
 export default RaceCard;

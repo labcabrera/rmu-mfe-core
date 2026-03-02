@@ -16,7 +16,7 @@ const RaceEditStats: FC<{
         </Typography>
       </Grid>
       {stats.map((stat) => (
-        <Grid key={stat} size={2}>
+        <Grid key={stat} size={{ xs: 12, md: 2 }}>
           <NumericInput
             label={t(stat)}
             name={`stats.${stat}`}

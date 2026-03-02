@@ -5,6 +5,7 @@ import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { Race, UpdateRaceDto } from '../../api/race.dto';
 import RaceAvatarByName from '../../shared/avatars/RaceAvatarByName';
+import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import RaceEditActions from './RaceEditActions';
 import RaceEditAttributes from './RaceEditAttributes';
 import RaceEditResistances from './RaceEditResistances';
@@ -40,11 +41,11 @@ const RaceEdit: FC = () => {
     <>
       <RaceEditActions race={race} formData={formData} />
       <Grid container spacing={2}>
-        <Grid size={2}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <RaceAvatarByName raceName={formData.name} size={300} />
           <RaceEditResume formData={formData!} setFormData={setFormData} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, md: 9 }}>
           <RaceEditStats formData={formData} setFormData={setFormData} />
           <RaceEditResistances formData={formData} setFormData={setFormData} />
           <RaceEditAttributes formData={formData} setFormData={setFormData} />

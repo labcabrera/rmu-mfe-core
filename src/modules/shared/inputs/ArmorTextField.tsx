@@ -10,7 +10,13 @@ type ArmorTextFieldProps = {
   required?: boolean;
 };
 
-const ArmorTextField: FC<ArmorTextFieldProps> = ({ value, onChange, i18nLabel = 'armor-type', disabled = false, required = false }) => {
+const ArmorTextField: FC<ArmorTextFieldProps> = ({
+  value,
+  onChange,
+  i18nLabel = 'armor-type',
+  disabled = false,
+  required = false,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -20,7 +26,6 @@ const ArmorTextField: FC<ArmorTextFieldProps> = ({ value, onChange, i18nLabel = 
       onChange={onChange}
       disabled={disabled}
       required={required}
-      variant="outlined"
       fullWidth
       InputProps={{
         startAdornment: (

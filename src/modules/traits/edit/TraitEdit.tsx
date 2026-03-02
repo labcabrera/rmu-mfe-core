@@ -46,7 +46,6 @@ const TraitEdit: FC = () => {
         <Grid size={8}>
           <TraitEditAttributes formData={formData} setFormData={setFormData} />
         </Grid>
-        <pre>{JSON.stringify(formData, null, 2)}</pre>
       </Grid>
     </>
   );

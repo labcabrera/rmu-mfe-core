@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { createRealm } from '../../api/realm';
 import { CreateRealmDto } from '../../api/realm.dto';
+import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
@@ -14,6 +14,11 @@ const RealmCreationActions: FC<{
 }> = ({ formData, isValid }) => {
   const navigate = useNavigate();
   const { showError } = useError();
+  const breadcrumbs = [
+    { name: t('core'), link: '/core' },
+    { name: t('realms'), link: '/core/realms' },
+    { name: t('realm-creation') },
+  ];
 
   const onSaveClick = async () => {
     createRealm(formData)
@@ -26,26 +31,10 @@ const RealmCreationActions: FC<{
   };
 
   return (
-    <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
-      <Box>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="primary" underline="hover" href="/">
-            {t('home')}
-          </Link>
-          <Link component={RouterLink} to="/core" color="primary" underline="hover">
-            {t('core')}
-          </Link>
-          <Link component={RouterLink} to="/core/realms" color="primary" underline="hover">
-            {t('realms')}
-          </Link>
-          <span>{t('creation')}</span>
-        </Breadcrumbs>
-      </Box>
-      <Stack spacing={1} direction="row">
-        <CancelButton onClick={onBackClick} />
-        <SaveButton onClick={onSaveClick} disabled={!isValid} />
-      </Stack>
-    </Stack>
+    <RmuBreadcrumbs items={breadcrumbs} maxNameLength={30}>
+      <CancelButton onClick={onBackClick} />
+      <SaveButton onClick={onSaveClick} disabled={!isValid} />
+    </RmuBreadcrumbs>
   );
 };
 

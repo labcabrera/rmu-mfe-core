@@ -17,7 +17,6 @@ const SelectSkillCategory: FC<{
       label={label}
       value={value === undefined || value === null || categories.length === 0 ? '' : value}
       fullWidth
-      variant="standard"
       onChange={onChange}
     >
       {categories.map((option, index) => (

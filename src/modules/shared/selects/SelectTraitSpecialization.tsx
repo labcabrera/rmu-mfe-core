@@ -30,7 +30,6 @@ const SelectTraitSpecialization: FC<{
       name={name}
       value={value === undefined || value === null ? '' : value}
       fullWidth
-      variant="standard"
       onChange={onChange}
     >
       {values.map((option, index) => (

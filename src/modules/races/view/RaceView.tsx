@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
@@ -12,20 +12,17 @@ import RaceViewResistances from './RaceViewResistances';
 import RaceViewStats from './RaceViewStats';
 
 const RaceView: FC = () => {
-  const location = useLocation();
-  const { raceId: raceId } = useParams<{ raceId?: string }>();
+  const { raceId } = useParams<{ raceId: string | undefined }>();
   const { showError } = useError();
   const [race, setRace] = useState<Race | null>(null);
 
   useEffect(() => {
-    if (location.state && location.state.race) {
-      setRace(location.state.race);
-    } else if (raceId) {
+    if (raceId) {
       fetchRace(raceId)
         .then((response) => setRace(response))
         .catch((err) => showError(err.message));
     }
-  }, [location.state, raceId, showError]);
+  }, [raceId, showError]);
 
   if (!race) return <p>Loading race...</p>;
 
@@ -33,17 +30,17 @@ const RaceView: FC = () => {
     <>
       <RaceViewActions race={race} setRace={setRace} />
       <Grid container spacing={2}>
-        <Grid size={2}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <RaceAvatarByName raceName={race.name} size={300} />
           <Typography variant="h6" color="primary">
             {t(race.name)}
           </Typography>
-          <Typography variant="h6">{t(race.archetype)}</Typography>
+          {race.archetype && <Typography variant="h6">{t(race.archetype)}</Typography>}
           <Typography variant="body1" color="textSecondary" sx={{ mt: 2, whiteSpace: 'pre-line' }}>
             {race.description}
           </Typography>
         </Grid>
-        <Grid size={10}>
+        <Grid size={{ xs: 12, md: 9 }}>
           <Typography variant="h6" color="primary">
             {t('statistics')}
           </Typography>

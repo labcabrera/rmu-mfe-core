@@ -1,10 +1,10 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRealms } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
+import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import AddButton from '../../shared/buttons/AddButton';
 import RefreshButton from '../../shared/buttons/RefreshButton';
 
@@ -23,23 +23,10 @@ const RealmListActions: FC<{ setRealms: Dispatch<SetStateAction<Realm[]>> }> = (
   };
 
   return (
-    <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
-      <Box>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="primary" underline="hover" href="/">
-            {t('home')}
-          </Link>
-          <Link component={RouterLink} color="primary" underline="hover" to="/core">
-            {t('core')}
-          </Link>
-          <span>{t('realms')}</span>
-        </Breadcrumbs>
-      </Box>
-      <Stack spacing={1} direction="row">
-        <RefreshButton onClick={() => onRefreshButtonClick()} />
-        <AddButton onClick={() => onAddRealmClick()} />
-      </Stack>
-    </Stack>
+    <RmuBreadcrumbs items={[{ name: t('core'), link: '/core' }, { name: t('realms') }]}>
+      <RefreshButton onClick={() => onRefreshButtonClick()} />
+      <AddButton onClick={() => onAddRealmClick()} />
+    </RmuBreadcrumbs>
   );
 };
 

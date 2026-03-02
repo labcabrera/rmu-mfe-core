@@ -7,7 +7,7 @@ const TraitViewResume: FC<{
   trait: Trait;
 }> = ({ trait }) => {
   return (
-    <Grid container spacing={1} mt={3}>
+    <Grid container spacing={1} mt={5}>
       <Grid size={12}>
         <Typography variant="h6" color="primary" gutterBottom>
           {t(trait.name)}

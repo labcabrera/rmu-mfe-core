@@ -1,10 +1,10 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Box, Breadcrumbs, Link, Stack } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { deleteRealm, fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
+import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
 import RefreshButton from '../../shared/buttons/RefreshButton';
@@ -17,6 +17,11 @@ const RealmViewActions: FC<{
   const navigate = useNavigate();
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const breadcrumbs = [
+    { name: t('core'), link: '/core' },
+    { name: t('realms'), link: '/core/realms' },
+    { name: realm.name },
+  ];
 
   const onDeleteRealm = () => {
     deleteRealm(realm.id)
@@ -51,27 +56,11 @@ const RealmViewActions: FC<{
 
   return (
     <>
-      <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
-        <Box>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link color="primary" underline="hover" href="/">
-              {t('home')}
-            </Link>
-            <Link component={RouterLink} color="primary" underline="hover" to="/core/">
-              {t('core')}
-            </Link>
-            <Link component={RouterLink} color="primary" underline="hover" to="/core/realms">
-              {t('realms')}
-            </Link>
-            <span>{realm.name}</span>
-          </Breadcrumbs>
-        </Box>
-        <Stack direction="row" spacing={1}>
-          <RefreshButton onClick={() => onRefreshButtonClick()} />
-          <EditButton onClick={() => onEditButtonClick()} />
-          <DeleteButton onClick={() => onDeleteButtonClick()} />
-        </Stack>
-      </Stack>
+      <RmuBreadcrumbs items={breadcrumbs}>
+        <RefreshButton onClick={() => onRefreshButtonClick()} />
+        <EditButton onClick={() => onEditButtonClick()} />
+        <DeleteButton onClick={() => onDeleteButtonClick()} />
+      </RmuBreadcrumbs>
       <DeleteDialog
         open={deleteDialogOpen}
         message={`Are you sure you want to delete ${realm.name} realm? This action cannot be undone.`}

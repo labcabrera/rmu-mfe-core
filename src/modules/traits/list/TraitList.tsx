@@ -55,14 +55,13 @@ const TraitList: FC = () => {
 
   useEffect(() => {
     bindTraits('', '', '', 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
       <TraitListActions />
       <TraitListSearch onSearch={handleSearch} />
-      <Grid container spacing={2} mb={2} alignItems="center">
+      <Grid container spacing={2} mt={1} mb={2} alignItems="center">
         <Grid size={12}>
           <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
             {traits.map((trait) => (

@@ -19,7 +19,7 @@ const SelectRaceSize: FC<{
       name={name}
       value={value === undefined || value === null ? '' : value}
       fullWidth
-      variant="standard"
+      variant="outlined"
       onChange={onChange}
     >
       {values.map((option, index) => (
