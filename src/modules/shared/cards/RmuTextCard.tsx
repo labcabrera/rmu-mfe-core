@@ -9,7 +9,7 @@ const green = '#a5d6a7';
 const RmuTextCard: FC<{
   value: string | number;
   applyColor?: boolean;
-  subtitle: string;
+  subtitle: string | undefined;
   image?: string;
   grayscale?: number;
   size?: 'small' | 'medium';
