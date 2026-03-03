@@ -1,6 +1,6 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { CreateRaceDto as UpdateRaceDto, resistances } from '../../api/race.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
 
@@ -11,12 +11,7 @@ const RaceEditResistances: FC<{
   const { t } = useTranslation();
 
   return (
-    <Grid container spacing={2} mt={5}>
-      <Grid size={12}>
-        <Typography variant="h6" color="primary">
-          {t('resistances')}
-        </Typography>
-      </Grid>
+    <Grid container spacing={1} columns={10}>
       {resistances.map((resistance) => (
         <Grid key={resistance} size={{ xs: 12, md: 2 }}>
           <NumericInput

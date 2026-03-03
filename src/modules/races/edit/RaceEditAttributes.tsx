@@ -1,6 +1,6 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, TextField, Typography } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import { UpdateRaceDto } from '../../api/race.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
@@ -23,11 +23,6 @@ const RaceEditAttributes: FC<{
 
   return (
     <Grid container spacing={2}>
-      <Grid size={12}>
-        <Typography variant="h6" color="primary">
-          {t('race-info')}
-        </Typography>
-      </Grid>
       <Grid size={{ xs: 12, md: 2 }}>
         <SelectRaceSize label={t('race-size')} name="sizeId" value={formData.sizeId} onChange={handleChange} />
       </Grid>
@@ -126,7 +121,6 @@ const RaceEditAttributes: FC<{
           min={0}
         />
       </Grid>
-      <Grid size={12}></Grid>
       <Grid size={{ xs: 12, md: 2 }}>
         <TextField
           label={t('default-language')}

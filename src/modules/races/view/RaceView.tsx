@@ -6,6 +6,7 @@ import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import RaceAvatarByName from '../../shared/avatars/RaceAvatarByName';
+import CategorySeparator from '../../shared/display/CategorySeparator';
 import RaceViewActions from './RaceViewActions';
 import RaceViewAttributes from './RaceViewAttributes';
 import RaceViewResistances from './RaceViewResistances';
@@ -30,28 +31,26 @@ const RaceView: FC = () => {
     <>
       <RaceViewActions race={race} setRace={setRace} />
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 3 }}>
-          <RaceAvatarByName raceName={race.name} size={300} />
+        <Grid size={{ xs: 12, md: 2 }}>
+          <RaceAvatarByName raceName={race.name} />
           <Typography variant="h6" color="primary">
             {t(race.name)}
           </Typography>
-          {race.archetype && <Typography variant="h6">{t(race.archetype)}</Typography>}
+          {race.archetype && (
+            <Typography variant="body1" color="textSecondary">
+              {t(race.archetype)}
+            </Typography>
+          )}
           <Typography variant="body1" color="textSecondary" sx={{ mt: 2, whiteSpace: 'pre-line' }}>
             {race.description}
           </Typography>
         </Grid>
-        <Grid size={{ xs: 12, md: 9 }}>
-          <Typography variant="h6" color="primary">
-            {t('statistics')}
-          </Typography>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <CategorySeparator text={t('statistics')} />
           <RaceViewStats race={race} />
-          <Typography variant="h6" color="primary">
-            {t('resistances')}
-          </Typography>
+          <CategorySeparator text={t('resistances')} />
           <RaceViewResistances race={race} />
-          <Typography variant="h6" color="primary">
-            {t('race-features')}
-          </Typography>
+          <CategorySeparator text={t('race-features')} />
           <RaceViewAttributes race={race} />
         </Grid>
       </Grid>

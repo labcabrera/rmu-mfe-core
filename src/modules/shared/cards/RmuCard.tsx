@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 import { Card, CardContent, CardMedia } from '@mui/material';
 
-const smallImageSize = 80;
+const smallImageSize = 70;
 const mediumImageSize = 100;
 
 const RmuCard: FC<{
@@ -13,7 +13,8 @@ const RmuCard: FC<{
   size?: 'small' | 'medium';
   onClick?: () => void;
   children?: ReactNode;
-}> = ({ image, onClick, size = 'medium', children }) => {
+  grayscale?: number;
+}> = ({ image, onClick, size = 'medium', children, grayscale = 0 }) => {
   return (
     <Card
       onClick={onClick}
@@ -38,16 +39,22 @@ const RmuCard: FC<{
           width: size === 'small' ? smallImageSize : mediumImageSize,
           height: size === 'small' ? smallImageSize : mediumImageSize,
           objectFit: 'cover',
+          filter: `grayscale(${grayscale})`,
         }}
       />
       <CardContent
         sx={{
           flex: 1,
           p: 0,
+          '&:last-child': {
+            pb: 0,
+          },
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           ml: 2,
+          // mb: 0,
+          // paddingBottom: 0,
           maxWidth: '100%',
           minWidth: 0,
         }}

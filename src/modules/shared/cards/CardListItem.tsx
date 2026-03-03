@@ -40,6 +40,9 @@ const CardListItem: FC<{
         sx={{
           flex: 1,
           p: 0,
+          '&:last-child': {
+            pb: 0,
+          },
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',

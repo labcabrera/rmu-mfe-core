@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Race, stats } from '../../api/race.dto';
-import NumericCard from '../../shared/cards/NumericCard';
-
-const imageBaseUrl = process.env.RMU_MFE_ASSETS!;
+import { imageBaseUrl } from '../../services/config';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const RaceViewStats: FC<{
   race: Race;
@@ -12,15 +11,21 @@ const RaceViewStats: FC<{
   const { t } = useTranslation();
 
   return (
-    <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
+    <Grid container spacing={1} columns={10}>
       {stats.map((stat) => (
-        <NumericCard
-          value={race.stats[stat]}
-          subtitle={t(stat)}
-          image={`${imageBaseUrl}images/generic/stat-${stat}.png`}
-        />
+        <Grid size={{ xs: 5, md: 2 }}>
+          <RmuTextCard
+            value={race.stats[stat]}
+            subtitle={t(stat)}
+            image={`${imageBaseUrl}images/generic/stat-${stat}.png`}
+            applyColor={true}
+            size="small"
+            grayscale={0.7}
+            key={stat}
+          />
+        </Grid>
       ))}
-    </Box>
+    </Grid>
   );
 };
 

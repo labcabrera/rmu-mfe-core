@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { Race, UpdateRaceDto } from '../../api/race.dto';
 import RaceAvatarByName from '../../shared/avatars/RaceAvatarByName';
-import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
+import CategorySeparator from '../../shared/display/CategorySeparator';
 import RaceEditActions from './RaceEditActions';
 import RaceEditAttributes from './RaceEditAttributes';
 import RaceEditResistances from './RaceEditResistances';
@@ -41,13 +42,16 @@ const RaceEdit: FC = () => {
     <>
       <RaceEditActions race={race} formData={formData} />
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 3 }}>
+        <Grid size={{ xs: 12, md: 2 }}>
           <RaceAvatarByName raceName={formData.name} size={300} />
           <RaceEditResume formData={formData!} setFormData={setFormData} />
         </Grid>
-        <Grid size={{ xs: 12, md: 9 }}>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <CategorySeparator text={t('statistics')} />
           <RaceEditStats formData={formData} setFormData={setFormData} />
+          <CategorySeparator text={t('resistances')} />
           <RaceEditResistances formData={formData} setFormData={setFormData} />
+          <CategorySeparator text={t('race-features')} />
           <RaceEditAttributes formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
