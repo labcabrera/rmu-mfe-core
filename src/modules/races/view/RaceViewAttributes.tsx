@@ -72,14 +72,6 @@ const RaceViewAttributes: FC<{
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
         <RmuTextCard
-          value={race.defaultLanguage || t('none')}
-          subtitle={t('native-language')}
-          image={`${imageBaseUrl}images/generic/language.png`}
-          grayscale={grayscale}
-        />
-      </Grid>
-      <Grid size={{ xs: 5, md: 2 }}>
-        <RmuTextCard
           value={`${race.averageHeight.male} / ${race.averageHeight.female}`}
           subtitle={t('average-height')}
           image={`${imageBaseUrl}images/generic/race-size.png`}
@@ -91,6 +83,14 @@ const RaceViewAttributes: FC<{
           value={`${race.averageWeight.male} / ${race.averageWeight.female}`}
           subtitle={t('average-weight')}
           image={`${imageBaseUrl}images/generic/race-size.png`}
+          grayscale={grayscale}
+        />
+      </Grid>
+      <Grid size={{ xs: 5, md: 2 }}>
+        <RmuTextCard
+          value={race.defaultLanguage || t('none')}
+          subtitle={t('native-language')}
+          image={`${imageBaseUrl}images/generic/language.png`}
           grayscale={grayscale}
         />
       </Grid>

@@ -41,12 +41,12 @@ const RaceEdit: FC = () => {
   return (
     <>
       <RaceEditActions race={race} formData={formData} />
-      <Grid container spacing={2}>
+      <Grid container spacing={2} padding={1}>
         <Grid size={{ xs: 12, md: 2 }}>
           <RaceAvatarByName raceName={formData.name} size={300} />
           <RaceEditResume formData={formData!} setFormData={setFormData} />
         </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid size={{ xs: 12, md: 6 }} padding={1}>
           <CategorySeparator text={t('statistics')} />
           <RaceEditStats formData={formData} setFormData={setFormData} />
           <CategorySeparator text={t('resistances')} />
