@@ -19,7 +19,6 @@ const SelectDifficulty: FC<{
       select
       label={label}
       value={value === undefined || value === null ? '' : value}
-      variant="standard"
       onChange={handleChange}
       fullWidth
     >

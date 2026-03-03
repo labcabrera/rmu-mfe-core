@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
 import { fetchPercentManeuver, ManeuverDifficulty, PercentManeuverResult } from '../api/maneuver';
@@ -26,25 +26,24 @@ const PercentManeuverView: FC = () => {
   }, [roll, difficulty, showError]);
 
   return (
-    <>
-      <Grid container spacing={2}>
-        <Grid size={2}>
-          <Grid container spacing={2}>
-            <Grid size={12}>
-              <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
-            </Grid>
-            <Grid size={12}>
-              <SelectDifficulty
-                label={t('difficulty')}
-                value={difficulty?.id || null}
-                onChange={(e) => setDifficulty(e)}
-              />
-            </Grid>
-          </Grid>
+    <Paper sx={{ p: 1, m: 1 }}>
+      <Grid container spacing={1}>
+        <Grid size={12}>
+          <Typography variant="h6" color="primary" gutterBottom>
+            {t('percent-maneuver')}
+          </Typography>
         </Grid>
-        <Grid size={1}></Grid>
+
+        <Grid size={{ xs: 12, md: 2 }}>
+          <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 2 }}>
+          <SelectDifficulty label={t('difficulty')} value={difficulty?.id || 'm'} onChange={(e) => setDifficulty(e)} />
+        </Grid>
+
         {result && (
-          <Grid size={8}>
+          <Grid size={{ xs: 12, md: 12 }}>
             <Typography variant="body1" color="primary" gutterBottom>
               {t(result.message)}
             </Typography>
@@ -58,7 +57,7 @@ const PercentManeuverView: FC = () => {
           </Grid>
         )}
       </Grid>
-    </>
+    </Paper>
   );
 };
 
