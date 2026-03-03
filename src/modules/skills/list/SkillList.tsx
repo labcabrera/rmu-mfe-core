@@ -77,7 +77,7 @@ const TraitList: FC = () => {
     <>
       <SkillListActions />
       <SkillListSearch categories={skillCategories} onSearch={handleSearch} />
-      <Grid container spacing={2} mb={2} alignItems="center">
+      <Grid container spacing={1} mt={1} mb={1} alignItems="center">
         <Grid size={12}>
           <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
             {skills.map((skill) => (

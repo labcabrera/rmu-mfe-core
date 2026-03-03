@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Chip, Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { Skill } from '../../api/skill.dto';
 
@@ -15,18 +15,24 @@ const SkillViewInfo: FC<{
   return (
     <Grid container spacing={2}>
       <Grid size={12}>
-        <Typography variant="body1" gutterBottom>
-          Stat bonus: {skill.bonus}
+        <Typography variant="h6" gutterBottom>
+          {t(skill.id)}
         </Typography>
       </Grid>
       <Grid size={12}>
-        <Typography variant="body1" gutterBottom>
-          Specialization: {skill.specialization}
-        </Typography>
+        <Chip label={`${t(skill.bonus)}`} />
       </Grid>
+      {skill.specialization && (
+        <Grid size={12}>
+          <Typography variant="body1" gutterBottom>
+            Specialization: {skill.specialization}
+          </Typography>
+        </Grid>
+      )}
       <Typography variant="body1" gutterBottom sx={{ whiteSpace: 'pre-wrap' }}>
         {t(getDescriptionKey())}
       </Typography>
+      <pre>{JSON.stringify(skill, null, 2)} </pre>
     </Grid>
   );
 };

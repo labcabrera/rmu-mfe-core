@@ -11,9 +11,6 @@ const SkillViewResume: FC<{
   return (
     <Grid container spacing={1} mt={3}>
       <Grid size={12}>
-        <Typography variant="h6" color="primary" gutterBottom>
-          {t(skill.id)}
-        </Typography>
         <Typography variant="body1" gutterBottom>
           {t(skill.categoryId)}
         </Typography>
