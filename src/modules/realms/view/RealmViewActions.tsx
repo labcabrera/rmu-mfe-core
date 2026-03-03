@@ -20,7 +20,6 @@ const RealmViewActions: FC<{
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
     { name: t('realms'), link: '/core/realms' },
-    { name: realm.name },
   ];
 
   const onDeleteRealm = () => {

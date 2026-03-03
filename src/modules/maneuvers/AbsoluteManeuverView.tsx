@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Checkbox, FormControlLabel, Grid, Typography } from '@mui/material';
+import { Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
 import { AbsoluteManeuverResult, fetchAbsoluteManeuver } from '../api/maneuver';
@@ -25,31 +25,35 @@ const AbsoluteManeuverView: FC = () => {
   }, [roll, unusualEvent, table, showError]);
 
   return (
-    <>
-      <Grid container spacing={2}>
-        <Grid size={2}>
-          <Grid container spacing={2}>
-            <Grid size={12}>
-              <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
-            </Grid>
-            <Grid size={12}>
-              <SelectManeuverTable
-                value={table}
-                label={t('maneuver-table')}
-                onChange={(event) => setTable(event.target.value)}
-              />
-            </Grid>
-            <Grid size={12}>
-              <FormControlLabel
-                control={<Checkbox checked={unusualEvent} onChange={(e) => setUnusualEvent(e.target.checked)} />}
-                label={t('unusual-event')}
-              />
-            </Grid>
-          </Grid>
+    <Paper sx={{ p: 1, m: 1 }}>
+      <Grid container spacing={1}>
+        <Grid size={12}>
+          <Typography variant="h6" color="primary" gutterBottom>
+            {t('absolute-maneuver')}
+          </Typography>
         </Grid>
-        <Grid size={1}></Grid>
+
+        <Grid size={{ xs: 12, md: 2 }}>
+          <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 2 }}>
+          <SelectManeuverTable
+            value={table}
+            label={t('maneuver-table')}
+            onChange={(event) => setTable(event.target.value)}
+          />
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 12 }}>
+          <FormControlLabel
+            control={<Checkbox checked={unusualEvent} onChange={(e) => setUnusualEvent(e.target.checked)} />}
+            label={t('unusual-event')}
+          />
+        </Grid>
+
         {result && (
-          <Grid size={8}>
+          <Grid size={{ xs: 12, md: 12 }}>
             <Typography variant="body1" color="primary" gutterBottom>
               {t(result.result)}
             </Typography>
@@ -69,7 +73,7 @@ const AbsoluteManeuverView: FC = () => {
           </Grid>
         )}
       </Grid>
-    </>
+    </Paper>
   );
 };
 

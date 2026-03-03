@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Race, resistances } from '../../api/race.dto';
-import NumericCard from '../../shared/cards/NumericCard';
-
-const imageBaseUrl = process.env.RMU_MFE_ASSETS!;
+import { imageBaseUrl } from '../../services/config';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const RaceViewResistances: FC<{
   race: Race;
@@ -24,11 +23,18 @@ const RaceViewResistances: FC<{
   };
 
   return (
-    <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
+    <Grid container spacing={1} columns={10}>
       {resistances.map((resistance) => (
-        <NumericCard value={race.resistances[resistance]} subtitle={t(resistance)} image={getImage(resistance)} />
+        <Grid size={{ xs: 5, md: 2 }}>
+          <RmuTextCard
+            value={race.resistances[resistance]}
+            subtitle={t(resistance)}
+            image={getImage(resistance)}
+            grayscale={0.7}
+          />
+        </Grid>
       ))}
-    </Box>
+    </Grid>
   );
 };
 

@@ -1,76 +1,100 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Box } from '@mui/material';
+import { Grid } from '@mui/material';
+import { t } from 'i18next';
 import { Race } from '../../api/race.dto';
-import NumericCard from '../../shared/cards/NumericCard';
-import TextCard from '../../shared/cards/TextCard';
+import { imageBaseUrl } from '../../services/config';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 
-const imageBaseUrl = process.env.RMU_MFE_ASSETS!;
+const grayscale = 0.7;
 
 const RaceViewAttributes: FC<{
   race: Race;
 }> = ({ race }) => {
-  const { t } = useTranslation();
-
   return (
-    <>
-      <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
-        <TextCard
+    <Grid container spacing={1} columns={10}>
+      <Grid size={{ xs: 5, md: 2 }}>
+        <RmuTextCard
           value={t(race.sizeId)}
           subtitle={t('race-size')}
           image={`${imageBaseUrl}images/generic/race-size.png`}
+          grayscale={grayscale}
         />
-        <NumericCard
+      </Grid>
+      <Grid size={{ xs: 5, md: 2 }}>
+        <RmuTextCard
           value={race.baseHits}
           subtitle={t('base-hit-points')}
           image={`${imageBaseUrl}images/generic/hp.png`}
           applyColor={false}
+          grayscale={grayscale}
         />
-        <NumericCard
+      </Grid>
+      <Grid size={{ xs: 5, md: 2 }}>
+        <RmuTextCard
           value={race.strideBonus}
           subtitle={t('stride-bonus')}
           image={`${imageBaseUrl}images/generic/stride-bonus.png`}
+          grayscale={grayscale}
         />
-        <NumericCard
+      </Grid>
+      <Grid size={{ xs: 5, md: 2 }}>
+        <RmuTextCard
           value={race.enduranceBonus}
           subtitle={t('endurance-bonus')}
           image={`${imageBaseUrl}images/generic/stat-co.png`}
+          grayscale={grayscale}
         />
-        <NumericCard
+      </Grid>
+
+      <Grid size={{ xs: 5, md: 2 }}>
+        <RmuTextCard
           value={race.recoveryMultiplier}
           subtitle={t('recovery-multiplier')}
           image={`${imageBaseUrl}images/generic/physical.png`}
-          applyColor={false}
+          grayscale={grayscale}
         />
-        <NumericCard
+      </Grid>
+      <Grid size={{ xs: 5, md: 2 }}>
+        <RmuTextCard
           value={race.baseAt}
           subtitle={t('base-at')}
           image={`${imageBaseUrl}images/generic/trait-racial.png`}
-          applyColor={false}
+          grayscale={grayscale}
         />
-        <NumericCard
+      </Grid>
+      <Grid size={{ xs: 5, md: 2 }}>
+        <RmuTextCard
           value={race.baseDevPoints}
           subtitle={t('base-dev-points')}
           image={`${imageBaseUrl}images/generic/trait-combat.png`}
-          applyColor={false}
+          grayscale={grayscale}
         />
-        <TextCard
-          value={race.defaultLanguage || t('none')}
-          subtitle={t('native-language')}
-          image={`${imageBaseUrl}images/generic/language.png`}
-        />
-        <TextCard
+      </Grid>
+      <Grid size={{ xs: 5, md: 2 }}>
+        <RmuTextCard
           value={`${race.averageHeight.male} / ${race.averageHeight.female}`}
           subtitle={t('average-height')}
           image={`${imageBaseUrl}images/generic/race-size.png`}
-        />{' '}
-        <TextCard
+          grayscale={grayscale}
+        />
+      </Grid>
+      <Grid size={{ xs: 5, md: 2 }}>
+        <RmuTextCard
           value={`${race.averageWeight.male} / ${race.averageWeight.female}`}
           subtitle={t('average-weight')}
           image={`${imageBaseUrl}images/generic/race-size.png`}
+          grayscale={grayscale}
         />
-      </Box>
-    </>
+      </Grid>
+      <Grid size={{ xs: 5, md: 2 }}>
+        <RmuTextCard
+          value={race.defaultLanguage || t('none')}
+          subtitle={t('native-language')}
+          image={`${imageBaseUrl}images/generic/language.png`}
+          grayscale={grayscale}
+        />
+      </Grid>
+    </Grid>
   );
 };
 

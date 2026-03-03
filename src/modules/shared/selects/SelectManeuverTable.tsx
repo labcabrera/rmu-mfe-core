@@ -3,7 +3,7 @@ import { MenuItem, TextField } from '@mui/material';
 import { t } from 'i18next';
 
 const SelectManeuverTable: FC<{
-  value: string;
+  value: string | null;
   label: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }> = ({ value, label, onChange }) => {
@@ -14,7 +14,6 @@ const SelectManeuverTable: FC<{
       select
       label={label}
       value={value === undefined || value === null ? '' : value}
-      variant="standard"
       onChange={onChange}
       fullWidth
     >

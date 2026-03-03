@@ -4,10 +4,10 @@ import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchRealm } from '../../api/realm';
 import { Realm, UpdateRealmDto } from '../../api/realm.dto';
+import { imageBaseUrl } from '../../services/config';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import RealmEditActions from './RealmEditActions';
 import RealmEditAttributes from './RealmEditAttributes';
-import RealmEditResume from './RealmEditResume';
 
 const RealmEdit: FC = () => {
   const location = useLocation();
@@ -42,11 +42,10 @@ const RealmEdit: FC = () => {
     <>
       <RealmEditActions realm={realm} formData={formData} />
       <Grid container spacing={2}>
-        <Grid size={2}>
-          <GenericAvatar imageUrl="/static/images/generic/realm.png" size={300} />
-          <RealmEditResume formData={formData!} setFormData={setFormData} />
+        <Grid size={{ xs: 12, md: 2 }}>
+          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/realm.png`} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <RealmEditAttributes formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>

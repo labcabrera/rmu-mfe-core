@@ -18,7 +18,6 @@ const RaceEditActions: FC<{
     { name: t('core'), link: '/core' },
     { name: t('realms'), link: '/core/realms' },
     { name: race.realmName, link: `/core/realms/view/${race.realmId}` },
-    { name: race.name, link: `/core/races/view/${race.id}` },
     { name: t('edit') },
   ];
 
