@@ -7,6 +7,7 @@ import { fetchPagedSkillCategories } from '../../api/skill-category';
 import { SkillCategory } from '../../api/skill-category.dto';
 import { imageBaseUrl } from '../../services/config';
 import CardListItem from '../../shared/cards/CardListItem';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 import SkillCategoryListActions from './SkillCategoryListActions';
 import SkillCategoryListSearch from './SkillCategoryListSearch';
 
@@ -33,10 +34,6 @@ const SkillCategoryList: FC = () => {
     setPage(value - 1);
   };
 
-  const handleSkillClick = async (category: SkillCategory) => {
-    navigate(`/core/skill-categories/view/${category.id}`, { state: { category } });
-  };
-
   useEffect(() => {
     bindSkillCategories();
   }, [queryString, page]);
@@ -47,19 +44,18 @@ const SkillCategoryList: FC = () => {
     <>
       <SkillCategoryListActions setQueryString={setQueryString} />
       <SkillCategoryListSearch queryString={queryString} setQueryString={setQueryString} />
-      <Grid container spacing={1} mt={1} mb={1} alignItems="center">
-        <Grid size={12}>
-          <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
-            {skillCategories.map((category) => (
-              <CardListItem
-                title={t(category.id)}
-                subtitle={t(category.id)}
-                image={`${imageBaseUrl}images/generic/configuration.png`}
-                onClick={() => handleSkillClick(category)}
-              />
-            ))}
-          </Box>
-        </Grid>
+      <Grid container spacing={1} padding={1}>
+        {skillCategories.map((category) => (
+          <Grid size={{ xs: 12, md: 3 }} key={category.id}>
+            <RmuTextCard
+              size="medium"
+              value={t(category.id)}
+              subtitle={t(category.id)}
+              image={`${imageBaseUrl}images/generic/configuration.png`}
+              onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { category } })}
+            />
+          </Grid>
+        ))}
       </Grid>
       {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
       <Box mt={2} display="flex" justifyContent="center">

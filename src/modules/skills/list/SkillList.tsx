@@ -9,6 +9,7 @@ import { SkillCategory } from '../../api/skill-category.dto';
 import { Skill } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
 import CardListItem from '../../shared/cards/CardListItem';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 import SkillListActions from './SkillListActions';
 import SkillListSearch from './SkillListSearch';
 
@@ -62,10 +63,6 @@ const SkillList: FC = () => {
     bindSkills(searchId, searchCategory, value - 1);
   };
 
-  const handleSkillClick = async (skill: Skill) => {
-    navigate(`/core/skills/view/${skill.id}`, { state: { skill } });
-  };
-
   useEffect(() => {
     bindSkills('', '', 0);
     bindSkillCategories();
@@ -77,19 +74,18 @@ const SkillList: FC = () => {
     <>
       <SkillListActions />
       <SkillListSearch categories={skillCategories} onSearch={handleSearch} />
-      <Grid container spacing={1} mt={1} mb={1} alignItems="center">
-        <Grid size={12}>
-          <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
-            {skills.map((skill) => (
-              <CardListItem
-                title={t(skill.id)}
-                subtitle={t(skill.categoryId)}
-                image={`${imageBaseUrl}images/generic/configuration.png`}
-                onClick={() => handleSkillClick(skill)}
-              />
-            ))}
-          </Box>
-        </Grid>
+      <Grid container spacing={1} padding={1}>
+        {skills.map((skill) => (
+          <Grid size={{ xs: 12, md: 3 }} key={skill.id}>
+            <RmuTextCard
+              size="medium"
+              value={t(skill.id)}
+              subtitle={t(skill.categoryId)}
+              image={`${imageBaseUrl}images/generic/configuration.png`}
+              onClick={() => navigate(`/core/skills/view/${skill.id}`, { state: { skill } })}
+            />
+          </Grid>
+        ))}
       </Grid>
       {skills.length === 0 ? <p>No skills found.</p> : null}
       <Box mt={2} display="flex" justifyContent="center">

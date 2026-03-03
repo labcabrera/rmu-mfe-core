@@ -1,15 +1,19 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Pagination, Box, Grid } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedTraits } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
-import TraitCard from '../../shared/cards/TraitCard';
+import { getTraitImage } from '../../services/trait-image-service';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 import TraitListActions from './TraitListActions';
 import TraitListSearch from './TraitListSearch';
 
 const PAGE_SIZE = 24;
 
 const TraitList: FC = () => {
+  const navigate = useNavigate();
   const { showError } = useError();
   const [traits, setTraits] = useState<Trait[]>([]);
   const [page, setPage] = useState(0);
@@ -61,14 +65,21 @@ const TraitList: FC = () => {
     <>
       <TraitListActions />
       <TraitListSearch onSearch={handleSearch} />
-      <Grid container spacing={2} mt={1} mb={2} alignItems="center">
-        <Grid size={12}>
-          <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
-            {traits.map((trait) => (
-              <TraitCard key={trait.id} trait={trait} />
-            ))}
-          </Box>
-        </Grid>
+      <Grid container spacing={1} padding={1}>
+        {traits.map((trait) => (
+          <Grid size={{ xs: 12, md: 3 }} key={trait.id}>
+            <RmuTextCard
+              size="medium"
+              value={t(trait.id)}
+              subtitle={
+                t(trait.isTalent ? t('trait') : t('flaw')) + ' • ' + t(trait.category) + ' • ' + trait.adquisitionCost
+              }
+              image={getTraitImage(trait)}
+              onClick={() => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })}
+              grayscale={trait.isTalent ? 0 : 0.8}
+            />
+          </Grid>
+        ))}
       </Grid>
       {traits.length === 0 ? <p>No traits found.</p> : null}
       <Box mt={2} display="flex" justifyContent="center">
