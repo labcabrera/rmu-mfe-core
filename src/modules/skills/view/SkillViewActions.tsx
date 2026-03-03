@@ -8,6 +8,7 @@ const SkillViewActions: FC<{
 }> = ({ skill }) => {
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
+    { name: t('skill-categories'), link: '/core/skill-categories' },
     { name: t('skills'), link: '/core/skills' },
   ];
 

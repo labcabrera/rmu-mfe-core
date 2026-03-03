@@ -8,7 +8,6 @@ import { imageBaseUrl } from '../../services/config';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import SkillViewActions from './SkillViewActions';
 import SkillViewInfo from './SkillViewInfo';
-import SkillViewResume from './SkillViewResume';
 
 const SkillView: FC = () => {
   const location = useLocation();
@@ -37,7 +36,6 @@ const SkillView: FC = () => {
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 2 }}>
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />
-          <SkillViewResume skill={skill} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
           <SkillViewInfo skill={skill} />

@@ -20,8 +20,8 @@ const SkillCategoryList: FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [queryString, setQueryString] = useState<string>('');
 
-  const bindSkillCategories = (id: string, category: string, pageNumber: number = 0) => {
-    fetchPagedSkillCategories(queryString, pageNumber, PAGE_SIZE)
+  const bindSkillCategories = () => {
+    fetchPagedSkillCategories(queryString, page, PAGE_SIZE)
       .then((response) => {
         setSkillCategories(response.content);
         setTotalPages(response.pagination.totalPages || 1);
@@ -38,7 +38,7 @@ const SkillCategoryList: FC = () => {
   };
 
   useEffect(() => {
-    bindSkillCategories('', '', 0);
+    bindSkillCategories();
   }, [queryString, page]);
 
   if (!skillCategories) return <p>Loading...</p>;

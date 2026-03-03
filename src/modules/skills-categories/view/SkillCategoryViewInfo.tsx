@@ -1,29 +1,44 @@
 import React, { FC } from 'react';
-import { Chip, Grid, Stack, Typography } from '@mui/material';
+import { Chip, Grid, Paper, Stack, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { Skill } from '../../api/skill.dto';
+import { imageBaseUrl } from '../../services/config';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const SkillCategoryViewInfo: FC<{
   skillCategory: Skill;
 }> = ({ skillCategory }) => {
   if (!skillCategory) return <p>Loading...</p>;
 
+  const getCategoryBonus = (): string => {
+    if (!skillCategory.bonus || skillCategory.bonus.length === 0) return t('none');
+    return skillCategory.bonus.map((bonus) => t(bonus)).join(', ');
+  };
+
   return (
-    <Grid container spacing={2}>
-      <Grid size={12}>
+    <Grid container spacing={1}>
+      <Grid size={{ xs: 12, md: 3 }}>
         <Typography variant="h6" gutterBottom>
           {t(skillCategory.id)}
         </Typography>
+      </Grid>
+      <Grid size={12}>
         {skillCategory.bonus && (
-          <Stack direction="row" spacing={1}>
-            {skillCategory.bonus.map((bonus) => (
-              <Chip key={bonus} label={t(bonus)} />
-            ))}
-          </Stack>
+          <Grid size={{ xs: 12, md: 3 }}>
+            <RmuTextCard
+              subtitle={t('bonus')}
+              image={`${imageBaseUrl}images/generic/configuration.png`}
+              value={getCategoryBonus()}
+            />
+          </Grid>
         )}
       </Grid>
-      <Grid size={{ xs: 12, md: 6 }}>
-        <Typography variant="body1">{t(`skill-category-${skillCategory.id}-description`)}</Typography>
+      <Grid size={{ xs: 12, md: 8 }} mt={1}>
+        <Paper sx={{ p: 2 }}>
+          <Typography variant="body1" gutterBottom sx={{ whiteSpace: 'pre-wrap' }}>
+            {t(`skill-category-${skillCategory.id}-description`)}
+          </Typography>
+        </Paper>
       </Grid>
     </Grid>
   );

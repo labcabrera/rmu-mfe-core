@@ -1,14 +1,16 @@
 import React, { FC } from 'react';
-import { Grid, Stack, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Grid, Paper, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { Skill } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
-import CardListItem from '../../shared/cards/CardListItem';
-import TextCard from '../../shared/cards/TextCard';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const SkillViewInfo: FC<{
   skill: Skill;
 }> = ({ skill }) => {
+  const navigate = useNavigate();
+
   if (!skill) return <p>Loading...</p>;
 
   const getDescriptionKey = () => {
@@ -16,8 +18,12 @@ const SkillViewInfo: FC<{
   };
 
   const onCategoryClick = () => {
-    // Implement navigation to category view
-    console.log('Navigate to category:', skill.categoryId);
+    navigate(`/core/skill-categories/view/${skill.categoryId}`);
+  };
+
+  const getCategoryBonus = (): string => {
+    if (!skill.bonus || skill.bonus.length === 0) return t('none');
+    return skill.bonus.map((bonus) => t(bonus)).join(', ');
   };
 
   return (
@@ -28,40 +34,45 @@ const SkillViewInfo: FC<{
         </Typography>
       </Grid>
       <Grid size={12}>
-        <CardListItem
-          subtitle="Category"
-          image={`${imageBaseUrl}images/generic/configuration.png`}
-          title={t(skill.categoryId)}
-          onClick={onCategoryClick}
-        />
-      </Grid>
-      {skill.bonus && (
-        <Grid size={12}>
-          <Stack direction="row" spacing={1} alignItems="center">
-            {skill.bonus.map((bonus) => (
-              <TextCard
-                key={bonus}
-                subtitle="Bonus"
+        <Grid container spacing={1}>
+          <Grid size={{ xs: 12, md: 3 }}>
+            <RmuTextCard
+              image={`${imageBaseUrl}images/generic/configuration.png`}
+              onClick={onCategoryClick}
+              size="small"
+              value={t(skill.categoryId)}
+              subtitle={t('category')}
+            />
+          </Grid>
+
+          {skill.bonus && (
+            <Grid size={{ xs: 12, md: 3 }}>
+              <RmuTextCard
+                subtitle={t('bonus')}
                 image={`${imageBaseUrl}images/generic/configuration.png`}
-                value={t(bonus)}
+                value={getCategoryBonus()}
               />
-            ))}
-          </Stack>
+            </Grid>
+          )}
+
+          {skill.specialization && (
+            <Grid size={{ xs: 12, md: 3 }}>
+              <RmuTextCard
+                subtitle="Specialization"
+                image={`${imageBaseUrl}images/generic/configuration.png`}
+                value={t(skill.specialization)}
+              />
+            </Grid>
+          )}
         </Grid>
-      )}
-      {skill.specialization && (
-        <Grid size={12}>
-          <TextCard
-            subtitle="Specialization"
-            image={`${imageBaseUrl}images/generic/configuration.png`}
-            value={t(skill.specialization)}
-          />
-        </Grid>
-      )}
-      <Typography variant="body1" gutterBottom sx={{ whiteSpace: 'pre-wrap' }}>
-        {t(getDescriptionKey())}
-      </Typography>
-      <pre>{JSON.stringify(skill, null, 2)} </pre>
+      </Grid>
+      <Grid size={{ xs: 12, md: 8 }} mt={1}>
+        <Paper sx={{ p: 2 }}>
+          <Typography variant="body1" gutterBottom sx={{ whiteSpace: 'pre-wrap' }}>
+            {t(getDescriptionKey())}
+          </Typography>
+        </Paper>
+      </Grid>
     </Grid>
   );
 };

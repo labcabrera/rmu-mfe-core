@@ -13,7 +13,7 @@ const SkillCategoryViewActions: FC<{
 
   if (!skill) return <p>Loading...</p>;
 
-  return <RmuBreadcrumbs items={breadcrumbs}></RmuBreadcrumbs>;
+  return <RmuBreadcrumbs items={breadcrumbs} maxNameLength={30}></RmuBreadcrumbs>;
 };
 
 export default SkillCategoryViewActions;

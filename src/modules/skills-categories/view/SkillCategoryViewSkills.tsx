@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Grid, Box } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { Skill } from '../../api/skill.dto';
-import { imageBaseUrl } from '../../services/config';
-import CardListItem from '../../shared/cards/CardListItem';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const SkillCategoryViewSkills: FC<{
   skills: Skill[];
@@ -17,19 +16,20 @@ const SkillCategoryViewSkills: FC<{
 
   return (
     <>
-      <Grid container spacing={1} mt={1} mb={1} alignItems="center">
+      <Grid container spacing={1} mt={5}>
         <Grid size={12}>
-          <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
+          <Typography variant="h6" gutterBottom>
+            {t('skills')}
+          </Typography>
+        </Grid>
+        <Grid size={12}>
+          <Grid container spacing={1}>
             {skills.map((skill) => (
-              <CardListItem
-                key={skill.id}
-                title={t(skill.id)}
-                subtitle={t(skill.categoryId)}
-                image={`${imageBaseUrl}images/generic/configuration.png`}
-                onClick={() => handleSkillClick(skill)}
-              />
+              <Grid size={{ xs: 12, md: 3 }} key={skill.id}>
+                <RmuTextCard value={t(skill.id)} subtitle={t('skill')} onClick={() => handleSkillClick(skill)} />
+              </Grid>
             ))}
-          </Box>
+          </Grid>
         </Grid>
       </Grid>
       {skills.length === 0 ? <p>No skills found.</p> : null}

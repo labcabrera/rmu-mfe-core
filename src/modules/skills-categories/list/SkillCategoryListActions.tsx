@@ -13,7 +13,7 @@ const SkillCategoryListActions: FC<{
   };
 
   return (
-    <RmuBreadcrumbs items={breadcrumbs}>
+    <RmuBreadcrumbs items={breadcrumbs} maxNameLength={30}>
       <RefreshButton onClick={onResetSearch} />
     </RmuBreadcrumbs>
   );
