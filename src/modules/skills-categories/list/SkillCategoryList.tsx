@@ -45,7 +45,7 @@ const SkillCategoryList: FC = () => {
 
   return (
     <>
-      <SkillCategoryListActions />
+      <SkillCategoryListActions setQueryString={setQueryString} />
       <SkillCategoryListSearch queryString={queryString} setQueryString={setQueryString} />
       <Grid container spacing={1} mt={1} mb={1} alignItems="center">
         <Grid size={12}>

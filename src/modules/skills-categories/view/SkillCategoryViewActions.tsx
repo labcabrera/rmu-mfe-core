@@ -3,12 +3,12 @@ import { t } from 'i18next';
 import { Skill } from '../../api/skill.dto';
 import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 
-const SkillViewActions: FC<{
+const SkillCategoryViewActions: FC<{
   skill: Skill;
 }> = ({ skill }) => {
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
-    { name: t('skills'), link: '/core/skills' },
+    { name: t('skill-categories'), link: '/core/skill-categories' },
   ];
 
   if (!skill) return <p>Loading...</p>;
@@ -16,4 +16,4 @@ const SkillViewActions: FC<{
   return <RmuBreadcrumbs items={breadcrumbs}></RmuBreadcrumbs>;
 };
 
-export default SkillViewActions;
+export default SkillCategoryViewActions;

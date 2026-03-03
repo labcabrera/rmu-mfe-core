@@ -1,11 +1,11 @@
-import React, { Dispatch, FC, useEffect, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { TextField, Grid } from '@mui/material';
 import { t } from 'i18next';
 import ClearButton from '../../shared/buttons/ClearButton';
 
 const SkillCategoryListSearch: FC<{
   queryString: string;
-  setQueryString: Dispatch<React.SetStateAction<string>>;
+  setQueryString: Dispatch<SetStateAction<string>>;
 }> = ({ queryString, setQueryString }) => {
   const [id, setId] = useState('');
 

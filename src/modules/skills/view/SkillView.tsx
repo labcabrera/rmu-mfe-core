@@ -39,7 +39,7 @@ const SkillView: FC = () => {
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />
           <SkillViewResume skill={skill} />
         </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <SkillViewInfo skill={skill} />
         </Grid>
       </Grid>
