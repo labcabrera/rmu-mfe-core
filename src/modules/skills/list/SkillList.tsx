@@ -14,7 +14,7 @@ import SkillListSearch from './SkillListSearch';
 
 const PAGE_SIZE = 24;
 
-const TraitList: FC = () => {
+const SkillList: FC = () => {
   const navigate = useNavigate();
   const { showError } = useError();
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -99,4 +99,4 @@ const TraitList: FC = () => {
   );
 };
 
-export default TraitList;
+export default SkillList;

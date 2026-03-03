@@ -60,6 +60,12 @@ const HomePage: FC = () => {
               onClick={() => navigate(`/core/maneuvers`)}
             />
             <CardListItem
+              title="Skill categories"
+              subtitle="Skill category consultation"
+              image={`${imageBaseUrl}images/generic/configuration.png`}
+              onClick={() => navigate(`/core/skill-categories`)}
+            />
+            <CardListItem
               title="Skills"
               subtitle="Skill consultation"
               image={`${imageBaseUrl}images/generic/configuration.png`}
