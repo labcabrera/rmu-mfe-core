@@ -1,15 +1,14 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
-import { TextField, Grid } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import { TextField, Grid, InputAdornment, IconButton } from '@mui/material';
 import { t } from 'i18next';
-import ClearButton from '../../shared/buttons/ClearButton';
 
 const SkillCategoryListSearch: FC<{
-  queryString: string;
   setQueryString: Dispatch<SetStateAction<string>>;
-}> = ({ queryString, setQueryString }) => {
+}> = ({ setQueryString }) => {
   const [id, setId] = useState('');
 
-  const onResetSearch = () => {
+  const onSearchIdClear = () => {
     setId('');
   };
 
@@ -21,11 +20,26 @@ const SkillCategoryListSearch: FC<{
 
   return (
     <Grid container spacing={1}>
-      <Grid size={{ xs: 10, md: 3 }}>
-        <TextField label={t('name')} value={id} onChange={(e) => setId(e.target.value)} fullWidth />
-      </Grid>
-      <Grid size={{ xs: 2, md: 2 }}>
-        <ClearButton onClick={onResetSearch} />
+      <Grid size={{ xs: 12, md: 3 }}>
+        <TextField
+          label={t('name')}
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+          fullWidth
+          slotProps={{
+            input: id
+              ? {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton size="small" aria-label="clear name" onClick={onSearchIdClear} edge="end">
+                        <ClearIcon fontSize="small" />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }
+              : undefined,
+          }}
+        />
       </Grid>
     </Grid>
   );

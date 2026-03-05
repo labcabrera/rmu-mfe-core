@@ -42,12 +42,13 @@ const SkillCategoryList: FC = () => {
   return (
     <>
       <SkillCategoryListActions setQueryString={setQueryString} />
-      <SkillCategoryListSearch queryString={queryString} setQueryString={setQueryString} />
-      <Grid container spacing={1} padding={1}>
+      <Grid container spacing={1}>
+        <Grid size={12}>
+          <SkillCategoryListSearch setQueryString={setQueryString} />
+        </Grid>
         {skillCategories.map((category) => (
           <Grid size={{ xs: 12, md: 3 }} key={category.id}>
             <RmuTextCard
-              size="medium"
               value={t(category.id)}
               subtitle={t('skill-category')}
               image={`${imageBaseUrl}images/generic/configuration.png`}

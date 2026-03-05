@@ -1,15 +1,14 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
-import { TextField, Grid } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import { TextField, Grid, IconButton, InputAdornment } from '@mui/material';
 import { t } from 'i18next';
 import { SkillCategory } from '../../api/skill-category.dto';
-import ClearButton from '../../shared/buttons/ClearButton';
 import SelectSkillCategory from '../../shared/selects/SelectSkillCategory';
 
 const SkillListSearch: FC<{
-  queryString: string;
   setQueryString: Dispatch<SetStateAction<string>>;
   categories: SkillCategory[];
-}> = ({ queryString, setQueryString, categories }) => {
+}> = ({ setQueryString, categories }) => {
   const [searchId, setSearchId] = useState('');
   const [category, setCategory] = useState('');
 
@@ -23,6 +22,10 @@ const SkillListSearch: FC<{
     return query;
   };
 
+  const handleClearName = () => {
+    setSearchId('');
+  };
+
   useEffect(() => {
     setQueryString(buildQueryString());
   }, [searchId, category]);
@@ -31,23 +34,34 @@ const SkillListSearch: FC<{
 
   return (
     <Grid container spacing={1}>
-      <Grid size={{ xs: 10, md: 3 }}>
-        <TextField label={t('name')} value={searchId} onChange={(e) => setSearchId(e.target.value)} fullWidth />
+      <Grid size={{ xs: 12, md: 3 }}>
+        <TextField
+          label={t('name')}
+          value={searchId}
+          onChange={(e) => setSearchId(e.target.value)}
+          fullWidth
+          slotProps={{
+            input: searchId
+              ? {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton size="small" aria-label="clear name" onClick={handleClearName} edge="end">
+                        <ClearIcon fontSize="small" />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }
+              : undefined,
+          }}
+        />
       </Grid>
-      <Grid size={{ xs: 10, md: 3 }}>
+      <Grid size={{ xs: 12, md: 3 }}>
         <SelectSkillCategory
           value={category}
           onChange={(e: React.ChangeEvent<{ value: unknown }>) => setCategory(e.target.value as string)}
           label={t('category')}
           categories={categories}
-        />
-      </Grid>
-      <Grid size={{ xs: 2, md: 2 }}>
-        <ClearButton
-          onClick={() => {
-            setSearchId('');
-            setCategory('');
-          }}
+          allowEmpty={true}
         />
       </Grid>
     </Grid>

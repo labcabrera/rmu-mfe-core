@@ -32,7 +32,7 @@ const SkillViewInfo: FC<{
   };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1}>
       <Grid size={12}>
         <Typography variant="h6" gutterBottom>
           {t(skill.id)}
@@ -72,7 +72,7 @@ const SkillViewInfo: FC<{
         </Grid>
       </Grid>
       <Grid size={{ xs: 12, md: 8 }} mt={1}>
-        <Paper sx={{ p: 2 }}>
+        <Paper sx={{ p: 1 }}>
           <Typography variant="body1" gutterBottom sx={{ whiteSpace: 'pre-wrap' }}>
             {t(getDescriptionKey())}
           </Typography>
