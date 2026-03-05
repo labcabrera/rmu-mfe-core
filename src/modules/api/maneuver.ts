@@ -14,7 +14,7 @@ export async function fetchPercentManeuver(roll: number): Promise<PercentManeuve
 
 export async function fetchAbsoluteManeuver(
   roll: number,
-  table: string | undefined,
+  table: string | null,
   unusualEvent: boolean | undefined
 ): Promise<AbsoluteManeuverResult> {
   let query = `?roll=${roll}`;

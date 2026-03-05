@@ -26,38 +26,36 @@ const PercentManeuverView: FC = () => {
   }, [roll, difficulty, showError]);
 
   return (
-    <Paper sx={{ p: 1, m: 1 }}>
-      <Grid container spacing={1}>
-        <Grid size={12}>
-          <Typography variant="h6" color="primary" gutterBottom>
-            {t('percent-maneuver')}
-          </Typography>
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 2 }}>
-          <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 2 }}>
-          <SelectDifficulty label={t('difficulty')} value={difficulty?.id || 'm'} onChange={(e) => setDifficulty(e)} />
-        </Grid>
-
-        {result && (
-          <Grid size={{ xs: 12, md: 12 }}>
-            <Typography variant="body1" color="primary" gutterBottom>
-              {t(result.message)}
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              Total roll: {totalRoll}
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              Percent: {result.percent}%
-            </Typography>
-            {result.critical && <Typography variant="body1">Critical: {result.critical}</Typography>}
-          </Grid>
-        )}
+    <Grid container spacing={1}>
+      <Grid size={{ xs: 12, md: 4 }}>
+        <Typography variant="h6" color="primary" gutterBottom>
+          {t('percent-maneuver')}
+        </Typography>
       </Grid>
-    </Paper>
+
+      <Grid size={{ xs: 12, md: 2 }}>
+        <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
+      </Grid>
+
+      <Grid size={{ xs: 12, md: 2 }}>
+        <SelectDifficulty label={t('difficulty')} value={difficulty?.id || 'm'} onChange={(e) => setDifficulty(e)} />
+      </Grid>
+
+      {result && (
+        <Grid size={{ xs: 12, md: 12 }}>
+          <Typography variant="body1" color="primary" gutterBottom>
+            {t(result.message)}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Total roll: {totalRoll}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Percent: {result.percent}%
+          </Typography>
+          {result.critical && <Typography variant="body1">Critical: {result.critical}</Typography>}
+        </Grid>
+      )}
+    </Grid>
   );
 };
 
