@@ -61,7 +61,7 @@ const AbsoluteManeuverView: FC = () => {
               <Typography variant="h6" color="primary" gutterBottom>
                 {t(result.result)}
               </Typography>
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="body1" color="secondary" gutterBottom>
                 {result.message}
               </Typography>
               {result.penaltyUntilAbsoluteSuccess && (
