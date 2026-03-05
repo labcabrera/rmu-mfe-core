@@ -66,7 +66,7 @@ const RaceView: FC = () => {
           <CategorySeparator text={t('traits')}>
             <AddButton onClick={() => setTraitDialogOpen(true)} />
           </CategorySeparator>
-          <RaceViewTraits race={race} />
+          <RaceViewTraits race={race} setRace={setRace} />
         </Grid>
       </Grid>
 
@@ -76,6 +76,8 @@ const RaceView: FC = () => {
         setRace={setRace}
         onClose={() => setTraitDialogOpen(false)}
       />
+
+      <pre>{JSON.stringify(race, null, 2)} </pre>
     </>
   );
 };

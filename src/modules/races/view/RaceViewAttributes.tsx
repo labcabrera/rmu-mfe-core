@@ -35,6 +35,7 @@ const RaceViewAttributes: FC<{
           subtitle={t('stride-bonus')}
           image={`${imageBaseUrl}images/generic/stride-bonus.png`}
           grayscale={grayscale}
+          applyColor={true}
         />
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
@@ -43,6 +44,7 @@ const RaceViewAttributes: FC<{
           subtitle={t('endurance-bonus')}
           image={`${imageBaseUrl}images/generic/stat-co.png`}
           grayscale={grayscale}
+          applyColor={true}
         />
       </Grid>
 

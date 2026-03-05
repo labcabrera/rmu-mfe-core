@@ -1,8 +1,9 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
-import { Grid, TextField, Typography } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import { t } from 'i18next';
 import { CreateRaceDto } from '../../api/race.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
+import SelectRaceArchetype from '../../shared/selects/SelectRaceArchetype';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
 
 const RaceCreationAttributes: FC<{
@@ -15,11 +16,25 @@ const RaceCreationAttributes: FC<{
   };
 
   return (
-    <Grid container spacing={2} mt={5}>
+    <Grid container spacing={1} columns={10}>
       <Grid size={12}>
-        <Typography variant="h6" color="primary">
-          {t('race-info')}
-        </Typography>
+        <TextField
+          label={t('name')}
+          variant="outlined"
+          name="name"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          fullWidth
+          error={!formData.name}
+        />
+      </Grid>
+      <Grid size={12}>
+        <SelectRaceArchetype
+          label={t('race-archetype')}
+          name="archetype"
+          value={formData.archetype}
+          onChange={(e) => setFormData({ ...formData, archetype: e.target.value })}
+        />
       </Grid>
       <Grid size={2}>
         <SelectRaceSize label={t('race-size')} name="sizeId" value={formData.sizeId} onChange={handleChange} />

@@ -108,6 +108,7 @@ export type AverageWeight = {
 export type RaceTrait = {
   id: string;
   traitId: string;
+  tier: number | undefined;
   modifier: string | undefined;
   description: string | undefined;
 };

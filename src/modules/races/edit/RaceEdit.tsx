@@ -9,8 +9,8 @@ import EditableAvatar from '../../shared/avatars/EditableAvatar';
 import CategorySeparator from '../../shared/display/CategorySeparator';
 import RaceEditActions from './RaceEditActions';
 import RaceEditAttributes from './RaceEditAttributes';
+import RaceEditLore from './RaceEditLore';
 import RaceEditResistances from './RaceEditResistances';
-import RaceEditResume from './RaceEditResume';
 import RaceEditStats from './RaceEditStats';
 
 const RaceEdit: FC = () => {
@@ -47,15 +47,15 @@ const RaceEdit: FC = () => {
             imageUrl={formData.imageUrl || ''}
             onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
           />
-          <RaceEditResume formData={formData!} setFormData={setFormData} />
         </Grid>
-        <Grid size={{ xs: 12, md: 6 }} padding={1}>
+        <Grid size={{ xs: 12, md: 8 }} padding={1}>
+          <RaceEditAttributes formData={formData} setFormData={setFormData} />
           <CategorySeparator text={t('statistics')} />
           <RaceEditStats formData={formData} setFormData={setFormData} />
           <CategorySeparator text={t('resistances')} />
           <RaceEditResistances formData={formData} setFormData={setFormData} />
-          <CategorySeparator text={t('race-features')} />
-          <RaceEditAttributes formData={formData} setFormData={setFormData} />
+          <CategorySeparator text={t('lore')} />
+          <RaceEditLore formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
       {/* <pre>Form: {JSON.stringify(formData, null, 2)}</pre> */}

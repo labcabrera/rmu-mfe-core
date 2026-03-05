@@ -1,5 +1,5 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { t } from 'i18next';
 import { CreateRaceDto, resistances } from '../../api/race.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
@@ -9,12 +9,7 @@ const RaceCreationResistances: FC<{
   setFormData: Dispatch<SetStateAction<CreateRaceDto>>;
 }> = ({ formData, setFormData }) => {
   return (
-    <Grid container spacing={2} mt={5}>
-      <Grid size={12}>
-        <Typography variant="h6" color="primary">
-          {t('resistances')}
-        </Typography>
-      </Grid>
+    <Grid container spacing={2} columns={10}>
       {resistances.map((resistance) => (
         <Grid key={resistance} size={2}>
           <NumericInput

@@ -31,6 +31,7 @@ const RaceViewResistances: FC<{
             subtitle={t(resistance)}
             image={getImage(resistance)}
             grayscale={0.7}
+            applyColor={true}
           />
         </Grid>
       ))}

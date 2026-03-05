@@ -9,6 +9,7 @@ const SelectTraitSpecialization: FC<{
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }> = ({ label, value, name, onChange }) => {
   const values = [
+    'none',
     'stat',
     'skill',
     'combat-skill',
@@ -31,9 +32,6 @@ const SelectTraitSpecialization: FC<{
       fullWidth
       onChange={onChange}
     >
-      <MenuItem>
-        <em>{t('none')}</em>
-      </MenuItem>
       {values.map((option, index) => (
         <MenuItem key={index} value={option}>
           {t(option)}

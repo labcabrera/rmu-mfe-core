@@ -1,17 +1,17 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { CreateRaceDto, raceCreateTemplate } from '../../api/race.dto';
 import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
-import { imageBaseUrl } from '../../services/config';
 import EdditableAvatar from '../../shared/avatars/EditableAvatar';
-import RaceAvatarByName from '../../shared/avatars/RaceAvatarByName';
+import CharacterSeparator from '../../shared/display/CategorySeparator';
 import RaceCreationActions from './RaceCreationActions';
 import RaceCreationAttributes from './RaceCreationAttributes';
+import RaceCreationLore from './RaceCreationLore';
 import RaceCreationResistances from './RaceCreationResistances';
-import RaceCreationResume from './RaceCreationResume';
 import RaceCreationStats from './RaceCreationStats';
 
 const RaceCreation: FC = () => {
@@ -51,19 +51,21 @@ const RaceCreation: FC = () => {
   return (
     <>
       <RaceCreationActions formData={formData} isValid={isValid} realm={realm} />
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 4 }}>
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 2 }}>
           <EdditableAvatar
             imageUrl={formData.imageUrl || ''}
             onImageChange={(avatar) => setFormData({ ...formData, imageUrl: avatar })}
           />
-          {/* <RaceAvatarByName raceName={formData.name} size={300} /> */}
-          <RaceCreationResume formData={formData} setFormData={setFormData} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <RaceCreationStats formData={formData} setFormData={setFormData} />
-          <RaceCreationResistances formData={formData} setFormData={setFormData} />
           <RaceCreationAttributes formData={formData} setFormData={setFormData} />
+          <CharacterSeparator text={t('statistics')} />
+          <RaceCreationStats formData={formData} setFormData={setFormData} />
+          <CharacterSeparator text={t('resistances')} />
+          <RaceCreationResistances formData={formData} setFormData={setFormData} />
+          <CharacterSeparator text={t('lore')} />
+          <RaceCreationLore formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
       <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
