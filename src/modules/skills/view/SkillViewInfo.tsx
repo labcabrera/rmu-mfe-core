@@ -21,9 +21,14 @@ const SkillViewInfo: FC<{
     navigate(`/core/skill-categories/view/${skill.categoryId}`);
   };
 
+  function capitalize(str: string): string {
+    if (!str) return str;
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   const getCategoryBonus = (): string => {
     if (!skill.bonus || skill.bonus.length === 0) return t('none');
-    return skill.bonus.map((bonus) => t(bonus)).join(', ');
+    return skill.bonus.map((bonus) => capitalize(bonus)).join('+');
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Chip, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { Skill } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
@@ -10,9 +10,14 @@ const SkillCategoryViewInfo: FC<{
 }> = ({ skillCategory }) => {
   if (!skillCategory) return <p>Loading...</p>;
 
+  function capitalize(str: string): string {
+    if (!str) return str;
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   const getCategoryBonus = (): string => {
     if (!skillCategory.bonus || skillCategory.bonus.length === 0) return t('none');
-    return skillCategory.bonus.map((bonus) => t(bonus)).join(', ');
+    return skillCategory.bonus.map((bonus) => capitalize(bonus)).join('+');
   };
 
   return (

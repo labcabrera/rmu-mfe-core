@@ -6,7 +6,6 @@ import { useError } from '../../../ErrorContext';
 import { fetchPagedSkillCategories } from '../../api/skill-category';
 import { SkillCategory } from '../../api/skill-category.dto';
 import { imageBaseUrl } from '../../services/config';
-import CardListItem from '../../shared/cards/CardListItem';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import SkillCategoryListActions from './SkillCategoryListActions';
 import SkillCategoryListSearch from './SkillCategoryListSearch';
@@ -50,7 +49,7 @@ const SkillCategoryList: FC = () => {
             <RmuTextCard
               size="medium"
               value={t(category.id)}
-              subtitle={t(category.id)}
+              subtitle={t('skill-category')}
               image={`${imageBaseUrl}images/generic/configuration.png`}
               onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { category } })}
             />
