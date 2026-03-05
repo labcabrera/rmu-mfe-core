@@ -14,11 +14,13 @@ import RaceViewAttributes from './RaceViewAttributes';
 import RaceViewResistances from './RaceViewResistances';
 import RaceViewStats from './RaceViewStats';
 import RaceViewTraits from './RaceViewTraits';
+import AddRaceTraitDialog from './traits/AddRaceTraitDialog';
 
 const RaceView: FC = () => {
   const { raceId } = useParams<{ raceId: string | undefined }>();
   const { showError } = useError();
-  const [race, setRace] = useState<Race | null>(null);
+  const [race, setRace] = useState<Race>();
+  const [traitDialogOpen, setTraitDialogOpen] = useState(false);
 
   const onUpdateImage = (imageUrl: string) => {
     updateRace(race!.id, { imageUrl })
@@ -62,11 +64,18 @@ const RaceView: FC = () => {
           <CategorySeparator text={t('race-features')} />
           <RaceViewAttributes race={race} />
           <CategorySeparator text={t('traits')}>
-            <AddButton onClick={() => {}} />
+            <AddButton onClick={() => setTraitDialogOpen(true)} />
           </CategorySeparator>
           <RaceViewTraits race={race} />
         </Grid>
       </Grid>
+
+      <AddRaceTraitDialog
+        open={traitDialogOpen}
+        race={race}
+        setRace={setRace}
+        onClose={() => setTraitDialogOpen(false)}
+      />
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { getAuthHeaders, mergeJsonHeaders } from '../services/auth-token-service';
 import { apiCoreUrl } from '../services/config';
 import { buildErrorFromResponse } from './api-errors';
-import { CreateRaceDto, Race, UpdateRaceDto } from './race.dto';
+import { AddRaceTraitDto, CreateRaceDto, Race, UpdateRaceDto } from './race.dto';
 
 export async function fetchRace(raceId: string): Promise<Race> {
   const url = `${apiCoreUrl}/races/${raceId}`;
@@ -54,4 +54,26 @@ export async function deleteRace(raceId: string): Promise<void> {
   if (response.status !== 204) {
     throw await buildErrorFromResponse(response, url);
   }
+}
+
+export async function addRaceTrait(raceId: string, dto: AddRaceTraitDto): Promise<Race> {
+  const url = `${apiCoreUrl}/races/${raceId}/traits`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: mergeJsonHeaders(),
+    body: JSON.stringify(dto),
+  });
+  if (response.status !== 200) {
+    throw await buildErrorFromResponse(response, url);
+  }
+  return await response.json();
+}
+
+export async function deleteRaceTrait(raceId: string, traitId: string): Promise<Race> {
+  const url = `${apiCoreUrl}/races/${raceId}/traits/${traitId}`;
+  const response = await fetch(url, { method: 'DELETE', headers: getAuthHeaders() });
+  if (response.status !== 200) {
+    throw await buildErrorFromResponse(response, url);
+  }
+  return await response.json();
 }
