@@ -4,7 +4,9 @@ import { Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
+import { updateRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
+import EdditableAvatar from '../../shared/avatars/EditableAvatar';
 import RaceAvatarByName from '../../shared/avatars/RaceAvatarByName';
 import CategorySeparator from '../../shared/display/CategorySeparator';
 import RaceViewActions from './RaceViewActions';
@@ -17,11 +19,17 @@ const RaceView: FC = () => {
   const { showError } = useError();
   const [race, setRace] = useState<Race | null>(null);
 
+  const onUpdateImage = (imageUrl: string) => {
+    updateRace(race!.id, { imageUrl })
+      .then((updatedRace) => setRace(updatedRace))
+      .catch((err: Error) => showError(err.message));
+  };
+
   useEffect(() => {
     if (raceId) {
       fetchRace(raceId)
         .then((response) => setRace(response))
-        .catch((err) => showError(err.message));
+        .catch((err: Error) => showError(err.message));
     }
   }, [raceId, showError]);
 
@@ -32,7 +40,7 @@ const RaceView: FC = () => {
       <RaceViewActions race={race} setRace={setRace} />
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
-          <RaceAvatarByName raceName={race.name} />
+          <EdditableAvatar imageUrl={race.imageUrl || ''} onImageChange={(avatar) => onUpdateImage(avatar)} />
           <Typography variant="h6" color="primary">
             {t(race.name)}
           </Typography>

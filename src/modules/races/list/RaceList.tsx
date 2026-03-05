@@ -53,7 +53,7 @@ const RaceList: FC = () => {
             <RmuTextCard
               value={race.name}
               subtitle={t(race.archetype || '')}
-              image={resolveRaceImage(race.name)}
+              image={race.imageUrl || ''}
               onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
             />
           </Grid>

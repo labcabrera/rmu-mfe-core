@@ -5,7 +5,7 @@ import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { Race, UpdateRaceDto } from '../../api/race.dto';
-import RaceAvatarByName from '../../shared/avatars/RaceAvatarByName';
+import EditableAvatar from '../../shared/avatars/EditableAvatar';
 import CategorySeparator from '../../shared/display/CategorySeparator';
 import RaceEditActions from './RaceEditActions';
 import RaceEditAttributes from './RaceEditAttributes';
@@ -43,7 +43,10 @@ const RaceEdit: FC = () => {
       <RaceEditActions race={race} formData={formData} />
       <Grid container spacing={2} padding={1}>
         <Grid size={{ xs: 12, md: 2 }}>
-          <RaceAvatarByName raceName={formData.name} size={300} />
+          <EditableAvatar
+            imageUrl={formData.imageUrl || ''}
+            onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
+          />
           <RaceEditResume formData={formData!} setFormData={setFormData} />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }} padding={1}>

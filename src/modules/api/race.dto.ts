@@ -1,7 +1,7 @@
+import { imageBaseUrl } from '../services/config';
+
 export const stats = ['ag', 'co', 'em', 'in', 'me', 'pr', 'qu', 're', 'sd', 'st'];
-
 export const resistances = ['channeling', 'mentalism', 'essence', 'physical', 'poison', 'disease', 'fear'];
-
 export const raceCreateTemplate = {
   name: '',
   realmId: '',
@@ -45,6 +45,7 @@ export const raceCreateTemplate = {
   defaultLanguage: '',
   talents: [],
   description: '',
+  imageUrl: `${imageBaseUrl}images/races/unknown.png`,
 } as CreateRaceDto;
 
 export type Race = {
@@ -67,6 +68,7 @@ export type Race = {
   defaultLanguage: string | undefined;
   talents: string[];
   description: string | undefined;
+  imageUrl: string | undefined;
 };
 
 export type RaceStats = {

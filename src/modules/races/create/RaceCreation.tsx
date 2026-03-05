@@ -5,6 +5,8 @@ import { useError } from '../../../ErrorContext';
 import { CreateRaceDto, raceCreateTemplate } from '../../api/race.dto';
 import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
+import { imageBaseUrl } from '../../services/config';
+import EdditableAvatar from '../../shared/avatars/EditableAvatar';
 import RaceAvatarByName from '../../shared/avatars/RaceAvatarByName';
 import RaceCreationActions from './RaceCreationActions';
 import RaceCreationAttributes from './RaceCreationAttributes';
@@ -51,7 +53,11 @@ const RaceCreation: FC = () => {
       <RaceCreationActions formData={formData} isValid={isValid} realm={realm} />
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 4 }}>
-          <RaceAvatarByName raceName={formData.name} size={300} />
+          <EdditableAvatar
+            imageUrl={formData.imageUrl || ''}
+            onImageChange={(avatar) => setFormData({ ...formData, imageUrl: avatar })}
+          />
+          {/* <RaceAvatarByName raceName={formData.name} size={300} /> */}
           <RaceCreationResume formData={formData} setFormData={setFormData} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
@@ -60,7 +66,7 @@ const RaceCreation: FC = () => {
           <RaceCreationAttributes formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
-      {/* <pre>Form: {JSON.stringify(formData, null, 2)}</pre> */}
+      <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
     </>
   );
 };

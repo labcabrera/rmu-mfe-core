@@ -12,8 +12,8 @@ const RaceViewStats: FC<{
 
   return (
     <Grid container spacing={1} columns={10}>
-      {stats.map((stat) => (
-        <Grid size={{ xs: 5, md: 2 }}>
+      {stats.map((stat, index) => (
+        <Grid size={{ xs: 5, md: 2 }} key={`stat-${index}`}>
           <RmuTextCard
             value={race.stats[stat]}
             subtitle={t(stat)}

@@ -29,7 +29,6 @@ const RealmViewLanguages: FC<{
       {languages.map((language) => (
         <Grid size={{ xs: 12, md: 3 }} key={language.id}>
           <RmuTextCard
-            size="medium"
             key={language.id}
             value={language.name}
             subtitle={t('language')}

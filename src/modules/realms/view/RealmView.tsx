@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRealm } from '../../api/realm';

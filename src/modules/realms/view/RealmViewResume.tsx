@@ -8,7 +8,7 @@ import EditableAvatar from '../../shared/avatars/EditableAvatar';
 
 const RealmViewResume: FC<{
   realm: Realm;
-  setRealm: Dispatch<SetStateAction<Realm>>;
+  setRealm: Dispatch<SetStateAction<Realm | undefined>>;
 }> = ({ realm, setRealm }) => {
   const { showError } = useError();
 
@@ -26,15 +26,14 @@ const RealmViewResume: FC<{
           onImageChange={(image) => onImageChange(image)}
         />
       </Grid>
-      <Typography variant="h6" color="primary" gutterBottom>
-        {realm.name}
-      </Typography>
-      <Typography variant="body1" color="secondary" gutterBottom>
-        {realm.shortDescription}
-      </Typography>
-      <Typography variant="body1" color="secondary" sx={{ whiteSpace: 'pre-line' }}>
-        {realm.description}
-      </Typography>
+      <Grid size={12}>
+        <Typography variant="h6" color="primary" gutterBottom>
+          {realm.name}
+        </Typography>
+        <Typography variant="body1" color="secondary" sx={{ whiteSpace: 'pre-line' }}>
+          {realm.description}
+        </Typography>
+      </Grid>
     </Grid>
   );
 };

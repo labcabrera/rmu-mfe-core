@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  TextField,
 } from '@mui/material';
 import { t } from 'i18next';
 
@@ -22,8 +23,7 @@ const ImageSelectorDialog: FC<{
 }> = ({ value, open, images, onClose, onSelect, title = 'Select an image' }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(value ?? null);
 
-  // keep selectedImage in sync if parent changes `value`
-  React.useEffect(() => {
+  useEffect(() => {
     setSelectedImage(value ?? null);
   }, [value]);
 
@@ -81,6 +81,14 @@ const ImageSelectorDialog: FC<{
               </Grid>
             );
           })}
+          <Grid size={{ xs: 12 }}>
+            <TextField
+              label={t('custom-image-url')}
+              value={selectedImage ?? ''}
+              onChange={(e) => setSelectedImage(e.target.value)}
+              fullWidth
+            />
+          </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>

@@ -20,18 +20,19 @@ const EditableAvatar: FC<{
             xs: 80,
             sm: 56,
             md: 72,
-            lg: 96,
+            lg: 200,
           },
           height: {
             xs: 80,
             sm: 56,
             md: 72,
-            lg: 96,
+            lg: 200,
           },
         }}
         onClick={() => setDialogOpen(true)}
       />
       <ImageSelectorDialog
+        value={imageUrl}
         open={dialogOpen}
         images={getAvatarImages()}
         onClose={() => setDialogOpen(false)}
