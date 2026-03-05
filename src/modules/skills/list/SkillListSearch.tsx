@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { TextField, Grid } from '@mui/material';
 import { t } from 'i18next';
 import { SkillCategory } from '../../api/skill-category.dto';
@@ -6,24 +6,33 @@ import ClearButton from '../../shared/buttons/ClearButton';
 import SelectSkillCategory from '../../shared/selects/SelectSkillCategory';
 
 const SkillListSearch: FC<{
+  queryString: string;
+  setQueryString: Dispatch<SetStateAction<string>>;
   categories: SkillCategory[];
-  onSearch: (id: string, category: string) => void;
-}> = ({ categories, onSearch }) => {
-  const [id, setId] = useState('');
+}> = ({ queryString, setQueryString, categories }) => {
+  const [searchId, setSearchId] = useState('');
   const [category, setCategory] = useState('');
 
-  const handleSearch = () => {
-    onSearch(id, category);
+  const buildQueryString = () => {
+    let query = '';
+    if (searchId) query += `id=re=${searchId}`;
+    if (category && category !== 'all') {
+      if (query !== '') query += ';';
+      query += `categoryId==${category}`;
+    }
+    return query;
   };
 
   useEffect(() => {
-    handleSearch();
-  }, [id, category]);
+    setQueryString(buildQueryString());
+  }, [searchId, category]);
+
+  if (!categories || categories.length === 0) return <p>Loading</p>;
 
   return (
     <Grid container spacing={1}>
       <Grid size={{ xs: 10, md: 3 }}>
-        <TextField label={t('name')} value={id} onChange={(e) => setId(e.target.value)} fullWidth />
+        <TextField label={t('name')} value={searchId} onChange={(e) => setSearchId(e.target.value)} fullWidth />
       </Grid>
       <Grid size={{ xs: 10, md: 3 }}>
         <SelectSkillCategory
@@ -36,7 +45,7 @@ const SkillListSearch: FC<{
       <Grid size={{ xs: 2, md: 2 }}>
         <ClearButton
           onClick={() => {
-            setId('');
+            setSearchId('');
             setCategory('');
           }}
         />
