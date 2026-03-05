@@ -8,7 +8,6 @@ import { getTraitImage } from '../../services/trait-image-service';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import TraitViewActions from './TraitViewActions';
 import TraitViewInfo from './TraitViewInfo';
-import TraitViewResume from './TraitViewResume';
 
 const TraitView: FC = () => {
   const location = useLocation();
@@ -36,10 +35,9 @@ const TraitView: FC = () => {
   return (
     <>
       <TraitViewActions trait={trait} />
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
           <GenericAvatar imageUrl={getTraitImage(trait)} />
-          <TraitViewResume trait={trait} />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <TraitViewInfo trait={trait} />

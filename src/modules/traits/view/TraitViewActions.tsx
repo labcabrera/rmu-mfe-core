@@ -18,7 +18,6 @@ const TraitViewActions: FC<{
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
     { name: t('traits'), link: '/core/traits' },
-    { name: t(trait.name) },
   ];
 
   const onDelete = () => {

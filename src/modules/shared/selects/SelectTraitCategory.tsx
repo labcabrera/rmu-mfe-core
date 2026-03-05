@@ -4,7 +4,7 @@ import { MenuItem, TextField } from '@mui/material';
 
 const SelectTraitCategory: FC<{
   label: string;
-  value: string;
+  value: string | null;
   name: string;
   addAllOption?: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -22,7 +22,11 @@ const SelectTraitCategory: FC<{
       fullWidth
       onChange={onChange}
     >
-      {addAllOption ? <MenuItem value="all">{t('all')}</MenuItem> : null}
+      {addAllOption ? (
+        <MenuItem>
+          <em>{t('all')}</em>
+        </MenuItem>
+      ) : null}
       {values.map((option, index) => (
         <MenuItem key={index} value={option}>
           {t(option)}
