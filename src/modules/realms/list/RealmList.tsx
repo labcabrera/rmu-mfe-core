@@ -25,7 +25,7 @@ const RealmList: FC = () => {
   return (
     <>
       <RealmListActions setRealms={setRealms} />
-      <Grid container spacing={1} padding={1}>
+      <Grid container spacing={1}>
         {realms.map((realm) => (
           <Grid size={{ xs: 12, md: 2 }} key={realm.id}>
             <RmuTextCard

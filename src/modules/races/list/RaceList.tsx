@@ -5,7 +5,9 @@ import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
+import { resolveRaceImage } from '../../services/race-avatar-service';
 import RaceCard from '../../shared/cards/RaceCard';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 import RaceListActions from './RaceListActions';
 
 const RaceList: FC = () => {
@@ -30,14 +32,17 @@ const RaceList: FC = () => {
   return (
     <>
       <RaceListActions />
-      <Grid container spacing={2} mb={2} alignItems="center">
-        <Grid size={12}>
-          <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
-            {races.map((race) => (
-              <RaceCard key={race.id} race={race} />
-            ))}
-          </Box>
-        </Grid>
+      <Grid container spacing={1}>
+        {races.map((race) => (
+          <Grid size={12} key={race.id}>
+            <RmuTextCard
+              value={race.name}
+              subtitle={t(race.archetype || '')}
+              image={resolveRaceImage(race.name)}
+              onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
+            />
+          </Grid>
+        ))}
       </Grid>
       {races.length === 0 ? (
         <p>
