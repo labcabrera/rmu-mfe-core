@@ -1,40 +1,55 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Grid, Link } from '@mui/material';
+import { Grid } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
+import { fetchRealms } from '../../api/realm';
+import { Realm } from '../../api/realm.dto';
 import { resolveRaceImage } from '../../services/race-avatar-service';
-import RaceCard from '../../shared/cards/RaceCard';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import RaceListActions from './RaceListActions';
+import RaceListSearch from './RaceListSearch';
+
+const PAGE_SIZE = 24;
 
 const RaceList: FC = () => {
   const navigate = useNavigate();
   const { showError } = useError();
+  const [queryString, setQueryString] = useState('');
+  const [realms, setRealms] = useState<Realm[]>([]);
   const [races, setRaces] = useState<Race[]>([]);
 
   const bindRaces = () => {
-    fetchRaces('', 0, 20)
+    fetchRaces(queryString, 0, PAGE_SIZE)
       .then((response) => setRaces(response))
       .catch((err: Error) => showError('err' + err.message));
   };
 
-  const handleNewRace = () => {
-    navigate('/core/races/create');
+  const bindRealms = () => {
+    fetchRealms('', 0, 100)
+      .then((response) => setRealms(response))
+      .catch((err: Error) => showError('err' + err.message));
   };
 
   useEffect(() => {
     bindRaces();
-  }, [showError]);
+  }, [queryString]);
+
+  useEffect(() => {
+    bindRealms();
+  }, []);
 
   return (
     <>
-      <RaceListActions />
+      <RaceListActions onRefresh={bindRealms} />
       <Grid container spacing={1}>
+        <Grid size={12}>
+          <RaceListSearch setQueryString={setQueryString} realms={realms} />
+        </Grid>
         {races.map((race) => (
-          <Grid size={12} key={race.id}>
+          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={race.id}>
             <RmuTextCard
               value={race.name}
               subtitle={t(race.archetype || '')}
@@ -44,14 +59,7 @@ const RaceList: FC = () => {
           </Grid>
         ))}
       </Grid>
-      {races.length === 0 ? (
-        <p>
-          No races found.{' '}
-          <Link component="button" onClick={handleNewRace}>
-            {t('create-new')}
-          </Link>
-        </p>
-      ) : null}
+      <Grid size={12}>{races.length === 0 && <p>No races found.</p>}</Grid>
     </>
   );
 };

@@ -3,16 +3,16 @@ import { t } from 'i18next';
 import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import RefreshButton from '../../shared/buttons/RefreshButton';
 
-const RaceListActions: FC = () => {
-  const breadcrumbs = [{ name: t('core'), link: '/core' }, { name: t('races') }];
+interface Props {
+  onRefresh: () => void;
+}
 
-  const handleRefresh = () => {
-    window.location.reload();
-  };
+const RaceListActions: FC<Props> = ({ onRefresh }) => {
+  const breadcrumbs = [{ name: t('core'), link: '/core' }, { name: t('races') }];
 
   return (
     <RmuBreadcrumbs items={breadcrumbs}>
-      <RefreshButton onClick={handleRefresh} />
+      <RefreshButton onClick={onRefresh} />
     </RmuBreadcrumbs>
   );
 };
