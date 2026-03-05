@@ -16,9 +16,7 @@ const LanguageEditActions: FC<{
   const { showError } = useError();
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
-    { name: t('realms'), link: '/core/realms' },
-    { name: language.realmName, link: `/core/realms/view/${language.realmId}` },
-    { name: language.name, link: `/core/languages/view/${language.id}` },
+    { name: t('languages'), link: '/core/languages' },
     { name: t('edit') },
   ];
 

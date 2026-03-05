@@ -16,7 +16,9 @@ const SelectManeuverTable: FC<{
       onChange={(event) => onChange(event.target.value === '' ? null : event.target.value)}
       fullWidth
     >
-      <MenuItem>{t('none')}</MenuItem>
+      <MenuItem>
+        <em>{t('none')}</em>
+      </MenuItem>
       {tables.map((option, index) => (
         <MenuItem key={index} value={option}>
           {option ? t(option) : t('none')}

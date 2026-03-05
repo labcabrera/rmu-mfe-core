@@ -19,9 +19,7 @@ const LanguageViewActions: FC<{
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
-    { name: t('realms'), link: '/core/realms' },
-    { name: realm.name, link: `/core/realms/view/${realm.id}` },
-    { name: language.name },
+    { name: t('languages'), link: '/core/languages' },
   ];
 
   const onDelete = () => {
