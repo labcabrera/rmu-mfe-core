@@ -30,7 +30,6 @@ const RealmList: FC = () => {
           <Grid size={{ xs: 12, md: 2 }} key={realm.id}>
             <RmuTextCard
               key={realm.id}
-              size="medium"
               value={realm.name}
               subtitle={realm.shortDescription}
               image={`${imageBaseUrl}images/generic/realm.png`}
