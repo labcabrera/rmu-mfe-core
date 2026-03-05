@@ -17,7 +17,7 @@ const RealmViewRaces: FC<{
 
   useEffect(() => {
     if (realm) {
-      fetchRaces(`realmId==${realm.id}`, 0, 50)
+      fetchRaces(`realm.id==${realm.id}`, 0, 50)
         .then((response) => setRaces(response))
         .catch((err) => showError(err.message));
     }
