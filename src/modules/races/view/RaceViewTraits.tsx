@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { Race } from '../../api/race.dto';
 import { imageBaseUrl } from '../../services/config';
@@ -19,6 +19,13 @@ const RaceViewTraits: FC<{
           />
         </Grid>
       ))}
+      {race.traits.length === 0 && (
+        <Grid size={12}>
+          <Typography variant="body1" color="textSecondary">
+            Race has no traits.
+          </Typography>
+        </Grid>
+      )}
     </Grid>
   );
 };

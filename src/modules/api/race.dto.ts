@@ -115,3 +115,11 @@ export type RaceTrait = {
 export type CreateRaceDto = Omit<Race, 'id' | 'realmName'>;
 
 export type UpdateRaceDto = Partial<Omit<Race, 'id' | 'realmId' | 'realmName'>>;
+
+export type AddRaceTraitDto = {
+  traitId: string;
+  specialization: string | undefined;
+  isTalent: boolean;
+  tier: number | undefined;
+  description: string | undefined;
+};
