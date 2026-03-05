@@ -17,7 +17,7 @@ const RealmCreationActions: FC<{
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
     { name: t('realms'), link: '/core/realms' },
-    { name: t('realm-creation') },
+    { name: t('creation') },
   ];
 
   const onSaveClick = async () => {
@@ -31,7 +31,7 @@ const RealmCreationActions: FC<{
   };
 
   return (
-    <RmuBreadcrumbs items={breadcrumbs} maxNameLength={30}>
+    <RmuBreadcrumbs items={breadcrumbs}>
       <CancelButton onClick={onBackClick} />
       <SaveButton onClick={onSaveClick} disabled={!isValid} />
     </RmuBreadcrumbs>

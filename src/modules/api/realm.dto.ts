@@ -3,6 +3,7 @@ export type Realm = {
   name: string;
   shortDescription: string | undefined;
   description: string | undefined;
+  imageUrl: string | undefined;
 };
 
 export type CreateRealmDto = Omit<Realm, 'id'>;

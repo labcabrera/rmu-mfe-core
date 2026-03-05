@@ -8,6 +8,8 @@ import { imageBaseUrl } from '../../services/config';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import RealmListActions from './RealmListActions';
 
+const defaultImage = `${imageBaseUrl}images/generic/realm.png`;
+
 const RealmList: FC = () => {
   const { showError } = useError();
   const [realms, setRealms] = useState<Realm[]>([]);
@@ -32,7 +34,7 @@ const RealmList: FC = () => {
               key={realm.id}
               value={realm.name}
               subtitle={realm.shortDescription}
-              image={`${imageBaseUrl}images/generic/realm.png`}
+              image={realm.imageUrl || defaultImage}
               onClick={() => handleRealmClick(realm)}
             />
           </Grid>

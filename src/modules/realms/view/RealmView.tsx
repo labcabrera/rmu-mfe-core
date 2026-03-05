@@ -10,13 +10,14 @@ import CategorySeparator from '../../shared/display/CategorySeparator';
 import RealmViewActions from './RealmViewActions';
 import RealmViewLanguages from './RealmViewLanguages';
 import RealmViewRaces from './RealmViewRaces';
+import RealmViewResume from './RealmViewResume';
 
 const RealmView: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { showError } = useError();
   const { realmId } = useParams<{ realmId?: string }>();
-  const [realm, setRealm] = useState<Realm | null>(null);
+  const [realm, setRealm] = useState<Realm>();
 
   const onAddRace = () => {
     navigate(`/core/races/create?realmId=${realm!.id}`);
@@ -43,15 +44,7 @@ const RealmView: FC = () => {
       <RealmViewActions realm={realm} setRealm={setRealm} />
       <Grid container spacing={1} padding={1}>
         <Grid size={{ xs: 12, md: 2 }}>
-          <Typography variant="h6" color="primary" gutterBottom>
-            {realm.name}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            {realm.shortDescription}
-          </Typography>
-          <Typography variant="body1" color="secondary" sx={{ whiteSpace: 'pre-line' }}>
-            {realm.description}
-          </Typography>
+          <RealmViewResume realm={realm} setRealm={setRealm} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
           <CategorySeparator text={t('races')}>
