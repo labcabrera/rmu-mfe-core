@@ -7,11 +7,13 @@ import { fetchRace } from '../../api/race';
 import { updateRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import EdditableAvatar from '../../shared/avatars/EditableAvatar';
+import AddButton from '../../shared/buttons/AddButton';
 import CategorySeparator from '../../shared/display/CategorySeparator';
 import RaceViewActions from './RaceViewActions';
 import RaceViewAttributes from './RaceViewAttributes';
 import RaceViewResistances from './RaceViewResistances';
 import RaceViewStats from './RaceViewStats';
+import RaceViewTraits from './RaceViewTraits';
 
 const RaceView: FC = () => {
   const { raceId } = useParams<{ raceId: string | undefined }>();
@@ -59,6 +61,10 @@ const RaceView: FC = () => {
           <RaceViewResistances race={race} />
           <CategorySeparator text={t('race-features')} />
           <RaceViewAttributes race={race} />
+          <CategorySeparator text={t('traits')}>
+            <AddButton onClick={() => {}} />
+          </CategorySeparator>
+          <RaceViewTraits race={race} />
         </Grid>
       </Grid>
     </>

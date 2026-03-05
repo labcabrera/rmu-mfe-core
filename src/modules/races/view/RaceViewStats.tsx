@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
+import { t } from 'i18next';
 import { Race, stats } from '../../api/race.dto';
 import { imageBaseUrl } from '../../services/config';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
@@ -8,8 +8,6 @@ import RmuTextCard from '../../shared/cards/RmuTextCard';
 const RaceViewStats: FC<{
   race: Race;
 }> = ({ race }) => {
-  const { t } = useTranslation();
-
   return (
     <Grid container spacing={1} columns={10}>
       {stats.map((stat, index) => (

@@ -44,6 +44,7 @@ export const raceCreateTemplate = {
   baseAt: 1,
   defaultLanguage: '',
   talents: [],
+  traits: [],
   description: '',
   imageUrl: `${imageBaseUrl}images/races/unknown.png`,
 } as CreateRaceDto;
@@ -67,6 +68,7 @@ export type Race = {
   baseAt: number;
   defaultLanguage: string | undefined;
   talents: string[];
+  traits: RaceTrait[];
   description: string | undefined;
   imageUrl: string | undefined;
 };
@@ -101,6 +103,13 @@ export type AverageHeight = {
 export type AverageWeight = {
   male: number;
   female: number;
+};
+
+export type RaceTrait = {
+  id: string;
+  traitId: string;
+  modifier: string | undefined;
+  description: string | undefined;
 };
 
 export type CreateRaceDto = Omit<Race, 'id' | 'realmName'>;
