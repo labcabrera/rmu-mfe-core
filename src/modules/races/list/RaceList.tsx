@@ -49,7 +49,7 @@ const RaceList: FC = () => {
           <RaceListSearch setQueryString={setQueryString} realms={realms} />
         </Grid>
         {races.map((race) => (
-          <Grid size={{ xs: 12, md: 4 }} key={race.id}>
+          <Grid size={{ xs: 12, md: 3 }} key={race.id}>
             <RmuTextCard
               value={race.name}
               subtitle={t(race.archetype || '')}

@@ -7,7 +7,6 @@ import { fetchRace } from '../../api/race';
 import { updateRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import EdditableAvatar from '../../shared/avatars/EditableAvatar';
-import RaceAvatarByName from '../../shared/avatars/RaceAvatarByName';
 import CategorySeparator from '../../shared/display/CategorySeparator';
 import RaceViewActions from './RaceViewActions';
 import RaceViewAttributes from './RaceViewAttributes';
@@ -53,7 +52,7 @@ const RaceView: FC = () => {
             {race.description}
           </Typography>
         </Grid>
-        <Grid size={{ xs: 12, md: 6 }} padding={1}>
+        <Grid size={{ xs: 12, md: 8 }} padding={1}>
           <CategorySeparator text={t('statistics')} />
           <RaceViewStats race={race} />
           <CategorySeparator text={t('resistances')} />

@@ -29,7 +29,7 @@ const RealmList: FC = () => {
       <RealmListActions setRealms={setRealms} />
       <Grid container spacing={1}>
         {realms.map((realm) => (
-          <Grid size={{ xs: 12, md: 2 }} key={realm.id}>
+          <Grid size={{ xs: 12, md: 3 }} key={realm.id}>
             <RmuTextCard
               key={realm.id}
               value={realm.name}
