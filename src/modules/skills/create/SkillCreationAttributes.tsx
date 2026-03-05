@@ -1,108 +1,98 @@
-import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
-import { useTranslation } from 'react-i18next';
-import { FormControl, FormControlLabel, Grid, Switch, TextField, Typography } from '@mui/material';
-import { NumericInput } from '../../shared/inputs/NumericInput';
-import SelectTraitSpecialization from '../../shared/selects/SelectTraitSpecialization';
+import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import { Grid, TextField, Button, ButtonGroup } from '@mui/material';
+import { t } from 'i18next';
+import { useError } from '../../../ErrorContext';
+import { STATISTICS } from '../../api/common.dto';
+import { fetchSkillCategories } from '../../api/skill-category';
+import { SkillCategory } from '../../api/skill-category.dto';
+import { CreateSkillDto } from '../../api/skill.dto';
+import CategorySeparator from '../../shared/display/CategorySeparator';
+import SelectSkillCategory from '../../shared/selects/SelectSkillCategory';
+import SelectSkillSpecialization from '../../shared/selects/SelectSkillSpecialization';
 
 const SkillCreationAttributes: FC<{
-  formData: any;
-  setFormData: Dispatch<SetStateAction<any>>;
+  formData: CreateSkillDto;
+  setFormData: Dispatch<SetStateAction<CreateSkillDto>>;
 }> = ({ formData, setFormData }) => {
-  const { t } = useTranslation();
+  const { showError } = useError();
+  const [categories, setCategories] = React.useState<SkillCategory[]>([]);
 
-  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const onSpecializationChange = (value: string | null) => {
+    setFormData({ ...formData, specialization: value });
   };
 
-  const onChangeTierBased = (e: ChangeEvent<HTMLInputElement>) => {
-    const { checked } = e.target;
-    setFormData({
-      ...formData,
-      isTierBased: checked,
-      ...(checked ? { tierCost: null, maxTier: null } : { tierCost: undefined, maxTier: undefined }),
-    });
-  };
+  useEffect(() => {
+    fetchSkillCategories()
+      .then((data) => setCategories(data))
+      .catch((err: Error) => showError(err.message));
+  }, []);
 
   if (!formData || !setFormData) return <p>Loading...</p>;
 
   return (
-    <Grid container spacing={2}>
-      <Grid size={12}>
-        <Typography variant="h6" color="primary">
-          {t('trait-info')}
-        </Typography>
-      </Grid>
-      <Grid size={12}>
-        <TextField
-          label={t('description')}
-          name="description"
-          value={formData.description || ''}
-          onChange={onChange}
-          multiline
-          minRows={4}
-          maxRows={10}
-          variant="standard"
-          fullWidth
-        />
-      </Grid>
-      <Grid size={2}>
-        <SelectTraitSpecialization
-          label={t('specialization')}
-          value={formData.specialization}
-          name={'specialization'}
-          onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
-        />
-      </Grid>
-      <Grid size={12}></Grid>
-      <Grid size={2}>
-        <NumericInput
-          label={t('adquisition-cost')}
-          name="adquisitionCost"
-          value={formData.adquisitionCost}
-          onChange={(e) => setFormData({ ...formData, adquisitionCost: e })}
-          integer
-        />
-      </Grid>
-      {formData.isTierBased && (
-        <>
-          <Grid size={2}>
-            <NumericInput
-              label={t('tier-cost')}
-              name="tierCost"
-              value={formData.tierCost}
-              onChange={(e) => setFormData({ ...formData, tierCost: e })}
-              integer
-            />
-          </Grid>
-          <Grid size={2}>
-            <NumericInput
-              label={t('max-tier')}
-              name="maxTier"
-              value={formData.maxTier}
-              onChange={(e) => setFormData({ ...formData, maxTier: e })}
-              min={1}
-              integer
-            />
-          </Grid>
-        </>
-      )}
-      <Grid size={12}>
-        <FormControl>
-          <FormControlLabel
-            control={
-              <Switch
-                value={formData.isTierBased}
-                defaultChecked={formData.isTierBased}
-                onChange={(e) => onChangeTierBased(e)}
-              />
-            }
-            label={t('is-tier-based')}
-            labelPlacement="start"
+    <>
+      <CategorySeparator text={t('skill-information')} />
+      <Grid container spacing={1}>
+        <Grid size={12}>
+          <TextField
+            label={t('skill-id')}
+            name="skill-id"
+            value={formData.id || ''}
+            onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+            error={!formData.id}
+            fullWidth
           />
-        </FormControl>
+        </Grid>
+        <Grid size={12}>
+          <SelectSkillCategory
+            label={t('skill-category')}
+            value={formData.categoryId}
+            onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+            categories={categories}
+            required
+          />
+        </Grid>
+        <Grid size={12}>
+          <StatsSelection stats={STATISTICS} formData={formData} setFormData={setFormData} />
+        </Grid>
+        <Grid size={12}>
+          <SelectSkillSpecialization
+            value={formData.specialization}
+            label={t('specialization')}
+            onSpecializationChange={(e) => onSpecializationChange(e)}
+          />
+        </Grid>
       </Grid>
-    </Grid>
+    </>
+  );
+};
+
+const StatsSelection: FC<{ stats: string[]; formData: any; setFormData: Dispatch<SetStateAction<any>> }> = ({
+  stats,
+  formData,
+  setFormData,
+}) => {
+  const selected: string[] = Array.isArray(formData?.bonus) ? formData.bonus : [];
+
+  const toggle = (stat: string) => {
+    const has = selected.includes(stat);
+    const next = has ? selected.filter((s) => s !== stat) : [...selected, stat];
+    setFormData({ ...formData, bonus: next });
+  };
+
+  return (
+    <ButtonGroup orientation="vertical" fullWidth aria-label="stats-button-group" sx={{ width: '100%' }}>
+      {stats.map((stat) => (
+        <Button
+          key={stat}
+          variant={selected.includes(stat) ? 'contained' : 'outlined'}
+          onClick={() => toggle(stat)}
+          sx={{ justifyContent: 'flex-start' }}
+        >
+          {stat}
+        </Button>
+      ))}
+    </ButtonGroup>
   );
 };
 

@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { Box, Breadcrumbs, Stack, Link } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { createTrait } from '../../api/trait';
+import { createSkill } from '../../api/skill';
 import { CreateTraitDto } from '../../api/trait.dto';
+import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
@@ -14,43 +14,28 @@ const SkillCreationActions: FC<{
 }> = ({ formData, isValid = false }) => {
   const navigate = useNavigate();
   const { showError } = useError();
+  const breadcrumbs = [
+    { name: t('core'), link: '/core' },
+    { name: t('skill-categories'), link: '/core/skill-categories' },
+    { name: t('skills'), link: '/core/skills' },
+    { name: t('create') },
+  ];
 
   const handleSave = async () => {
-    createTrait(formData)
-      .then((trait) => {
-        navigate(`/core/traits/view/${trait.id}`);
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError('Unknown error occurred');
-      });
+    createSkill(formData)
+      .then((skill) => navigate(`/core/skills/view/${skill.id}`))
+      .catch((err: Error) => showError(err.message));
   };
 
   const handleBack = () => {
-    navigate(`/core/realms`);
+    navigate(`/core/skills`);
   };
 
   return (
-    <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" sx={{ minHeight: 80 }}>
-      <Box>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="primary" underline="hover" href="/">
-            {t('home')}
-          </Link>
-          <Link component={RouterLink} color="primary" underline="hover" to="/core">
-            {t('core')}
-          </Link>
-          <Link component={RouterLink} color="primary" underline="hover" to="/core/traits">
-            {t('traits')}
-          </Link>
-          <span>{t('creation')}</span>
-        </Breadcrumbs>
-      </Box>
-      <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-        <CancelButton onClick={handleBack} />
-        <SaveButton onClick={handleSave} disabled={!isValid} />
-      </Stack>
-    </Stack>
+    <RmuBreadcrumbs items={breadcrumbs}>
+      <CancelButton onClick={handleBack} />
+      <SaveButton onClick={handleSave} disabled={!isValid} />
+    </RmuBreadcrumbs>
   );
 };
 

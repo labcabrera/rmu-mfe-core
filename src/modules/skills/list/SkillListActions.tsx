@@ -7,7 +7,11 @@ import RefreshButton from '../../shared/buttons/RefreshButton';
 
 const SkillListActions: FC = () => {
   const navigate = useNavigate();
-  const breadcrumbs = [{ name: t('core'), link: '/core' }, { name: t('skills') }];
+  const breadcrumbs = [
+    { name: t('core'), link: '/core' },
+    { name: t('skill-categories'), link: '/core/skill-categories' },
+    { name: t('skills') },
+  ];
 
   const onRefresh = () => {};
 
