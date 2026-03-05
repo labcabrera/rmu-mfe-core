@@ -8,7 +8,8 @@ const SelectTraitCategory: FC<{
   name: string;
   addAllOption?: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-}> = ({ label, value, name, onChange, addAllOption = false }) => {
+  required?: boolean;
+}> = ({ label, value, name, onChange, addAllOption = false, required = false }) => {
   const { t } = useTranslation();
 
   const values = ['combat', 'discipline', 'magical', 'physical', 'racial', 'senses', 'other'];
@@ -21,6 +22,7 @@ const SelectTraitCategory: FC<{
       value={value === undefined || value === null ? '' : value}
       fullWidth
       onChange={onChange}
+      error={required && !value}
     >
       {addAllOption ? (
         <MenuItem>

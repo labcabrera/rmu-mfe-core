@@ -1,8 +1,9 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
-import { Typography, Grid, TextField, FormControl, FormControlLabel, Switch } from '@mui/material';
+import { Typography, Grid, TextField, FormControl, FormControlLabel, Switch, MenuItem, Select } from '@mui/material';
 import { t } from 'i18next';
 import { UpdateTraitDto } from '../../api/trait.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
+import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';
 import SelectTraitSpecialization from '../../shared/selects/SelectTraitSpecialization';
 
 const TraitEditAttributes: FC<{
@@ -29,7 +30,25 @@ const TraitEditAttributes: FC<{
   if (!formData || !setFormData) return <p>Loading...</p>;
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1}>
+      <Grid size={12}>
+        <TextField label={t('name')} name="name" value={formData.name} onChange={onChange} fullWidth />
+      </Grid>
+      <Grid size={12}>
+        <SelectTraitCategory label={t('category')} name="category" value={formData.category} onChange={onChange} />
+      </Grid>
+      <Grid size={12}>
+        <Select
+          label={t('type')}
+          name="isTalent"
+          value={String(formData.isTalent)}
+          onChange={(e) => setFormData({ ...formData, isTalent: e.target.value === 'true' })}
+          fullWidth
+        >
+          <MenuItem value="true">{t('trait')}</MenuItem>
+          <MenuItem value="false">{t('flaw')}</MenuItem>
+        </Select>
+      </Grid>
       <Grid size={12}>
         <Typography variant="h6" color="primary">
           {t('trait-info')}
@@ -47,16 +66,15 @@ const TraitEditAttributes: FC<{
           fullWidth
         />
       </Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 12, md: 4 }}>
         <SelectTraitSpecialization
           label={t('specialization')}
-          value={formData.specialization}
+          value={formData.specialization || ''}
           name={'specialization'}
           onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
         />
       </Grid>
-      <Grid size={12}></Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 12, md: 4 }}>
         <NumericInput
           label={t('adquisition-cost')}
           name="adquisitionCost"
@@ -67,20 +85,20 @@ const TraitEditAttributes: FC<{
       </Grid>
       {formData.isTierBased && (
         <>
-          <Grid size={2}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <NumericInput
               label={t('tier-cost')}
               name="tierCost"
-              value={formData.tierCost}
+              value={formData.tierCost || 0}
               onChange={(e) => setFormData({ ...formData, tierCost: e })}
               integer
             />
           </Grid>
-          <Grid size={2}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <NumericInput
               label={t('max-tier')}
               name="maxTier"
-              value={formData.maxTier}
+              value={formData.maxTier || 0}
               onChange={(e) => setFormData({ ...formData, maxTier: e })}
               min={1}
               integer

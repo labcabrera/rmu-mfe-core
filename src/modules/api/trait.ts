@@ -61,7 +61,7 @@ export async function updateTrait(traitId: string, dto: UpdateTraitDto): Promise
 
 export async function deleteTrait(realmId: string): Promise<void> {
   const url = `${apiCoreUrl}/traits/${realmId}`;
-  const response = await fetch(url, { method: 'DELETE' });
+  const response = await fetch(url, { method: 'DELETE', headers: getAuthHeaders() });
   if (response.status !== 204) {
     throw await buildErrorFromResponse(response, url);
   }

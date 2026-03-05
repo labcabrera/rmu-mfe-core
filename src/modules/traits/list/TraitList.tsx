@@ -65,7 +65,7 @@ const TraitList: FC = () => {
     <>
       <TraitListActions />
       <TraitListSearch onSearch={handleSearch} />
-      <Grid container spacing={1} padding={1}>
+      <Grid container spacing={1} mt={1}>
         {traits.map((trait) => (
           <Grid size={{ xs: 12, md: 3 }} key={trait.id}>
             <RmuTextCard

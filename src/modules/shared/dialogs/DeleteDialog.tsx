@@ -10,8 +10,13 @@ type DeleteDialogProps = {
 
 const DeleteDialog: React.FC<DeleteDialogProps> = ({ message, open, onDelete, onClose }) => {
   return (
-    <Dialog open={open} onClose={onClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-      <DialogTitle id="alert-dialog-title">{'Faction delete confirmation'}</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">{'Delete confirmation'}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">{message}</DialogContentText>
       </DialogContent>

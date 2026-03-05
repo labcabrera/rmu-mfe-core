@@ -39,11 +39,10 @@ const TraitEdit: FC = () => {
     <>
       <RealmEditActions trait={trait} formData={formData} />
       <Grid container spacing={2}>
-        <Grid size={2}>
-          <GenericAvatar imageUrl={getTraitImage(trait)} size={300} />
-          <TraitEditResume formData={formData} setFormData={setFormData} />
+        <Grid size={{ xs: 12, md: 2 }}>
+          <GenericAvatar imageUrl={getTraitImage(trait)} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <TraitEditAttributes formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>

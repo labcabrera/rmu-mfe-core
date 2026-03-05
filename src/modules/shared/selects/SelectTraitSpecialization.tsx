@@ -4,12 +4,11 @@ import { t } from 'i18next';
 
 const SelectTraitSpecialization: FC<{
   label: string;
-  value: string;
+  value: string | null;
   name: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }> = ({ label, value, name, onChange }) => {
   const values = [
-    'none',
     'stat',
     'skill',
     'combat-skill',
@@ -32,6 +31,9 @@ const SelectTraitSpecialization: FC<{
       fullWidth
       onChange={onChange}
     >
+      <MenuItem>
+        <em>{t('none')}</em>
+      </MenuItem>
       {values.map((option, index) => (
         <MenuItem key={index} value={option}>
           {t(option)}

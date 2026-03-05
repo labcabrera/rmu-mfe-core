@@ -1,8 +1,9 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormControl, FormControlLabel, Grid, Switch, TextField, Typography } from '@mui/material';
+import { FormControl, FormControlLabel, Grid, MenuItem, Switch, TextField, Typography } from '@mui/material';
 import { CreateTraitDto } from '../../api/trait.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
+import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';
 import SelectTraitSpecialization from '../../shared/selects/SelectTraitSpecialization';
 
 const TraitCreationAttributes: FC<{
@@ -30,24 +31,33 @@ const TraitCreationAttributes: FC<{
   return (
     <Grid container spacing={2}>
       <Grid size={12}>
-        <Typography variant="h6" color="primary">
-          {t('trait-info')}
-        </Typography>
+        <TextField
+          label={t('name')}
+          name="name"
+          value={formData.name || ''}
+          fullWidth
+          onChange={onChange}
+          error={!formData.name}
+        />
+      </Grid>
+      <Grid size={12}>
+        <SelectTraitCategory label={t('category')} name="category" value={formData.category} onChange={onChange} />
       </Grid>
       <Grid size={12}>
         <TextField
-          label={t('description')}
-          name="description"
-          value={formData.description || ''}
-          onChange={onChange}
-          multiline
-          minRows={4}
-          maxRows={10}
-          variant="standard"
+          select
+          label={t('type')}
+          name="isTalent"
+          value={String(formData.isTalent)}
+          onChange={(e) => setFormData({ ...formData, isTalent: e.target.value === 'true' })}
           fullWidth
-        />
+        >
+          <MenuItem value="true">{t('trait')}</MenuItem>
+          <MenuItem value="false">{t('flaw')}</MenuItem>
+        </TextField>
       </Grid>
-      <Grid size={2}>
+
+      <Grid size={12}>
         <SelectTraitSpecialization
           label={t('specialization')}
           value={formData.specialization}
@@ -55,39 +65,6 @@ const TraitCreationAttributes: FC<{
           onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
         />
       </Grid>
-      <Grid size={12}></Grid>
-      <Grid size={2}>
-        <NumericInput
-          label={t('adquisition-cost')}
-          name="adquisitionCost"
-          value={formData.adquisitionCost}
-          onChange={(e) => setFormData({ ...formData, adquisitionCost: e })}
-          integer
-        />
-      </Grid>
-      {formData.isTierBased && (
-        <>
-          <Grid size={2}>
-            <NumericInput
-              label={t('tier-cost')}
-              name="tierCost"
-              value={formData.tierCost}
-              onChange={(e) => setFormData({ ...formData, tierCost: e })}
-              integer
-            />
-          </Grid>
-          <Grid size={2}>
-            <NumericInput
-              label={t('max-tier')}
-              name="maxTier"
-              value={formData.maxTier}
-              onChange={(e) => setFormData({ ...formData, maxTier: e })}
-              min={1}
-              integer
-            />
-          </Grid>
-        </>
-      )}
       <Grid size={12}>
         <FormControl>
           <FormControlLabel
@@ -102,6 +79,52 @@ const TraitCreationAttributes: FC<{
             labelPlacement="start"
           />
         </FormControl>
+      </Grid>
+      <Grid size={{ xs: 12, md: 4 }}>
+        <NumericInput
+          label={t('adquisition-cost')}
+          name="adquisitionCost"
+          value={formData.adquisitionCost}
+          onChange={(e) => setFormData({ ...formData, adquisitionCost: e })}
+          integer
+        />
+      </Grid>
+
+      {formData.isTierBased && (
+        <>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <NumericInput
+              label={t('tier-cost')}
+              name="tierCost"
+              value={formData.tierCost}
+              onChange={(e) => setFormData({ ...formData, tierCost: e })}
+              integer
+            />
+          </Grid>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <NumericInput
+              label={t('max-tier')}
+              name="maxTier"
+              value={formData.maxTier}
+              onChange={(e) => setFormData({ ...formData, maxTier: e })}
+              min={1}
+              integer
+            />
+          </Grid>
+        </>
+      )}
+
+      <Grid size={12}>
+        <TextField
+          label={t('description')}
+          name="description"
+          value={formData.description || ''}
+          onChange={onChange}
+          multiline
+          minRows={4}
+          maxRows={10}
+          fullWidth
+        />
       </Grid>
     </Grid>
   );
