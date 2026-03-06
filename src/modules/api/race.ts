@@ -1,10 +1,20 @@
 import { getAuthHeaders, mergeJsonHeaders } from '../services/auth-token-service';
 import { apiCoreUrl } from '../services/config';
 import { buildErrorFromResponse } from './api-errors';
+import { Page } from './common.dto';
 import { AddRaceTraitDto, CreateRaceDto, Race, UpdateRaceDto } from './race.dto';
 
 export async function fetchRace(raceId: string): Promise<Race> {
   const url = `${apiCoreUrl}/races/${raceId}`;
+  const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
+  if (response.status !== 200) {
+    throw await buildErrorFromResponse(response, url);
+  }
+  return await response.json();
+}
+
+export async function fetchPagedRaces(rsql: string, page: number, size: number): Promise<Page<Race>> {
+  const url = `${apiCoreUrl}/races?q=${rsql}&page=${page}&size=${size}`;
   const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);

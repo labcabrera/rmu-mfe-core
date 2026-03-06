@@ -1,13 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Box, Grid, Pagination } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchRaces } from '../../api/race';
+import { fetchPagedRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { fetchRealms } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
-import { resolveRaceImage } from '../../services/race-avatar-service';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import RaceListActions from './RaceListActions';
 import RaceListSearch from './RaceListSearch';
@@ -20,26 +19,38 @@ const RaceList: FC = () => {
   const [queryString, setQueryString] = useState('');
   const [realms, setRealms] = useState<Realm[]>([]);
   const [races, setRaces] = useState<Race[]>([]);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   const bindRaces = () => {
-    fetchRaces(queryString, 0, PAGE_SIZE)
-      .then((response) => setRaces(response))
-      .catch((err: Error) => showError('err' + err.message));
+    fetchPagedRaces(queryString, page, PAGE_SIZE)
+      .then((response) => {
+        console.log(response);
+        setRaces(response.content);
+        setTotalPages(response.pagination.totalPages || 1);
+      })
+      .catch((err: Error) => showError(err.message));
   };
 
   const bindRealms = () => {
     fetchRealms('', 0, 100)
       .then((response) => setRealms(response))
-      .catch((err: Error) => showError('err' + err.message));
+      .catch((err: Error) => showError(err.message));
+  };
+
+  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value - 1);
   };
 
   useEffect(() => {
     bindRaces();
-  }, [queryString]);
+  }, [queryString, page]);
 
   useEffect(() => {
     bindRealms();
   }, []);
+
+  if (!races) return <p>Loading...</p>;
 
   return (
     <>
@@ -60,6 +71,9 @@ const RaceList: FC = () => {
         ))}
       </Grid>
       <Grid size={12}>{races.length === 0 && <p>No races found.</p>}</Grid>
+      <Box mt={2} display="flex" justifyContent="center">
+        <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
+      </Box>
     </>
   );
 };
