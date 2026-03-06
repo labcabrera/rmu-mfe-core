@@ -13,7 +13,7 @@ const RaceEditAttributes: FC<{
   const [languages, setLanguages] = React.useState<Language[]>([]);
 
   useState(() => {
-    fetchLanguages(`realmId==${formData.realmId}`, 0, 100)
+    fetchLanguages(`realm.id==${formData.realmId}`, 0, 100)
       .then((data) => setLanguages(data))
       .catch((err: Error) => console.error(err.message));
   }, []);

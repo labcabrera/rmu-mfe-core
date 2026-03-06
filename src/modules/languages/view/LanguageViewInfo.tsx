@@ -22,10 +22,10 @@ const LanguageViewInfo: FC<{
         <Grid container spacing={1}>
           <Grid size={{ xs: 12, md: 3 }}>
             <RmuTextCard
-              value={language.realmName}
+              value={language.realm.name}
               subtitle={t('realm')}
               image={`${imageBaseUrl}images/generic/realm.png`}
-              onClick={() => navigate(`/core/realms/view/${language.realmId}`)}
+              onClick={() => navigate(`/core/realms/view/${language.realm.id}`)}
             />
           </Grid>
         </Grid>

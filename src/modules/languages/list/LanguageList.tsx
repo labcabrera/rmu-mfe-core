@@ -53,7 +53,7 @@ const LanguageList: FC = () => {
               <Grid size={{ xs: 12, md: 4 }} key={language.id}>
                 <RmuTextCard
                   value={language.name}
-                  subtitle={language.realmName}
+                  subtitle={language.realm.name}
                   image={`${imageBaseUrl}images/generic/language.png`}
                   onClick={() => navigate(`/core/languages/view/${language.id}`)}
                 />

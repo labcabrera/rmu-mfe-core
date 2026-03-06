@@ -18,7 +18,7 @@ const RealmViewLanguages: FC<{
 
   useEffect(() => {
     if (realm) {
-      fetchLanguages(`realmId==${realm.id}`, 0, 50)
+      fetchLanguages(`realm.id==${realm.id}`, 0, 100)
         .then((response) => setLanguages(response))
         .catch((err) => showError(err.message));
     }

@@ -18,8 +18,8 @@ const LanguageView: FC = () => {
   const [realm, setRealm] = useState<Realm | null>(null);
 
   useEffect(() => {
-    if (language && language.realmId) {
-      fetchRealm(language.realmId)
+    if (language) {
+      fetchRealm(language.realm.id)
         .then((data) => setRealm(data))
         .catch((err) => showError(err.message));
     }
@@ -33,7 +33,7 @@ const LanguageView: FC = () => {
     }
   }, [languageId, showError]);
 
-  if (!language || !realm) return <p>Loading...</p>;
+  if (!language || !realm) return <p>Loading language...</p>;
 
   return (
     <>
