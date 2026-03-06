@@ -1,19 +1,22 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { Grid, TextField } from '@mui/material';
 import { t } from 'i18next';
 import { Language } from '../../api/language.dto';
 import { fetchLanguages } from '../../api/languages';
-import { UpdateRaceDto } from '../../api/race.dto';
+import { Race, UpdateRaceDto } from '../../api/race.dto';
 import SelectLanguage from '../../shared/selects/SelectLanguage';
 
 const RaceEditAttributes: FC<{
+  race: Race;
   formData: UpdateRaceDto;
   setFormData: Dispatch<SetStateAction<UpdateRaceDto>>;
-}> = ({ formData, setFormData }) => {
+}> = ({ race, formData, setFormData }) => {
   const [languages, setLanguages] = React.useState<Language[]>([]);
 
-  useState(() => {
-    fetchLanguages(`realm.id==${formData.realmId}`, 0, 100)
+  if (!race || !formData) return <div>Loading...</div>;
+
+  useEffect(() => {
+    fetchLanguages(`realm.id==${race.realm.id}`, 0, 100)
       .then((data) => setLanguages(data))
       .catch((err: Error) => console.error(err.message));
   }, []);
@@ -27,7 +30,7 @@ const RaceEditAttributes: FC<{
           label={t('default-language')}
           value={undefined}
           name={''}
-          onChange={(language) => setFormData({ ...formData, defaultLanguage: language ? language.id : undefined })}
+          onChange={(language) => setFormData({ ...formData, defaultLanguageId: language ? language.id : undefined })}
           languages={languages}
         />
       </Grid>

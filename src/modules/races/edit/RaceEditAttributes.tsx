@@ -139,17 +139,6 @@ const RaceEditAttributes: FC<{
           min={0}
         />
       </Grid>
-      <Grid size={{ xs: 12, md: 2 }}>
-        <TextField
-          label={t('default-language')}
-          variant="outlined"
-          name="defaultLanguage"
-          value={formData.defaultLanguage}
-          onChange={handleChange}
-          required
-          fullWidth
-        />
-      </Grid>
     </Grid>
   );
 };

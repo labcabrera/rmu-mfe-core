@@ -88,14 +88,6 @@ const RaceViewAttributes: FC<{
           grayscale={grayscale}
         />
       </Grid>
-      <Grid size={{ xs: 5, md: 2 }}>
-        <RmuTextCard
-          value={race.defaultLanguage || t('none')}
-          subtitle={t('native-language')}
-          image={`${imageBaseUrl}images/generic/language.png`}
-          grayscale={grayscale}
-        />
-      </Grid>
     </Grid>
   );
 };

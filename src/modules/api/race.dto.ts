@@ -1,4 +1,5 @@
 import { imageBaseUrl } from '../services/config';
+import { NamedEntity } from './common.dto';
 
 export const stats = ['ag', 'co', 'em', 'in', 'me', 'pr', 'qu', 're', 'sd', 'st'];
 export const resistances = ['channeling', 'mentalism', 'essence', 'physical', 'poison', 'disease', 'fear'];
@@ -42,7 +43,7 @@ export const raceCreateTemplate = {
   baseHits: 0,
   baseDevPoints: 60,
   baseAt: 1,
-  defaultLanguage: '',
+  defaultLanguage: undefined,
   talents: [],
   traits: [],
   description: '',
@@ -53,8 +54,7 @@ export type Race = {
   id: string;
   name: string;
   archetype: string | undefined;
-  realmId: string;
-  realmName: string;
+  realm: NamedEntity;
   sizeId: string;
   stats: RaceStats;
   resistances: RaceResistances;
@@ -66,7 +66,7 @@ export type Race = {
   baseHits: number;
   baseDevPoints: number;
   baseAt: number;
-  defaultLanguage: string | undefined;
+  defaultLanguage: NamedEntity | undefined;
   talents: string[];
   traits: RaceTrait[];
   description: string | undefined;
@@ -113,9 +113,48 @@ export type RaceTrait = {
   description: string | undefined;
 };
 
-export type CreateRaceDto = Omit<Race, 'id' | 'realmName'>;
+export type CreateRaceDto = {
+  name: string;
+  archetype: string | undefined;
+  sizeId: string;
+  stats: RaceStats;
+  resistances: RaceResistances;
+  averageHeight: AverageHeight;
+  averageWeight: AverageWeight;
+  strideBonus: number;
+  enduranceBonus: number;
+  recoveryMultiplier: number;
+  baseHits: number;
+  baseDevPoints: number;
+  baseAt: number;
+  defaultLanguage: string | undefined;
+  talents: string[];
+  traits: RaceTrait[];
+  description: string | undefined;
+  imageUrl: string | undefined;
+};
 
-export type UpdateRaceDto = Partial<Omit<Race, 'id' | 'realmId' | 'realmName'>>;
+export type UpdateRaceDto = {
+  id: string;
+  name: string;
+  archetype: string | undefined;
+  sizeId: string;
+  stats: RaceStats;
+  resistances: RaceResistances;
+  averageHeight: AverageHeight;
+  averageWeight: AverageWeight;
+  strideBonus: number;
+  enduranceBonus: number;
+  recoveryMultiplier: number;
+  baseHits: number;
+  baseDevPoints: number;
+  baseAt: number;
+  defaultLanguageId: string | undefined;
+  talents: string[];
+  traits: RaceTrait[];
+  description: string | undefined;
+  imageUrl: string | undefined;
+};
 
 export type AddRaceTraitDto = {
   traitId: string;

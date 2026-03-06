@@ -57,7 +57,7 @@ const HomePage: FC = () => {
       <RmuBreadcrumbs items={[{ name: 'Core' }]} />
       <Grid container spacing={1}>
         {cards.map((c) => (
-          <Grid size={{ xs: 12, md: 3 }} key={c.value}>
+          <Grid size={{ xs: 12, md: 2 }} key={c.value}>
             <RmuTextCard value={c.value} subtitle={c.subtitle} image={c.image} onClick={() => navigate(c.to)} />
           </Grid>
         ))}

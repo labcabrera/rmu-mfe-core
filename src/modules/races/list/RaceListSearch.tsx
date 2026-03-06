@@ -19,7 +19,7 @@ const RaceListSearch: FC<Props> = ({ setQueryString, realms }) => {
       queryString += `name=re=${searchName}`;
     }
     if (searchRealm) {
-      queryString += `${queryString ? ';' : ''}realmId==${searchRealm}`;
+      queryString += `${queryString ? ';' : ''}realm.id==${searchRealm}`;
     }
     setQueryString(queryString);
   }, [searchName, searchRealm]);

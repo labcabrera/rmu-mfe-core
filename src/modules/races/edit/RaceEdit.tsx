@@ -55,10 +55,10 @@ const RaceEdit: FC = () => {
           <CategorySeparator text={t('resistances')} />
           <RaceEditResistances formData={formData} setFormData={setFormData} />
           <CategorySeparator text={t('lore')} />
-          <RaceEditLore formData={formData} setFormData={setFormData} />
+          <RaceEditLore race={race} formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
-      {/* <pre>Form: {JSON.stringify(formData, null, 2)}</pre> */}
+      <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
     </>
   );
 };

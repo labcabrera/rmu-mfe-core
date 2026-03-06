@@ -17,7 +17,7 @@ const RaceEditActions: FC<{
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
     { name: t('realms'), link: '/core/realms' },
-    { name: race.realmName, link: `/core/realms/view/${race.realmId}` },
+    { name: race.realm.name, link: `/core/realms/view/${race.realm.id}` },
     { name: t('edit') },
   ];
 

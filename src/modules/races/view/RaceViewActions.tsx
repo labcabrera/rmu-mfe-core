@@ -12,7 +12,7 @@ import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
 const RaceViewActions: FC<{
   race: Race;
-  setRace: Dispatch<SetStateAction<Race>>;
+  setRace: Dispatch<SetStateAction<Race | undefined>>;
 }> = ({ race, setRace }) => {
   const navigate = useNavigate();
   const { showError } = useError();
@@ -20,7 +20,6 @@ const RaceViewActions: FC<{
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
     { name: t('realms'), link: '/core/realms  ' },
-    { name: race.realmName, link: `/core/realms/view/${race.realmId}` },
   ];
 
   const handleEditClick = () => {
@@ -43,7 +42,7 @@ const RaceViewActions: FC<{
 
   const onDelete = () => {
     deleteRace(race.id)
-      .then(() => navigate(`/core/realms/view/${race.realmId}`))
+      .then(() => navigate(`/core/realms/view/${race.realm.id}`))
       .catch((err) => showError(err.message));
   };
 
