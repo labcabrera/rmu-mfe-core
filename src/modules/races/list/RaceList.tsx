@@ -25,7 +25,6 @@ const RaceList: FC = () => {
   const bindRaces = () => {
     fetchPagedRaces(queryString, page, PAGE_SIZE)
       .then((response) => {
-        console.log(response);
         setRaces(response.content);
         setTotalPages(response.pagination.totalPages || 1);
       })
@@ -63,7 +62,7 @@ const RaceList: FC = () => {
           <Grid size={{ xs: 12, md: 3 }} key={race.id}>
             <RmuTextCard
               value={race.name}
-              subtitle={t(race.archetype || '')}
+              subtitle={race.realm.name}
               image={race.imageUrl || ''}
               onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
             />

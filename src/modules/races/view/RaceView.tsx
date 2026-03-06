@@ -1,14 +1,18 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { FC, use, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { updateRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
+import { fetchRealm } from '../../api/realm';
+import { imageBaseUrl } from '../../services/config';
 import EdditableAvatar from '../../shared/avatars/EditableAvatar';
 import AddButton from '../../shared/buttons/AddButton';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 import CategorySeparator from '../../shared/display/CategorySeparator';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RaceViewActions from './RaceViewActions';
 import RaceViewAttributes from './RaceViewAttributes';
 import RaceViewResistances from './RaceViewResistances';
@@ -17,7 +21,9 @@ import RaceViewTraits from './RaceViewTraits';
 import AddRaceTraitDialog from './traits/AddRaceTraitDialog';
 
 const RaceView: FC = () => {
+  const navigate = useNavigate();
   const { raceId } = useParams<{ raceId: string | undefined }>();
+  const [realm, setRealm] = useState<Realm>();
   const { showError } = useError();
   const [race, setRace] = useState<Race>();
   const [traitDialogOpen, setTraitDialogOpen] = useState(false);
@@ -35,6 +41,14 @@ const RaceView: FC = () => {
         .catch((err: Error) => showError(err.message));
     }
   }, [raceId, showError]);
+
+  useEffect(() => {
+    if (race) {
+      fetchRealm(race.realm.id)
+        .then((response) => setRealm(response))
+        .catch((err: Error) => showError(err.message));
+    }
+  }, [race]);
 
   if (!race) return <p>Loading race...</p>;
 
@@ -57,6 +71,17 @@ const RaceView: FC = () => {
           </Typography>
         </Grid>
         <Grid size={{ xs: 12, md: 8 }} padding={1}>
+          <CategorySeparator text={t('realm')} />
+          <Grid container spacing={1} columns={10}>
+            <Grid size={{ xs: 12, md: 2 }}>
+              <RmuTextCard
+                value={race.realm.name}
+                subtitle={t('realm')}
+                image={realm ? realm.imageUrl : `${imageBaseUrl}images/generic/realm.png`}
+                onClick={() => navigate(`/core/realms/view/${race.realm.id}`, { state: { realm: realm } })}
+              />
+            </Grid>
+          </Grid>
           <CategorySeparator text={t('statistics')} />
           <RaceViewStats race={race} />
           <CategorySeparator text={t('resistances')} />
@@ -70,6 +95,10 @@ const RaceView: FC = () => {
         </Grid>
       </Grid>
 
+      <TechnicalInfo>
+        <pre>{JSON.stringify(race, null, 2)} </pre>
+      </TechnicalInfo>
+
       <AddRaceTraitDialog
         open={traitDialogOpen}
         race={race}
@@ -77,7 +106,7 @@ const RaceView: FC = () => {
         onClose={() => setTraitDialogOpen(false)}
       />
 
-      {/* <pre>{JSON.stringify(race, null, 2)} </pre> */}
+      {/*  */}
     </>
   );
 };
