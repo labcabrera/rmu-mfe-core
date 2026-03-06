@@ -19,7 +19,7 @@ const RaceViewActions: FC<{
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
-    { name: t('realms'), link: '/core/realms  ' },
+    { name: t('races'), link: '/core/races' },
   ];
 
   const handleEditClick = () => {

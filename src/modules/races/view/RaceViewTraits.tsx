@@ -40,7 +40,7 @@ const RaceViewTraits: FC<{
     <>
       <Grid container spacing={1} columns={10}>
         {race.traits.map((trait, index) => (
-          <Grid size={{ xs: 5, md: 2 }} key={`trait-${index}`}>
+          <Grid size={{ xs: 12, md: 2 }} key={`trait-${index}`}>
             <RmuTextCard
               value={getTraitName(trait)}
               subtitle={t('trait')}

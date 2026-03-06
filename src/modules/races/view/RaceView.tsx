@@ -77,7 +77,7 @@ const RaceView: FC = () => {
         onClose={() => setTraitDialogOpen(false)}
       />
 
-      <pre>{JSON.stringify(race, null, 2)} </pre>
+      {/* <pre>{JSON.stringify(race, null, 2)} </pre> */}
     </>
   );
 };
