@@ -55,7 +55,7 @@ const ProfessionList: FC = () => {
             {professions.map((profession) => (
               <Grid size={{ xs: 12, md: 3 }} key={profession.id}>
                 <RmuTextCard
-                  value={profession.name}
+                  value={t(profession.id)}
                   subtitle={t('Profession')}
                   image={profession.imageUrl || ''}
                   onClick={() => navigate(`/core/professions/view/${profession.id}`, { state: { profession } })}

@@ -8,7 +8,7 @@ interface Props {
 }
 
 const ProfessionListActions: FC<Props> = ({ onRefresh }) => {
-  const breadcrumbs = [{ name: t('core'), link: '/core' }, { name: t('professions') }];
+  const breadcrumbs = [{ name: t('Core'), link: '/core' }, { name: t('Professions') }];
 
   return (
     <RmuBreadcrumbs items={breadcrumbs}>

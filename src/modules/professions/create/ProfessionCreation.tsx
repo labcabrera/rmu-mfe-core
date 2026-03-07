@@ -8,13 +8,10 @@ import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import EdditableAvatar from '../../shared/avatars/EditableAvatar';
 import CharacterSeparator from '../../shared/display/CategorySeparator';
-import RaceCreationActions from './RaceCreationActions';
-import RaceCreationAttributes from './RaceCreationAttributes';
-import RaceCreationLore from './RaceCreationLore';
-import RaceCreationResistances from './RaceCreationResistances';
-import RaceCreationStats from './RaceCreationStats';
+import RaceCreationActions from './ProfessionCreationActions';
+import RaceCreationAttributes from './ProfessionCreationAttributes';
 
-const RaceCreation: FC = () => {
+const ProfessionCreation: FC = () => {
   const [searchParams] = useSearchParams();
   const realmId = searchParams.get('realmId');
   const { showError } = useError();
@@ -61,11 +58,6 @@ const RaceCreation: FC = () => {
         <Grid size={{ xs: 12, md: 8 }}>
           <RaceCreationAttributes formData={formData} setFormData={setFormData} />
           <CharacterSeparator text={t('statistics')} />
-          <RaceCreationStats formData={formData} setFormData={setFormData} />
-          <CharacterSeparator text={t('resistances')} />
-          <RaceCreationResistances formData={formData} setFormData={setFormData} />
-          <CharacterSeparator text={t('lore')} />
-          <RaceCreationLore formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
       <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
@@ -73,4 +65,4 @@ const RaceCreation: FC = () => {
   );
 };
 
-export default RaceCreation;
+export default ProfessionCreation;

@@ -2,28 +2,28 @@ import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { deleteRace, fetchRace } from '../../api/race';
-import { Race } from '../../api/race.dto';
+import { deleteProfession, fetchProfession } from '../../api/profession';
+import { Profession } from '../../api/profession.dto';
 import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
 import RefreshButton from '../../shared/buttons/RefreshButton';
 import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
-const RaceViewActions: FC<{
-  race: Race;
-  setRace: Dispatch<SetStateAction<Race | undefined>>;
-}> = ({ race, setRace }) => {
+const ProfessionViewActions: FC<{
+  profession: Profession;
+  setProfession: Dispatch<SetStateAction<Profession | undefined>>;
+}> = ({ profession, setProfession }) => {
   const navigate = useNavigate();
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const breadcrumbs = [
-    { name: t('core'), link: '/core' },
-    { name: t('races'), link: '/core/races' },
+    { name: t('Core'), link: '/core' },
+    { name: t('Professions'), link: '/core/professions' },
   ];
 
   const handleEditClick = () => {
-    navigate(`/core/races/edit/${race.id}`, { state: { race } });
+    navigate(`/core/professions/edit/${profession.id}`, { state: { profession } });
   };
 
   const onOpenDeleteDialog = () => {
@@ -35,18 +35,18 @@ const RaceViewActions: FC<{
   };
 
   const onRefresh = () => {
-    fetchRace(race.id)
-      .then((response) => setRace(response))
+    fetchProfession(profession.id)
+      .then((response) => setProfession(response))
       .catch((err) => showError(err.message));
   };
 
   const onDelete = () => {
-    deleteRace(race.id)
-      .then(() => navigate(`/core/realms/view/${race.realm.id}`))
+    deleteProfession(profession.id)
+      .then(() => navigate(`/core/professions`))
       .catch((err) => showError(err.message));
   };
 
-  if (!race) return <p>Loading...</p>;
+  if (!profession) return <p>Loading...</p>;
 
   return (
     <>
@@ -56,7 +56,7 @@ const RaceViewActions: FC<{
         <DeleteButton onClick={onOpenDeleteDialog} />
       </RmuBreadcrumbs>
       <DeleteDialog
-        message={`Are you sure you want to delete ${race.name} race? This action cannot be undone.`}
+        message={`Are you sure you want to delete ${profession.id} profession? This action cannot be undone.`}
         onDelete={onDelete}
         open={deleteDialogOpen}
         onClose={onCloseDialog}
@@ -65,4 +65,4 @@ const RaceViewActions: FC<{
   );
 };
 
-export default RaceViewActions;
+export default ProfessionViewActions;

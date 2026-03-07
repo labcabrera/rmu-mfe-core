@@ -9,7 +9,9 @@ import LanguageEdit from './modules/languages/edit/LanguageEdit';
 import LanguageList from './modules/languages/list/LanguageList';
 import LanguageView from './modules/languages/view/LanguageView';
 import ManeuversView from './modules/maneuvers/ManeuversView';
+import ProfessionEdit from './modules/professions/edit/ProfessionEdit';
 import ProfessionList from './modules/professions/list/ProfessionList';
+import ProfessionView from './modules/professions/view/ProfessionView';
 import RaceCreation from './modules/races/create/RaceCreation';
 import RaceEdit from './modules/races/edit/RaceEdit';
 import RaceList from './modules/races/list/RaceList';
@@ -50,6 +52,8 @@ const App = () => {
           <Route path="/races/view/:raceId" element={<RaceView />} />
           <Route path="/races/edit/:raceId" element={<RaceEdit />} />
           <Route path="/professions" element={<ProfessionList />} />
+          <Route path="/professions/view/:professionId" element={<ProfessionView />} />
+          <Route path="/professions/edit/:professionId" element={<ProfessionEdit />} />
           <Route path="/traits" element={<TraitList />} />
           <Route path="/traits/view/:traitId" element={<TraitView />} />
           <Route path="/traits/create" element={<TraitCreation />} />
