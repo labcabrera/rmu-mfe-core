@@ -1,17 +1,17 @@
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Grid, List, ListItem, ListItemText, IconButton } from '@mui/material';
+import { Grid, Chip, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { CreateProfessionDto } from '../../api/profession.dto';
+import { CreateProfessionDto, UpdateProfessionDto } from '../../api/profession.dto';
 import { fetchPagedSkills } from '../../api/skill';
 import { Skill } from '../../api/skill.dto';
 import AddButton from '../../shared/buttons/AddButton';
 import SelectSkill from '../../shared/selects/SelectSkill';
 
 const ProfessionCreationProfessionalSkills: FC<{
-  formData: CreateProfessionDto;
-  setFormData: Dispatch<SetStateAction<CreateProfessionDto>>;
+  formData: CreateProfessionDto | UpdateProfessionDto;
+  setFormData: Dispatch<SetStateAction<CreateProfessionDto | UpdateProfessionDto>>;
 }> = ({ formData, setFormData }) => {
   const { showError } = useError();
   const [allSkills, setAllSkills] = React.useState<Skill[]>([]);
@@ -53,22 +53,20 @@ const ProfessionCreationProfessionalSkills: FC<{
         <AddButton onClick={() => onAddSkill(selectedSkillId!)} disabled={!selectedSkillId} />
       </Grid>
       <Grid size={12}>
-        <List dense>
-          {skills.length === 0 ? (
-            <ListItem>
-              <ListItemText primary="No professional skills" />
-            </ListItem>
-          ) : (
-            skills.map((s: any, idx: number) => (
-              <ListItem key={idx} secondaryAction>
-                <ListItemText primary={String(t(s))} />
-                <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(idx)}>
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </ListItem>
-            ))
-          )}
-        </List>
+        {skills.length === 0 ? (
+          <Typography>No professional skills</Typography>
+        ) : (
+          <Grid container spacing={1}>
+            {skills.map((s: any, idx: number) => (
+              <Chip
+                key={`professional-skill-${idx}`}
+                label={t(s)}
+                onDelete={() => handleDelete(idx)}
+                deleteIcon={<DeleteIcon fontSize="small" />}
+              />
+            ))}
+          </Grid>
+        )}
       </Grid>
     </Grid>
   );

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import { t } from 'i18next';
 import { CreateProfessionDto } from '../../api/profession.dto';
 import { imageBaseUrl } from '../../services/config';
@@ -82,6 +82,16 @@ const ProfessionCreation: FC = () => {
           <ProfessionCreationSkillCosts formData={formData} setFormData={setFormData} />
           <CharacterSeparator text={t('Professional skills')} />
           <ProfessionCreationProfessionalSkills formData={formData} setFormData={setFormData} />
+          <Grid size={12}>
+            <TextField
+              label={t('Description')}
+              fullWidth
+              multiline
+              minRows={3}
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            />
+          </Grid>
         </Grid>
       </Grid>
       <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
