@@ -7,7 +7,6 @@ import { fetchProfession } from '../../api/profession';
 import { Profession, UpdateProfessionDto } from '../../api/profession.dto';
 import EditableAvatar from '../../shared/avatars/EditableAvatar';
 import CategorySeparator from '../../shared/display/CategorySeparator';
-import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import ProfessionEditActions from './ProfessionEditActions';
 import ProfessionEditAttributes from './ProfessionEditAttributes';
 

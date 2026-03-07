@@ -1,6 +1,6 @@
 export interface Profession {
   id: string;
-  skillCosts: any;
+  skillCosts: ProfessionSkillCosts;
   professionalSkills: [];
   description: string;
   imageUrl?: string;
@@ -8,15 +8,50 @@ export interface Profession {
 
 export interface CreateProfessionDto {
   id: string;
-  skillCosts: any;
+  skillCosts: ProfessionSkillCosts;
   professionalSkills: [];
   description: string;
   imageUrl?: string;
 }
 
 export interface UpdateProfessionDto {
-  skillCosts?: any;
+  skillCosts?: ProfessionSkillCosts;
   professionalSkills?: [];
   description?: string;
   imageUrl?: string;
+}
+
+export interface ProfessionSkillCosts {
+  animal: number[];
+  awareness: number[];
+  'battle-expertise': number[];
+  'body-discipline': number[];
+  brawn: number[];
+  'combat-expertise': number[];
+  combat1: number[];
+  combat2: number[];
+  combat3: number[];
+  combat4: number[];
+  composition: number[];
+  crafting: number[];
+  delving: number[];
+  environmental: number[];
+  gymnastic: number[];
+  lore: number[];
+  'magical-expertise': number[];
+  medical: number[];
+  'mental-discipline': number[];
+  movement: number[];
+  'performance-art': number[];
+  'power-manipulation': number[];
+  science: number[];
+  social: number[];
+  'spells-base-open': number[];
+  'spells-ritual-magic': number[];
+  'spells-closed': number[];
+  'spells-arcane': number[];
+  'spells-restricted': number[];
+  subterfuge: number[];
+  technical: number[];
+  vocation: number[];
 }

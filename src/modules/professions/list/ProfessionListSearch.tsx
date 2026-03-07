@@ -12,7 +12,7 @@ const ProfessionListSearch: FC<Props> = ({ setQueryString }) => {
   useEffect(() => {
     let queryString = ``;
     if (searchName) {
-      queryString += `name=re=${searchName}`;
+      queryString += `id=re=${searchName}`;
     }
     setQueryString(queryString);
   }, [searchName]);
