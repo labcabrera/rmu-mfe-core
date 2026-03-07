@@ -53,24 +53,29 @@ const SkillList: FC = () => {
     <>
       <SkillListActions />
       <Grid container spacing={1}>
-        <Grid size={12}>
-          <SkillListSearch setQueryString={setQueryString} categories={skillCategories} />
-        </Grid>
-        {skills.map((skill) => (
-          <Grid size={{ xs: 12, md: 3 }} key={skill.id}>
-            <RmuTextCard
-              value={t(skill.id)}
-              subtitle={t(skill.categoryId)}
-              image={`${imageBaseUrl}images/generic/configuration.png`}
-              onClick={() => navigate(`/core/skills/view/${skill.id}`, { state: { skill } })}
-            />
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Grid container spacing={1}>
+            <Grid size={12}>
+              <SkillListSearch setQueryString={setQueryString} categories={skillCategories} />
+            </Grid>
+            {skills.map((skill) => (
+              <Grid size={{ xs: 12, md: 3 }} key={skill.id}>
+                <RmuTextCard
+                  value={t(skill.id)}
+                  subtitle={t(skill.categoryId)}
+                  image={`${imageBaseUrl}images/generic/configuration.png`}
+                  onClick={() => navigate(`/core/skills/view/${skill.id}`, { state: { skill } })}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
+          {skills.length === 0 ? <p>No skills found.</p> : null}
+          <Box mt={2} display="flex" justifyContent="center">
+            <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
+          </Box>
+        </Grid>
       </Grid>
-      {skills.length === 0 ? <p>No skills found.</p> : null}
-      <Box mt={2} display="flex" justifyContent="center">
-        <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
-      </Box>
     </>
   );
 };

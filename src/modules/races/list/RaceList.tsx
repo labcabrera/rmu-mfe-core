@@ -55,24 +55,29 @@ const RaceList: FC = () => {
     <>
       <RaceListActions onRefresh={bindRealms} />
       <Grid container spacing={1}>
-        <Grid size={12}>
-          <RaceListSearch setQueryString={setQueryString} realms={realms} />
-        </Grid>
-        {races.map((race) => (
-          <Grid size={{ xs: 12, md: 3 }} key={race.id}>
-            <RmuTextCard
-              value={race.name}
-              subtitle={race.realm.name}
-              image={race.imageUrl || ''}
-              onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
-            />
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Grid container spacing={1}>
+            <Grid size={12}>
+              <RaceListSearch setQueryString={setQueryString} realms={realms} />
+            </Grid>
+            {races.map((race) => (
+              <Grid size={{ xs: 12, md: 3 }} key={race.id}>
+                <RmuTextCard
+                  value={race.name}
+                  subtitle={race.realm.name}
+                  image={race.imageUrl || ''}
+                  onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
+          <Grid size={12}>{races.length === 0 && <p>No races found.</p>}</Grid>
+          <Box mt={2} display="flex" justifyContent="center">
+            <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
+          </Box>
+        </Grid>
       </Grid>
-      <Grid size={12}>{races.length === 0 && <p>No races found.</p>}</Grid>
-      <Box mt={2} display="flex" justifyContent="center">
-        <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
-      </Box>
     </>
   );
 };

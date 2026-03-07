@@ -43,24 +43,29 @@ const SkillCategoryList: FC = () => {
     <>
       <SkillCategoryListActions setQueryString={setQueryString} />
       <Grid container spacing={1}>
-        <Grid size={12}>
-          <SkillCategoryListSearch setQueryString={setQueryString} />
-        </Grid>
-        {skillCategories.map((category) => (
-          <Grid size={{ xs: 12, md: 3 }} key={category.id}>
-            <RmuTextCard
-              value={t(category.id)}
-              subtitle={t('skill-category')}
-              image={`${imageBaseUrl}images/generic/configuration.png`}
-              onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { category } })}
-            />
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Grid container spacing={1}>
+            <Grid size={12}>
+              <SkillCategoryListSearch setQueryString={setQueryString} />
+            </Grid>
+            {skillCategories.map((category) => (
+              <Grid size={{ xs: 12, md: 3 }} key={category.id}>
+                <RmuTextCard
+                  value={t(category.id)}
+                  subtitle={t('Skill category')}
+                  image={`${imageBaseUrl}images/generic/configuration.png`}
+                  onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { category } })}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
+          {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
+          <Box mt={2} display="flex" justifyContent="center">
+            <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
+          </Box>
+        </Grid>
       </Grid>
-      {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
-      <Box mt={2} display="flex" justifyContent="center">
-        <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
-      </Box>
     </>
   );
 };

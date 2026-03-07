@@ -38,7 +38,7 @@ const PercentManeuverView: FC = () => {
           <NumericInput
             label={t('Modifier')}
             value={modifier}
-            onChange={(e) => setModifier(e)}
+            onChange={(e) => setModifier(e || 0)}
             integer
             min={-1000}
             max={1000}

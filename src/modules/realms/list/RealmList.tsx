@@ -28,18 +28,23 @@ const RealmList: FC = () => {
     <>
       <RealmListActions setRealms={setRealms} />
       <Grid container spacing={1}>
-        {realms.map((realm) => (
-          <Grid size={{ xs: 12, md: 3 }} key={realm.id}>
-            <RmuTextCard
-              key={realm.id}
-              value={realm.name}
-              subtitle={realm.shortDescription}
-              image={realm.imageUrl || defaultImage}
-              onClick={() => handleRealmClick(realm)}
-            />
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Grid container spacing={1}>
+            {realms.map((realm) => (
+              <Grid size={{ xs: 12, md: 3 }} key={realm.id}>
+                <RmuTextCard
+                  key={realm.id}
+                  value={realm.name}
+                  subtitle={realm.shortDescription}
+                  image={realm.imageUrl || defaultImage}
+                  onClick={() => handleRealmClick(realm)}
+                />
+              </Grid>
+            ))}
+            {realms.length === 0 ? <p>No realms found.</p> : null}
           </Grid>
-        ))}
-        {realms.length === 0 ? <p>No realms found.</p> : null}
+        </Grid>
       </Grid>
     </>
   );

@@ -21,24 +21,6 @@ const HomePage: FC = () => {
       to: '/core/races',
     },
     {
-      value: 'Traits',
-      subtitle: 'Manage traits',
-      image: `${imageBaseUrl}images/generic/trait.png`,
-      to: '/core/traits',
-    },
-    {
-      value: 'Languages',
-      subtitle: 'Manage languages',
-      image: `${imageBaseUrl}images/generic/language.png`,
-      to: '/core/languages',
-    },
-    {
-      value: 'Maneuvers',
-      subtitle: 'Maneuvers',
-      image: `${imageBaseUrl}images/generic/configuration.png`,
-      to: '/core/maneuvers',
-    },
-    {
       value: 'Skill categories',
       subtitle: 'Skill category reference',
       image: `${imageBaseUrl}images/generic/configuration.png`,
@@ -50,17 +32,40 @@ const HomePage: FC = () => {
       image: `${imageBaseUrl}images/generic/configuration.png`,
       to: '/core/skills',
     },
+    {
+      value: 'Traits',
+      subtitle: 'Manage traits',
+      image: `${imageBaseUrl}images/generic/trait.png`,
+      to: '/core/traits',
+    },
+    {
+      value: 'Maneuvers',
+      subtitle: 'Maneuvers',
+      image: `${imageBaseUrl}images/generic/configuration.png`,
+      to: '/core/maneuvers',
+    },
+    {
+      value: 'Languages',
+      subtitle: 'Manage languages',
+      image: `${imageBaseUrl}images/generic/language.png`,
+      to: '/core/languages',
+    },
   ];
 
   return (
     <>
       <RmuBreadcrumbs items={[{ name: 'Core' }]} />
       <Grid container spacing={1}>
-        {cards.map((c) => (
-          <Grid size={{ xs: 12, md: 2 }} key={c.value}>
-            <RmuTextCard value={c.value} subtitle={c.subtitle} image={c.image} onClick={() => navigate(c.to)} />
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Grid container spacing={1}>
+            {cards.map((c) => (
+              <Grid size={{ xs: 12, md: 3 }} key={c.value}>
+                <RmuTextCard value={c.value} subtitle={c.subtitle} image={c.image} onClick={() => navigate(c.to)} />
+              </Grid>
+            ))}
           </Grid>
-        ))}
+        </Grid>
       </Grid>
     </>
   );

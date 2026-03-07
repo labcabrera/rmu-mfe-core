@@ -43,26 +43,35 @@ const TraitList: FC = () => {
   return (
     <>
       <TraitListActions onRefresh={bindTraits} />
-      <TraitListSearch setSearchString={setSearchString} />
-      <Grid container spacing={1} mt={1}>
-        {traits.map((trait) => (
-          <Grid size={{ xs: 12, md: 3 }} key={trait.id}>
-            <RmuTextCard
-              value={t(trait.name)}
-              subtitle={
-                t(trait.isTalent ? t('trait') : t('flaw')) + ' • ' + t(trait.category) + ' • ' + trait.adquisitionCost
-              }
-              image={getTraitImage(trait)}
-              onClick={() => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })}
-              grayscale={trait.isTalent ? 0 : 0.8}
-            />
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <TraitListSearch setSearchString={setSearchString} />
+          <Grid container spacing={1} mt={1}>
+            {traits.map((trait) => (
+              <Grid size={{ xs: 12, md: 3 }} key={trait.id}>
+                <RmuTextCard
+                  value={t(trait.name)}
+                  subtitle={
+                    t(trait.isTalent ? t('trait') : t('flaw')) +
+                    ' • ' +
+                    t(trait.category) +
+                    ' • ' +
+                    trait.adquisitionCost
+                  }
+                  image={getTraitImage(trait)}
+                  onClick={() => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })}
+                  grayscale={trait.isTalent ? 0 : 0.8}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
+          {traits.length === 0 ? <p>No traits found.</p> : null}
+          <Box mt={2} display="flex" justifyContent="center">
+            <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
+          </Box>
+        </Grid>
       </Grid>
-      {traits.length === 0 ? <p>No traits found.</p> : null}
-      <Box mt={2} display="flex" justifyContent="center">
-        <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
-      </Box>
     </>
   );
 };
