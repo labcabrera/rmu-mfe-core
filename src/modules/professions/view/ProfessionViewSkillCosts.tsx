@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
+import CircleIcon from '@mui/icons-material/Circle';
+import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import {
-  Grid,
   Typography,
-  Chip,
   Paper,
   TableContainer,
   Table,
@@ -10,15 +10,10 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Rating,
 } from '@mui/material';
 import { t } from 'i18next';
 import { Profession } from '../../api/profession.dto';
-
-const formatSkillLabel = (key: string) =>
-  key
-    .split('-')
-    .map((s) => s[0].toUpperCase() + s.slice(1))
-    .join(' ');
 
 const ProfessionViewSkillCosts: FC<{
   profession: Profession;
@@ -26,6 +21,10 @@ const ProfessionViewSkillCosts: FC<{
   const skillEntries = (Object.entries(profession.skillCosts || {}) as [string, number[]][]).filter(
     ([, vals]) => Array.isArray(vals) && vals.length > 0
   );
+
+  const getRatingValue = (cost: number) => {
+    return Math.max(0, 6 - Math.ceil(cost));
+  };
 
   if (skillEntries.length === 0) {
     return (
@@ -42,13 +41,28 @@ const ProfessionViewSkillCosts: FC<{
           <TableRow>
             <TableCell>{t('Category')}</TableCell>
             <TableCell>{t('Cost')}</TableCell>
+            <TableCell>{t('Rating')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {skillEntries.map(([skillKey, values]) => (
             <TableRow key={skillKey}>
-              <TableCell sx={{ minWidth: 200 }}>{formatSkillLabel(skillKey)}</TableCell>
-              <TableCell>{Array.isArray(values) ? values.join(' / ') : '—'}</TableCell>
+              <TableCell>{t(skillKey)}</TableCell>
+              <TableCell>
+                {values[0]}
+                {values.length > 1 ? ` / ${values[1]}` : ''}
+              </TableCell>
+              <TableCell>
+                <Rating
+                  name="size-small"
+                  defaultValue={getRatingValue(values[0])}
+                  size="small"
+                  readOnly
+                  icon={<CircleIcon fontSize="inherit" />}
+                  emptyIcon={<CircleOutlinedIcon fontSize="inherit" />}
+                  sx={{ color: 'primary.main' }}
+                />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

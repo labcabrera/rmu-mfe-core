@@ -9,6 +9,7 @@ import LanguageEdit from './modules/languages/edit/LanguageEdit';
 import LanguageList from './modules/languages/list/LanguageList';
 import LanguageView from './modules/languages/view/LanguageView';
 import ManeuversView from './modules/maneuvers/ManeuversView';
+import ProfessionCreation from './modules/professions/create/ProfessionCreation';
 import ProfessionEdit from './modules/professions/edit/ProfessionEdit';
 import ProfessionList from './modules/professions/list/ProfessionList';
 import ProfessionView from './modules/professions/view/ProfessionView';
@@ -52,6 +53,7 @@ const App = () => {
           <Route path="/races/view/:raceId" element={<RaceView />} />
           <Route path="/races/edit/:raceId" element={<RaceEdit />} />
           <Route path="/professions" element={<ProfessionList />} />
+          <Route path="/professions/create" element={<ProfessionCreation />} />
           <Route path="/professions/view/:professionId" element={<ProfessionView />} />
           <Route path="/professions/edit/:professionId" element={<ProfessionEdit />} />
           <Route path="/traits" element={<TraitList />} />

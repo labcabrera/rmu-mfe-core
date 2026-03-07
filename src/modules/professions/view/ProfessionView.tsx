@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchProfession, updateProfession } from '../../api/profession';
@@ -9,6 +9,7 @@ import EdditableAvatar from '../../shared/avatars/EditableAvatar';
 import CategorySeparator from '../../shared/display/CategorySeparator';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import ProfessionViewActions from './ProfessionViewActions';
+import ProfessionViewProfessionalSkills from './ProfessionViewProfessionalSkills';
 import ProfessionViewSkillCosts from './ProfessionViewSkillCosts';
 
 const ProfessionView: FC = () => {
@@ -46,14 +47,13 @@ const ProfessionView: FC = () => {
           <CategorySeparator text={t('Skill costs')} />
           <ProfessionViewSkillCosts profession={profession} />
           <CategorySeparator text={t('Professional skills')} />
-          <Grid container spacing={1} columns={10}>
-            <Grid size={{ xs: 12, md: 2 }}>TODO</Grid>
-          </Grid>
-          <Grid size={12} mt={2}>
+          <ProfessionViewProfessionalSkills profession={profession} />
+
+          <Box mt={2}>
             <TechnicalInfo>
               <pre>{JSON.stringify(profession, null, 2)}</pre>
             </TechnicalInfo>
-          </Grid>
+          </Box>
         </Grid>
       </Grid>
     </>

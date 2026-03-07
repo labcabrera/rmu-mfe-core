@@ -1,27 +1,23 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { t } from 'i18next';
-import { useError } from '../../../ErrorContext';
-import { CreateRaceDto, raceCreateTemplate } from '../../api/race.dto';
-import { fetchRealm } from '../../api/realm';
-import { Realm } from '../../api/realm.dto';
+import { CreateProfessionDto } from '../../api/profession.dto';
 import EdditableAvatar from '../../shared/avatars/EditableAvatar';
 import CharacterSeparator from '../../shared/display/CategorySeparator';
-import RaceCreationActions from './ProfessionCreationActions';
-import RaceCreationAttributes from './ProfessionCreationAttributes';
+import ProfessionCreationActions from './ProfessionCreationActions';
+import ProfessionCreationAttributes from './ProfessionCreationAttributes';
+
+const TEMPLATE = {
+  id: '',
+  imageUrl: '',
+} as CreateProfessionDto;
 
 const ProfessionCreation: FC = () => {
-  const [searchParams] = useSearchParams();
-  const realmId = searchParams.get('realmId');
-  const { showError } = useError();
-  const [realm, setRealm] = useState<Realm | null>(null);
-  const [formData, setFormData] = useState<CreateRaceDto>(raceCreateTemplate);
+  const [formData, setFormData] = useState<CreateProfessionDto>(TEMPLATE);
   const [isValid, setIsValid] = useState(false);
 
-  const validateForm = (formData: CreateRaceDto) => {
-    if (!formData.name) return false;
-    if (!formData.realmId) return false;
+  const validateForm = (formData: CreateProfessionDto) => {
+    if (!formData.id) return false;
     return true;
   };
 
@@ -29,25 +25,11 @@ const ProfessionCreation: FC = () => {
     setIsValid(validateForm(formData));
   }, [formData]);
 
-  useEffect(() => {
-    if (realm) {
-      setFormData({ ...formData, realmId: realm.id });
-    }
-  }, [realm]);
-
-  useEffect(() => {
-    if (realmId) {
-      fetchRealm(realmId)
-        .then((response) => setRealm(response))
-        .catch((err) => showError(err.message));
-    }
-  }, [realmId, showError]);
-
-  if (!realm || !formData) return <div>Loading...</div>;
+  if (!formData) return <div>Loading...</div>;
 
   return (
     <>
-      <RaceCreationActions formData={formData} isValid={isValid} realm={realm} />
+      <ProfessionCreationActions formData={formData} isValid={isValid} />
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
           <EdditableAvatar
@@ -56,7 +38,7 @@ const ProfessionCreation: FC = () => {
           />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <RaceCreationAttributes formData={formData} setFormData={setFormData} />
+          <ProfessionCreationAttributes formData={formData} setFormData={setFormData} />
           <CharacterSeparator text={t('statistics')} />
         </Grid>
       </Grid>

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { Grid } from '@mui/material';
+import { Chip, Grid } from '@mui/material';
+import { t } from 'i18next';
 import { Profession } from '../../api/profession.dto';
 
 const ProfessionViewProfessionalSkills: FC<{
@@ -7,7 +8,9 @@ const ProfessionViewProfessionalSkills: FC<{
 }> = ({ profession }) => {
   return (
     <Grid container spacing={1} columns={10}>
-      TODO
+      {profession.professionalSkills.map((skill, index) => (
+        <Chip key={`professional-skill-${index}`} label={t(skill)} />
+      ))}
     </Grid>
   );
 };

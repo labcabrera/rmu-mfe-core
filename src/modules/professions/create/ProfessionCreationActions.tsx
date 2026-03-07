@@ -2,35 +2,32 @@ import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { createRace } from '../../api/race';
-import { CreateRaceDto } from '../../api/race.dto';
-import { Realm } from '../../api/realm.dto';
+import { createProfession } from '../../api/profession';
+import { CreateProfessionDto } from '../../api/profession.dto';
 import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
-const RaceCreationActions: FC<{
-  formData: CreateRaceDto;
-  realm: Realm;
+const ProfessionCreationActions: FC<{
+  formData: CreateProfessionDto;
   isValid: boolean;
-}> = ({ formData, realm, isValid }) => {
+}> = ({ formData, isValid }) => {
   const navigate = useNavigate();
   const { showError } = useError();
   const breadcrumbs = [
-    { name: t('core'), link: '/core' },
-    { name: t('realms'), link: '/core/realms' },
-    { name: realm.name, link: `/core/realms/view/${realm.id}` },
-    { name: t('race-creation') },
+    { name: t('Core'), link: '/core' },
+    { name: t('Professions'), link: '/core/professions' },
+    { name: t('Create') },
   ];
 
   const onSave = () => {
-    createRace(formData)
-      .then((race) => navigate(`/core/races/view/${race.id}`))
-      .catch((err) => showError(err.message));
+    createProfession(formData)
+      .then((result) => navigate(`/core/professions/view/${result.id}`))
+      .catch((err: Error) => showError(err.message));
   };
 
   const onCancel = () => {
-    navigate(`/tactical/games`);
+    navigate(`/core/professions`);
   };
 
   return (
@@ -41,4 +38,4 @@ const RaceCreationActions: FC<{
   );
 };
 
-export default RaceCreationActions;
+export default ProfessionCreationActions;
