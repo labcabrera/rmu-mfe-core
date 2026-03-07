@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
 import { fetchAbsoluteManeuver, fetchAbsoluteManeuverTables } from '../api/maneuver';
 import { AbsoluteManeuverResult } from '../api/maneuver.dto';
+import { openEndedRoll } from '../services/random-service';
 import { NumericInput } from '../shared/inputs/NumericInput';
 import SelectManeuverTable from '../shared/selects/SelectManeuverTable';
 
@@ -11,6 +12,8 @@ const AbsoluteManeuverView: FC = () => {
   const { showError } = useError();
 
   const [roll, setRoll] = useState<number | null>(null);
+  const [modifier, setModifier] = useState<number>(0);
+  const [totalRoll, setTotalRoll] = useState<number | null>(null);
   const [result, setResult] = useState<AbsoluteManeuverResult | null>(null);
   const [unusualEvent, setUnusualEvent] = useState<boolean>(false);
   const [table, setTable] = useState<string | null>(null);
@@ -23,14 +26,18 @@ const AbsoluteManeuverView: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (roll !== null) {
-      fetchAbsoluteManeuver(roll, table, unusualEvent)
+    setTotalRoll(roll !== null ? roll + modifier : null);
+  }, [roll, modifier]);
+
+  useEffect(() => {
+    if (totalRoll !== null) {
+      fetchAbsoluteManeuver(totalRoll, table, unusualEvent)
         .then((data) => setResult(data))
         .catch((err) => showError(err));
     } else {
       setResult(null);
     }
-  }, [roll, unusualEvent, table, showError]);
+  }, [totalRoll, unusualEvent, table, showError]);
 
   return (
     <Grid container spacing={1}>
@@ -44,13 +51,28 @@ const AbsoluteManeuverView: FC = () => {
           />
         </Grid>
         <Grid size={12}>
-          <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
+          <NumericInput
+            label={t('Modifier')}
+            value={modifier}
+            onChange={(e) => setModifier(e)}
+            integer
+            min={-1000}
+            max={1000}
+          />
+        </Grid>
+        <Grid size={12}>
+          <NumericInput label={t('Roll')} value={roll} onChange={(e) => setRoll(e)} integer min={-1000} max={1000} />
         </Grid>
         <Grid size={12}>
           <FormControlLabel
             control={<Checkbox checked={unusualEvent} onChange={(e) => setUnusualEvent(e.target.checked)} />}
-            label={t('unusual-event')}
+            label={t('Unusual Event')}
           />
+        </Grid>
+        <Grid size={12}>
+          <Button variant="contained" color="primary" onClick={() => setRoll(openEndedRoll())}>
+            {t('Random')}
+          </Button>
         </Grid>
       </Grid>
 
@@ -59,7 +81,7 @@ const AbsoluteManeuverView: FC = () => {
           <Paper sx={{ p: 2 }}>
             <Grid size={{ xs: 12, md: 12 }}>
               <Typography variant="h6" color="primary" gutterBottom>
-                {t(result.result)}
+                {t(result.result)} {totalRoll !== null ? `(${totalRoll})` : ''}
               </Typography>
               <Typography variant="body1" color="secondary" gutterBottom>
                 {result.message}

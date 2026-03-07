@@ -128,7 +128,6 @@ export function NumericInput({
       autoFocus={autoFocus}
       size="small"
       margin="dense"
-      // className={className}
       fullWidth
       sx={{
         '& input': {
