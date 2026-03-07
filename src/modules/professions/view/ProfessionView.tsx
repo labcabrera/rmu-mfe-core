@@ -9,6 +9,7 @@ import EdditableAvatar from '../../shared/avatars/EditableAvatar';
 import CategorySeparator from '../../shared/display/CategorySeparator';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import ProfessionViewActions from './ProfessionViewActions';
+import ProfessionViewSkillCosts from './ProfessionViewSkillCosts';
 
 const ProfessionView: FC = () => {
   const { showError } = useError();
@@ -43,9 +44,7 @@ const ProfessionView: FC = () => {
         </Grid>
         <Grid size={{ xs: 12, md: 8 }} padding={1}>
           <CategorySeparator text={t('Skill costs')} />
-          <Grid container spacing={1} columns={10}>
-            <Grid size={{ xs: 12, md: 2 }}>TODO</Grid>
-          </Grid>
+          <ProfessionViewSkillCosts profession={profession} />
           <CategorySeparator text={t('Professional skills')} />
           <Grid container spacing={1} columns={10}>
             <Grid size={{ xs: 12, md: 2 }}>TODO</Grid>
