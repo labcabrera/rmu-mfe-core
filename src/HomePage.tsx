@@ -21,6 +21,12 @@ const HomePage: FC = () => {
       to: '/core/races',
     },
     {
+      value: 'Professions',
+      subtitle: 'Manage professions',
+      image: `${imageBaseUrl}images/generic/configuration.png`,
+      to: '/core/professions',
+    },
+    {
       value: 'Skill categories',
       subtitle: 'Skill category reference',
       image: `${imageBaseUrl}images/generic/configuration.png`,

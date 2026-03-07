@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { ErrorProvider } from './ErrorContext';
@@ -9,6 +9,7 @@ import LanguageEdit from './modules/languages/edit/LanguageEdit';
 import LanguageList from './modules/languages/list/LanguageList';
 import LanguageView from './modules/languages/view/LanguageView';
 import ManeuversView from './modules/maneuvers/ManeuversView';
+import ProfessionList from './modules/professions/list/ProfessionList';
 import RaceCreation from './modules/races/create/RaceCreation';
 import RaceEdit from './modules/races/edit/RaceEdit';
 import RaceList from './modules/races/list/RaceList';
@@ -27,6 +28,13 @@ import TraitEdit from './modules/traits/edit/TraitEdit';
 import TraitList from './modules/traits/list/TraitList';
 import TraitView from './modules/traits/view/TraitView';
 
+const NotFound: FC = () => (
+  <div>
+    <h2>Not found</h2>
+    <p>The requested route does not exist.</p>
+  </div>
+);
+
 const App = () => {
   return (
     <ErrorProvider>
@@ -41,6 +49,7 @@ const App = () => {
           <Route path="/races/create" element={<RaceCreation />} />
           <Route path="/races/view/:raceId" element={<RaceView />} />
           <Route path="/races/edit/:raceId" element={<RaceEdit />} />
+          <Route path="/professions" element={<ProfessionList />} />
           <Route path="/traits" element={<TraitList />} />
           <Route path="/traits/view/:traitId" element={<TraitView />} />
           <Route path="/traits/create" element={<TraitCreation />} />
@@ -55,6 +64,7 @@ const App = () => {
           <Route path="/skills/create" element={<SkillCreation />} />
           <Route path="/skill-categories" element={<SkillCategoryList />} />
           <Route path="/skill-categories/view/:skillCategoryId" element={<SkillCategoryView />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Box>
     </ErrorProvider>
