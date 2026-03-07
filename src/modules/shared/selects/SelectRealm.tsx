@@ -26,7 +26,7 @@ const SelectRealm: FC<{
     >
       {allowEmpty && (
         <MenuItem value="">
-          <em>None</em>
+          <em>{t('all')}</em>
         </MenuItem>
       )}
       {realms.map((option, index) => (

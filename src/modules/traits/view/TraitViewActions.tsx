@@ -7,11 +7,13 @@ import { Trait } from '../../api/trait.dto';
 import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import EditButton from '../../shared/buttons/EditButton';
+import RefreshButton from '../../shared/buttons/RefreshButton';
 import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
 const TraitViewActions: FC<{
   trait: Trait;
-}> = ({ trait }) => {
+  onRefresh: () => void;
+}> = ({ trait, onRefresh }) => {
   const navigate = useNavigate();
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -22,13 +24,8 @@ const TraitViewActions: FC<{
 
   const onDelete = () => {
     deleteTrait(trait.id)
-      .then(() => {
-        navigate('/core/traits');
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError(String(err));
-      });
+      .then(() => navigate('/core/traits'))
+      .catch((err: Error) => showError(err.message));
   };
 
   const onEdit = () => {
@@ -51,6 +48,7 @@ const TraitViewActions: FC<{
   return (
     <>
       <RmuBreadcrumbs items={breadcrumbs}>
+        <RefreshButton onClick={onRefresh} />
         <EditButton onClick={onEdit} />
         <DeleteButton onClick={onOpenDeleteDialog} />
       </RmuBreadcrumbs>

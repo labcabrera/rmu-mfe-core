@@ -28,7 +28,7 @@ const RaceEditAttributes: FC<{
       <Grid size={12}>
         <SelectLanguage
           label={t('default-language')}
-          value={undefined}
+          value={formData.defaultLanguageId}
           name={''}
           onChange={(language) => setFormData({ ...formData, defaultLanguageId: language ? language.id : undefined })}
           languages={languages}

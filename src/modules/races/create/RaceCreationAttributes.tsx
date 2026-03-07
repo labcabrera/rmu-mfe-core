@@ -134,17 +134,6 @@ const RaceCreationAttributes: FC<{
           min={0}
         />
       </Grid>
-      <Grid size={12}></Grid>
-      <Grid size={4}>
-        <TextField
-          label={t('default-language')}
-          variant="standard"
-          name="defaultLanguage"
-          value={formData.defaultLanguage}
-          onChange={handleChange}
-          fullWidth
-        />
-      </Grid>
     </Grid>
   );
 };

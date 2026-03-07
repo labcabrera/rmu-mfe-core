@@ -43,7 +43,7 @@ export const raceCreateTemplate = {
   baseHits: 0,
   baseDevPoints: 60,
   baseAt: 1,
-  defaultLanguage: undefined,
+  defaultLanguageId: undefined,
   talents: [],
   traits: [],
   description: '',
@@ -115,28 +115,7 @@ export type RaceTrait = {
 
 export type CreateRaceDto = {
   name: string;
-  archetype: string | undefined;
-  sizeId: string;
-  stats: RaceStats;
-  resistances: RaceResistances;
-  averageHeight: AverageHeight;
-  averageWeight: AverageWeight;
-  strideBonus: number;
-  enduranceBonus: number;
-  recoveryMultiplier: number;
-  baseHits: number;
-  baseDevPoints: number;
-  baseAt: number;
-  defaultLanguage: string | undefined;
-  talents: string[];
-  traits: RaceTrait[];
-  description: string | undefined;
-  imageUrl: string | undefined;
-};
-
-export type UpdateRaceDto = {
-  id: string;
-  name: string;
+  realmId: string;
   archetype: string | undefined;
   sizeId: string;
   stats: RaceStats;
@@ -152,6 +131,28 @@ export type UpdateRaceDto = {
   defaultLanguageId: string | undefined;
   talents: string[];
   traits: RaceTrait[];
+  description: string | undefined;
+  imageUrl: string | undefined;
+};
+
+export type UpdateRaceDto = {
+  id: string;
+  name: string | undefined;
+  archetype: string | undefined;
+  sizeId: string | undefined;
+  stats: RaceStats | undefined;
+  resistances: RaceResistances | undefined;
+  averageHeight: AverageHeight | undefined;
+  averageWeight: AverageWeight | undefined;
+  strideBonus: number | undefined;
+  enduranceBonus: number | undefined;
+  recoveryMultiplier: number | undefined;
+  baseHits: number | undefined;
+  baseDevPoints: number | undefined;
+  baseAt: number | undefined;
+  defaultLanguageId: string | undefined;
+  talents: string[] | undefined;
+  traits: RaceTrait[] | undefined;
   description: string | undefined;
   imageUrl: string | undefined;
 };

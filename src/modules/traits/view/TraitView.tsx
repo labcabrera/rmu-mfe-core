@@ -15,18 +15,19 @@ const TraitView: FC = () => {
   const { showError } = useError();
   const [trait, setTrait] = useState<Trait | null>(null);
 
+  const bindTrait = () => {
+    if (traitId) {
+      fetchTrait(traitId)
+        .then((response) => setTrait(response))
+        .catch((err: Error) => showError(err.message));
+    }
+  };
+
   useEffect(() => {
     if (location.state && location.state.trait) {
       setTrait(location.state.trait);
     } else if (traitId) {
-      fetchTrait(traitId)
-        .then((response) => {
-          setTrait(response);
-        })
-        .catch((err: unknown) => {
-          if (err instanceof Error) showError(err.message);
-          else showError(String(err));
-        });
+      bindTrait();
     }
   }, [location.state, traitId, showError]);
 
@@ -34,7 +35,7 @@ const TraitView: FC = () => {
 
   return (
     <>
-      <TraitViewActions trait={trait} />
+      <TraitViewActions trait={trait} onRefresh={bindTrait} />
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
           <GenericAvatar imageUrl={getTraitImage(trait)} />

@@ -29,7 +29,7 @@ const RaceView: FC = () => {
   const [traitDialogOpen, setTraitDialogOpen] = useState(false);
 
   const onUpdateImage = (imageUrl: string) => {
-    updateRace(race!.id, { imageUrl })
+    updateRace(race!.id, { imageUrl: imageUrl! })
       .then((updatedRace) => setRace(updatedRace))
       .catch((err: Error) => showError(err.message));
   };
@@ -92,21 +92,36 @@ const RaceView: FC = () => {
             <AddButton onClick={() => setTraitDialogOpen(true)} />
           </CategorySeparator>
           <RaceViewTraits race={race} setRace={setRace} />
+          {race.defaultLanguage && (
+            <>
+              <CategorySeparator text={t('language')} />
+              <Grid size={12} mt={2}>
+                <Grid container spacing={1} columns={10}>
+                  <Grid size={{ xs: 12, md: 2 }}>
+                    <RmuTextCard
+                      value={race.defaultLanguage?.name || 'Undefined'}
+                      subtitle={t('default-language')}
+                      image={`${imageBaseUrl}images/generic/language.png`}
+                      onClick={() => navigate(`/core/languages/view/${race.defaultLanguage?.id}`)}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </>
+          )}
+          <Grid size={12} mt={5}>
+            <TechnicalInfo>
+              <pre>{JSON.stringify(race, null, 2)} </pre>
+            </TechnicalInfo>
+          </Grid>
         </Grid>
       </Grid>
-
-      <TechnicalInfo>
-        <pre>{JSON.stringify(race, null, 2)} </pre>
-      </TechnicalInfo>
-
       <AddRaceTraitDialog
         open={traitDialogOpen}
         race={race}
         setRace={setRace}
         onClose={() => setTraitDialogOpen(false)}
       />
-
-      {/*  */}
     </>
   );
 };

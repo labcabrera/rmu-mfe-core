@@ -69,7 +69,7 @@ const TraitList: FC = () => {
         {traits.map((trait) => (
           <Grid size={{ xs: 12, md: 3 }} key={trait.id}>
             <RmuTextCard
-              value={t(trait.id)}
+              value={t(trait.name)}
               subtitle={
                 t(trait.isTalent ? t('trait') : t('flaw')) + ' • ' + t(trait.category) + ' • ' + trait.adquisitionCost
               }

@@ -15,9 +15,11 @@ const RaceCreationLore: FC<{
   const [languages, setLanguages] = React.useState<Language[]>([]);
 
   useEffect(() => {
-    fetchLanguages(`realmId==${formData.realmId}`, 0, 100)
-      .then((data) => setLanguages(data))
-      .catch((err: Error) => showError(err.message));
+    if (formData.realmId) {
+      fetchLanguages(`realm.id==${formData.realmId}`, 0, 100)
+        .then((data) => setLanguages(data))
+        .catch((err: Error) => showError(err.message));
+    }
   }, [formData.realmId]);
 
   return (
@@ -25,9 +27,9 @@ const RaceCreationLore: FC<{
       <Grid size={12}>
         <SelectLanguage
           label={t('default-language')}
-          value={formData.defaultLanguage}
+          value={formData.defaultLanguageId}
           name="default-language"
-          onChange={(language) => setFormData({ ...formData, defaultLanguage: language ? language.id : undefined })}
+          onChange={(lang) => setFormData({ ...formData, defaultLanguageId: lang ? lang.id : undefined })}
           languages={languages}
         />
       </Grid>
