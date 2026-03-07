@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 export type NumericInputProps = {
   value: number | null;
   onChange: (value: number | null) => void;
+  onRefresh?: () => void;
   integer?: boolean;
   allowNegatives?: boolean;
   maxFractionDigits?: number;
@@ -25,6 +26,7 @@ export type NumericInputProps = {
 export function NumericInput({
   value,
   onChange,
+  onRefresh,
   integer = false,
   allowNegatives = true,
   maxFractionDigits = 2,

@@ -12,7 +12,7 @@ const RaceViewTraits: FC<{
   setRace: Dispatch<SetStateAction<Race | undefined>>;
 }> = ({ race, setRace }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [trait, setTrait] = useState<Trait | null>(null);
+  const [selectedTrait, setSelectedTrait] = useState<Trait | null>(null);
 
   const getRomanNumeral = (num: number) => {
     const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
@@ -46,18 +46,18 @@ const RaceViewTraits: FC<{
               subtitle={t('trait')}
               image={`${imageBaseUrl}images/generic/configuration.png`}
               onClick={() => {
-                setTrait(trait);
+                setSelectedTrait(trait);
                 setDialogOpen(true);
               }}
             />
           </Grid>
         ))}
       </Grid>
-      {trait && (
+      {selectedTrait && (
         <ViewTraitDialog
           race={race}
           setRace={setRace}
-          trait={trait}
+          trait={selectedTrait}
           open={dialogOpen}
           onClose={() => setDialogOpen(false)}
         />

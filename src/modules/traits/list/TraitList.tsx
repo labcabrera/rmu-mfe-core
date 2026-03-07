@@ -17,23 +17,11 @@ const TraitList: FC = () => {
   const { showError } = useError();
   const [traits, setTraits] = useState<Trait[]>([]);
   const [page, setPage] = useState(0);
+  const [searchString, setSearchString] = useState('');
   const [totalPages, setTotalPages] = useState(1);
-  const [searchId, setSearchId] = useState<string>('');
-  const [searchCategory, setSearchCategory] = useState<string>('');
-  const [searchType, setSearchType] = useState<string>('');
 
-  const bindTraits = (id: string, category: string, type: string, pageNumber: number = 0) => {
-    let query = '';
-    if (id) query += `id=re=${id}`;
-    if (category && category !== 'all') {
-      if (query !== '') query += ';';
-      query += `category==${category}`;
-    }
-    if (type && type !== 'all') {
-      if (query !== '') query += ';';
-      query += `isTalent==${type === 'talent'}`;
-    }
-    fetchPagedTraits(query, pageNumber, PAGE_SIZE)
+  const bindTraits = () => {
+    fetchPagedTraits(searchString, page, PAGE_SIZE)
       .then((response) => {
         setTraits(response.content);
         setTotalPages(response.pagination.totalPages || 1);
@@ -44,27 +32,18 @@ const TraitList: FC = () => {
       });
   };
 
-  const handleSearch = (id: string, category: string, type: string) => {
-    setSearchId(id);
-    setSearchCategory(category);
-    setSearchType(type);
-    setPage(0);
-    bindTraits(id, category, type, 0);
-  };
-
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value - 1);
-    bindTraits(searchId, searchCategory, searchType, value - 1);
   };
 
   useEffect(() => {
-    bindTraits('', '', '', 0);
-  }, []);
+    bindTraits();
+  }, [searchString, page]);
 
   return (
     <>
-      <TraitListActions />
-      <TraitListSearch onSearch={handleSearch} />
+      <TraitListActions onRefresh={bindTraits} />
+      <TraitListSearch setSearchString={setSearchString} />
       <Grid container spacing={1} mt={1}>
         {traits.map((trait) => (
           <Grid size={{ xs: 12, md: 3 }} key={trait.id}>
