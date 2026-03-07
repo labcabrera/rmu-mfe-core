@@ -1,3 +1,5 @@
+export const STATISTICS = ['ag', 'co', 'em', 'in', 'me', 'pr', 'pe', 'qu', 're', 'sd'] as string[];
+
 export type Page<I> = {
   content: I[];
   pagination: {
@@ -6,4 +8,9 @@ export type Page<I> = {
     totalElements: number;
     totalPages: number;
   };
+};
+
+export type NamedEntity = {
+  id: string;
+  name: string;
 };

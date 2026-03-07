@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { CreateRealmDto } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
-import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import EditableAvatar from '../../shared/avatars/EditableAvatar';
 import RealmCreationActions from './RealmCreationActions';
 import RealmCreationAttributes from './RealmCreationAttributes';
 
@@ -11,6 +11,7 @@ const RealmCreation: FC = () => {
     name: '',
     shortDescription: undefined,
     description: undefined,
+    imageUrl: `${imageBaseUrl}images/generic/realm.png`,
   });
   const [isValid, setIsValid] = useState(false);
 
@@ -28,9 +29,12 @@ const RealmCreation: FC = () => {
   return (
     <>
       <RealmCreationActions formData={formData} isValid={isValid} />
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
-          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/realm.png`} />
+          <EditableAvatar
+            imageUrl={formData.imageUrl!}
+            onImageChange={(newImageUrl) => setFormData({ ...formData, imageUrl: newImageUrl })}
+          />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <RealmCreationAttributes formData={formData} setFormData={setFormData} />

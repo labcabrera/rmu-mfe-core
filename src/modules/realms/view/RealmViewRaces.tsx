@@ -6,7 +6,6 @@ import { useError } from '../../../ErrorContext';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { Realm } from '../../api/realm.dto';
-import { resolveRaceImage } from '../../services/race-avatar-service';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const RealmViewRaces: FC<{
@@ -18,7 +17,7 @@ const RealmViewRaces: FC<{
 
   useEffect(() => {
     if (realm) {
-      fetchRaces(`realmId==${realm.id}`, 0, 50)
+      fetchRaces(`realm.id==${realm.id}`, 0, 50)
         .then((response) => setRaces(response))
         .catch((err) => showError(err.message));
     }
@@ -29,9 +28,8 @@ const RealmViewRaces: FC<{
       {races.map((race) => (
         <Grid size={{ xs: 12, md: 3 }} key={race.id}>
           <RmuTextCard
-            size="medium"
             key={race.id}
-            image={resolveRaceImage(race.name)}
+            image={race.imageUrl || ''}
             value={race.name}
             subtitle={t(race.archetype || '')}
             onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race: race } })}

@@ -6,7 +6,6 @@ import { useError } from '../../../ErrorContext';
 import { fetchPagedSkillCategories } from '../../api/skill-category';
 import { SkillCategory } from '../../api/skill-category.dto';
 import { imageBaseUrl } from '../../services/config';
-import CardListItem from '../../shared/cards/CardListItem';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import SkillCategoryListActions from './SkillCategoryListActions';
 import SkillCategoryListSearch from './SkillCategoryListSearch';
@@ -43,24 +42,30 @@ const SkillCategoryList: FC = () => {
   return (
     <>
       <SkillCategoryListActions setQueryString={setQueryString} />
-      <SkillCategoryListSearch queryString={queryString} setQueryString={setQueryString} />
-      <Grid container spacing={1} padding={1}>
-        {skillCategories.map((category) => (
-          <Grid size={{ xs: 12, md: 3 }} key={category.id}>
-            <RmuTextCard
-              size="medium"
-              value={t(category.id)}
-              subtitle={t(category.id)}
-              image={`${imageBaseUrl}images/generic/configuration.png`}
-              onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { category } })}
-            />
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Grid container spacing={1}>
+            <Grid size={12}>
+              <SkillCategoryListSearch setQueryString={setQueryString} />
+            </Grid>
+            {skillCategories.map((category) => (
+              <Grid size={{ xs: 12, md: 3 }} key={category.id}>
+                <RmuTextCard
+                  value={t(category.id)}
+                  subtitle={t('Skill category')}
+                  image={`${imageBaseUrl}images/generic/configuration.png`}
+                  onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { category } })}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
+          {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
+          <Box mt={2} display="flex" justifyContent="center">
+            <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
+          </Box>
+        </Grid>
       </Grid>
-      {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
-      <Box mt={2} display="flex" justifyContent="center">
-        <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
-      </Box>
     </>
   );
 };

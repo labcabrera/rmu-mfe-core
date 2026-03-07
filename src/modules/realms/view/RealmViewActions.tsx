@@ -12,7 +12,7 @@ import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
 const RealmViewActions: FC<{
   realm: Realm;
-  setRealm: Dispatch<SetStateAction<Realm | null>>;
+  setRealm: Dispatch<SetStateAction<Realm | undefined>>;
 }> = ({ realm, setRealm }) => {
   const navigate = useNavigate();
   const { showError } = useError();

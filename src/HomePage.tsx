@@ -1,77 +1,70 @@
 import React, { FC } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Box, Breadcrumbs, Grid, Link, Stack } from '@mui/material';
-import { t } from 'i18next';
+import { useNavigate } from 'react-router-dom';
+import { Grid } from '@mui/material';
 import { imageBaseUrl } from './modules/services/config';
-import CardListItem from './modules/shared/cards/CardListItem';
+import RmuBreadcrumbs from './modules/shared/breadcrumbs/RmuBreadcrumbs';
+import RmuTextCard from './modules/shared/cards/RmuTextCard';
 
 const HomePage: FC = () => {
   const navigate = useNavigate();
+  const cards = [
+    {
+      value: 'Realms',
+      subtitle: 'Manage realms',
+      image: `${imageBaseUrl}images/generic/realm.png`,
+      to: '/core/realms',
+    },
+    {
+      value: 'Races',
+      subtitle: 'Manage races',
+      image: `${imageBaseUrl}images/generic/races.png`,
+      to: '/core/races',
+    },
+    {
+      value: 'Skill categories',
+      subtitle: 'Skill category reference',
+      image: `${imageBaseUrl}images/generic/configuration.png`,
+      to: '/core/skill-categories',
+    },
+    {
+      value: 'Skills',
+      subtitle: 'Skill reference',
+      image: `${imageBaseUrl}images/generic/configuration.png`,
+      to: '/core/skills',
+    },
+    {
+      value: 'Traits',
+      subtitle: 'Manage traits',
+      image: `${imageBaseUrl}images/generic/trait.png`,
+      to: '/core/traits',
+    },
+    {
+      value: 'Maneuvers',
+      subtitle: 'Maneuvers',
+      image: `${imageBaseUrl}images/generic/configuration.png`,
+      to: '/core/maneuvers',
+    },
+    {
+      value: 'Languages',
+      subtitle: 'Manage languages',
+      image: `${imageBaseUrl}images/generic/language.png`,
+      to: '/core/languages',
+    },
+  ];
 
   return (
     <>
-      <Stack
-        spacing={1}
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={1}
-        sx={{ minHeight: 60 }}
-      >
-        <Box>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link component={RouterLink} color="primary" underline="always" to="/core">
-              {t('core')}
-            </Link>
-          </Breadcrumbs>
-        </Box>
-      </Stack>
-      <Grid container spacing={2} direction="column">
-        <Grid size={12}>
-          <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
-            <CardListItem
-              title="Realms"
-              subtitle="Manage realms"
-              image={`${imageBaseUrl}images/generic/realm.png`}
-              onClick={() => navigate(`/core/realms`)}
-            />
-            <CardListItem
-              title="Races"
-              subtitle="Manage races"
-              image={`${imageBaseUrl}images/generic/races.png`}
-              onClick={() => navigate(`/core/races`)}
-            />
-            <CardListItem
-              title="Traits"
-              subtitle="Manage traits"
-              image={`${imageBaseUrl}images/generic/trait.png`}
-              onClick={() => navigate(`/core/traits`)}
-            />
-            <CardListItem
-              title="Languages"
-              subtitle="Manage languages"
-              image={`${imageBaseUrl}images/generic/language.png`}
-              onClick={() => navigate(`/core/languages`)}
-            />
-            <CardListItem
-              title="Maneuvers"
-              subtitle="Maneuvers"
-              image={`${imageBaseUrl}images/generic/configuration.png`}
-              onClick={() => navigate(`/core/maneuvers`)}
-            />
-            <CardListItem
-              title="Skill categories"
-              subtitle="Skill category reference"
-              image={`${imageBaseUrl}images/generic/configuration.png`}
-              onClick={() => navigate(`/core/skill-categories`)}
-            />
-            <CardListItem
-              title="Skills"
-              subtitle="Skill reference"
-              image={`${imageBaseUrl}images/generic/configuration.png`}
-              onClick={() => navigate(`/core/skills`)}
-            />
-          </Box>
+      <RmuBreadcrumbs items={[{ name: 'Core' }]} />
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Grid container spacing={1}>
+            {cards.map((c) => (
+              <Grid size={{ xs: 12, md: 3 }} key={c.value}>
+                <RmuTextCard value={c.value} subtitle={c.subtitle} image={c.image} onClick={() => navigate(c.to)} />
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
       </Grid>
     </>

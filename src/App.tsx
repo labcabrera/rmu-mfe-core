@@ -19,6 +19,7 @@ import RealmList from './modules/realms/list/RealmList';
 import RealmView from './modules/realms/view/RealmView';
 import SkillCategoryList from './modules/skills-categories/list/SkillCategoryList';
 import SkillCategoryView from './modules/skills-categories/view/SkillCategoryView';
+import SkillCreation from './modules/skills/create/SkillCreation';
 import SkillList from './modules/skills/list/SkillList';
 import SkillView from './modules/skills/view/SkillView';
 import TraitCreation from './modules/traits/create/TraitCreation';
@@ -29,7 +30,7 @@ import TraitView from './modules/traits/view/TraitView';
 const App = () => {
   return (
     <ErrorProvider>
-      <Box sx={{ p: { xs: 0.5, md: 1 } }} id="test-asdasd">
+      <Box padding={2}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/realms" element={<RealmList />} />
@@ -51,6 +52,7 @@ const App = () => {
           <Route path="/maneuvers" element={<ManeuversView />} />
           <Route path="/skills" element={<SkillList />} />
           <Route path="/skills/view/:skillId" element={<SkillView />} />
+          <Route path="/skills/create" element={<SkillCreation />} />
           <Route path="/skill-categories" element={<SkillCategoryList />} />
           <Route path="/skill-categories/view/:skillCategoryId" element={<SkillCategoryView />} />
         </Routes>

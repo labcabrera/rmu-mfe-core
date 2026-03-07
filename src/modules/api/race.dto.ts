@@ -1,7 +1,8 @@
+import { imageBaseUrl } from '../services/config';
+import { NamedEntity } from './common.dto';
+
 export const stats = ['ag', 'co', 'em', 'in', 'me', 'pr', 'qu', 're', 'sd', 'st'];
-
 export const resistances = ['channeling', 'mentalism', 'essence', 'physical', 'poison', 'disease', 'fear'];
-
 export const raceCreateTemplate = {
   name: '',
   realmId: '',
@@ -42,17 +43,18 @@ export const raceCreateTemplate = {
   baseHits: 0,
   baseDevPoints: 60,
   baseAt: 1,
-  defaultLanguage: '',
+  defaultLanguageId: undefined,
   talents: [],
+  traits: [],
   description: '',
+  imageUrl: `${imageBaseUrl}images/races/unknown.png`,
 } as CreateRaceDto;
 
 export type Race = {
   id: string;
   name: string;
   archetype: string | undefined;
-  realmId: string;
-  realmName: string;
+  realm: NamedEntity;
   sizeId: string;
   stats: RaceStats;
   resistances: RaceResistances;
@@ -64,9 +66,11 @@ export type Race = {
   baseHits: number;
   baseDevPoints: number;
   baseAt: number;
-  defaultLanguage: string | undefined;
+  defaultLanguage: NamedEntity | undefined;
   talents: string[];
+  traits: RaceTrait[];
   description: string | undefined;
+  imageUrl: string | undefined;
 };
 
 export type RaceStats = {
@@ -101,6 +105,62 @@ export type AverageWeight = {
   female: number;
 };
 
-export type CreateRaceDto = Omit<Race, 'id' | 'realmName'>;
+export type RaceTrait = {
+  id: string;
+  traitId: string;
+  tier: number | undefined;
+  modifier: string | undefined;
+  description: string | undefined;
+};
 
-export type UpdateRaceDto = Partial<Omit<Race, 'id' | 'realmId' | 'realmName'>>;
+export type CreateRaceDto = {
+  name: string;
+  realmId: string;
+  archetype: string | undefined;
+  sizeId: string;
+  stats: RaceStats;
+  resistances: RaceResistances;
+  averageHeight: AverageHeight;
+  averageWeight: AverageWeight;
+  strideBonus: number;
+  enduranceBonus: number;
+  recoveryMultiplier: number;
+  baseHits: number;
+  baseDevPoints: number;
+  baseAt: number;
+  defaultLanguageId: string | undefined;
+  talents: string[];
+  traits: RaceTrait[];
+  description: string | undefined;
+  imageUrl: string | undefined;
+};
+
+export type UpdateRaceDto = {
+  id: string;
+  name: string | undefined;
+  archetype: string | undefined;
+  sizeId: string | undefined;
+  stats: RaceStats | undefined;
+  resistances: RaceResistances | undefined;
+  averageHeight: AverageHeight | undefined;
+  averageWeight: AverageWeight | undefined;
+  strideBonus: number | undefined;
+  enduranceBonus: number | undefined;
+  recoveryMultiplier: number | undefined;
+  baseHits: number | undefined;
+  baseDevPoints: number | undefined;
+  baseAt: number | undefined;
+  defaultLanguageId: string | undefined;
+  talents: string[] | undefined;
+  traits: RaceTrait[] | undefined;
+  description: string | undefined;
+  imageUrl: string | undefined;
+};
+
+export type AddRaceTraitDto = {
+  traitId: string;
+  specialization: string | undefined;
+  isTalent: boolean;
+  tier: number | undefined;
+  description: string | undefined;
+};

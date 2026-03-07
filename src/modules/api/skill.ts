@@ -1,8 +1,8 @@
-import { getAuthHeaders } from '../services/auth-token-service';
+import { getAuthHeaders, mergeJsonHeaders } from '../services/auth-token-service';
 import { apiCoreUrl } from '../services/config';
 import { buildErrorFromResponse } from './api-errors';
 import { Page } from './common.dto';
-import { Skill } from './skill.dto';
+import { CreateSkillDto, Skill } from './skill.dto';
 
 export async function fetchSkill(skillId: string): Promise<Skill> {
   const url = `${apiCoreUrl}/skills/${skillId}`;
@@ -21,4 +21,17 @@ export async function fetchPagedSkills(rsql: string, page: number, size: number)
   }
   const json = await response.json();
   return json as Page<Skill>;
+}
+
+export async function createSkill(data: Partial<CreateSkillDto>): Promise<Skill> {
+  const url = `${apiCoreUrl}/skills`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: mergeJsonHeaders(),
+    body: JSON.stringify(data),
+  });
+  if (response.status !== 201) {
+    throw await buildErrorFromResponse(response, url);
+  }
+  return (await response.json()) as Skill;
 }

@@ -1,52 +1,83 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Grid, Link } from '@mui/material';
+import { Box, Grid, Pagination } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchRaces } from '../../api/race';
+import { fetchPagedRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
-import RaceCard from '../../shared/cards/RaceCard';
+import { fetchRealms } from '../../api/realm';
+import { Realm } from '../../api/realm.dto';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 import RaceListActions from './RaceListActions';
+import RaceListSearch from './RaceListSearch';
+
+const PAGE_SIZE = 24;
 
 const RaceList: FC = () => {
   const navigate = useNavigate();
   const { showError } = useError();
+  const [queryString, setQueryString] = useState('');
+  const [realms, setRealms] = useState<Realm[]>([]);
   const [races, setRaces] = useState<Race[]>([]);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   const bindRaces = () => {
-    fetchRaces('', 0, 20)
-      .then((response) => setRaces(response))
-      .catch((err: Error) => showError('err' + err.message));
+    fetchPagedRaces(queryString, page, PAGE_SIZE)
+      .then((response) => {
+        setRaces(response.content);
+        setTotalPages(response.pagination.totalPages || 1);
+      })
+      .catch((err: Error) => showError(err.message));
   };
 
-  const handleNewRace = () => {
-    navigate('/core/races/create');
+  const bindRealms = () => {
+    fetchRealms('', 0, 100)
+      .then((response) => setRealms(response))
+      .catch((err: Error) => showError(err.message));
+  };
+
+  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value - 1);
   };
 
   useEffect(() => {
     bindRaces();
-  }, [showError]);
+  }, [queryString, page]);
+
+  useEffect(() => {
+    bindRealms();
+  }, []);
+
+  if (!races) return <p>Loading...</p>;
 
   return (
     <>
-      <RaceListActions />
-      <Grid container spacing={2} mb={2} alignItems="center">
-        <Grid size={12}>
-          <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
+      <RaceListActions onRefresh={bindRealms} />
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Grid container spacing={1}>
+            <Grid size={12}>
+              <RaceListSearch setQueryString={setQueryString} realms={realms} />
+            </Grid>
             {races.map((race) => (
-              <RaceCard key={race.id} race={race} />
+              <Grid size={{ xs: 12, md: 3 }} key={race.id}>
+                <RmuTextCard
+                  value={race.name}
+                  subtitle={race.realm.name}
+                  image={race.imageUrl || ''}
+                  onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
+                />
+              </Grid>
             ))}
+          </Grid>
+          <Grid size={12}>{races.length === 0 && <p>No races found.</p>}</Grid>
+          <Box mt={2} display="flex" justifyContent="center">
+            <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
           </Box>
         </Grid>
       </Grid>
-      {races.length === 0 ? (
-        <p>
-          No races found.{' '}
-          <Link component="button" onClick={handleNewRace}>
-            {t('create-new')}
-          </Link>
-        </p>
-      ) : null}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
@@ -12,15 +12,14 @@ import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
 const RaceViewActions: FC<{
   race: Race;
-  setRace: React.Dispatch<React.SetStateAction<Race | null>>;
+  setRace: Dispatch<SetStateAction<Race | undefined>>;
 }> = ({ race, setRace }) => {
   const navigate = useNavigate();
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
-    { name: t('realms'), link: '/core/realms  ' },
-    { name: race.realmName, link: `/core/realms/view/${race.realmId}` },
+    { name: t('races'), link: '/core/races' },
   ];
 
   const handleEditClick = () => {
@@ -43,7 +42,7 @@ const RaceViewActions: FC<{
 
   const onDelete = () => {
     deleteRace(race.id)
-      .then(() => navigate(`/core/realms/view/${race.realmId}`))
+      .then(() => navigate(`/core/realms/view/${race.realm.id}`))
       .catch((err) => showError(err.message));
   };
 
@@ -51,7 +50,7 @@ const RaceViewActions: FC<{
 
   return (
     <>
-      <RmuBreadcrumbs items={breadcrumbs} maxNameLength={35}>
+      <RmuBreadcrumbs items={breadcrumbs}>
         <RefreshButton onClick={onRefresh} />
         <EditButton onClick={handleEditClick} />
         <DeleteButton onClick={onOpenDeleteDialog} />

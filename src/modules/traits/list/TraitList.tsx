@@ -17,23 +17,11 @@ const TraitList: FC = () => {
   const { showError } = useError();
   const [traits, setTraits] = useState<Trait[]>([]);
   const [page, setPage] = useState(0);
+  const [searchString, setSearchString] = useState('');
   const [totalPages, setTotalPages] = useState(1);
-  const [searchId, setSearchId] = useState<string>('');
-  const [searchCategory, setSearchCategory] = useState<string>('');
-  const [searchType, setSearchType] = useState<string>('');
 
-  const bindTraits = (id: string, category: string, type: string, pageNumber: number = 0) => {
-    let query = '';
-    if (id) query += `id=re=${id}`;
-    if (category && category !== 'all') {
-      if (query !== '') query += ';';
-      query += `category==${category}`;
-    }
-    if (type && type !== 'all') {
-      if (query !== '') query += ';';
-      query += `isTalent==${type === 'talent'}`;
-    }
-    fetchPagedTraits(query, pageNumber, PAGE_SIZE)
+  const bindTraits = () => {
+    fetchPagedTraits(searchString, page, PAGE_SIZE)
       .then((response) => {
         setTraits(response.content);
         setTotalPages(response.pagination.totalPages || 1);
@@ -44,47 +32,46 @@ const TraitList: FC = () => {
       });
   };
 
-  const handleSearch = (id: string, category: string, type: string) => {
-    setSearchId(id);
-    setSearchCategory(category);
-    setSearchType(type);
-    setPage(0);
-    bindTraits(id, category, type, 0);
-  };
-
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value - 1);
-    bindTraits(searchId, searchCategory, searchType, value - 1);
   };
 
   useEffect(() => {
-    bindTraits('', '', '', 0);
-  }, []);
+    bindTraits();
+  }, [searchString, page]);
 
   return (
     <>
-      <TraitListActions />
-      <TraitListSearch onSearch={handleSearch} />
-      <Grid container spacing={1} padding={1}>
-        {traits.map((trait) => (
-          <Grid size={{ xs: 12, md: 3 }} key={trait.id}>
-            <RmuTextCard
-              size="medium"
-              value={t(trait.id)}
-              subtitle={
-                t(trait.isTalent ? t('trait') : t('flaw')) + ' • ' + t(trait.category) + ' • ' + trait.adquisitionCost
-              }
-              image={getTraitImage(trait)}
-              onClick={() => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })}
-              grayscale={trait.isTalent ? 0 : 0.8}
-            />
+      <TraitListActions onRefresh={bindTraits} />
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <TraitListSearch setSearchString={setSearchString} />
+          <Grid container spacing={1} mt={1}>
+            {traits.map((trait) => (
+              <Grid size={{ xs: 12, md: 3 }} key={trait.id}>
+                <RmuTextCard
+                  value={t(trait.name)}
+                  subtitle={
+                    t(trait.isTalent ? t('trait') : t('flaw')) +
+                    ' • ' +
+                    t(trait.category) +
+                    ' • ' +
+                    trait.adquisitionCost
+                  }
+                  image={getTraitImage(trait)}
+                  onClick={() => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })}
+                  grayscale={trait.isTalent ? 0 : 0.8}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
+          {traits.length === 0 ? <p>No traits found.</p> : null}
+          <Box mt={2} display="flex" justifyContent="center">
+            <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
+          </Box>
+        </Grid>
       </Grid>
-      {traits.length === 0 ? <p>No traits found.</p> : null}
-      <Box mt={2} display="flex" justifyContent="center">
-        <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
-      </Box>
     </>
   );
 };

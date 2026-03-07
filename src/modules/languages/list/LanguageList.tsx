@@ -1,59 +1,68 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Box, Grid, Link } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { Language } from '../../api/language.dto';
 import { fetchLanguages } from '../../api/languages';
-import LanguageCard from '../../shared/cards/LanguageCard';
+import { fetchRealms } from '../../api/realm';
+import { Realm } from '../../api/realm.dto';
+import { imageBaseUrl } from '../../services/config';
+import RmuTextCard from '../../shared/cards/RmuTextCard';
 import RealmListActions from './LanguageListActions';
+import LanguageListSearch from './LanguageListSearch';
+
+const PAGE_SIZE = 24;
 
 const LanguageList: FC = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
   const [languages, setLanguages] = useState<Language[]>([]);
+  const [realms, setRealms] = useState<Realm[]>([]);
+  const [queryString, setQueryString] = useState('');
 
-  const bindLanguages = () => {
-    fetchLanguages('', 0, 20)
-      .then((response) => {
-        setLanguages(response);
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError('An unknown error occurred');
-      });
+  const bindRealms = () => {
+    fetchRealms('', 0, 100)
+      .then((response) => setRealms(response))
+      .catch((err: Error) => showError(err.message));
   };
 
-  const handleNewLanguage = () => {
-    navigate('/core/languages/create');
+  const bindLanguages = () => {
+    fetchLanguages(queryString, 0, PAGE_SIZE)
+      .then((response) => setLanguages(response))
+      .catch((err: Error) => showError(err.message));
   };
 
   useEffect(() => {
     bindLanguages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryString]);
+
+  useEffect(() => {
+    bindRealms();
   }, []);
 
   return (
     <>
-      <RealmListActions />
-      <Grid container spacing={2} mb={2} alignItems="center">
-        <Grid size={8}>
-          <Box mb={2} display="flex" flexDirection="row" flexWrap="wrap" gap={2}>
-            {languages.map((language) => (
-              <LanguageCard key={language.id} language={language} />
-            ))}
-          </Box>
+      <RealmListActions onRefresh={bindLanguages} />
+      <Grid container spacing={1}>
+        <Grid size={12}>
+          <LanguageListSearch setQueryString={setQueryString} realms={realms} />
         </Grid>
+        <Grid size={12}>
+          <Grid container spacing={1}>
+            {languages.map((language) => (
+              <Grid size={{ xs: 12, md: 4 }} key={language.id}>
+                <RmuTextCard
+                  value={language.name}
+                  subtitle={language.realm.name}
+                  image={`${imageBaseUrl}images/generic/language.png`}
+                  onClick={() => navigate(`/core/languages/view/${language.id}`)}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
+        <Grid size={12}>{languages.length === 0 ? <p>No languages found.</p> : null}</Grid>
       </Grid>
-      {languages.length === 0 ? (
-        <p>
-          No languages found.{' '}
-          <Link component="button" onClick={handleNewLanguage}>
-            {t('create-new')}
-          </Link>
-        </p>
-      ) : null}
     </>
   );
 };

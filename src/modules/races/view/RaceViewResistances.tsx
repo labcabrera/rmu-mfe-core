@@ -24,13 +24,14 @@ const RaceViewResistances: FC<{
 
   return (
     <Grid container spacing={1} columns={10}>
-      {resistances.map((resistance) => (
-        <Grid size={{ xs: 5, md: 2 }}>
+      {resistances.map((resistance, index) => (
+        <Grid size={{ xs: 5, md: 2 }} key={`resistance-${index}`}>
           <RmuTextCard
             value={race.resistances[resistance]}
             subtitle={t(resistance)}
             image={getImage(resistance)}
             grayscale={0.7}
+            applyColor={true}
           />
         </Grid>
       ))}

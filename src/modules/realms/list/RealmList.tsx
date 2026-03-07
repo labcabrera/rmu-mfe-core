@@ -8,6 +8,8 @@ import { imageBaseUrl } from '../../services/config';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import RealmListActions from './RealmListActions';
 
+const defaultImage = `${imageBaseUrl}images/generic/realm.png`;
+
 const RealmList: FC = () => {
   const { showError } = useError();
   const [realms, setRealms] = useState<Realm[]>([]);
@@ -25,20 +27,24 @@ const RealmList: FC = () => {
   return (
     <>
       <RealmListActions setRealms={setRealms} />
-      <Grid container spacing={1} padding={1}>
-        {realms.map((realm) => (
-          <Grid size={{ xs: 12, md: 2 }} key={realm.id}>
-            <RmuTextCard
-              key={realm.id}
-              size="medium"
-              value={realm.name}
-              subtitle={realm.shortDescription}
-              image={`${imageBaseUrl}images/generic/realm.png`}
-              onClick={() => handleRealmClick(realm)}
-            />
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Grid container spacing={1}>
+            {realms.map((realm) => (
+              <Grid size={{ xs: 12, md: 3 }} key={realm.id}>
+                <RmuTextCard
+                  key={realm.id}
+                  value={realm.name}
+                  subtitle={realm.shortDescription}
+                  image={realm.imageUrl || defaultImage}
+                  onClick={() => handleRealmClick(realm)}
+                />
+              </Grid>
+            ))}
+            {realms.length === 0 ? <p>No realms found.</p> : null}
           </Grid>
-        ))}
-        {realms.length === 0 ? <p>No realms found.</p> : null}
+        </Grid>
       </Grid>
     </>
   );

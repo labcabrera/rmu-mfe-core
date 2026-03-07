@@ -2,7 +2,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
-import { EnduranceManeuverResult, fetchEnduranceManeuver } from '../api/maneuver';
+import { fetchEnduranceManeuver } from '../api/maneuver';
+import { EnduranceManeuverResult } from '../api/maneuver.dto';
 import { NumericInput } from '../shared/inputs/NumericInput';
 
 const EnduranceManeuverView: FC = () => {
@@ -23,51 +24,49 @@ const EnduranceManeuverView: FC = () => {
   }, [roll, unusualEvent, showError]);
 
   return (
-    <Paper sx={{ p: 1, m: 1 }}>
-      <Grid container spacing={1}>
-        <Grid size={12} mt={3}>
-          <Typography variant="h6" color="primary" gutterBottom>
-            {t('endurance-maneuver')}
-          </Typography>
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 2 }}>
+    <Grid container spacing={1}>
+      <Grid size={{ xs: 12, md: 4 }}>
+        <Grid size={12}>
           <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
         </Grid>
-
-        <Grid size={{ xs: 12, md: 12 }}>
+        <Grid size={12}>
           <FormControlLabel
             control={<Checkbox checked={unusualEvent} onChange={(e) => setUnusualEvent(e.target.checked)} />}
             label={t('unusual-event')}
           />
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 4 }}>
           {result && (
-            <Grid size={12}>
-              <Typography variant="body1" color="primary" gutterBottom>
-                {t(result.result)}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                {result.message}
-              </Typography>
-              {result.fatigue !== undefined && (
-                <Typography variant="body1" gutterBottom>
-                  Fatigue: {result.fatigue}
+            <Paper sx={{ p: 2 }}>
+              <Grid size={12}>
+                <Typography variant="h6" color="primary" gutterBottom>
+                  {t(result.result)}
                 </Typography>
-              )}
-              {result.hitPoints !== undefined && (
-                <Typography variant="body1" gutterBottom>
-                  Hit Points: {result.hitPoints}
+                <Typography variant="body1" color="secondary" gutterBottom>
+                  {result.message}
                 </Typography>
-              )}
-              {result.bonus !== undefined && (
-                <Typography variant="body1" gutterBottom>
-                  Bonus: {result.bonus}
-                </Typography>
-              )}
-            </Grid>
+                {result.fatigue !== undefined && (
+                  <Typography variant="body1" gutterBottom mt={2}>
+                    Fatigue: {result.fatigue}
+                  </Typography>
+                )}
+                {result.hitPoints !== undefined && result.hitPoints !== 0 && (
+                  <Typography variant="body1" gutterBottom mt={2}>
+                    Hit Points: {result.hitPoints}
+                  </Typography>
+                )}
+                {result.bonus !== undefined && result.bonus !== 0 && (
+                  <Typography variant="body1" gutterBottom mt={2}>
+                    Bonus: {result.bonus}
+                  </Typography>
+                )}
+              </Grid>
+            </Paper>
           )}
         </Grid>
       </Grid>
-    </Paper>
+    </Grid>
   );
 };
 

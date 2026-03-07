@@ -1,9 +1,20 @@
 import { getAuthHeaders, mergeJsonHeaders } from '../services/auth-token-service';
+import { apiCoreUrl } from '../services/config';
 import { buildErrorFromResponse } from './api-errors';
-import { CreateRaceDto, Race, UpdateRaceDto } from './race.dto';
+import { Page } from './common.dto';
+import { AddRaceTraitDto, CreateRaceDto, Race, UpdateRaceDto } from './race.dto';
 
 export async function fetchRace(raceId: string): Promise<Race> {
-  const url = `${process.env.RMU_API_CORE_URL}/races/${raceId}`;
+  const url = `${apiCoreUrl}/races/${raceId}`;
+  const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
+  if (response.status !== 200) {
+    throw await buildErrorFromResponse(response, url);
+  }
+  return await response.json();
+}
+
+export async function fetchPagedRaces(rsql: string, page: number, size: number): Promise<Page<Race>> {
+  const url = `${apiCoreUrl}/races?q=${rsql}&page=${page}&size=${size}`;
   const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
@@ -12,7 +23,7 @@ export async function fetchRace(raceId: string): Promise<Race> {
 }
 
 export async function fetchRaces(rsql: string, page: number, size: number): Promise<Race[]> {
-  const url = `${process.env.RMU_API_CORE_URL}/races?q=${rsql}&page=${page}&size=${size}`;
+  const url = `${apiCoreUrl}/races?q=${rsql}&page=${page}&size=${size}`;
   const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
@@ -22,7 +33,7 @@ export async function fetchRaces(rsql: string, page: number, size: number): Prom
 }
 
 export async function createRace(data: CreateRaceDto): Promise<Race> {
-  const url = `${process.env.RMU_API_CORE_URL}/races`;
+  const url = `${apiCoreUrl}/races`;
   const response = await fetch(url, {
     method: 'POST',
     headers: mergeJsonHeaders(),
@@ -35,7 +46,7 @@ export async function createRace(data: CreateRaceDto): Promise<Race> {
 }
 
 export async function updateRace(raceId: string, data: UpdateRaceDto): Promise<Race> {
-  const url = `${process.env.RMU_API_CORE_URL}/races/${raceId}`;
+  const url = `${apiCoreUrl}/races/${raceId}`;
   const response = await fetch(url, {
     method: 'PATCH',
     headers: mergeJsonHeaders(),
@@ -48,9 +59,31 @@ export async function updateRace(raceId: string, data: UpdateRaceDto): Promise<R
 }
 
 export async function deleteRace(raceId: string): Promise<void> {
-  const url = `${process.env.RMU_API_CORE_URL}/races/${raceId}`;
+  const url = `${apiCoreUrl}/races/${raceId}`;
   const response = await fetch(url, { method: 'DELETE', headers: getAuthHeaders() });
   if (response.status !== 204) {
     throw await buildErrorFromResponse(response, url);
   }
+}
+
+export async function addRaceTrait(raceId: string, dto: AddRaceTraitDto): Promise<Race> {
+  const url = `${apiCoreUrl}/races/${raceId}/traits`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: mergeJsonHeaders(),
+    body: JSON.stringify(dto),
+  });
+  if (response.status !== 200) {
+    throw await buildErrorFromResponse(response, url);
+  }
+  return await response.json();
+}
+
+export async function deleteRaceTrait(raceId: string, traitId: string): Promise<Race> {
+  const url = `${apiCoreUrl}/races/${raceId}/traits/${traitId}`;
+  const response = await fetch(url, { method: 'DELETE', headers: getAuthHeaders() });
+  if (response.status !== 200) {
+    throw await buildErrorFromResponse(response, url);
+  }
+  return await response.json();
 }

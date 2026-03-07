@@ -8,7 +8,6 @@ import { getTraitImage } from '../../services/trait-image-service';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import TraitViewActions from './TraitViewActions';
 import TraitViewInfo from './TraitViewInfo';
-import TraitViewResume from './TraitViewResume';
 
 const TraitView: FC = () => {
   const location = useLocation();
@@ -16,18 +15,19 @@ const TraitView: FC = () => {
   const { showError } = useError();
   const [trait, setTrait] = useState<Trait | null>(null);
 
+  const bindTrait = () => {
+    if (traitId) {
+      fetchTrait(traitId)
+        .then((response) => setTrait(response))
+        .catch((err: Error) => showError(err.message));
+    }
+  };
+
   useEffect(() => {
     if (location.state && location.state.trait) {
       setTrait(location.state.trait);
     } else if (traitId) {
-      fetchTrait(traitId)
-        .then((response) => {
-          setTrait(response);
-        })
-        .catch((err: unknown) => {
-          if (err instanceof Error) showError(err.message);
-          else showError(String(err));
-        });
+      bindTrait();
     }
   }, [location.state, traitId, showError]);
 
@@ -35,11 +35,10 @@ const TraitView: FC = () => {
 
   return (
     <>
-      <TraitViewActions trait={trait} />
-      <Grid container spacing={2}>
+      <TraitViewActions trait={trait} onRefresh={bindTrait} />
+      <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
           <GenericAvatar imageUrl={getTraitImage(trait)} />
-          <TraitViewResume trait={trait} />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <TraitViewInfo trait={trait} />

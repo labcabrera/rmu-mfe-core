@@ -4,7 +4,7 @@ import { t } from 'i18next';
 
 const SelectTraitSpecialization: FC<{
   label: string;
-  value: string;
+  value: string | null;
   name: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }> = ({ label, value, name, onChange }) => {

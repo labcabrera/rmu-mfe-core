@@ -4,7 +4,7 @@ import { t } from 'i18next';
 
 const SelectTraitType: FC<{
   label: string;
-  value: string;
+  value: string | null;
   name: string;
   addAllOption?: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -21,8 +21,8 @@ const SelectTraitType: FC<{
       onChange={onChange}
     >
       {addAllOption && (
-        <MenuItem key="all" value="all">
-          {t('all')}
+        <MenuItem>
+          <em>{t('all')}</em>
         </MenuItem>
       )}
       {values.map((option, index) => (

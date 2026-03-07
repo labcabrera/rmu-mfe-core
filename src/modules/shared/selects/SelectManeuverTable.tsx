@@ -1,23 +1,25 @@
-import React, { ChangeEvent, FC } from 'react';
+import React, { FC } from 'react';
 import { MenuItem, TextField } from '@mui/material';
 import { t } from 'i18next';
 
 const SelectManeuverTable: FC<{
   value: string | null;
   label: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-}> = ({ value, label, onChange }) => {
-  const VALUES = [null, 'adrenal', 'animal', 'awareness', 'crafting', 'gymnastic'];
-
+  tables: string[];
+  onChange: (event: string | null) => void;
+}> = ({ value, label, tables, onChange }) => {
   return (
     <TextField
       select
       label={label}
       value={value === undefined || value === null ? '' : value}
-      onChange={onChange}
+      onChange={(event) => onChange(event.target.value === '' ? null : event.target.value)}
       fullWidth
     >
-      {VALUES.map((option, index) => (
+      <MenuItem>
+        <em>{t('none')}</em>
+      </MenuItem>
+      {tables.map((option, index) => (
         <MenuItem key={index} value={option}>
           {option ? t(option) : t('none')}
         </MenuItem>

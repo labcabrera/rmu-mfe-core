@@ -17,7 +17,6 @@ const TraitEditActions: FC<{
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
     { name: t('traits'), link: '/core/traits' },
-    { name: t(trait.name), link: `/core/traits/view/${trait.id}` },
     { name: t('edit') },
   ];
 
