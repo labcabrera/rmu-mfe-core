@@ -11,10 +11,10 @@ import SelectSkill from '../../shared/selects/SelectSkill';
 
 const ProfessionCreationProfessionalSkills: FC<{
   formData: CreateProfessionDto | UpdateProfessionDto;
-  setFormData: Dispatch<SetStateAction<CreateProfessionDto | UpdateProfessionDto>>;
+  setFormData: Dispatch<SetStateAction<CreateProfessionDto | UpdateProfessionDto | undefined>>;
 }> = ({ formData, setFormData }) => {
   const { showError } = useError();
-  const [allSkills, setAllSkills] = React.useState<Skill[]>([]);
+  const [allSkills, setAllSkills] = React.useState<string[]>([]);
   const [selectedSkillId, setSelectedSkillId] = React.useState<string | null>(null);
   const skills = formData.professionalSkills ?? [];
 
@@ -32,7 +32,7 @@ const ProfessionCreationProfessionalSkills: FC<{
 
   useEffect(() => {
     fetchPagedSkills('', 0, 500)
-      .then((response) => setAllSkills(response.content))
+      .then((response) => setAllSkills(response.content.map((s: Skill) => s.id)))
       .catch((err: Error) => showError(err.message));
   }, []);
 
@@ -45,7 +45,7 @@ const ProfessionCreationProfessionalSkills: FC<{
           label={t('Skill')}
           value={selectedSkillId || undefined}
           name={''}
-          onChange={(skill) => setSelectedSkillId(skill?.id ?? null)}
+          onChange={(skillId) => setSelectedSkillId(skillId)}
           skills={allSkills}
         />
       </Grid>

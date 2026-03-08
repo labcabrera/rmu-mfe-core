@@ -1,18 +1,16 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Grid, TextField } from '@mui/material';
+import { t } from 'i18next';
 import { UpdateProfessionDto } from '../../api/profession.dto';
 
 const ProfessionEditAttributes: FC<{
   formData: UpdateProfessionDto;
   setFormData: Dispatch<SetStateAction<UpdateProfessionDto | undefined>>;
 }> = ({ formData, setFormData }) => {
-  const { t } = useTranslation();
-
   if (!formData) return <div>Loading...</div>;
 
   return (
-    <Grid container spacing={1} columns={10}>
+    <Grid container spacing={1}>
       <Grid size={12}>
         <TextField
           label={t('Description')}
@@ -20,6 +18,8 @@ const ProfessionEditAttributes: FC<{
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           fullWidth
+          multiline
+          rows={4}
         />
       </Grid>
     </Grid>

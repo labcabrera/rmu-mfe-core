@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
-import { CreateProfessionDto } from '../../api/profession.dto';
+import { CreateProfessionDto, UpdateProfessionDto } from '../../api/profession.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
 
 const SKILLS = [
@@ -40,8 +40,8 @@ const SKILLS = [
 ] as const;
 
 const ProfessionCreationSkillCosts: FC<{
-  formData: CreateProfessionDto;
-  setFormData: Dispatch<SetStateAction<CreateProfessionDto>>;
+  formData: CreateProfessionDto | UpdateProfessionDto;
+  setFormData: Dispatch<SetStateAction<CreateProfessionDto | UpdateProfessionDto | undefined>>;
 }> = ({ formData, setFormData }) => {
   const handleChange = (skillKey: string, index: number, value: number | null) => {
     const prev = (formData.skillCosts as Record<string, number[]> | undefined) || {};

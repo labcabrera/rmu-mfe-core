@@ -10,6 +10,7 @@ import CategorySeparator from '../../shared/display/CategorySeparator';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import ProfessionViewActions from './ProfessionViewActions';
 import ProfessionViewProfessionalSkills from './ProfessionViewProfessionalSkills';
+import ProfessionViewResume from './ProfessionViewResume';
 import ProfessionViewSkillCosts from './ProfessionViewSkillCosts';
 
 const ProfessionView: FC = () => {
@@ -38,10 +39,7 @@ const ProfessionView: FC = () => {
       <ProfessionViewActions profession={profession} setProfession={setProfession} />
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
-          <EdditableAvatar imageUrl={profession.imageUrl || ''} onImageChange={(avatar) => onUpdateImage(avatar)} />
-          <Typography variant="h6" color="primary">
-            {t(profession.id)}
-          </Typography>
+          <ProfessionViewResume profession={profession} setProfession={setProfession} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }} padding={1}>
           <CategorySeparator text={t('Skill costs')} />
