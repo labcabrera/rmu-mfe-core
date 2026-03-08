@@ -35,36 +35,36 @@ const EnduranceManeuverView: FC = () => {
             label={t('unusual-event')}
           />
         </Grid>
+      </Grid>
 
-        <Grid size={{ xs: 12, md: 4 }}>
-          {result && (
-            <Paper sx={{ p: 2 }}>
-              <Grid size={12}>
-                <Typography variant="h6" color="primary" gutterBottom>
-                  {t(result.result)}
+      <Grid size={{ xs: 12, md: 4 }}>
+        {result && (
+          <Paper sx={{ p: 2 }}>
+            <Grid size={12}>
+              <Typography variant="h6" color="primary" gutterBottom>
+                {t(result.result)}
+              </Typography>
+              <Typography variant="body1" color="secondary" gutterBottom>
+                {result.message}
+              </Typography>
+              {result.fatigue !== undefined && (
+                <Typography variant="body1" gutterBottom mt={2}>
+                  Fatigue: {result.fatigue}
                 </Typography>
-                <Typography variant="body1" color="secondary" gutterBottom>
-                  {result.message}
+              )}
+              {result.hitPoints !== undefined && result.hitPoints !== 0 && (
+                <Typography variant="body1" gutterBottom mt={2}>
+                  Hit Points: {result.hitPoints}
                 </Typography>
-                {result.fatigue !== undefined && (
-                  <Typography variant="body1" gutterBottom mt={2}>
-                    Fatigue: {result.fatigue}
-                  </Typography>
-                )}
-                {result.hitPoints !== undefined && result.hitPoints !== 0 && (
-                  <Typography variant="body1" gutterBottom mt={2}>
-                    Hit Points: {result.hitPoints}
-                  </Typography>
-                )}
-                {result.bonus !== undefined && result.bonus !== 0 && (
-                  <Typography variant="body1" gutterBottom mt={2}>
-                    Bonus: {result.bonus}
-                  </Typography>
-                )}
-              </Grid>
-            </Paper>
-          )}
-        </Grid>
+              )}
+              {result.bonus !== undefined && result.bonus !== 0 && (
+                <Typography variant="body1" gutterBottom mt={2}>
+                  Bonus: {result.bonus}
+                </Typography>
+              )}
+            </Grid>
+          </Paper>
+        )}
       </Grid>
     </Grid>
   );

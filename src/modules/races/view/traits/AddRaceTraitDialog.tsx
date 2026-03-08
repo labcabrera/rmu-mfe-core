@@ -8,6 +8,7 @@ import { fetchTraits } from '../../../api/trait';
 import { Trait } from '../../../api/trait.dto';
 import { NumericInput } from '../../../shared/inputs/NumericInput';
 import SelectTrait from '../../../shared/selects/SelectTrait';
+import SelectTraitCategory from '../../../shared/selects/SelectTraitCategory';
 
 const EMPTY_TEMPLATE = {
   traitId: '',
@@ -24,6 +25,7 @@ const AddRaceTraitDialog: FC<{
   onClose: () => void;
 }> = ({ race, setRace, open: open, onClose }) => {
   const { showError } = useError();
+  const [traitCategory, setTraitCategory] = useState<string | null>(null);
   const [trait, setTrait] = useState<Trait | null>();
   const [traits, setTraits] = useState<Trait[]>([]);
   const [formData, setFormData] = useState<AddRaceTraitDto>(EMPTY_TEMPLATE);
@@ -39,11 +41,16 @@ const AddRaceTraitDialog: FC<{
     }));
   }, [trait]);
 
-  useEffect(() => {
-    fetchTraits('', 0, 1000)
+  const bindTraits = () => {
+    const rsql = traitCategory ? `category==${traitCategory}` : '';
+    fetchTraits(rsql, 0, 1000)
       .then((res) => setTraits(res))
       .catch(() => setTraits([]));
-  }, []);
+  };
+
+  useEffect(() => {
+    bindTraits();
+  }, [traitCategory]);
 
   const onSave = () => {
     addRaceTrait(race.id, formData)
@@ -59,12 +66,21 @@ const AddRaceTraitDialog: FC<{
   return (
     <>
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="xl">
-        <DialogTitle>{t('add-trait')}</DialogTitle>
+        <DialogTitle>{t('Add trait')}</DialogTitle>
         <DialogContent dividers>
           <Grid container spacing={2} sx={{ pt: 1 }}>
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <SelectTraitCategory
+                label={t('Category')}
+                value={traitCategory}
+                name="traitCategory"
+                onChange={(e) => setTraitCategory(e.target.value || null)}
+                addAllOption
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
               <SelectTrait
-                label={t('trait')}
+                label={t('Trait')}
                 value={formData.traitId}
                 name="trait"
                 onChange={(trait) => setTrait(trait)}
@@ -78,11 +94,12 @@ const AddRaceTraitDialog: FC<{
                 {trait.specialization !== 'none' && (
                   <Grid size={{ xs: 12 }}>
                     <TextField
-                      label={t('specialization')}
+                      label={t('Specialization')}
                       value={formData.specialization ?? ''}
                       fullWidth
                       onChange={(e) => setFormData({ ...formData, specialization: e.target.value || undefined })}
                       size="small"
+                      error={trait.specialization !== 'none' && !formData.specialization}
                     />
                   </Grid>
                 )}
@@ -90,7 +107,7 @@ const AddRaceTraitDialog: FC<{
                 {trait.isTierBased && (
                   <Grid size={{ xs: 12 }}>
                     <NumericInput
-                      label={t('tier')}
+                      label={t('Tier')}
                       value={formData.tier || null}
                       onChange={(value) => setFormData({ ...formData, tier: value || undefined })}
                     />
@@ -111,13 +128,11 @@ const AddRaceTraitDialog: FC<{
               </>
             )}
           </Grid>
-          <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
-          <pre>Trait: {JSON.stringify(trait, null, 2)}</pre>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>{t('cancel')}</Button>
+          <Button onClick={onClose}>{t('Cancel')}</Button>
           <Button onClick={onSave} variant="contained" disabled={!formData.traitId}>
-            {t('add')}
+            {t('Add')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -8,6 +8,7 @@ import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import EdditableAvatar from '../../shared/avatars/EditableAvatar';
 import CharacterSeparator from '../../shared/display/CategorySeparator';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RaceCreationActions from './RaceCreationActions';
 import RaceCreationAttributes from './RaceCreationAttributes';
 import RaceCreationLore from './RaceCreationLore';
@@ -66,9 +67,11 @@ const RaceCreation: FC = () => {
           <RaceCreationResistances formData={formData} setFormData={setFormData} />
           <CharacterSeparator text={t('lore')} />
           <RaceCreationLore formData={formData} setFormData={setFormData} />
+          <TechnicalInfo>
+            <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
+          </TechnicalInfo>
         </Grid>
       </Grid>
-      <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
     </>
   );
 };
