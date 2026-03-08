@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { updateProfession } from '../../api/profession';
-import { Profession } from '../../api/profession.dto';
+import { Profession, UpdateProfessionDto } from '../../api/profession.dto';
 import EditableAvatar from '../../shared/avatars/EditableAvatar';
 
 const ProfessionViewResume: FC<{
@@ -15,7 +15,8 @@ const ProfessionViewResume: FC<{
   if (!profession) return <p>Loading...</p>;
 
   const onUpdateImage = (imageUrl: string) => {
-    updateProfession(profession!.id, { imageUrl: imageUrl! })
+    const dto = { imageUrl } as UpdateProfessionDto;
+    updateProfession(profession!.id, dto)
       .then((updatedProfession) => setProfession(updatedProfession))
       .catch((err: Error) => showError(err.message));
   };

@@ -23,7 +23,9 @@ const ProfessionEdit: FC = () => {
 
   useEffect(() => {
     if (profession) {
-      setFormData(profession);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, ...rest } = profession;
+      setFormData(rest as UpdateProfessionDto);
     }
   }, [profession]);
 
