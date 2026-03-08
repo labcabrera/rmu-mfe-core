@@ -9,31 +9,48 @@ const ProfessionCreationRealmTypes: FC<{
   formData: CreateProfessionDto | UpdateProfessionDto;
   setFormData: Dispatch<SetStateAction<CreateProfessionDto | UpdateProfessionDto | undefined>>;
 }> = ({ formData, setFormData }) => {
-  const selected = formData.availableRealmTypes || [];
+  const selectedAvailable = formData.availableRealmTypes || [];
+  const selectedFixed = formData.fixedRealmTypes || [];
 
-  const toggle = (rt: RealmType) => {
+  const toggle = (rt: RealmType, type: 'available' | 'fixed') => {
+    const selected = type === 'available' ? selectedAvailable : selectedFixed;
     const next = selected.includes(rt) ? selected.filter((s) => s !== rt) : [...selected, rt];
-    setFormData({ ...formData, availableRealmTypes: next });
+    const attribute = type === 'available' ? 'availableRealmTypes' : 'fixedRealmTypes';
+    const otherAttribute = type === 'available' ? 'fixedRealmTypes' : 'availableRealmTypes';
+    const update: any = { ...formData, [attribute]: next };
+    if (next.length > 0) {
+      update[otherAttribute] = [];
+    }
+    setFormData(update);
   };
+
+  const RealmTypButtonGroup = ({ selected, type }: { selected: RealmType[]; type: 'available' | 'fixed' }) => (
+    <ButtonGroup variant="outlined" aria-label="realm-types" sx={{ flexWrap: 'wrap' }}>
+      {REALM_TYPES.map((rt) => {
+        const isSelected = selected.includes(rt);
+        return (
+          <Button
+            key={rt}
+            onClick={() => toggle(rt, type)}
+            variant={isSelected ? 'contained' : 'outlined'}
+            color={isSelected ? 'primary' : 'inherit'}
+          >
+            {t(rt)}
+          </Button>
+        );
+      })}
+    </ButtonGroup>
+  );
 
   return (
     <Grid container spacing={1}>
-      <Grid size={12}>
-        <ButtonGroup variant="outlined" aria-label="realm-types" sx={{ flexWrap: 'wrap' }}>
-          {REALM_TYPES.map((rt) => {
-            const isSelected = selected.includes(rt);
-            return (
-              <Button
-                key={rt}
-                onClick={() => toggle(rt)}
-                variant={isSelected ? 'contained' : 'outlined'}
-                color={isSelected ? 'primary' : 'inherit'}
-              >
-                {t(rt)}
-              </Button>
-            );
-          })}
-        </ButtonGroup>
+      <Grid size={4}>Available</Grid>
+      <Grid size={8}>
+        <RealmTypButtonGroup selected={selectedAvailable} type="available" />
+      </Grid>
+      <Grid size={4}>Fixed</Grid>
+      <Grid size={8}>
+        <RealmTypButtonGroup selected={selectedFixed} type="fixed" />
       </Grid>
     </Grid>
   );
