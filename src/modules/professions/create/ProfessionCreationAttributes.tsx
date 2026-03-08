@@ -2,6 +2,7 @@ import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Grid, TextField } from '@mui/material';
 import { t } from 'i18next';
 import { CreateProfessionDto } from '../../api/profession.dto';
+import SelectProfessionArchetype from '../../shared/selects/SelectProfessionArchetype';
 
 const ProfessionCreationAttributes: FC<{
   formData: CreateProfessionDto;
@@ -17,6 +18,14 @@ const ProfessionCreationAttributes: FC<{
           onChange={(e) => setFormData({ ...formData, id: e.target.value })}
           fullWidth
           error={!formData.id}
+        />
+      </Grid>
+      <Grid size={12}>
+        <SelectProfessionArchetype
+          label={t('Archetype')}
+          name="archetype"
+          value={formData.archetype}
+          onChange={(archetype) => setFormData({ ...formData, archetype })}
         />
       </Grid>
     </Grid>

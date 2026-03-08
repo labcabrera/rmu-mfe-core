@@ -5,6 +5,7 @@ import { CreateProfessionDto } from '../../api/profession.dto';
 import { imageBaseUrl } from '../../services/config';
 import EdditableAvatar from '../../shared/avatars/EditableAvatar';
 import CharacterSeparator from '../../shared/display/CategorySeparator';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import ProfessionCreationActions from './ProfessionCreationActions';
 import ProfessionCreationAttributes from './ProfessionCreationAttributes';
 import ProfessionCreationProfessionalSkills from './ProfessionCreationProfessionalSkills';
@@ -13,7 +14,9 @@ import ProfessionCreationSkillCosts from './ProfessionCreationSkillCosts';
 
 const TEMPLATE = {
   id: '',
-  realmTypes: [],
+  archetype: 'non-spellcaster',
+  fixedRealmTypes: [],
+  availableRealmTypes: [],
   skillCosts: {
     animal: [],
     awareness: [],
@@ -96,9 +99,11 @@ const ProfessionCreation: FC = () => {
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
           </Grid>
+          <TechnicalInfo>
+            <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
+          </TechnicalInfo>
         </Grid>
       </Grid>
-      <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
     </>
   );
 };

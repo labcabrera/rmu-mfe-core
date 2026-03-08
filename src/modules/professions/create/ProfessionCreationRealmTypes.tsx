@@ -1,5 +1,6 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { Button, ButtonGroup, Grid } from '@mui/material';
+import { Button, ButtonGroup, Grid, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { t } from 'i18next';
 import { CreateProfessionDto, RealmType, UpdateProfessionDto } from '../../api/profession.dto';
 
@@ -11,6 +12,9 @@ const ProfessionCreationRealmTypes: FC<{
 }> = ({ formData, setFormData }) => {
   const selectedAvailable = formData.availableRealmTypes || [];
   const selectedFixed = formData.fixedRealmTypes || [];
+
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   const toggle = (rt: RealmType, type: 'available' | 'fixed') => {
     const selected = type === 'available' ? selectedAvailable : selectedFixed;
@@ -25,7 +29,13 @@ const ProfessionCreationRealmTypes: FC<{
   };
 
   const RealmTypButtonGroup = ({ selected, type }: { selected: RealmType[]; type: 'available' | 'fixed' }) => (
-    <ButtonGroup variant="outlined" aria-label="realm-types" sx={{ flexWrap: 'wrap' }}>
+    <ButtonGroup
+      variant="outlined"
+      aria-label="realm-types"
+      orientation={isSmall ? 'vertical' : 'horizontal'}
+      sx={{ flexWrap: 'wrap' }}
+      size="small"
+    >
       {REALM_TYPES.map((rt) => {
         const isSelected = selected.includes(rt);
         return (
@@ -44,12 +54,12 @@ const ProfessionCreationRealmTypes: FC<{
 
   return (
     <Grid container spacing={1}>
-      <Grid size={4}>Available</Grid>
-      <Grid size={8}>
+      <Grid size={6}>Available</Grid>
+      <Grid size={6}>
         <RealmTypButtonGroup selected={selectedAvailable} type="available" />
       </Grid>
-      <Grid size={4}>Fixed</Grid>
-      <Grid size={8}>
+      <Grid size={6}>Fixed</Grid>
+      <Grid size={6}>
         <RealmTypButtonGroup selected={selectedFixed} type="fixed" />
       </Grid>
     </Grid>
