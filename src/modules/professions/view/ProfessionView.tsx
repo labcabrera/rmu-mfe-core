@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchProfession, updateProfession } from '../../api/profession';
@@ -17,12 +17,6 @@ const ProfessionView: FC = () => {
   const { showError } = useError();
   const { professionId } = useParams<{ professionId: string | undefined }>();
   const [profession, setProfession] = useState<Profession>();
-
-  const onUpdateImage = (imageUrl: string) => {
-    updateProfession(profession!.id, { imageUrl: imageUrl! })
-      .then((updatedProfession) => setProfession(updatedProfession))
-      .catch((err: Error) => showError(err.message));
-  };
 
   useEffect(() => {
     if (professionId) {
@@ -42,6 +36,20 @@ const ProfessionView: FC = () => {
           <ProfessionViewResume profession={profession} setProfession={setProfession} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }} padding={1}>
+          <CategorySeparator text={t('Realm Types')} />
+          <Grid container spacing={1}>
+            <Grid size={12}>
+              {profession.availableRealmTypes && profession.availableRealmTypes.length > 0 ? (
+                <Stack direction="row" spacing={1} flexWrap="wrap">
+                  {profession.availableRealmTypes.map((rt) => (
+                    <Chip key={rt} label={t(rt)} />
+                  ))}
+                </Stack>
+              ) : (
+                <Typography variant="body2">{t('No realm types available.')}</Typography>
+              )}
+            </Grid>
+          </Grid>
           <CategorySeparator text={t('Skill costs')} />
           <ProfessionViewSkillCosts profession={profession} />
           <CategorySeparator text={t('Professional skills')} />

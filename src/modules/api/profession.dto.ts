@@ -1,5 +1,8 @@
+export type RealmType = 'channeling' | 'essence' | 'mentalism';
+
 export interface Profession {
   id: string;
+  availableRealmTypes: RealmType[];
   skillCosts: ProfessionSkillCosts;
   professionalSkills: [];
   description: string;
@@ -8,6 +11,7 @@ export interface Profession {
 
 export interface CreateProfessionDto {
   id: string;
+  availableRealmTypes: RealmType[];
   skillCosts: ProfessionSkillCosts;
   professionalSkills: [];
   description: string;
@@ -15,10 +19,11 @@ export interface CreateProfessionDto {
 }
 
 export interface UpdateProfessionDto {
-  skillCosts?: ProfessionSkillCosts;
-  professionalSkills?: [];
-  description?: string;
-  imageUrl?: string;
+  availableRealmTypes: RealmType[] | undefined;
+  skillCosts: ProfessionSkillCosts | undefined;
+  professionalSkills: [] | undefined;
+  description: string | undefined;
+  imageUrl: string | undefined;
 }
 
 export interface ProfessionSkillCosts {

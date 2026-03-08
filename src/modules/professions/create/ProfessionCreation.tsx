@@ -8,10 +8,12 @@ import CharacterSeparator from '../../shared/display/CategorySeparator';
 import ProfessionCreationActions from './ProfessionCreationActions';
 import ProfessionCreationAttributes from './ProfessionCreationAttributes';
 import ProfessionCreationProfessionalSkills from './ProfessionCreationProfessionalSkills';
+import ProfessionCreationRealmTypes from './ProfessionCreationRealmTypes';
 import ProfessionCreationSkillCosts from './ProfessionCreationSkillCosts';
 
 const TEMPLATE = {
   id: '',
+  realmTypes: [],
   skillCosts: {
     animal: [],
     awareness: [],
@@ -78,6 +80,8 @@ const ProfessionCreation: FC = () => {
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
           <ProfessionCreationAttributes formData={formData} setFormData={setFormData} />
+          <CharacterSeparator text={t('Realms')} />
+          <ProfessionCreationRealmTypes formData={formData} setFormData={setFormData} />
           <CharacterSeparator text={t('Skill costs')} />
           <ProfessionCreationSkillCosts formData={formData} setFormData={setFormData} />
           <CharacterSeparator text={t('Professional skills')} />
