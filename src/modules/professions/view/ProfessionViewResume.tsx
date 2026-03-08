@@ -26,6 +26,9 @@ const ProfessionViewResume: FC<{
       <Typography variant="h6" color="primary" gutterBottom>
         {t(profession.id)}
       </Typography>
+      <Typography variant="body2" color="primary" gutterBottom>
+        {t(profession.archetype)}
+      </Typography>
       <Typography variant="body2" color="secondary">
         {t(profession.description)}
       </Typography>

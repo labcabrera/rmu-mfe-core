@@ -7,6 +7,7 @@ import { fetchProfession } from '../../api/profession';
 import { Profession, UpdateProfessionDto } from '../../api/profession.dto';
 import EditableAvatar from '../../shared/avatars/EditableAvatar';
 import CategorySeparator from '../../shared/display/CategorySeparator';
+import SelectProfessionArchetype from '../../shared/selects/SelectProfessionArchetype';
 import ProfessionCreationProfessionalSkills from '../create/ProfessionCreationProfessionalSkills';
 import ProfessionCreationRealmTypes from '../create/ProfessionCreationRealmTypes';
 import ProfessionCreationSkillCosts from '../create/ProfessionCreationSkillCosts';
@@ -52,6 +53,17 @@ const ProfessionEdit: FC = () => {
           </Typography>
         </Grid>
         <Grid size={{ xs: 12, md: 8 }} padding={1}>
+          <CategorySeparator text={t('Archetype')} />
+          <Grid container spacing={1}>
+            <Grid size={4}>
+              <SelectProfessionArchetype
+                name="archetype"
+                label={t('Archetype')}
+                value={formData.archetype || null}
+                onChange={(archetype) => setFormData({ ...formData, archetype })}
+              />
+            </Grid>
+          </Grid>
           <CategorySeparator text={t('Realm types')} />
           <ProfessionCreationRealmTypes formData={formData} setFormData={setFormData} />
           <CategorySeparator text={t('Skill costs')} />

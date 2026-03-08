@@ -1,7 +1,10 @@
 export type RealmType = 'channeling' | 'essence' | 'mentalism';
 
+export type ProfessionArchetype = 'non-spellcaster' | 'semi-spellcaster' | 'pure-spellcaster' | 'hybrid';
+
 export interface Profession {
   id: string;
+  archetype: ProfessionArchetype;
   availableRealmTypes: RealmType[];
   fixedRealmTypes: RealmType[];
   skillCosts: ProfessionSkillCosts;
@@ -12,6 +15,7 @@ export interface Profession {
 
 export interface CreateProfessionDto {
   id: string;
+  archetype: ProfessionArchetype;
   availableRealmTypes: RealmType[];
   fixedRealmTypes: RealmType[];
   skillCosts: ProfessionSkillCosts;
@@ -21,6 +25,7 @@ export interface CreateProfessionDto {
 }
 
 export interface UpdateProfessionDto {
+  archetype: ProfessionArchetype | undefined;
   availableRealmTypes: RealmType[] | undefined;
   fixedRealmTypes: RealmType[] | undefined;
   skillCosts: ProfessionSkillCosts | undefined;
