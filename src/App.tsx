@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Box } from '@mui/material';
+import { Box, ThemeProvider } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { ErrorProvider } from './ErrorContext';
 import HomePage from './HomePage';
 import './i18n';
@@ -40,40 +41,42 @@ const NotFound: FC = () => (
 
 const App = () => {
   return (
-    <ErrorProvider>
-      <Box padding={2}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/realms" element={<RealmList />} />
-          <Route path="/realms/create" element={<RealmCreation />} />
-          <Route path="/realms/view/:realmId" element={<RealmView />} />
-          <Route path="/realms/edit/:realmId" element={<RealmEdit />} />
-          <Route path="/races" element={<RaceList />} />
-          <Route path="/races/create" element={<RaceCreation />} />
-          <Route path="/races/view/:raceId" element={<RaceView />} />
-          <Route path="/races/edit/:raceId" element={<RaceEdit />} />
-          <Route path="/professions" element={<ProfessionList />} />
-          <Route path="/professions/create" element={<ProfessionCreation />} />
-          <Route path="/professions/view/:professionId" element={<ProfessionView />} />
-          <Route path="/professions/edit/:professionId" element={<ProfessionEdit />} />
-          <Route path="/traits" element={<TraitList />} />
-          <Route path="/traits/view/:traitId" element={<TraitView />} />
-          <Route path="/traits/create" element={<TraitCreation />} />
-          <Route path="/traits/edit/:traitId" element={<TraitEdit />} />
-          <Route path="/languages" element={<LanguageList />} />
-          <Route path="/languages/create" element={<LanguageCreation />} />
-          <Route path="/languages/view/:languageId" element={<LanguageView />} />
-          <Route path="/languages/edit/:languageId" element={<LanguageEdit />} />
-          <Route path="/maneuvers" element={<ManeuversView />} />
-          <Route path="/skills" element={<SkillList />} />
-          <Route path="/skills/view/:skillId" element={<SkillView />} />
-          <Route path="/skills/create" element={<SkillCreation />} />
-          <Route path="/skill-categories" element={<SkillCategoryList />} />
-          <Route path="/skill-categories/view/:skillCategoryId" element={<SkillCategoryView />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Box>
-    </ErrorProvider>
+    <ThemeProvider theme={useTheme()}>
+      <ErrorProvider>
+        <Box padding={2}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/realms" element={<RealmList />} />
+            <Route path="/realms/create" element={<RealmCreation />} />
+            <Route path="/realms/view/:realmId" element={<RealmView />} />
+            <Route path="/realms/edit/:realmId" element={<RealmEdit />} />
+            <Route path="/races" element={<RaceList />} />
+            <Route path="/races/create" element={<RaceCreation />} />
+            <Route path="/races/view/:raceId" element={<RaceView />} />
+            <Route path="/races/edit/:raceId" element={<RaceEdit />} />
+            <Route path="/professions" element={<ProfessionList />} />
+            <Route path="/professions/create" element={<ProfessionCreation />} />
+            <Route path="/professions/view/:professionId" element={<ProfessionView />} />
+            <Route path="/professions/edit/:professionId" element={<ProfessionEdit />} />
+            <Route path="/traits" element={<TraitList />} />
+            <Route path="/traits/view/:traitId" element={<TraitView />} />
+            <Route path="/traits/create" element={<TraitCreation />} />
+            <Route path="/traits/edit/:traitId" element={<TraitEdit />} />
+            <Route path="/languages" element={<LanguageList />} />
+            <Route path="/languages/create" element={<LanguageCreation />} />
+            <Route path="/languages/view/:languageId" element={<LanguageView />} />
+            <Route path="/languages/edit/:languageId" element={<LanguageEdit />} />
+            <Route path="/maneuvers" element={<ManeuversView />} />
+            <Route path="/skills" element={<SkillList />} />
+            <Route path="/skills/view/:skillId" element={<SkillView />} />
+            <Route path="/skills/create" element={<SkillCreation />} />
+            <Route path="/skill-categories" element={<SkillCategoryList />} />
+            <Route path="/skill-categories/view/:skillCategoryId" element={<SkillCategoryView />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Box>
+      </ErrorProvider>
+    </ThemeProvider>
   );
 };
 
