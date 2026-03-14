@@ -1,18 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { CreateRealmDto } from '../../api/realm.dto';
-import { imageBaseUrl } from '../../services/config';
 import EditableAvatar from '../../shared/avatars/EditableAvatar';
+import RealmForm from '../shared/RealmForm';
 import RealmCreationActions from './RealmCreationActions';
-import RealmCreationAttributes from './RealmCreationAttributes';
 
 const RealmCreation: FC = () => {
-  const [formData, setFormData] = useState<CreateRealmDto>({
-    name: '',
-    shortDescription: undefined,
-    description: undefined,
-    imageUrl: `${imageBaseUrl}images/generic/realm.png`,
-  });
+  const [formData, setFormData] = useState<CreateRealmDto>({} as CreateRealmDto);
   const [isValid, setIsValid] = useState(false);
 
   const validateForm = (formData: CreateRealmDto) => {
@@ -37,7 +31,7 @@ const RealmCreation: FC = () => {
           />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <RealmCreationAttributes formData={formData} setFormData={setFormData} />
+          <RealmForm formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
     </>
