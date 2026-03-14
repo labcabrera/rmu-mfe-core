@@ -13,6 +13,18 @@ export const MANEUVER_DIFFICULTIES: ManeuverDifficulty[] = [
   { id: 'ni', modifier: -100 },
 ];
 
+export interface AbsoluteManeuverTable {
+  name: string;
+  table: AbsoluteManeuverTableEntry[];
+  unusualEvent: string;
+}
+
+export interface AbsoluteManeuverTableEntry {
+  min: number | null;
+  max: number | null;
+  result: AbsoluteManeuverResult;
+}
+
 export interface PercentManeuverResult {
   percent: number;
   critical: string | undefined;

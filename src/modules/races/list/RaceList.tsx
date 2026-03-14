@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Grid, Pagination } from '@mui/material';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
