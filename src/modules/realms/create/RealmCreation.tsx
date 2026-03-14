@@ -33,6 +33,7 @@ const RealmCreation: FC = () => {
         <Grid size={{ xs: 12, md: 6 }}>
           <RealmForm formData={formData} setFormData={setFormData} />
         </Grid>
+        <pre>{JSON.stringify(formData)}</pre>
       </Grid>
     </>
   );

@@ -1,12 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Chip, Grid, Stack } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import AddButton from '../../shared/buttons/AddButton';
 import CategorySeparator from '../../shared/display/CategorySeparator';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RealmViewActions from './RealmViewActions';
 import RealmViewLanguages from './RealmViewLanguages';
 import RealmViewRaces from './RealmViewRaces';
@@ -42,19 +43,27 @@ const RealmView: FC = () => {
   return (
     <>
       <RealmViewActions realm={realm} setRealm={setRealm} />
-      <Grid container spacing={1} padding={1}>
+      <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
           <RealmViewResume realm={realm} setRealm={setRealm} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <CategorySeparator text={t('races')}>
+          <CategorySeparator text={t('Realm information')} />
+          <Stack direction="row" spacing={1}>
+            <Chip label={t(realm.accessType)} color={realm.accessType === 'public' ? 'success' : 'error'} />
+            <Chip label={`Magic presence: ${t(realm.magicPresence)}`} />
+          </Stack>
+          <CategorySeparator text={t('Races')}>
             <AddButton onClick={onAddRace} />
           </CategorySeparator>
           <RealmViewRaces realm={realm} />
-          <CategorySeparator text={t('languages')}>
+          <CategorySeparator text={t('Languages')}>
             <AddButton onClick={onAddLanguage} />
           </CategorySeparator>
           <RealmViewLanguages realm={realm} />
+          <TechnicalInfo>
+            <pre>{JSON.stringify(realm, null, 2)}</pre>
+          </TechnicalInfo>
         </Grid>
       </Grid>
     </>

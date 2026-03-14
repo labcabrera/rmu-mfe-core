@@ -3,6 +3,7 @@ import { Grid, TextField } from '@mui/material';
 import { t } from 'i18next';
 import { CreateRealmDto, UpdateRealmDto } from '../../api/realm.dto';
 import SelectAccessType from '../../shared/selects/SelectAccessType';
+import SelectMagicPresence from '../../shared/selects/SelectMagicPresence';
 
 const RealmForm: FC<{
   formData: CreateRealmDto | UpdateRealmDto;
@@ -25,6 +26,13 @@ const RealmForm: FC<{
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           error={!formData.name}
           fullWidth
+        />
+      </Grid>
+      <Grid size={12}>
+        <SelectMagicPresence
+          value={formData.magicPresence}
+          label={t('Magic presence')}
+          onChange={(value) => setFormData({ ...formData, magicPresence: value })}
         />
       </Grid>
       <Grid size={12}>
