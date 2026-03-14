@@ -17,13 +17,13 @@ const AbsoluteManeuverView: FC = () => {
   const [totalRoll, setTotalRoll] = useState<number | null>(null);
   const [result, setResult] = useState<AbsoluteManeuverResult | null>(null);
   const [unusualEvent, setUnusualEvent] = useState<boolean>(false);
-  const [tableName, setTableName] = useState<string | null>(null);
-  const [tables, setTables] = useState<string[]>([]);
-  const [tableData, setTableData] = useState<AbsoluteManeuverTable>();
+  const [tableName, setTableName] = useState<string>('generic');
+  const [tableNames, setTableNames] = useState<string[]>([]);
+  const [table, setTable] = useState<AbsoluteManeuverTable>();
 
   useEffect(() => {
     fetchAbsoluteManeuverTables()
-      .then((data) => setTables(data))
+      .then((data) => setTableNames(data))
       .catch((err: Error) => showError(err.message));
   }, []);
 
@@ -34,10 +34,10 @@ const AbsoluteManeuverView: FC = () => {
   useEffect(() => {
     if (tableName) {
       fetchAbsoluteManeuverTable(tableName)
-        .then((data) => setTableData(data))
+        .then((data) => setTable(data))
         .catch((err: Error) => showError(err.message));
     } else {
-      setTableData(undefined);
+      setTable(undefined);
     }
   }, [tableName]);
 
@@ -51,6 +51,8 @@ const AbsoluteManeuverView: FC = () => {
     }
   }, [totalRoll, unusualEvent, tableName, showError]);
 
+  if (!table) return <p>Loading...</p>;
+
   return (
     <Grid container spacing={1}>
       <Grid size={{ xs: 12, md: 4 }}>
@@ -59,8 +61,8 @@ const AbsoluteManeuverView: FC = () => {
             <SelectManeuverTable
               value={tableName}
               label={t('maneuver-table')}
-              tables={tables}
-              onChange={(value) => setTableName(value)}
+              tables={tableNames}
+              onChange={(value) => setTableName(value ?? 'generic')}
             />
           </Grid>
           <Grid size={12}>
@@ -91,12 +93,9 @@ const AbsoluteManeuverView: FC = () => {
       </Grid>
 
       <Grid size={{ xs: 12, md: 8 }}>
-        {tableData && <AbsoluteManeuverTableView table={tableData} result={result?.result} />}
-      </Grid>
-
-      <Grid size={{ xs: 12, md: 8 }}>
+        {table && <AbsoluteManeuverTableView table={table} result={result?.result} />}
         {result && (
-          <Paper sx={{ p: 2 }}>
+          <Paper sx={{ p: 2, mt: 2 }}>
             <Grid size={{ xs: 12, md: 12 }}>
               <Typography variant="h6" color="primary" gutterBottom>
                 {t(result.result)} {totalRoll !== null ? `(${totalRoll})` : ''}
@@ -118,7 +117,6 @@ const AbsoluteManeuverView: FC = () => {
           </Paper>
         )}
       </Grid>
-      <pre>{JSON.stringify(tableData, null, 2)} </pre>
     </Grid>
   );
 };
