@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRealms } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
@@ -36,7 +37,7 @@ const RealmList: FC = () => {
                 <RmuTextCard
                   key={realm.id}
                   value={realm.name}
-                  subtitle={realm.shortDescription}
+                  subtitle={realm.shortDescription || t('No description')}
                   image={realm.imageUrl || defaultImage}
                   onClick={() => handleRealmClick(realm)}
                 />

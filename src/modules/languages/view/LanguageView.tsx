@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Chip, Grid, Stack } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { Language } from '../../api/language.dto';
 import { fetchLanguage } from '../../api/languages';
@@ -8,6 +9,7 @@ import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import LanguageViewActions from './LanguageViewActions';
 import LanguageViewInfo from './LanguageViewInfo';
 
@@ -43,7 +45,13 @@ const LanguageView: FC = () => {
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/language.png`} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
+          <Stack direction="row" spacing={1}>
+            <Chip label={t(language.accessType)} color={language.accessType === 'public' ? 'success' : 'error'} />
+          </Stack>
           <LanguageViewInfo language={language} />
+          <TechnicalInfo>
+            <pre>{JSON.stringify(language, null, 2)}</pre>
+          </TechnicalInfo>
         </Grid>
       </Grid>
     </>

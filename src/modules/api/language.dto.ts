@@ -1,11 +1,13 @@
-import { NamedEntity } from './common.dto';
+import { AccessType, NamedEntity } from './common.dto';
 
 export type Language = {
   id: string;
   name: string;
   realm: NamedEntity;
   realmName: string;
-  description: string | undefined;
+  description: string | null;
+  owner: string;
+  accessType: AccessType;
 };
 
 export type CreateLanguageDto = {
