@@ -4,12 +4,12 @@ import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { Language } from '../../api/language.dto';
 import { fetchLanguages } from '../../api/languages';
-import { CreateRaceDto } from '../../api/race.dto';
+import { CreateRaceDto, UpdateRaceDto } from '../../api/race.dto';
 import SelectLanguage from '../../shared/selects/SelectLanguage';
 
-const RaceCreationLore: FC<{
-  formData: CreateRaceDto;
-  setFormData: Dispatch<SetStateAction<CreateRaceDto | undefined>>;
+const RaceFormLore: FC<{
+  formData: CreateRaceDto | UpdateRaceDto;
+  setFormData: Dispatch<SetStateAction<CreateRaceDto | UpdateRaceDto | undefined>>;
 }> = ({ formData, setFormData }) => {
   const { showError } = useError();
   const [languages, setLanguages] = React.useState<Language[]>([]);
@@ -48,4 +48,4 @@ const RaceCreationLore: FC<{
   );
 };
 
-export default RaceCreationLore;
+export default RaceFormLore;

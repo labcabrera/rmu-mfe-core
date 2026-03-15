@@ -1,12 +1,12 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Grid } from '@mui/material';
 import { t } from 'i18next';
-import { CreateRaceDto, resistances } from '../../api/race.dto';
+import { CreateRaceDto, resistances, UpdateRaceDto } from '../../api/race.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
 
-const RaceCreationResistances: FC<{
-  formData: CreateRaceDto;
-  setFormData: Dispatch<SetStateAction<CreateRaceDto>>;
+const RaceFormResistances: FC<{
+  formData: CreateRaceDto | UpdateRaceDto;
+  setFormData: Dispatch<SetStateAction<CreateRaceDto | UpdateRaceDto>>;
 }> = ({ formData, setFormData }) => {
   return (
     <Grid container spacing={2} columns={10}>
@@ -27,4 +27,4 @@ const RaceCreationResistances: FC<{
   );
 };
 
-export default RaceCreationResistances;
+export default RaceFormResistances;

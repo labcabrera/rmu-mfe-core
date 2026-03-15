@@ -1,5 +1,5 @@
 import { imageBaseUrl } from '../services/config';
-import { NamedEntity } from './common.dto';
+import { AccessType, NamedEntity } from './common.dto';
 
 export const stats = ['ag', 'co', 'em', 'in', 'me', 'pr', 'qu', 're', 'sd', 'st'];
 export const resistances = ['channeling', 'mentalism', 'essence', 'physical', 'poison', 'disease', 'fear'];
@@ -71,6 +71,7 @@ export type Race = {
   traits: RaceTrait[];
   description: string | undefined;
   imageUrl: string | undefined;
+  accessType: AccessType;
 };
 
 export type RaceStats = {

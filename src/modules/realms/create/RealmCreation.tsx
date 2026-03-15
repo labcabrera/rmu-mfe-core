@@ -1,16 +1,22 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { CreateRealmDto } from '../../api/realm.dto';
+import { DEFAULT_REALM_IMAGE } from '../../services/image-service';
 import EditableAvatar from '../../shared/avatars/EditableAvatar';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RealmForm from '../shared/RealmForm';
 import RealmCreationActions from './RealmCreationActions';
 
 const RealmCreation: FC = () => {
-  const [formData, setFormData] = useState<CreateRealmDto>({} as CreateRealmDto);
+  const [formData, setFormData] = useState<CreateRealmDto>({
+    imageUrl: DEFAULT_REALM_IMAGE,
+  } as CreateRealmDto);
   const [isValid, setIsValid] = useState(false);
 
   const validateForm = (formData: CreateRealmDto) => {
     if (!formData.name) return false;
+    if (!formData.accessType) return false;
+    if (!formData.magicPresence) return false;
     return true;
   };
 
@@ -26,14 +32,16 @@ const RealmCreation: FC = () => {
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
           <EditableAvatar
-            imageUrl={formData.imageUrl!}
+            imageUrl={formData.imageUrl || DEFAULT_REALM_IMAGE}
             onImageChange={(newImageUrl) => setFormData({ ...formData, imageUrl: newImageUrl })}
           />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <RealmForm formData={formData} setFormData={setFormData} />
+          <TechnicalInfo>
+            <pre>{JSON.stringify(formData, null, 2)}</pre>
+          </TechnicalInfo>
         </Grid>
-        <pre>{JSON.stringify(formData)}</pre>
       </Grid>
     </>
   );

@@ -1,14 +1,14 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { Grid, TextField } from '@mui/material';
 import { t } from 'i18next';
-import { CreateRaceDto } from '../../api/race.dto';
+import { CreateRaceDto, UpdateRaceDto } from '../../api/race.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
 import SelectRaceArchetype from '../../shared/selects/SelectRaceArchetype';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
 
-const RaceCreationAttributes: FC<{
-  formData: CreateRaceDto;
-  setFormData: Dispatch<SetStateAction<CreateRaceDto>>;
+const RaceFormAttributes: FC<{
+  formData: CreateRaceDto | UpdateRaceDto;
+  setFormData: Dispatch<SetStateAction<CreateRaceDto | UpdateRaceDto | undefined>>;
 }> = ({ formData, setFormData }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -138,4 +138,4 @@ const RaceCreationAttributes: FC<{
   );
 };
 
-export default RaceCreationAttributes;
+export default RaceFormAttributes;

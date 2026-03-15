@@ -1,19 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { CreateRaceDto, raceCreateTemplate } from '../../api/race.dto';
 import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import EdditableAvatar from '../../shared/avatars/EditableAvatar';
-import CharacterSeparator from '../../shared/display/CategorySeparator';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
+import RaceForm from '../shared/RaceForm';
 import RaceCreationActions from './RaceCreationActions';
-import RaceCreationAttributes from './RaceCreationAttributes';
-import RaceCreationLore from './RaceCreationLore';
-import RaceCreationResistances from './RaceCreationResistances';
-import RaceCreationStats from './RaceCreationStats';
 
 const RaceCreation: FC = () => {
   const [searchParams] = useSearchParams();
@@ -60,13 +55,7 @@ const RaceCreation: FC = () => {
           />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <RaceCreationAttributes formData={formData} setFormData={setFormData} />
-          <CharacterSeparator text={t('statistics')} />
-          <RaceCreationStats formData={formData} setFormData={setFormData} />
-          <CharacterSeparator text={t('resistances')} />
-          <RaceCreationResistances formData={formData} setFormData={setFormData} />
-          <CharacterSeparator text={t('lore')} />
-          <RaceCreationLore formData={formData} setFormData={setFormData} />
+          <RaceForm formData={formData} setFormData={setFormData} />
           <TechnicalInfo>
             <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

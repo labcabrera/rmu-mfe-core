@@ -1,12 +1,13 @@
-import React, { FC, use, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Grid, Typography } from '@mui/material';
+import { Chip, Grid, Stack, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { updateRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { fetchRealm } from '../../api/realm';
+import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
 import EdditableAvatar from '../../shared/avatars/EditableAvatar';
 import AddButton from '../../shared/buttons/AddButton';
@@ -29,7 +30,7 @@ const RaceView: FC = () => {
   const [traitDialogOpen, setTraitDialogOpen] = useState(false);
 
   const onUpdateImage = (imageUrl: string) => {
-    updateRace(race!.id, { imageUrl: imageUrl! })
+    updateRace(race!.id, { imageUrl: imageUrl })
       .then((updatedRace) => setRace(updatedRace))
       .catch((err: Error) => showError(err.message));
   };
@@ -71,6 +72,11 @@ const RaceView: FC = () => {
           </Typography>
         </Grid>
         <Grid size={{ xs: 12, md: 8 }} padding={1}>
+          <Grid size={12}>
+            <Stack direction="row" spacing={1}>
+              <Chip label={t(race.accessType)} color={race.accessType === 'public' ? 'success' : 'error'} />
+            </Stack>
+          </Grid>
           <CategorySeparator text={t('realm')} />
           <Grid container spacing={1} columns={10}>
             <Grid size={{ xs: 12, md: 2 }}>

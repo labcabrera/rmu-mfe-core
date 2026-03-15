@@ -48,11 +48,11 @@ const RealmView: FC = () => {
           <RealmViewResume realm={realm} setRealm={setRealm} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <CategorySeparator text={t('Realm information')} />
           <Stack direction="row" spacing={1}>
             <Chip label={t(realm.accessType)} color={realm.accessType === 'public' ? 'success' : 'error'} />
             <Chip label={`Magic presence: ${t(realm.magicPresence)}`} />
           </Stack>
+          <CategorySeparator text={t('Realm information')} />
           <CategorySeparator text={t('Races')}>
             <AddButton onClick={onAddRace} />
           </CategorySeparator>
