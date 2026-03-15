@@ -44,13 +44,12 @@ const LanguageList: FC = () => {
     <>
       <RealmListActions onRefresh={bindLanguages} />
       <Grid container spacing={1}>
-        <Grid size={12}>
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
           <LanguageListSearch setQueryString={setQueryString} realms={realms} />
-        </Grid>
-        <Grid size={12}>
           <Grid container spacing={1}>
             {languages.map((language) => (
-              <Grid size={{ xs: 12, md: 4 }} key={language.id}>
+              <Grid size={{ xs: 12, md: 3 }} key={language.id}>
                 <RmuTextCard
                   value={language.name}
                   subtitle={language.realm.name}
@@ -60,8 +59,8 @@ const LanguageList: FC = () => {
               </Grid>
             ))}
           </Grid>
+          <Grid size={12}>{languages.length === 0 ? <p>No languages found.</p> : null}</Grid>
         </Grid>
-        <Grid size={12}>{languages.length === 0 ? <p>No languages found.</p> : null}</Grid>
       </Grid>
     </>
   );

@@ -35,6 +35,9 @@ const ProfessionView: FC = () => {
           <ProfessionViewResume profession={profession} setProfession={setProfession} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }} padding={1}>
+          <Stack direction="row" spacing={1}>
+            <Chip label={t(profession.accessType)} color={profession.accessType === 'public' ? 'success' : 'error'} />
+          </Stack>
           {profession.availableRealmTypes.length > 0 && (
             <>
               <CategorySeparator text={t('Available realms')} />
