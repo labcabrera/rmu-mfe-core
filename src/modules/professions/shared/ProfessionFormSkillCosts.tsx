@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { Dispatch, FC, Fragment, SetStateAction } from 'react';
 import { Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { CreateProfessionDto, UpdateProfessionDto } from '../../api/profession.dto';
@@ -66,26 +66,25 @@ const ProfessionCreationSkillCosts: FC<{
   };
 
   return (
-    <Grid container spacing={0}>
+    <Grid container spacing={1}>
       {SKILLS.map((skill) => {
         const values = (formData.skillCosts as Record<string, number[]> | undefined)?.[skill] ?? [];
         const v0 = typeof values[0] === 'number' ? values[0] : null;
         const v1 = typeof values[1] === 'number' ? values[1] : null;
 
         return (
-          <Grid key={skill} size={12}>
-            <Grid container spacing={1}>
-              <Grid size={6}>
-                <Typography variant="body2">{t(skill)}</Typography>
-              </Grid>
-              <Grid size={3}>
-                <NumericInput value={v0} onChange={(val) => handleChange(skill, 0, val)} integer />
-              </Grid>
-              <Grid size={3}>
-                <NumericInput value={v1} onChange={(val) => handleChange(skill, 1, val)} integer />
-              </Grid>
+          <Fragment key={skill}>
+            <Grid size={3}>
+              <Typography variant="body2">{t(skill)}</Typography>
             </Grid>
-          </Grid>
+            <Grid size={1}>
+              <NumericInput value={v0} onChange={(val) => handleChange(skill, 0, val)} integer />
+            </Grid>
+            <Grid size={1}>
+              <NumericInput value={v1} onChange={(val) => handleChange(skill, 1, val)} integer />
+            </Grid>
+            <Grid size={1}></Grid>
+          </Fragment>
         );
       })}
     </Grid>

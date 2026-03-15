@@ -1,16 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Grid, TextField } from '@mui/material';
-import { t } from 'i18next';
+import { Grid } from '@mui/material';
 import { CreateProfessionDto } from '../../api/profession.dto';
 import { imageBaseUrl } from '../../services/config';
 import EdditableAvatar from '../../shared/avatars/EditableAvatar';
-import CharacterSeparator from '../../shared/display/CategorySeparator';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
+import ProfessionForm from '../shared/ProfessionForm';
 import ProfessionCreationActions from './ProfessionCreationActions';
-import ProfessionCreationAttributes from './ProfessionCreationAttributes';
-import ProfessionCreationProfessionalSkills from './ProfessionCreationProfessionalSkills';
-import ProfessionCreationRealmTypes from './ProfessionCreationRealmTypes';
-import ProfessionCreationSkillCosts from './ProfessionCreationSkillCosts';
 
 const TEMPLATE = {
   id: '',
@@ -82,23 +77,7 @@ const ProfessionCreation: FC = () => {
           />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <ProfessionCreationAttributes formData={formData} setFormData={setFormData} />
-          <CharacterSeparator text={t('Realms')} />
-          <ProfessionCreationRealmTypes formData={formData} setFormData={setFormData} />
-          <CharacterSeparator text={t('Skill costs')} />
-          <ProfessionCreationSkillCosts formData={formData} setFormData={setFormData} />
-          <CharacterSeparator text={t('Professional skills')} />
-          <ProfessionCreationProfessionalSkills formData={formData} setFormData={setFormData} />
-          <Grid size={12}>
-            <TextField
-              label={t('Description')}
-              fullWidth
-              multiline
-              minRows={3}
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            />
-          </Grid>
+          <ProfessionForm formData={formData} setFormData={setFormData} creationMode={true} />
           <TechnicalInfo>
             <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

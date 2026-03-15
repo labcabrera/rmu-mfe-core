@@ -6,7 +6,7 @@ import { CreateProfessionDto, RealmType, UpdateProfessionDto } from '../../api/p
 
 const REALM_TYPES: RealmType[] = ['channeling', 'essence', 'mentalism'];
 
-const ProfessionCreationRealmTypes: FC<{
+const ProfessionFormRealmTypes: FC<{
   formData: CreateProfessionDto | UpdateProfessionDto;
   setFormData: Dispatch<SetStateAction<CreateProfessionDto | UpdateProfessionDto | undefined>>;
 }> = ({ formData, setFormData }) => {
@@ -66,4 +66,4 @@ const ProfessionCreationRealmTypes: FC<{
   );
 };
 
-export default ProfessionCreationRealmTypes;
+export default ProfessionFormRealmTypes;

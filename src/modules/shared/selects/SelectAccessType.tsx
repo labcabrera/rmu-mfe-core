@@ -5,9 +5,9 @@ import { AccessType } from '../../api/common.dto';
 
 const SelectAccessType: FC<{
   value: AccessType | undefined;
-  label: string;
+  label?: string;
   onChange: (accessType: AccessType) => void;
-}> = ({ value, label, onChange }) => {
+}> = ({ value, label = 'Access type', onChange }) => {
   const handleChange = (_: MouseEvent<HTMLElement>, newValue: string | null) => {
     if (!newValue) return;
     onChange(newValue as AccessType);

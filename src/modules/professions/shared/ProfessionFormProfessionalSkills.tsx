@@ -9,7 +9,7 @@ import { Skill } from '../../api/skill.dto';
 import AddButton from '../../shared/buttons/AddButton';
 import SelectSkill from '../../shared/selects/SelectSkill';
 
-const ProfessionCreationProfessionalSkills: FC<{
+const ProfessionFormProfessionalSkills: FC<{
   formData: CreateProfessionDto | UpdateProfessionDto;
   setFormData: Dispatch<SetStateAction<CreateProfessionDto | UpdateProfessionDto | undefined>>;
 }> = ({ formData, setFormData }) => {
@@ -72,4 +72,4 @@ const ProfessionCreationProfessionalSkills: FC<{
   );
 };
 
-export default ProfessionCreationProfessionalSkills;
+export default ProfessionFormProfessionalSkills;
