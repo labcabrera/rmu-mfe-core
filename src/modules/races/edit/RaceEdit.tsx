@@ -1,17 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { Race, UpdateRaceDto } from '../../api/race.dto';
 import EditableAvatar from '../../shared/avatars/EditableAvatar';
-import CategorySeparator from '../../shared/display/CategorySeparator';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
+import RaceForm from '../shared/RaceForm';
 import RaceEditActions from './RaceEditActions';
-import RaceEditAttributes from './RaceEditAttributes';
-import RaceEditLore from './RaceEditLore';
-import RaceEditResistances from './RaceEditResistances';
-import RaceEditStats from './RaceEditStats';
 
 const RaceEdit: FC = () => {
   const location = useLocation();
@@ -49,16 +45,12 @@ const RaceEdit: FC = () => {
           />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }} padding={1}>
-          <RaceEditAttributes formData={formData} setFormData={setFormData} />
-          <CategorySeparator text={t('statistics')} />
-          <RaceEditStats formData={formData} setFormData={setFormData} />
-          <CategorySeparator text={t('resistances')} />
-          <RaceEditResistances formData={formData} setFormData={setFormData} />
-          <CategorySeparator text={t('lore')} />
-          <RaceEditLore race={race} formData={formData} setFormData={setFormData} />
+          <RaceForm formData={formData} setFormData={setFormData} />
+          <TechnicalInfo>
+            <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
+          </TechnicalInfo>
         </Grid>
       </Grid>
-      <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
     </>
   );
 };
