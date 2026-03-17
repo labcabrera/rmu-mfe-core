@@ -5,6 +5,8 @@ import { useTheme } from '@mui/material/styles';
 import { ErrorProvider } from './ErrorContext';
 import HomePage from './HomePage';
 import './i18n';
+import CatalogList from './modules/catalogs/list/CatalogList';
+import CatalogView from './modules/catalogs/view/CatalogView';
 import LanguageCreation from './modules/languages/create/LanguageCreation';
 import LanguageEdit from './modules/languages/edit/LanguageEdit';
 import LanguageList from './modules/languages/list/LanguageList';
@@ -72,6 +74,8 @@ const App = () => {
             <Route path="/skills/create" element={<SkillCreation />} />
             <Route path="/skill-categories" element={<SkillCategoryList />} />
             <Route path="/skill-categories/view/:skillCategoryId" element={<SkillCategoryView />} />
+            <Route path="/catalogs" element={<CatalogList />} />
+            <Route path="/catalogs/view/:category" element={<CatalogView />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>

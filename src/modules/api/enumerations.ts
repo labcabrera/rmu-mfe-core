@@ -2,10 +2,10 @@ import { getAuthHeaders, mergeJsonHeaders } from '../services/auth-token-service
 import { apiCoreUrl } from '../services/config';
 import { buildErrorFromResponse } from './api-errors';
 import { Page } from './common.dto';
-import { CreateLanguageDto, Language, UpdateLanguageDto } from './language.dto';
+import { CreateEnumerationDto, Enumeration, UpdateEnumerationDto } from './enumerations.dto';
 
-export async function fetchLanguage(id: string): Promise<Language> {
-  const url = `${apiCoreUrl}/languages/${id}`;
+export async function fetchEnumerationCategories(): Promise<string[]> {
+  const url = `${apiCoreUrl}/enumeration-categories`;
   const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
@@ -13,18 +13,17 @@ export async function fetchLanguage(id: string): Promise<Language> {
   return await response.json();
 }
 
-export async function fetchLanguages(rsql: string, page: number, size: number): Promise<Language[]> {
-  const url = `${apiCoreUrl}/languages?q=${rsql}&page=${page}&size=${size}`;
+export async function fetchEnumeration(id: string): Promise<Enumeration> {
+  const url = `${apiCoreUrl}/enumerations/${id}`;
   const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
   }
-  const pageContent = await response.json();
-  return pageContent.content;
+  return await response.json();
 }
 
-export async function fetchPagedLanguages(rsql: string, page: number, size: number): Promise<Page<Language>> {
-  const url = `${apiCoreUrl}/languages?q=${rsql}&page=${page}&size=${size}`;
+export async function fetchEnumerations(rsql: string, page: number, size: number): Promise<Page<Enumeration>> {
+  const url = `${apiCoreUrl}/enumerations?q=${rsql}&page=${page}&size=${size}`;
   const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
@@ -33,8 +32,8 @@ export async function fetchPagedLanguages(rsql: string, page: number, size: numb
   return pageContent;
 }
 
-export async function createLanguage(dto: CreateLanguageDto): Promise<Language> {
-  const url = `${apiCoreUrl}/languages`;
+export async function createEnumeration(dto: CreateEnumerationDto): Promise<Enumeration> {
+  const url = `${apiCoreUrl}/enumerations`;
   const response = await fetch(url, {
     method: 'POST',
     headers: mergeJsonHeaders(),
@@ -46,8 +45,8 @@ export async function createLanguage(dto: CreateLanguageDto): Promise<Language> 
   return await response.json();
 }
 
-export async function updateLanguage(id: string, dto: UpdateLanguageDto): Promise<Language> {
-  const url = `${apiCoreUrl}/languages/${id}`;
+export async function updateEnumeration(id: string, dto: UpdateEnumerationDto): Promise<Enumeration> {
+  const url = `${apiCoreUrl}/enumerations/${id}`;
   const response = await fetch(url, {
     method: 'PATCH',
     headers: mergeJsonHeaders(),
@@ -59,8 +58,8 @@ export async function updateLanguage(id: string, dto: UpdateLanguageDto): Promis
   return await response.json();
 }
 
-export async function deleteLanguage(id: string): Promise<void> {
-  const url = `${apiCoreUrl}/languages/${id}`;
+export async function deleteEnumeration(id: string): Promise<void> {
+  const url = `${apiCoreUrl}/enumerations/${id}`;
   const response = await fetch(url, { method: 'DELETE', headers: getAuthHeaders() });
   if (response.status !== 204) {
     throw await buildErrorFromResponse(response, url);

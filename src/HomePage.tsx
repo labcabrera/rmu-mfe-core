@@ -56,6 +56,18 @@ const HomePage: FC = () => {
       image: `${imageBaseUrl}images/generic/language.png`,
       to: '/core/languages',
     },
+    {
+      value: 'Catalogs',
+      subtitle: 'Manage catalogs',
+      image: `${imageBaseUrl}images/generic/language.png`,
+      to: '/core/catalogs',
+    },
+    {
+      value: 'Recruitment',
+      subtitle: 'Realm recruitment management',
+      image: `${imageBaseUrl}images/generic/language.png`,
+      to: '/core/languages',
+    },
   ];
 
   return (
