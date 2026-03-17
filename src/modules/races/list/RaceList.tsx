@@ -71,7 +71,7 @@ const RaceList: FC = () => {
               </Grid>
             ))}
           </Grid>
-          <Grid size={12}>{races.length === 0 && <p>No races found.</p>}</Grid>
+          {races.length === 0 && <Grid size={12}>No races found.</Grid>}
           <Box mt={2} display="flex" justifyContent="center">
             <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
           </Box>

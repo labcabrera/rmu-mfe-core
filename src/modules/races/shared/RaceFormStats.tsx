@@ -11,7 +11,7 @@ const RaceFormStats: FC<{
   return (
     <Grid container columns={10} spacing={1}>
       {stats.map((stat) => (
-        <Grid key={stat} size={2}>
+        <Grid key={stat} size={{ xs: 5, md: 2 }}>
           <NumericInput
             label={t(stat)}
             name={`stats.${stat}`}

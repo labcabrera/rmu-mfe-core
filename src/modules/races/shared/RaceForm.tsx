@@ -3,7 +3,6 @@ import { Grid } from '@mui/material';
 import { t } from 'i18next';
 import { CreateRaceDto, UpdateRaceDto } from '../../api/race.dto';
 import CharacterSeparator from '../../shared/display/CategorySeparator';
-import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RaceFormAttributes from './RaceFormAttributes';
 import RaceFormLore from './RaceFormLore';
 import RaceFormResistances from './RaceFormResistances';
@@ -15,7 +14,7 @@ const RaceForm: FC<{
 }> = ({ formData, setFormData }) => {
   return (
     <Grid container spacing={1}>
-      <Grid size={{ xs: 12, md: 8 }}>
+      <Grid size={{ xs: 12, md: 12 }}>
         <RaceFormAttributes formData={formData} setFormData={setFormData} />
         <CharacterSeparator text={t('statistics')} />
         <RaceFormStats formData={formData} setFormData={setFormData} />
@@ -23,9 +22,6 @@ const RaceForm: FC<{
         <RaceFormResistances formData={formData} setFormData={setFormData} />
         <CharacterSeparator text={t('lore')} />
         <RaceFormLore formData={formData} setFormData={setFormData} />
-        <TechnicalInfo>
-          <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
-        </TechnicalInfo>
       </Grid>
     </Grid>
   );

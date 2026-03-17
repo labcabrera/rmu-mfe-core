@@ -46,20 +46,24 @@ const LanguageList: FC = () => {
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}></Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <LanguageListSearch setQueryString={setQueryString} realms={realms} />
           <Grid container spacing={1}>
-            {languages.map((language) => (
-              <Grid size={{ xs: 12, md: 3 }} key={language.id}>
-                <RmuTextCard
-                  value={language.name}
-                  subtitle={language.realm.name}
-                  image={`${imageBaseUrl}images/generic/language.png`}
-                  onClick={() => navigate(`/core/languages/view/${language.id}`)}
-                />
-              </Grid>
-            ))}
+            <Grid size={12}>
+              <LanguageListSearch setQueryString={setQueryString} realms={realms} />
+            </Grid>
+            <Grid container spacing={1}>
+              {languages.map((language) => (
+                <Grid size={{ xs: 12, md: 3 }} key={language.id}>
+                  <RmuTextCard
+                    value={language.name}
+                    subtitle={language.realm.name}
+                    image={`${imageBaseUrl}images/generic/language.png`}
+                    onClick={() => navigate(`/core/languages/view/${language.id}`)}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+            <Grid size={12}>{languages.length === 0 ? <p>No languages found.</p> : null}</Grid>
           </Grid>
-          <Grid size={12}>{languages.length === 0 ? <p>No languages found.</p> : null}</Grid>
         </Grid>
       </Grid>
     </>

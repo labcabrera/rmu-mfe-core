@@ -11,7 +11,7 @@ const RaceFormResistances: FC<{
   return (
     <Grid container spacing={2} columns={10}>
       {resistances.map((resistance) => (
-        <Grid key={resistance} size={2}>
+        <Grid key={resistance} size={{ xs: 5, md: 2 }}>
           <NumericInput
             label={t(resistance)}
             name={`resistances.${resistance}`}

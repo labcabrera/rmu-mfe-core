@@ -36,10 +36,10 @@ const RaceFormAttributes: FC<{
           onChange={(e) => setFormData({ ...formData, archetype: e.target.value })}
         />
       </Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 12, md: 2 }}>
         <SelectRaceSize label={t('race-size')} name="sizeId" value={formData.sizeId} onChange={handleChange} />
       </Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
           label={t('base-hit-points')}
           name="baseHitsMale"
@@ -47,7 +47,7 @@ const RaceFormAttributes: FC<{
           onChange={(value) => setFormData({ ...formData, baseHits: value })}
         />
       </Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
           label={t('stride-bonus')}
           name="strideBonusMale"
@@ -55,7 +55,7 @@ const RaceFormAttributes: FC<{
           onChange={(value) => setFormData({ ...formData, strideBonus: value })}
         />
       </Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
           label={t('endurance-bonus')}
           name="enduranceBonusMale"
@@ -63,7 +63,7 @@ const RaceFormAttributes: FC<{
           onChange={(value) => setFormData({ ...formData, enduranceBonus: value })}
         />
       </Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
           label={t('recovery-multiplier')}
           name="recoveryMultiplierMale"
@@ -74,7 +74,7 @@ const RaceFormAttributes: FC<{
           onChange={(value) => setFormData({ ...formData, recoveryMultiplier: value })}
         />
       </Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
           label={t('base-dev-points')}
           name="baseDevPointsMale"
@@ -83,7 +83,7 @@ const RaceFormAttributes: FC<{
           min={0}
         />
       </Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
           label={t('base-at')}
           name="baseAtMale"
@@ -94,7 +94,7 @@ const RaceFormAttributes: FC<{
           integer
         />
       </Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
           label={t('average-height-male')}
           name="averageHeightMale"
@@ -103,7 +103,7 @@ const RaceFormAttributes: FC<{
           min={0}
         />
       </Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
           label={t('average-height-female')}
           name="averageHeightFemale"
@@ -114,7 +114,7 @@ const RaceFormAttributes: FC<{
           min={0}
         />
       </Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
           label={t('average-weight-male')}
           name="averageWeightMale"
@@ -123,7 +123,7 @@ const RaceFormAttributes: FC<{
           min={0}
         />
       </Grid>
-      <Grid size={2}>
+      <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
           label={t('average-weight-female')}
           name="averageWeightFemale"

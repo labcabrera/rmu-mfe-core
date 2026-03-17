@@ -46,7 +46,7 @@ const RaceCreation: FC = () => {
 
   return (
     <>
-      <RaceCreationActions formData={formData} isValid={isValid} realm={realm} />
+      <RaceCreationActions formData={formData} isValid={isValid} />
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
           <EdditableAvatar
