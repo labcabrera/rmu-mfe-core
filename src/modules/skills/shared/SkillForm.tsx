@@ -1,31 +1,29 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { Grid, TextField, Button, ButtonGroup } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { AccessType, STATISTICS } from '../../api/common.dto';
+import { STATISTICS } from '../../api/common.dto';
 import { fetchSkillCategories } from '../../api/skill-category';
 import { SkillCategory } from '../../api/skill-category.dto';
-import { CreateSkillDto } from '../../api/skill.dto';
+import { CreateSkillDto, UpdateSkillDto } from '../../api/skill.dto';
 import CategorySeparator from '../../shared/display/CategorySeparator';
 import SelectAccessType from '../../shared/selects/SelectAccessType';
 import SelectSkillCategory from '../../shared/selects/SelectSkillCategory';
 import SelectSkillSpecialization from '../../shared/selects/SelectSkillSpecialization';
 
 const SkillForm: FC<{
-  formData: CreateSkillDto;
+  formData: CreateSkillDto | UpdateSkillDto;
   setFormData: Dispatch<SetStateAction<CreateSkillDto>>;
-}> = ({ formData, setFormData }) => {
+  create: boolean;
+}> = ({ formData, setFormData, create }) => {
   const { showError } = useError();
   const [categories, setCategories] = React.useState<SkillCategory[]>([]);
-
-  const onSpecializationChange = (value: string | null) => {
-    setFormData({ ...formData, specialization: value });
-  };
 
   useEffect(() => {
     fetchSkillCategories()
       .then((data) => setCategories(data))
-      .catch((err: Error) => showError(err.message));
+      .catch((err) => showError(err.message));
   }, []);
 
   if (!formData || !setFormData) return <p>Loading...</p>;
@@ -40,20 +38,22 @@ const SkillForm: FC<{
             onChange={(value) => setFormData({ ...formData, accessType: value })}
           />
         </Grid>
-        <Grid size={12}>
-          <TextField
-            label={t('skill-id')}
-            name="skill-id"
-            value={formData.id || ''}
-            onChange={(e) => setFormData({ ...formData, id: e.target.value })}
-            error={!formData.id}
-            fullWidth
-          />
-        </Grid>
+        {create && (
+          <Grid size={12}>
+            <TextField
+              label={t('skill-id')}
+              name="skill-id"
+              value={formData.id || ''}
+              onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+              error={!formData.id}
+              fullWidth
+            />
+          </Grid>
+        )}
         <Grid size={12}>
           <SelectSkillCategory
             label={t('skill-category')}
-            value={formData.categoryId}
+            value={formData.categoryId || null}
             onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
             categories={categories}
             required
@@ -64,9 +64,9 @@ const SkillForm: FC<{
         </Grid>
         <Grid size={12}>
           <SelectSkillSpecialization
-            value={formData.specialization}
+            value={formData.specialization || null}
             label={t('specialization')}
-            onSpecializationChange={(e) => onSpecializationChange(e)}
+            onSpecializationChange={(e) => setFormData({ ...formData, specialization: e })}
           />
         </Grid>
       </Grid>

@@ -34,7 +34,7 @@ const SkillCreation: FC = () => {
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />
         </Grid>
         <Grid size={7}>
-          <SkillForm formData={formData} setFormData={setFormData} />
+          <SkillForm formData={formData} setFormData={setFormData} create={true} />
         </Grid>
       </Grid>
       <pre>Form: {JSON.stringify(formData, null, 2)}</pre>

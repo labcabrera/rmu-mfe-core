@@ -11,28 +11,29 @@ import SkillViewInfo from './SkillViewInfo';
 
 const SkillView: FC = () => {
   const location = useLocation();
-  const { skillId } = useParams<{ skillId?: string }>();
   const { showError } = useError();
+  const { skillId } = useParams<{ skillId?: string }>();
   const [skill, setSkill] = useState<Skill | null>(null);
+
+  const bindSkill = (skillId: string) => {
+    fetchSkill(skillId)
+      .then((response) => setSkill(response))
+      .catch((err) => showError(err.message));
+  };
 
   useEffect(() => {
     if (location.state && location.state.skill) {
       setSkill(location.state.skill);
     } else if (skillId) {
-      fetchSkill(skillId)
-        .then((response) => setSkill(response))
-        .catch((err: unknown) => {
-          if (err instanceof Error) showError(err.message);
-          else showError(String(err));
-        });
+      bindSkill(skillId);
     }
-  }, [location.state, skillId, showError]);
+  }, [location.state, skillId]);
 
   if (!skill) return <p>Loading...</p>;
 
   return (
     <>
-      <SkillViewActions skill={skill} />
+      <SkillViewActions skill={skill} onRefresh={() => bindSkill(skillId!)} />
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />
