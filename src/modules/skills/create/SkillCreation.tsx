@@ -3,15 +3,16 @@ import { Grid } from '@mui/material';
 import { CreateSkillDto } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import SkillForm from '../shared/SkillForm';
 import SkillCreationActions from './SkillCreationActions';
-import SkillCreationAttributes from './SkillCreationAttributes';
 
 const SkillCreation: FC = () => {
   const [formData, setFormData] = useState<CreateSkillDto>({
     id: '',
     categoryId: '',
     bonus: [],
-    specialization: null,
+    specialization: '',
+    accessType: 'public',
   });
   const [isValid, setIsValid] = useState(false);
 
@@ -33,7 +34,7 @@ const SkillCreation: FC = () => {
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />
         </Grid>
         <Grid size={7}>
-          <SkillCreationAttributes formData={formData} setFormData={setFormData} />
+          <SkillForm formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
       <pre>Form: {JSON.stringify(formData, null, 2)}</pre>

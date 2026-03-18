@@ -4,7 +4,7 @@ import { Grid, Chip, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { CreateProfessionDto, UpdateProfessionDto } from '../../api/profession.dto';
-import { fetchPagedSkills } from '../../api/skill';
+import { fetchSkills } from '../../api/skill';
 import { Skill } from '../../api/skill.dto';
 import AddButton from '../../shared/buttons/AddButton';
 import SelectSkill from '../../shared/selects/SelectSkill';
@@ -31,7 +31,7 @@ const ProfessionFormProfessionalSkills: FC<{
   };
 
   useEffect(() => {
-    fetchPagedSkills('', 0, 500)
+    fetchSkills('', 0, 500)
       .then((response) => setAllSkills(response.content.map((s: Skill) => s.id)))
       .catch((err: Error) => showError(err.message));
   }, []);

@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
-import { fetchPagedSkills } from '../../api/skill';
+import { fetchSkills } from '../../api/skill';
 import { fetchSkillCategory } from '../../api/skill-category';
 import { Skill } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
@@ -33,7 +33,7 @@ const SkillCategoryView: FC = () => {
 
   useEffect(() => {
     if (skillCategory) {
-      fetchPagedSkills(`categoryId==${skillCategory.id}`, 0, 100)
+      fetchSkills(`categoryId==${skillCategory.id}`, 0, 100)
         .then((response) => setSkills(response.content))
         .catch((err: unknown) => {
           if (err instanceof Error) showError(err.message);

@@ -2,15 +2,16 @@ import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { Grid, TextField, Button, ButtonGroup } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { STATISTICS } from '../../api/common.dto';
+import { AccessType, STATISTICS } from '../../api/common.dto';
 import { fetchSkillCategories } from '../../api/skill-category';
 import { SkillCategory } from '../../api/skill-category.dto';
 import { CreateSkillDto } from '../../api/skill.dto';
 import CategorySeparator from '../../shared/display/CategorySeparator';
+import SelectAccessType from '../../shared/selects/SelectAccessType';
 import SelectSkillCategory from '../../shared/selects/SelectSkillCategory';
 import SelectSkillSpecialization from '../../shared/selects/SelectSkillSpecialization';
 
-const SkillCreationAttributes: FC<{
+const SkillForm: FC<{
   formData: CreateSkillDto;
   setFormData: Dispatch<SetStateAction<CreateSkillDto>>;
 }> = ({ formData, setFormData }) => {
@@ -33,6 +34,12 @@ const SkillCreationAttributes: FC<{
     <>
       <CategorySeparator text={t('skill-information')} />
       <Grid container spacing={1}>
+        <Grid size={12}>
+          <SelectAccessType
+            value={formData.accessType}
+            onChange={(value) => setFormData({ ...formData, accessType: value })}
+          />
+        </Grid>
         <Grid size={12}>
           <TextField
             label={t('skill-id')}
@@ -81,7 +88,7 @@ const StatsSelection: FC<{ stats: string[]; formData: any; setFormData: Dispatch
   };
 
   return (
-    <ButtonGroup orientation="vertical" fullWidth aria-label="stats-button-group" sx={{ width: '100%' }}>
+    <ButtonGroup orientation="horizontal" fullWidth aria-label="stats-button-group" sx={{ width: '100%' }}>
       {stats.map((stat) => (
         <Button
           key={stat}
@@ -96,4 +103,4 @@ const StatsSelection: FC<{ stats: string[]; formData: any; setFormData: Dispatch
   );
 };
 
-export default SkillCreationAttributes;
+export default SkillForm;
