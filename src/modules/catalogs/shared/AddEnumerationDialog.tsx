@@ -4,30 +4,33 @@ import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { createEnumeration } from '../../api/enumerations';
 import { CreateEnumerationDto, Enumeration } from '../../api/enumerations.dto';
+import { Realm } from '../../api/realm.dto';
+import SelectRealm from '../../shared/selects/SelectRealm';
 
 type Props = {
   open: boolean;
   category: string;
+  realms: Realm[];
   onClose: () => void;
-  onAdd: (createdEnumeration: Enumeration) => void;
+  onAdd: () => void;
 };
 
-const AddEnumerationDialog: FC<Props> = ({ open, category, onClose, onAdd }) => {
+const AddEnumerationDialog: FC<Props> = ({ open, category, realms, onClose, onAdd }) => {
   const { showError } = useError();
   const [form, setForm] = useState<CreateEnumerationDto>({
     category: category,
-    name: '',
+    key: '',
     realmId: null,
     accessType: 'public',
   });
 
   const onSave = () => {
     createEnumeration(form!)
-      .then((data) => onAdd(data))
+      .then(() => onAdd())
       .catch((err) => showError(err.message));
     setForm({
       category: category,
-      name: '',
+      key: '',
       realmId: null,
       accessType: 'public',
     });
@@ -41,28 +44,26 @@ const AddEnumerationDialog: FC<Props> = ({ open, category, onClose, onAdd }) => 
         <Grid container spacing={2} sx={{ pt: 1 }}>
           <Grid size={{ xs: 12 }}>
             <TextField
-              label={t('Name')}
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              label={t('Key')}
+              value={form.key}
+              onChange={(e) => setForm({ ...form, key: e.target.value })}
               fullWidth
               size="small"
               required
             />
           </Grid>
           <Grid size={{ xs: 12 }}>
-            <TextField
-              label={t('Realm Id')}
-              value={form.realmId ?? ''}
-              onChange={(e) => setForm({ ...form, realmId: e.target.value || null })}
-              fullWidth
-              size="small"
+            <SelectRealm
+              value={form.realmId || ''}
+              onChange={(realmId) => setForm({ ...form, realmId: realmId })}
+              realms={realms}
             />
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>{t('Cancel')}</Button>
-        <Button onClick={onSave} variant="contained" disabled={!form.name}>
+        <Button onClick={onSave} variant="contained" disabled={!form.key}>
           {t('Add')}
         </Button>
       </DialogActions>

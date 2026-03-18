@@ -17,8 +17,8 @@ const RealmList: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchRealms('', 0, 20)
-      .then((response) => setRealms(response))
+    fetchRealms('', 0, 100)
+      .then((response) => setRealms(response.content))
       .catch((err) => showError(err.message));
   }, [showError]);
 

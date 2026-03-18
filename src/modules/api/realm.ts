@@ -1,6 +1,7 @@
 import { getAuthHeaders, mergeJsonHeaders } from '../services/auth-token-service';
 import { apiCoreUrl } from '../services/config';
 import { buildErrorFromResponse } from './api-errors';
+import { Page } from './common.dto';
 import { CreateRealmDto, Realm } from './realm.dto';
 
 export async function fetchRealm(realmId: string): Promise<Realm> {
@@ -12,14 +13,13 @@ export async function fetchRealm(realmId: string): Promise<Realm> {
   return await response.json();
 }
 
-export async function fetchRealms(rsql: string, page: number, size: number): Promise<Realm[]> {
+export async function fetchRealms(rsql: string, page: number, size: number): Promise<Page<Realm>> {
   const url = `${apiCoreUrl}/realms?q=${rsql}&page=${page}&size=${size}`;
   const response = await fetch(url, { method: 'GET', headers: getAuthHeaders() });
   if (response.status !== 200) {
     throw await buildErrorFromResponse(response, url);
   }
-  const pageContent = await response.json();
-  return pageContent.content;
+  return await response.json();
 }
 
 export async function createRealm(realm: CreateRealmDto): Promise<Realm> {

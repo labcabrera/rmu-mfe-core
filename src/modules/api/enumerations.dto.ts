@@ -2,7 +2,7 @@ import { AccessType } from './common.dto';
 
 export interface Enumeration {
   id: string;
-  name: string;
+  key: string;
   category: string;
   realmId: string | null;
   accessType: AccessType;
