@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Paper, Typography } from '@mui/material';
-import { t } from 'i18next';
+import { t, i18n } from 'i18next';
 import { Skill } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
@@ -10,12 +11,13 @@ const SkillViewInfo: FC<{
   skill: Skill;
 }> = ({ skill }) => {
   const navigate = useNavigate();
+  const { i18n } = useTranslation();
 
   if (!skill) return <p>Loading...</p>;
 
-  const getDescriptionKey = () => {
-    return skill.id.includes('@') ? `skill-${skill.id.split('@')[0]}-description` : `skill-${skill.id}-description`;
-  };
+  const descriptionKey = skill.id.includes('@')
+    ? `skill-${skill.id.split('@')[0]}-description`
+    : `skill-${skill.id}-description`;
 
   const onCategoryClick = () => {
     navigate(`/core/skill-categories/view/${skill.categoryId}`);
@@ -71,10 +73,14 @@ const SkillViewInfo: FC<{
           )}
         </Grid>
       </Grid>
-      <Grid size={{ xs: 12, md: 8 }} mt={1}>
+      <Grid size={12} mt={1}>
         <Paper sx={{ p: 1 }}>
           <Typography variant="body1" gutterBottom sx={{ whiteSpace: 'pre-wrap' }}>
-            {t(getDescriptionKey())}
+            {i18n.exists(descriptionKey) ? (
+              <>{t(descriptionKey)}</>
+            ) : (
+              <>{t('This skill has no associated description.')}</>
+            )}
           </Typography>
         </Paper>
       </Grid>

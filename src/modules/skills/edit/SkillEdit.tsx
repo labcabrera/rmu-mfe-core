@@ -58,14 +58,12 @@ const SkillEdit: FC = () => {
     <>
       <SkillEditActions skill={skill} formData={formData} isValid={true} />
       <Grid container spacing={2}>
-        <Grid size={2}>
-          {isValid}
+        <Grid size={{ xs: 12, md: 4 }}>
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <SkillForm formData={formData} setFormData={setFormData} create={false} />
           <TechnicalInfo>
-            <pre>IsValid: {isValid}</pre>
             <pre>Skill: {JSON.stringify(skill, null, 2)}</pre>
             <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

@@ -6,6 +6,7 @@ import { fetchSkill } from '../../api/skill';
 import { Skill } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import SkillViewActions from './SkillViewActions';
 import SkillViewInfo from './SkillViewInfo';
 
@@ -40,6 +41,9 @@ const SkillView: FC = () => {
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
           <SkillViewInfo skill={skill} />
+          <TechnicalInfo>
+            <pre>Skill: {JSON.stringify(skill, null, 2)}</pre>
+          </TechnicalInfo>
         </Grid>
       </Grid>
     </>
