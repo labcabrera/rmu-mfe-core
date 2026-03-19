@@ -15,6 +15,7 @@ import CategorySeparator from '../../shared/display/CategorySeparator';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import AddEnumerationDialog from '../shared/AddEnumerationDialog';
 import CatalogViewActions from './CatalogViewActions';
+import CatalogListSearch from './CatalogViewSearch';
 
 const CatalogView: FC = () => {
   const { showError } = useError();
@@ -22,6 +23,7 @@ const CatalogView: FC = () => {
   const [enumerations, setEnumerations] = useState<Enumeration[]>();
   const [addDialogOpen, setAddDialogOpen] = useState<boolean>(false);
   const [realms, setRealms] = useState<Realm[]>();
+  const [queryString, setQueryString] = useState<string>();
 
   const bindRealms = () => {
     fetchRealms('', 0, 100)
@@ -29,15 +31,16 @@ const CatalogView: FC = () => {
       .catch((err) => showError(err.message));
   };
 
-  const bindEnumerations = (category: string) => {
-    fetchEnumerations(`category==${category}`, 0, 1000)
+  const bindEnumerations = () => {
+    if (!queryString) return;
+    fetchEnumerations(queryString, 0, 1000)
       .then((response) => setEnumerations(response.content))
       .catch((err) => showError(err.message));
   };
 
   const onDelete = (enumeration: Enumeration) => {
     deleteEnumeration(enumeration.id)
-      .then(() => bindEnumerations(category!))
+      .then(() => bindEnumerations())
       .catch((err) => showError(err.message));
   };
 
@@ -46,8 +49,13 @@ const CatalogView: FC = () => {
   };
 
   useEffect(() => {
+    bindEnumerations();
+  }, [queryString]);
+
+  useEffect(() => {
     if (category) {
-      bindEnumerations(category);
+      setQueryString(`category==${category}`);
+      // bindEnumerations();
     }
     bindRealms();
   }, [category]);
@@ -56,33 +64,44 @@ const CatalogView: FC = () => {
 
   return (
     <>
-      <CatalogViewActions onRefresh={() => bindEnumerations(category!)} />
+      <CatalogViewActions onRefresh={() => bindEnumerations()} />
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}></Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <CategorySeparator text={t(category)}>
-            <AddButton onClick={() => setAddDialogOpen(true)} />
-          </CategorySeparator>
           <Grid container spacing={1}>
-            {enumerations.map((e) => (
-              <Grid key={e.id} size={{ xs: 12, md: 3 }}>
-                <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`} size="small">
-                  <Stack direction="row" justifyContent="space-between">
-                    <Stack direction="column">
-                      <Typography>{e.key}</Typography>
-                      <Typography color="secondary">
-                        <em>{getRealmName(e)}</em>
-                      </Typography>
-                    </Stack>
-                    <DeleteButton onClick={() => onDelete(e)} />
-                  </Stack>
-                </RmuCard>
+            <Grid size={12}>
+              <CategorySeparator text={t(category)}>
+                <AddButton onClick={() => setAddDialogOpen(true)} />
+              </CategorySeparator>
+            </Grid>
+            <Grid size={12}>
+              <CatalogListSearch category={category} realms={realms} setQueryString={setQueryString} />
+            </Grid>
+            <Grid size={12}>
+              <Grid container spacing={1}>
+                {enumerations.map((e) => (
+                  <Grid key={e.id} size={{ xs: 12, md: 3 }}>
+                    <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`} size="small">
+                      <Stack direction="row" justifyContent="space-between">
+                        <Stack direction="column">
+                          <Typography>{e.key}</Typography>
+                          <Typography color="secondary">
+                            <em>{getRealmName(e)}</em>
+                          </Typography>
+                        </Stack>
+                        <DeleteButton onClick={() => onDelete(e)} />
+                      </Stack>
+                    </RmuCard>
+                  </Grid>
+                ))}
               </Grid>
-            ))}
+            </Grid>
+            <Grid size={12}>
+              <TechnicalInfo>
+                <pre>{JSON.stringify(enumerations, null, 2)}</pre>
+              </TechnicalInfo>
+            </Grid>
           </Grid>
-          <TechnicalInfo>
-            <pre>{JSON.stringify(enumerations, null, 2)}</pre>
-          </TechnicalInfo>
         </Grid>
       </Grid>
       <AddEnumerationDialog
