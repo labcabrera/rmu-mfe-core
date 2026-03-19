@@ -32,7 +32,7 @@ const RaceList: FC = () => {
 
   const bindRealms = () => {
     fetchRealms('', 0, 100)
-      .then((response) => setRealms(response))
+      .then((response) => setRealms(response.content))
       .catch((err: Error) => showError(err.message));
   };
 

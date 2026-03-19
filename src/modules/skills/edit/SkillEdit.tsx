@@ -57,8 +57,8 @@ const SkillEdit: FC = () => {
   return (
     <>
       <SkillEditActions skill={skill} formData={formData} isValid={true} />
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 4 }}>
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 2 }}>
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>

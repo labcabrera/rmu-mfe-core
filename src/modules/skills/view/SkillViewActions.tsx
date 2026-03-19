@@ -23,13 +23,9 @@ const SkillViewActions: FC<{
     { name: t('Skill'), link: '/core/skills' },
   ];
 
-  const onEdit = () => {
-    navigate(`/core/skills/edit/${skill.id}`);
-  };
-
   const onDelete = () => {
     deleteSkill(skill.id)
-      .then(() => navigate(`/core/skills`))
+      .then(() => navigate(`/core/skill-categories/view/${skill.categoryId}`))
       .catch((err) => showError(err.message));
   };
 
@@ -39,7 +35,7 @@ const SkillViewActions: FC<{
     <>
       <RmuBreadcrumbs items={breadcrumbs}>
         <RefreshButton onClick={onRefresh} />
-        <EditButton onClick={onEdit} />
+        <EditButton onClick={() => navigate(`/core/skills/edit/${skill.id}`)} />
         <DeleteButton onClick={() => setDeleteDialogOpen(true)} />
       </RmuBreadcrumbs>
       <DeleteDialog

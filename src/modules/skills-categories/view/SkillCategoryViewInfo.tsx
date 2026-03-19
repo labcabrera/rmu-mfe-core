@@ -38,7 +38,7 @@ const SkillCategoryViewInfo: FC<{
           </Grid>
         )}
       </Grid>
-      <Grid size={{ xs: 12, md: 8 }} mt={1}>
+      <Grid size={12} mt={1}>
         <Paper sx={{ p: 2 }}>
           <Typography variant="body1" gutterBottom sx={{ whiteSpace: 'pre-wrap' }}>
             {t(`skill-category-${skillCategory.id}-description`)}

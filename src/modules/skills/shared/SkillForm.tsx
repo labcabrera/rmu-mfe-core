@@ -60,7 +60,7 @@ const SkillForm: FC<{
           />
         </Grid>
         <Grid size={12}>
-          <StatsSelection stats={STATISTICS} formData={formData} setFormData={setFormData} />
+          <StatsSelection formData={formData} setFormData={setFormData} />
         </Grid>
         <Grid size={12}>
           <SelectSkillSpecialization
@@ -74,8 +74,7 @@ const SkillForm: FC<{
   );
 };
 
-const StatsSelection: FC<{ stats: string[]; formData: any; setFormData: Dispatch<SetStateAction<any>> }> = ({
-  stats,
+const StatsSelection: FC<{ formData: any; setFormData: Dispatch<SetStateAction<any>> }> = ({
   formData,
   setFormData,
 }) => {
@@ -89,7 +88,7 @@ const StatsSelection: FC<{ stats: string[]; formData: any; setFormData: Dispatch
 
   return (
     <ButtonGroup orientation="horizontal" fullWidth aria-label="stats-button-group" sx={{ width: '100%' }}>
-      {stats.map((stat) => (
+      {STATISTICS.map((stat) => (
         <Button
           key={stat}
           variant={selected.includes(stat) ? 'contained' : 'outlined'}

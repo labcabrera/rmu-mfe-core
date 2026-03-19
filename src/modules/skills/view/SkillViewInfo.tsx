@@ -67,6 +67,7 @@ const SkillViewInfo: FC<{
               <RmuTextCard
                 subtitle="Specialization"
                 image={`${imageBaseUrl}images/generic/configuration.png`}
+                onClick={() => navigate(`/core/catalogs/view/${skill.specialization}`)}
                 value={t(skill.specialization)}
               />
             </Grid>

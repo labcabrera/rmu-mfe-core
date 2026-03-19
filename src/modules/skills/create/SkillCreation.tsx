@@ -30,7 +30,7 @@ const SkillCreation: FC = () => {
     <>
       <SkillCreationActions formData={formData} isValid={isValid} />
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid size={{ xs: 12, md: 2 }}>
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
