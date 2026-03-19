@@ -26,7 +26,12 @@ const RealmViewResume: FC<{
           imageUrl={realm.imageUrl || `${imageBaseUrl}images/generic/realm.png`}
           onImageChange={(image) => onImageChange(image)}
         />
-        <Chip size="small" label={t(realm.accessType)} color={realm.accessType === 'public' ? 'success' : 'error'} />
+        <Chip
+          size="small"
+          label={t(realm.accessType)}
+          color={realm.accessType === 'public' ? 'success' : 'error'}
+          sx={{ mt: 2 }}
+        />
       </Grid>
       <Grid size={12}>
         <Typography variant="h6" color="primary" gutterBottom>

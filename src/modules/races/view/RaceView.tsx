@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Chip, Grid, Stack, Typography } from '@mui/material';
+import { Chip, Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
@@ -59,6 +59,12 @@ const RaceView: FC = () => {
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
           <EdditableAvatar imageUrl={race.imageUrl || ''} onImageChange={(avatar) => onUpdateImage(avatar)} />
+          <Chip
+            label={t(race.accessType)}
+            color={race.accessType === 'public' ? 'success' : 'error'}
+            size="small"
+            sx={{ mt: 2 }}
+          />
           <Typography variant="h6" color="primary">
             {t(race.name)}
           </Typography>
@@ -72,11 +78,6 @@ const RaceView: FC = () => {
           </Typography>
         </Grid>
         <Grid size={{ xs: 12, md: 9 }}>
-          <Grid size={12}>
-            <Stack direction="row" spacing={1}>
-              <Chip label={t(race.accessType)} color={race.accessType === 'public' ? 'success' : 'error'} />
-            </Stack>
-          </Grid>
           <CategorySeparator text={t('realm')} />
           <Grid container spacing={1} columns={10}>
             <Grid size={{ xs: 12, md: 2 }}>
