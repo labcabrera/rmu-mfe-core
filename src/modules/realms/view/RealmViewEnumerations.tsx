@@ -5,42 +5,38 @@ import { useError } from '../../../ErrorContext';
 import { fetchEnumerations } from '../../api/enumerations';
 import { Enumeration } from '../../api/enumerations.dto';
 import { Realm } from '../../api/realm.dto';
-import { imageBaseUrl } from '../../services/config';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 
-const RealmViewLanguages: FC<{
+const RealmViewEnumerations: FC<{
   realm: Realm;
-}> = ({ realm }) => {
+  category: string;
+  imageUrl: string;
+}> = ({ realm, category, imageUrl }) => {
   const { showError } = useError();
-  const [languages, setLanguages] = useState<Enumeration[]>([]);
+  const [enumerations, setEnumerations] = useState<Enumeration[]>([]);
 
   useEffect(() => {
     if (realm) {
-      fetchEnumerations(`realmId==${realm.id};category==language`, 0, 100)
-        .then((response) => setLanguages(response.content))
+      fetchEnumerations(`realmId==${realm.id};category==${category}`, 0, 100)
+        .then((response) => setEnumerations(response.content))
         .catch((err) => showError(err.message));
     }
   }, [realm, showError]);
 
   return (
     <Grid container spacing={1}>
-      {languages.map((language) => (
+      {enumerations.map((language) => (
         <Grid size={{ xs: 12, md: 3 }} key={language.id}>
-          <RmuTextCard
-            key={language.id}
-            value={language.key}
-            subtitle={t('language')}
-            image={`${imageBaseUrl}images/generic/language.png`}
-          />
+          <RmuTextCard key={language.id} value={language.key} subtitle={t('language')} image={imageUrl} />
         </Grid>
       ))}
-      {languages.length === 0 && (
+      {enumerations.length === 0 && (
         <Typography variant="body1" color="textSecondary">
-          No languages added
+          Not enumeration defined.
         </Typography>
       )}
     </Grid>
   );
 };
 
-export default RealmViewLanguages;
+export default RealmViewEnumerations;
