@@ -71,7 +71,7 @@ const RaceView: FC = () => {
             {race.description}
           </Typography>
         </Grid>
-        <Grid size={{ xs: 12, md: 10 }}>
+        <Grid size={{ xs: 12, md: 9 }}>
           <Grid size={12}>
             <Stack direction="row" spacing={1}>
               <Chip label={t(race.accessType)} color={race.accessType === 'public' ? 'success' : 'error'} />

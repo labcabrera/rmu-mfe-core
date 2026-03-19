@@ -1,5 +1,6 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Chip, Grid, Typography } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { updateRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
@@ -25,6 +26,7 @@ const RealmViewResume: FC<{
           imageUrl={realm.imageUrl || `${imageBaseUrl}images/generic/realm.png`}
           onImageChange={(image) => onImageChange(image)}
         />
+        <Chip size="small" label={t(realm.accessType)} color={realm.accessType === 'public' ? 'success' : 'error'} />
       </Grid>
       <Grid size={12}>
         <Typography variant="h6" color="primary" gutterBottom>

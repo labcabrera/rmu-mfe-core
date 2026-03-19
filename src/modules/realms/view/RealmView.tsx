@@ -1,28 +1,19 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Chip, Grid, Stack } from '@mui/material';
-import { t } from 'i18next';
+import { useLocation, useParams } from 'react-router-dom';
+import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
-import AddButton from '../../shared/buttons/AddButton';
-import CategorySeparator from '../../shared/display/CategorySeparator';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RealmViewActions from './RealmViewActions';
-import RealmViewLanguages from './RealmViewLanguages';
-import RealmViewRaces from './RealmViewRaces';
 import RealmViewResume from './RealmViewResume';
+import RealmViewTabs from './RealmViewTabs';
 
 const RealmView: FC = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const { showError } = useError();
   const { realmId } = useParams<{ realmId?: string }>();
   const [realm, setRealm] = useState<Realm>();
-
-  const onAddRace = () => {
-    navigate(`/core/races/create?realmId=${realm!.id}`);
-  };
 
   useEffect(() => {
     if (location.state && location.state.realm) {
@@ -43,18 +34,8 @@ const RealmView: FC = () => {
         <Grid size={{ xs: 12, md: 2 }}>
           <RealmViewResume realm={realm} setRealm={setRealm} />
         </Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
-          <Stack direction="row" spacing={1}>
-            <Chip label={t(realm.accessType)} color={realm.accessType === 'public' ? 'success' : 'error'} />
-            <Chip label={`Magic presence: ${t(realm.magicPresence)}`} />
-          </Stack>
-          <CategorySeparator text={t('Realm information')} />
-          <CategorySeparator text={t('Races')}>
-            <AddButton onClick={onAddRace} />
-          </CategorySeparator>
-          <RealmViewRaces realm={realm} />
-          <CategorySeparator text={t('Languages')} />
-          <RealmViewLanguages realm={realm} />
+        <Grid size={{ xs: 12, md: 9 }}>
+          <RealmViewTabs realm={realm} />
           <TechnicalInfo>
             <pre>{JSON.stringify(realm, null, 2)}</pre>
           </TechnicalInfo>
