@@ -5,6 +5,7 @@ import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchProfession } from '../../api/profession';
 import { Profession, UpdateProfessionDto } from '../../api/profession.dto';
+import { gridSizeResume, gridSizeMain } from '../../services/display';
 import EditableAvatar from '../../shared/avatars/EditableAvatar';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import ProfessionForm from '../shared/ProfessionForm';
@@ -41,7 +42,7 @@ const ProfessionEdit: FC = () => {
     <>
       <ProfessionEditActions profession={profession} formData={formData} />
       <Grid container spacing={2} padding={1}>
-        <Grid size={{ xs: 12, md: 2 }}>
+        <Grid size={gridSizeResume}>
           <EditableAvatar
             imageUrl={formData.imageUrl || ''}
             onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
@@ -50,7 +51,7 @@ const ProfessionEdit: FC = () => {
             {t(profession.id)}
           </Typography>
         </Grid>
-        <Grid size={{ xs: 12, md: 8 }} padding={1}>
+        <Grid size={gridSizeMain} padding={1}>
           <ProfessionForm formData={formData} setFormData={setFormData} creationMode={false} />
           <TechnicalInfo>
             <pre>Form: {JSON.stringify(formData, null, 2)}</pre>

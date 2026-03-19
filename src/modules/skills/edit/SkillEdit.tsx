@@ -6,6 +6,7 @@ import { useError } from '../../../ErrorContext';
 import { fetchSkill } from '../../api/skill';
 import { Skill, UpdateSkillDto } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
+import { gridSizeResume, gridSizeMain } from '../../services/display';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import SkillForm from '../shared/SkillForm';
@@ -58,10 +59,10 @@ const SkillEdit: FC = () => {
     <>
       <SkillEditActions skill={skill} formData={formData} isValid={true} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}>
+        <Grid size={gridSizeResume}>
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />
         </Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeMain}>
           <SkillForm formData={formData} setFormData={setFormData} create={false} />
           <TechnicalInfo>
             <pre>Skill: {JSON.stringify(skill, null, 2)}</pre>

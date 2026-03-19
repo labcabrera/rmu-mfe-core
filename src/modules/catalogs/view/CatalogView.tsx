@@ -8,6 +8,7 @@ import { Enumeration } from '../../api/enumerations.dto';
 import { fetchRealms } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
+import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import AddButton from '../../shared/buttons/AddButton';
 import DeleteButton from '../../shared/buttons/DeleteButton';
 import RmuCard from '../../shared/cards/RmuCard';
@@ -66,8 +67,8 @@ const CatalogView: FC = () => {
     <>
       <CatalogViewActions onRefresh={() => bindEnumerations()} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
             <Grid size={12}>
               <CategorySeparator text={t(category)}>
@@ -79,8 +80,8 @@ const CatalogView: FC = () => {
             </Grid>
             <Grid size={12}>
               <Grid container spacing={1}>
-                {enumerations.map((e) => (
-                  <Grid key={e.id} size={{ xs: 12, md: 3 }}>
+                {enumerations.map((e, index) => (
+                  <Grid key={index} size={gridSizeCard}>
                     <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`} size="small">
                       <Stack direction="row" justifyContent="space-between">
                         <Stack direction="column">

@@ -4,6 +4,7 @@ import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { Race, UpdateRaceDto } from '../../api/race.dto';
+import { gridSizeResume, gridSizeMain } from '../../services/display';
 import EditableAvatar from '../../shared/avatars/EditableAvatar';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RaceForm from '../shared/RaceForm';
@@ -38,13 +39,13 @@ const RaceEdit: FC = () => {
     <>
       <RaceEditActions race={race} formData={formData} />
       <Grid container spacing={2} padding={1}>
-        <Grid size={{ xs: 12, md: 2 }}>
+        <Grid size={gridSizeResume}>
           <EditableAvatar
             imageUrl={formData.imageUrl || ''}
             onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
           />
         </Grid>
-        <Grid size={{ xs: 12, md: 8 }} padding={1}>
+        <Grid size={gridSizeMain} padding={1}>
           <RaceForm realmId={race.realm.id} formData={formData} setFormData={setFormData} />
           <TechnicalInfo>
             <pre>Form: {JSON.stringify(formData, null, 2)}</pre>

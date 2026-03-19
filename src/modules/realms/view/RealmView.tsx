@@ -4,6 +4,7 @@ import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
+import { gridSizeResume, gridSizeMain } from '../../services/display';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RealmViewActions from './RealmViewActions';
 import RealmViewResume from './RealmViewResume';
@@ -31,10 +32,10 @@ const RealmView: FC = () => {
     <>
       <RealmViewActions realm={realm} setRealm={setRealm} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}>
+        <Grid size={gridSizeResume}>
           <RealmViewResume realm={realm} setRealm={setRealm} />
         </Grid>
-        <Grid size={{ xs: 12, md: 9 }}>
+        <Grid size={gridSizeMain}>
           <RealmViewTabs realm={realm} />
           <TechnicalInfo>
             <pre>{JSON.stringify(realm, null, 2)}</pre>

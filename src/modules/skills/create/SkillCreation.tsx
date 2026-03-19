@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { CreateSkillDto } from '../../api/skill.dto';
-import { imageBaseUrl } from '../../services/config';
-import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import { gridSizeResume, gridSizeMain } from '../../services/display';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import SkillForm from '../shared/SkillForm';
 import SkillCreationActions from './SkillCreationActions';
 
@@ -30,14 +30,14 @@ const SkillCreation: FC = () => {
     <>
       <SkillCreationActions formData={formData} isValid={isValid} />
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 2 }}>
-          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />
-        </Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <SkillForm formData={formData} setFormData={setFormData} create={true} />
         </Grid>
       </Grid>
-      <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
+      <TechnicalInfo>
+        <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
+      </TechnicalInfo>
     </>
   );
 };

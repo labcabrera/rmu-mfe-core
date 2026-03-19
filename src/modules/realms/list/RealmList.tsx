@@ -6,6 +6,7 @@ import { useError } from '../../../ErrorContext';
 import { fetchRealms } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
+import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import RealmListActions from './RealmListActions';
 
@@ -29,11 +30,11 @@ const RealmList: FC = () => {
     <>
       <RealmListActions setRealms={setRealms} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
             {realms.map((realm) => (
-              <Grid size={{ xs: 12, md: 3 }} key={realm.id}>
+              <Grid size={gridSizeCard} key={realm.id}>
                 <RmuTextCard
                   key={realm.id}
                   value={realm.name}

@@ -5,6 +5,7 @@ import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedTraits } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
+import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import TraitListActions from './TraitListActions';
@@ -44,12 +45,12 @@ const TraitList: FC = () => {
     <>
       <TraitListActions onRefresh={bindTraits} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <TraitListSearch setSearchString={setSearchString} />
           <Grid container spacing={1} mt={1}>
             {traits.map((trait) => (
-              <Grid size={{ xs: 12, md: 3 }} key={trait.id}>
+              <Grid size={gridSizeCard} key={trait.id}>
                 <RmuTextCard
                   value={t(trait.name)}
                   subtitle={

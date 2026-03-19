@@ -4,11 +4,11 @@ import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchTrait } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
+import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import RealmEditActions from './TraitEditActions';
 import TraitEditAttributes from './TraitEditAttributes';
-import TraitEditResume from './TraitEditResume';
 
 const TraitEdit: FC = () => {
   const location = useLocation();
@@ -39,10 +39,10 @@ const TraitEdit: FC = () => {
     <>
       <RealmEditActions trait={trait} formData={formData} />
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 2 }}>
+        <Grid size={gridSizeResume}>
           <GenericAvatar imageUrl={getTraitImage(trait)} />
         </Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeMain}>
           <TraitEditAttributes formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>

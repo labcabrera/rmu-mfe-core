@@ -48,18 +48,14 @@ const ProfessionCreationSkillCosts: FC<{
     const next: Record<string, number[]> = { ...prev };
     const arr = Array.isArray(next[skillKey]) ? [...next[skillKey]] : [];
     if (index === 1) {
-      // If second value cleared (not a number), keep only first element
       if (value === null) {
-        // trim to single element (if exists) or empty
         next[skillKey] = arr.length > 0 ? [arr[0]] : [];
       } else {
         arr[1] = value;
         next[skillKey] = arr;
       }
     } else {
-      // index 0: always keep a numeric value (default to 0)
       arr[0] = value ?? 0;
-      // if there was a second value already keep it as-is
       next[skillKey] = arr;
     }
     setFormData({ ...formData, skillCosts: next as any });
@@ -74,16 +70,15 @@ const ProfessionCreationSkillCosts: FC<{
 
         return (
           <Fragment key={skill}>
-            <Grid size={3}>
+            <Grid size={{ xs: 6, md: 4 }}>
               <Typography variant="body2">{t(skill)}</Typography>
             </Grid>
-            <Grid size={1}>
+            <Grid size={{ xs: 3, md: 1 }}>
               <NumericInput value={v0} onChange={(val) => handleChange(skill, 0, val)} integer />
             </Grid>
-            <Grid size={1}>
+            <Grid size={{ xs: 3, md: 1 }}>
               <NumericInput value={v1} onChange={(val) => handleChange(skill, 1, val)} integer />
             </Grid>
-            <Grid size={1}></Grid>
           </Fragment>
         );
       })}

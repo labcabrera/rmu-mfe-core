@@ -5,6 +5,7 @@ import { useError } from '../../../ErrorContext';
 import { fetchRealm } from '../../api/realm';
 import { Realm, UpdateRealmDto } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
+import { gridSizeResume, gridSizeMain } from '../../services/display';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RealmForm from '../shared/RealmForm';
@@ -40,11 +41,11 @@ const RealmEdit: FC = () => {
   return (
     <>
       <RealmEditActions realm={realm} formData={formData} />
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 2 }}>
+      <Grid container spacing={1}>
+        <Grid size={gridSizeResume}>
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/realm.png`} />
         </Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeMain}>
           <RealmForm formData={formData} setFormData={setFormData} />
           <TechnicalInfo>
             <pre>{JSON.stringify(formData, null, 2)}</pre>

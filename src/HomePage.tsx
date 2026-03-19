@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { imageBaseUrl } from './modules/services/config';
+import { gridSizeResume, gridSizeMain, gridSizeCard } from './modules/services/display';
 import RmuBreadcrumbs from './modules/shared/breadcrumbs/RmuBreadcrumbs';
 import RmuTextCard from './modules/shared/cards/RmuTextCard';
 
@@ -62,11 +63,11 @@ const HomePage: FC = () => {
     <>
       <RmuBreadcrumbs items={[{ name: 'Core' }]} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
             {cards.map((c) => (
-              <Grid size={{ xs: 12, md: 3 }} key={c.value}>
+              <Grid size={gridSizeCard} key={c.value}>
                 <RmuTextCard value={c.value} subtitle={c.subtitle} image={c.image} onClick={() => navigate(c.to)} />
               </Grid>
             ))}

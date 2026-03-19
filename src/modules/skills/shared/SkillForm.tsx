@@ -7,7 +7,6 @@ import { STATISTICS } from '../../api/common.dto';
 import { fetchSkillCategories } from '../../api/skill-category';
 import { SkillCategory } from '../../api/skill-category.dto';
 import { CreateSkillDto, UpdateSkillDto } from '../../api/skill.dto';
-import CategorySeparator from '../../shared/display/CategorySeparator';
 import SelectAccessType from '../../shared/selects/SelectAccessType';
 import SelectSkillCategory from '../../shared/selects/SelectSkillCategory';
 import SelectSkillSpecialization from '../../shared/selects/SelectSkillSpecialization';
@@ -30,7 +29,6 @@ const SkillForm: FC<{
 
   return (
     <>
-      <CategorySeparator text={t('skill-information')} />
       <Grid container spacing={1}>
         <Grid size={12}>
           <SelectAccessType

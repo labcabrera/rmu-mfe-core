@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Box, Tabs, Tab, Grid } from '@mui/material';
 import { t } from 'i18next';
+import { gridSizeResume, gridSizeMain } from '../services/display';
 import AbsoluteManeuverView from './AbsoluteManeuverView';
 import EnduranceManeuverView from './EnduranceManeuverView';
 import ManeuversActions from './ManeuversActions';
@@ -46,8 +47,8 @@ const ManeuversView: FC = () => {
     <>
       <ManeuversActions />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
               <Tab label={t('absolute')} {...a11yProps(0)} />

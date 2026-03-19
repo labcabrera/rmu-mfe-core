@@ -5,6 +5,7 @@ import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedProfessions } from '../../api/profession';
 import { Profession } from '../../api/profession.dto';
+import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import ProfessionListActions from './ProfessionListActions';
 import ProfessionListSearch from './ProfessionListSearch';
@@ -46,14 +47,14 @@ const ProfessionList: FC = () => {
     <>
       <ProfessionListActions onRefresh={bindProfessions} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
             <Grid size={12}>
               <ProfessionListSearch setQueryString={setQueryString} />
             </Grid>
             {professions.map((profession) => (
-              <Grid size={{ xs: 12, md: 3 }} key={profession.id}>
+              <Grid size={gridSizeCard} key={profession.id}>
                 <RmuTextCard
                   value={t(profession.id)}
                   subtitle={t('Profession')}

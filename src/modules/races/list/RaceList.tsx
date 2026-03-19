@@ -6,6 +6,7 @@ import { fetchPagedRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { fetchRealms } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
+import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import RaceListActions from './RaceListActions';
 import RaceListSearch from './RaceListSearch';
@@ -54,14 +55,14 @@ const RaceList: FC = () => {
     <>
       <RaceListActions onRefresh={bindRealms} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
             <Grid size={12}>
               <RaceListSearch setQueryString={setQueryString} realms={realms} />
             </Grid>
             {races.map((race) => (
-              <Grid size={{ xs: 12, md: 3 }} key={race.id}>
+              <Grid size={gridSizeCard} key={race.id}>
                 <RmuTextCard
                   value={race.name}
                   subtitle={race.realm.name}

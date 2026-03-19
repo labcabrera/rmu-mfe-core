@@ -17,17 +17,12 @@ const TraitCreationActions: FC<{
 
   const handleSave = async () => {
     createTrait(formData)
-      .then((trait) => {
-        navigate(`/core/traits/view/${trait.id}`);
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError('Unknown error occurred');
-      });
+      .then((trait) => navigate(`/core/traits/view/${trait.id}`))
+      .catch((err) => showError(err.message));
   };
 
   const handleBack = () => {
-    navigate(`/core/realms`);
+    navigate(`/core/traits`);
   };
 
   return (

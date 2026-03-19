@@ -5,8 +5,7 @@ import { useError } from '../../../ErrorContext';
 import { fetchSkills } from '../../api/skill';
 import { fetchSkillCategory } from '../../api/skill-category';
 import { Skill } from '../../api/skill.dto';
-import { imageBaseUrl } from '../../services/config';
-import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import { gridSizeResume, gridSizeMain } from '../../services/display';
 import SkillCategoryViewActions from './SkillCategoryViewActions';
 import SkillCategoryViewInfo from './SkillCategoryViewInfo';
 import SkillCategoryViewSkills from './SkillCategoryViewSkills';
@@ -49,10 +48,8 @@ const SkillCategoryView: FC = () => {
     <>
       <SkillCategoryViewActions skill={skillCategory} onRefresh={bindSkillCategory} />
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 2 }}>
-          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />
-        </Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <SkillCategoryViewInfo skillCategory={skillCategory} />
           <SkillCategoryViewSkills skills={skills} />
         </Grid>

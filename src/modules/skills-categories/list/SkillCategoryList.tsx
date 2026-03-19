@@ -6,6 +6,7 @@ import { useError } from '../../../ErrorContext';
 import { fetchPagedSkillCategories } from '../../api/skill-category';
 import { SkillCategory } from '../../api/skill-category.dto';
 import { imageBaseUrl } from '../../services/config';
+import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import SkillCategoryListActions from './SkillCategoryListActions';
 import SkillCategoryListSearch from './SkillCategoryListSearch';
@@ -43,14 +44,14 @@ const SkillCategoryList: FC = () => {
     <>
       <SkillCategoryListActions onRefresh={() => bindSkillCategories()} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
             <Grid size={12}>
               <SkillCategoryListSearch setQueryString={setQueryString} />
             </Grid>
             {skillCategories.map((category) => (
-              <Grid size={{ xs: 12, md: 3 }} key={category.id}>
+              <Grid size={gridSizeCard} key={category.id}>
                 <RmuTextCard
                   value={t(category.id)}
                   subtitle={t('Skill category')}

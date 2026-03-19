@@ -8,6 +8,7 @@ import { fetchSkillCategories } from '../../api/skill-category';
 import { SkillCategory } from '../../api/skill-category.dto';
 import { Skill } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
+import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import SkillListActions from './SkillListActions';
 import SkillListSearch from './SkillListSearch';
@@ -53,14 +54,14 @@ const SkillList: FC = () => {
     <>
       <SkillListActions />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
             <Grid size={12}>
               <SkillListSearch setQueryString={setQueryString} categories={skillCategories} />
             </Grid>
             {skills.map((skill) => (
-              <Grid size={{ xs: 12, md: 3 }} key={skill.id}>
+              <Grid size={gridSizeCard} key={skill.id}>
                 <RmuTextCard
                   value={`${t(skill.id)}${skill.specialization ? ' *' : ''}`}
                   subtitle={t(skill.categoryId)}
