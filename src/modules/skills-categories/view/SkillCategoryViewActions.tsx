@@ -7,13 +7,13 @@ const SkillCategoryViewActions: FC<{
   skill: Skill;
 }> = ({ skill }) => {
   const breadcrumbs = [
-    { name: t('core'), link: '/core' },
-    { name: t('skill-categories'), link: '/core/skill-categories' },
+    { name: t('Core'), link: '/core' },
+    { name: t('Skill categories'), link: '/core/skill-categories' },
   ];
 
   if (!skill) return <p>Loading...</p>;
 
-  return <RmuBreadcrumbs items={breadcrumbs} maxNameLength={30}></RmuBreadcrumbs>;
+  return <RmuBreadcrumbs items={breadcrumbs}></RmuBreadcrumbs>;
 };
 
 export default SkillCategoryViewActions;

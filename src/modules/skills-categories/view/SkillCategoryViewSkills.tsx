@@ -25,7 +25,7 @@ const SkillCategoryViewSkills: FC<{
             {skills.map((skill) => (
               <Grid size={{ xs: 12, md: 3 }} key={skill.id}>
                 <RmuTextCard
-                  value={t(skill.id)}
+                  value={`${t(skill.id)}${skill.specialization ? ' *' : ''}`}
                   subtitle={t('skill')}
                   onClick={() => navigate(`/core/skills/view/${skill.id}`, { state: { skill } })}
                 />
