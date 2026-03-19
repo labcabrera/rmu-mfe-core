@@ -7,10 +7,6 @@ import HomePage from './HomePage';
 import './i18n';
 import CatalogList from './modules/catalogs/list/CatalogList';
 import CatalogView from './modules/catalogs/view/CatalogView';
-import LanguageCreation from './modules/languages/create/LanguageCreation';
-import LanguageEdit from './modules/languages/edit/LanguageEdit';
-import LanguageList from './modules/languages/list/LanguageList';
-import LanguageView from './modules/languages/view/LanguageView';
 import ManeuversView from './modules/maneuvers/ManeuversView';
 import ProfessionCreation from './modules/professions/create/ProfessionCreation';
 import ProfessionEdit from './modules/professions/edit/ProfessionEdit';
@@ -65,10 +61,6 @@ const App = () => {
             <Route path="/traits/view/:traitId" element={<TraitView />} />
             <Route path="/traits/create" element={<TraitCreation />} />
             <Route path="/traits/edit/:traitId" element={<TraitEdit />} />
-            <Route path="/languages" element={<LanguageList />} />
-            <Route path="/languages/create" element={<LanguageCreation />} />
-            <Route path="/languages/view/:languageId" element={<LanguageView />} />
-            <Route path="/languages/edit/:languageId" element={<LanguageEdit />} />
             <Route path="/maneuvers" element={<ManeuversView />} />
             <Route path="/skills" element={<SkillList />} />
             <Route path="/skills/view/:skillId" element={<SkillView />} />

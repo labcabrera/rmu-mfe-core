@@ -43,9 +43,9 @@ export const raceCreateTemplate = {
   baseHits: 0,
   baseDevPoints: 60,
   baseAt: 1,
-  defaultLanguageId: undefined,
   talents: [],
   traits: [],
+  defaultLanguage: null,
   description: '',
   imageUrl: `${imageBaseUrl}images/races/unknown.png`,
 } as CreateRaceDto;
@@ -66,7 +66,7 @@ export type Race = {
   baseHits: number;
   baseDevPoints: number;
   baseAt: number;
-  defaultLanguage: NamedEntity | undefined;
+  defaultLanguage: string | null;
   talents: string[];
   traits: RaceTrait[];
   description: string | undefined;
@@ -129,9 +129,9 @@ export type CreateRaceDto = {
   baseHits: number;
   baseDevPoints: number;
   baseAt: number;
-  defaultLanguageId: string | undefined;
   talents: string[];
   traits: RaceTrait[];
+  defaultLanguage: string | undefined;
   description: string | undefined;
   imageUrl: string | undefined;
 };
@@ -151,9 +151,9 @@ export type UpdateRaceDto = {
   baseHits: number | undefined;
   baseDevPoints: number | undefined;
   baseAt: number | undefined;
-  defaultLanguageId: string | undefined;
   talents: string[] | undefined;
   traits: RaceTrait[] | undefined;
+  defaultLanguage: string | undefined;
   description: string | undefined;
   imageUrl: string | undefined;
 };

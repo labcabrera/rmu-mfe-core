@@ -1,19 +1,30 @@
-import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
+import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { Grid, TextField } from '@mui/material';
 import { t } from 'i18next';
+import { useError } from '../../../ErrorContext';
+import { fetchEnumerations } from '../../api/enumerations';
 import { CreateRaceDto, UpdateRaceDto } from '../../api/race.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
-import SelectRaceArchetype from '../../shared/selects/SelectRaceArchetype';
+import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
 
 const RaceFormAttributes: FC<{
   formData: CreateRaceDto | UpdateRaceDto;
   setFormData: Dispatch<SetStateAction<CreateRaceDto | UpdateRaceDto | undefined>>;
 }> = ({ formData, setFormData }) => {
+  const { showError } = useError();
+  const [archetypes, setArchetypes] = useState<SelectOption[]>([]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  useEffect(() => {
+    fetchEnumerations('category==race-archetype', 0, 100)
+      .then((response) => setArchetypes(response.content.map((e) => ({ value: e.key, description: e.key }))))
+      .catch((err) => showError(err.message));
+  }, []);
 
   return (
     <Grid container spacing={1} columns={10}>
@@ -29,11 +40,12 @@ const RaceFormAttributes: FC<{
         />
       </Grid>
       <Grid size={12}>
-        <SelectRaceArchetype
-          label={t('race-archetype')}
-          name="archetype"
+        <RmuSelect
+          label={t('Archetype')}
           value={formData.archetype}
-          onChange={(e) => setFormData({ ...formData, archetype: e.target.value })}
+          options={archetypes}
+          onChange={(e) => setFormData({ ...formData, archetype: e })}
+          required
         />
       </Grid>
       <Grid size={{ xs: 12, md: 2 }}>

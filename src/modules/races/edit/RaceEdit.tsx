@@ -45,7 +45,7 @@ const RaceEdit: FC = () => {
           />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }} padding={1}>
-          <RaceForm formData={formData} setFormData={setFormData} />
+          <RaceForm realmId={race.realm.id} formData={formData} setFormData={setFormData} />
           <TechnicalInfo>
             <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

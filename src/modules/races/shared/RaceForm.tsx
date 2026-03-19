@@ -9,9 +9,10 @@ import RaceFormResistances from './RaceFormResistances';
 import RaceFormStats from './RaceFormStats';
 
 const RaceForm: FC<{
+  realmId: string;
   formData: CreateRaceDto | UpdateRaceDto;
   setFormData: Dispatch<SetStateAction<CreateRaceDto | UpdateRaceDto | undefined>>;
-}> = ({ formData, setFormData }) => {
+}> = ({ realmId, formData, setFormData }) => {
   return (
     <Grid container spacing={1}>
       <Grid size={{ xs: 12, md: 12 }}>
@@ -21,7 +22,7 @@ const RaceForm: FC<{
         <CharacterSeparator text={t('resistances')} />
         <RaceFormResistances formData={formData} setFormData={setFormData} />
         <CharacterSeparator text={t('lore')} />
-        <RaceFormLore formData={formData} setFormData={setFormData} />
+        <RaceFormLore realmId={realmId} formData={formData} setFormData={setFormData} />
       </Grid>
     </Grid>
   );

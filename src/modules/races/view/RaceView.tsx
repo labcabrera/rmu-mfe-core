@@ -71,7 +71,7 @@ const RaceView: FC = () => {
             {race.description}
           </Typography>
         </Grid>
-        <Grid size={{ xs: 12, md: 8 }} padding={1}>
+        <Grid size={{ xs: 12, md: 10 }}>
           <Grid size={12}>
             <Stack direction="row" spacing={1}>
               <Chip label={t(race.accessType)} color={race.accessType === 'public' ? 'success' : 'error'} />
@@ -105,10 +105,9 @@ const RaceView: FC = () => {
                 <Grid container spacing={1} columns={10}>
                   <Grid size={{ xs: 12, md: 2 }}>
                     <RmuTextCard
-                      value={race.defaultLanguage?.name || 'Undefined'}
+                      value={race.defaultLanguage || 'Undefined'}
                       subtitle={t('default-language')}
                       image={`${imageBaseUrl}images/generic/language.png`}
-                      onClick={() => navigate(`/core/languages/view/${race.defaultLanguage?.id}`)}
                     />
                   </Grid>
                 </Grid>

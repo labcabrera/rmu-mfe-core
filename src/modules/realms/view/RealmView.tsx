@@ -24,10 +24,6 @@ const RealmView: FC = () => {
     navigate(`/core/races/create?realmId=${realm!.id}`);
   };
 
-  const onAddLanguage = () => {
-    navigate(`/core/languages/create?realmId=${realm!.id}`);
-  };
-
   useEffect(() => {
     if (location.state && location.state.realm) {
       setRealm(location.state.realm);
@@ -57,9 +53,7 @@ const RealmView: FC = () => {
             <AddButton onClick={onAddRace} />
           </CategorySeparator>
           <RealmViewRaces realm={realm} />
-          <CategorySeparator text={t('Languages')}>
-            <AddButton onClick={onAddLanguage} />
-          </CategorySeparator>
+          <CategorySeparator text={t('Languages')} />
           <RealmViewLanguages realm={realm} />
           <TechnicalInfo>
             <pre>{JSON.stringify(realm, null, 2)}</pre>

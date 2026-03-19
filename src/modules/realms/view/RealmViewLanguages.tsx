@@ -1,10 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { Language } from '../../api/language.dto';
-import { fetchLanguages } from '../../api/languages';
+import { fetchEnumerations } from '../../api/enumerations';
+import { Enumeration } from '../../api/enumerations.dto';
 import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
@@ -12,14 +11,13 @@ import RmuTextCard from '../../shared/cards/RmuTextCard';
 const RealmViewLanguages: FC<{
   realm: Realm;
 }> = ({ realm }) => {
-  const navigate = useNavigate();
   const { showError } = useError();
-  const [languages, setLanguages] = useState<Language[]>([]);
+  const [languages, setLanguages] = useState<Enumeration[]>([]);
 
   useEffect(() => {
     if (realm) {
-      fetchLanguages(`realm.id==${realm.id}`, 0, 100)
-        .then((response) => setLanguages(response))
+      fetchEnumerations(`realmId==${realm.id};category==language`, 0, 100)
+        .then((response) => setLanguages(response.content))
         .catch((err) => showError(err.message));
     }
   }, [realm, showError]);
@@ -30,10 +28,9 @@ const RealmViewLanguages: FC<{
         <Grid size={{ xs: 12, md: 3 }} key={language.id}>
           <RmuTextCard
             key={language.id}
-            value={language.name}
+            value={language.key}
             subtitle={t('language')}
             image={`${imageBaseUrl}images/generic/language.png`}
-            onClick={() => navigate(`/core/languages/view/${language.id}`, { state: { language: language } })}
           />
         </Grid>
       ))}

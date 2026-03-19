@@ -2,35 +2,37 @@ import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { Grid, TextField } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { Language } from '../../api/language.dto';
-import { fetchLanguages } from '../../api/languages';
+import { fetchEnumerations } from '../../api/enumerations';
 import { CreateRaceDto, UpdateRaceDto } from '../../api/race.dto';
-import SelectLanguage from '../../shared/selects/SelectLanguage';
+import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 
 const RaceFormLore: FC<{
+  realmId: string;
   formData: CreateRaceDto | UpdateRaceDto;
   setFormData: Dispatch<SetStateAction<CreateRaceDto | UpdateRaceDto | undefined>>;
-}> = ({ formData, setFormData }) => {
+}> = ({ realmId, formData, setFormData }) => {
   const { showError } = useError();
-  const [languages, setLanguages] = React.useState<Language[]>([]);
+  const [languages, setLanguages] = React.useState<SelectOption[]>([]);
 
   useEffect(() => {
-    if (formData.realmId) {
-      fetchLanguages(`realm.id==${formData.realmId}`, 0, 100)
-        .then((data) => setLanguages(data))
-        .catch((err: Error) => showError(err.message));
+    if (realmId) {
+      fetchEnumerations(`realmId==${realmId};category==language`, 0, 100)
+        .then((data) => {
+          const mapped = data.content.map((e) => ({ value: e.key, description: e.key }));
+          setLanguages(mapped);
+        })
+        .catch((err) => showError(err.message));
     }
-  }, [formData.realmId]);
+  }, [realmId]);
 
   return (
     <Grid container spacing={1} columns={10}>
       <Grid size={12}>
-        <SelectLanguage
-          label={t('default-language')}
-          value={formData.defaultLanguageId}
-          name="default-language"
-          onChange={(lang) => setFormData({ ...formData, defaultLanguageId: lang ? lang.id : undefined })}
-          languages={languages}
+        <RmuSelect
+          label={t('Language')}
+          value={formData.defaultLanguage}
+          options={languages}
+          onChange={(e) => setFormData({ ...formData, defaultLanguage: e })}
         />
       </Grid>
       <Grid size={12}>

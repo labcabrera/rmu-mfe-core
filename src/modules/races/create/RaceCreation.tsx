@@ -55,7 +55,7 @@ const RaceCreation: FC = () => {
           />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <RaceForm formData={formData} setFormData={setFormData} />
+          <RaceForm realmId={realm.id} formData={formData} setFormData={setFormData} />
           <TechnicalInfo>
             <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>
