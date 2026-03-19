@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react';
-import AddIcon from '@mui/icons-material/Add';
-import { Tabs, Tab, Box, IconButton, Stack, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Tabs, Tab, Box } from '@mui/material';
 import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
+import AddButton from '../../shared/buttons/AddButton';
 import RealmViewEnumerations from './RealmViewEnumerations';
 import RealmViewRaces from './RealmViewRaces';
 
@@ -12,21 +13,27 @@ type RealmViewTabsProps = {
 };
 
 const RealmViewTabs: FC<RealmViewTabsProps> = ({ realm, initialTab = 0 }) => {
+  const navigate = useNavigate();
   const [value, setValue] = useState<number>(initialTab);
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
+  const onAddRace = () => {
+    navigate(`/core/races/create?realmId=${realm!.id}`);
+  };
+
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', alignItems: 'center' }}>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="Realm view tabs"
           variant="scrollable"
           scrollButtons="auto"
+          sx={{ flex: 1 }}
         >
           <Tab label="Races" />
           <Tab label="Languages" />
@@ -34,6 +41,10 @@ const RealmViewTabs: FC<RealmViewTabsProps> = ({ realm, initialTab = 0 }) => {
           <Tab label="Religions" />
           <Tab label="Historic" />
         </Tabs>
+
+        <Box sx={{ ml: 2, display: value === 0 ? 'block' : 'none' }}>
+          <AddButton onClick={onAddRace} />
+        </Box>
       </Box>
 
       <Box role="tabpanel" hidden={value !== 0} sx={{ p: 2 }}>

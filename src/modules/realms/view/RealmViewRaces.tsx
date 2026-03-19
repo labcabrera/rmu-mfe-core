@@ -6,9 +6,7 @@ import { useError } from '../../../ErrorContext';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { Realm } from '../../api/realm.dto';
-import AddButton from '../../shared/buttons/AddButton';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
-import CategorySeparator from '../../shared/display/CategorySeparator';
 
 const RealmViewRaces: FC<{
   realm: Realm;
@@ -27,11 +25,6 @@ const RealmViewRaces: FC<{
 
   return (
     <Grid container spacing={1}>
-      <Grid size={12}>
-        <CategorySeparator text={t('Races')}>
-          <AddButton onClick={() => navigate(`/core/races/create?realmId=${realm!.id}`)} />
-        </CategorySeparator>
-      </Grid>
       {races.map((race) => (
         <Grid size={{ xs: 12, md: 3 }} key={race.id}>
           <RmuTextCard
