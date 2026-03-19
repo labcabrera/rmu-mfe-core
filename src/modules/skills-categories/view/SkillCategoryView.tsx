@@ -18,16 +18,17 @@ const SkillCategoryView: FC = () => {
   const [skillCategory, setSkillCategory] = useState<Skill | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
 
+  const bindSkillCategory = () => {
+    fetchSkillCategory(skillCategoryId!)
+      .then((response) => setSkillCategory(response))
+      .catch((err) => showError(err.message));
+  };
+
   useEffect(() => {
     if (location.state && location.state.skillCategory) {
       setSkillCategory(location.state.skillCategory);
     } else if (skillCategoryId) {
-      fetchSkillCategory(skillCategoryId)
-        .then((response) => setSkillCategory(response))
-        .catch((err: unknown) => {
-          if (err instanceof Error) showError(err.message);
-          else showError(String(err));
-        });
+      bindSkillCategory();
     }
   }, [location.state, skillCategoryId, showError]);
 
@@ -46,7 +47,7 @@ const SkillCategoryView: FC = () => {
 
   return (
     <>
-      <SkillCategoryViewActions skill={skillCategory} />
+      <SkillCategoryViewActions skill={skillCategory} onRefresh={bindSkillCategory} />
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 2 }}>
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />

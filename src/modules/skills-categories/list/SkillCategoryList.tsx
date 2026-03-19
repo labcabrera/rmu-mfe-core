@@ -41,7 +41,7 @@ const SkillCategoryList: FC = () => {
 
   return (
     <>
-      <SkillCategoryListActions setQueryString={setQueryString} />
+      <SkillCategoryListActions onRefresh={() => bindSkillCategories()} />
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}></Grid>
         <Grid size={{ xs: 12, md: 8 }}>
