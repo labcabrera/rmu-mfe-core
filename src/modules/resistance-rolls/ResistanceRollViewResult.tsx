@@ -13,7 +13,7 @@ const ResistanceRollViewResult: FC<{
       <Paper sx={{ p: 1 }}>
         <Grid container spacing={1}>
           <Grid size={12}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom color={result.failure > 0 ? 'error' : 'success'}>
               {t(result.result)}
             </Typography>
             <Typography variant="body1" gutterBottom>
@@ -24,13 +24,12 @@ const ResistanceRollViewResult: FC<{
             </Typography>
           </Grid>
           <Grid size={12}>
-            <Stack direction="row" spacing={1}>
+            <Stack spacing={1} direction={{ xs: 'column', sm: 'row' }}>
               {result.modifiers.map((e, index) => (
                 <Chip key={index} label={`${e.key}: ${e.value}`} color={e.value < 0 ? 'error' : 'success'} />
               ))}
             </Stack>
           </Grid>
-          <pre>{JSON.stringify(result, null, 2)}</pre>
         </Grid>
       </Paper>
     </>

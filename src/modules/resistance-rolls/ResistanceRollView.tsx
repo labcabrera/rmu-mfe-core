@@ -39,7 +39,7 @@ const ResistanceRollView: FC = () => {
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
-            <Grid size={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <ResistanceRollViewForm
                 formData={formData}
                 setFormData={setFormData}
@@ -47,7 +47,7 @@ const ResistanceRollView: FC = () => {
                 isValid={isValid}
               />
             </Grid>
-            <Grid size={8}>
+            <Grid size={{ xs: 12, md: 8 }}>
               <ResistanceRollViewResult result={result} />
             </Grid>
           </Grid>
