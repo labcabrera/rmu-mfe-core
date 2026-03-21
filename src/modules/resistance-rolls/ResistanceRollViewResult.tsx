@@ -26,7 +26,7 @@ const ResistanceRollViewResult: FC<{
           <Grid size={12}>
             <Stack spacing={1} direction={{ xs: 'column', sm: 'row' }}>
               {result.modifiers.map((e, index) => (
-                <Chip key={index} label={`${e.key}: ${e.value}`} color={e.value < 0 ? 'error' : 'success'} />
+                <Chip key={index} label={`${t(e.key)}: ${e.value}`} color={e.value < 0 ? 'error' : 'success'} />
               ))}
             </Stack>
           </Grid>

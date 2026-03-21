@@ -5,6 +5,7 @@ import { resistanceRoll } from '../api/resistance-roll';
 import { emptyResistanceRollQuery, ResistanceRollQuery, ResistanceRollResult } from '../api/resistance-roll.dto';
 import { gridSizeResume, gridSizeMain } from '../services/display';
 import { openEndedRoll } from '../services/random-service';
+import TechnicalInfo from '../shared/display/TechnicalInfo';
 import ResistanceRollViewForm from './ResistanceRollViewForm';
 import ResistanceRollViewResult from './ResistanceRollViewResult';
 
@@ -47,9 +48,14 @@ const ResistanceRollView: FC = () => {
             <Grid size={{ xs: 12, md: 8 }}>
               <ResistanceRollViewResult result={result} />
             </Grid>
+            <Grid size={12}>
+              <TechnicalInfo>
+                <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
+                <pre>Result: {JSON.stringify(result, null, 2)}</pre>
+              </TechnicalInfo>
+            </Grid>
           </Grid>
         </Grid>
-        <pre>{JSON.stringify(formData, null, 2)}</pre>
       </Grid>
     </>
   );
