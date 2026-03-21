@@ -4,6 +4,7 @@ import { useError } from '../../ErrorContext';
 import { resistanceRoll } from '../api/resistance-roll';
 import { ResistanceRollQuery, ResistanceRollResult } from '../api/resistance-roll.dto';
 import { gridSizeResume, gridSizeMain } from '../services/display';
+import { openEndedRoll } from '../services/random-service';
 import ResistanceRollViewForm from './ResistanceRollViewForm';
 import ResistanceRollViewResult from './ResistanceRollViewResult';
 
@@ -13,10 +14,13 @@ const ResistanceRollView: FC = () => {
     attackLevel: null,
     targetLevel: null,
     roll: null,
-    modifiers: [],
+    modifiers: [{ key: 'other', value: 0 }],
   } as ResistanceRollQuery);
   const [result, setResult] = useState<ResistanceRollResult>();
-  const [isValid, setIsValid] = useState<boolean>(false);
+
+  const onRandom = () => {
+    setFormData({ ...formData, roll: openEndedRoll() });
+  };
 
   const onSubmit = () => {
     resistanceRoll(formData)
@@ -30,7 +34,10 @@ const ResistanceRollView: FC = () => {
   };
 
   useEffect(() => {
-    setIsValid(isValidForm());
+    const isValid = isValidForm();
+    if (isValid) {
+      onSubmit();
+    }
   }, [formData]);
 
   return (
@@ -40,12 +47,7 @@ const ResistanceRollView: FC = () => {
         <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
             <Grid size={{ xs: 12, md: 4 }}>
-              <ResistanceRollViewForm
-                formData={formData}
-                setFormData={setFormData}
-                onSubmit={onSubmit}
-                isValid={isValid}
-              />
+              <ResistanceRollViewForm formData={formData} setFormData={setFormData} onRandom={onRandom} />
             </Grid>
             <Grid size={{ xs: 12, md: 8 }}>
               <ResistanceRollViewResult result={result} />

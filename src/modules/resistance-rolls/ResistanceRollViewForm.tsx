@@ -2,19 +2,13 @@ import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Grid, Button, Stack } from '@mui/material';
 import { t } from 'i18next';
 import { ResistanceRollQuery } from '../api/resistance-roll.dto';
-import { openEndedRoll } from '../services/random-service';
 import { NumericInput } from '../shared/inputs/NumericInput';
 
 const ResistanceRollViewForm: FC<{
   formData: ResistanceRollQuery;
   setFormData: Dispatch<SetStateAction<ResistanceRollQuery>>;
-  onSubmit: () => void;
-  isValid: boolean;
-}> = ({ formData, setFormData, onSubmit, isValid }) => {
-  const onRandom = () => {
-    setFormData({ ...formData, roll: openEndedRoll() });
-  };
-
+  onRandom: () => void;
+}> = ({ formData, setFormData, onRandom }) => {
   return (
     <>
       <Grid container spacing={1}>
@@ -40,6 +34,16 @@ const ResistanceRollViewForm: FC<{
         </Grid>
         <Grid size={12}>
           <NumericInput
+            label={t('Other modifiers')}
+            value={formData.modifiers![0].value}
+            onChange={(value) => setFormData({ ...formData, modifiers: [{ key: 'other', value: value || 0 }] })}
+            integer
+            min={0}
+            max={1000}
+          />
+        </Grid>
+        <Grid size={12}>
+          <NumericInput
             label={t('Roll')}
             value={formData.roll}
             onChange={(value) => setFormData({ ...formData, roll: value || 0 })}
@@ -52,9 +56,6 @@ const ResistanceRollViewForm: FC<{
           <Stack spacing={1} direction="row">
             <Button variant="contained" color="primary" onClick={onRandom}>
               {t('Random')}
-            </Button>
-            <Button variant="contained" color="primary" onClick={onSubmit} disabled={!isValid}>
-              {t('Calculate')}
             </Button>
           </Stack>
         </Grid>
