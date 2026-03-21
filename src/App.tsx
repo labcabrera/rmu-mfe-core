@@ -20,6 +20,7 @@ import RealmCreation from './modules/realms/create/RealmCreation';
 import RealmEdit from './modules/realms/edit/RealmEdit';
 import RealmList from './modules/realms/list/RealmList';
 import RealmView from './modules/realms/view/RealmView';
+import ResistanceRollView from './modules/resistance-rolls/ResistanceRollView';
 import SkillCategoryList from './modules/skills-categories/list/SkillCategoryList';
 import SkillCategoryView from './modules/skills-categories/view/SkillCategoryView';
 import SkillCreation from './modules/skills/create/SkillCreation';
@@ -61,7 +62,6 @@ const App = () => {
             <Route path="/traits/view/:traitId" element={<TraitView />} />
             <Route path="/traits/create" element={<TraitCreation />} />
             <Route path="/traits/edit/:traitId" element={<TraitEdit />} />
-            <Route path="/maneuvers" element={<ManeuversView />} />
             <Route path="/skills" element={<SkillList />} />
             <Route path="/skills/view/:skillId" element={<SkillView />} />
             <Route path="/skills/edit/:skillId" element={<SkillEdit />} />
@@ -70,6 +70,8 @@ const App = () => {
             <Route path="/skill-categories/view/:skillCategoryId" element={<SkillCategoryView />} />
             <Route path="/catalogs" element={<CatalogList />} />
             <Route path="/catalogs/view/:category" element={<CatalogView />} />
+            <Route path="/maneuvers" element={<ManeuversView />} />
+            <Route path="/resistance-rolls" element={<ResistanceRollView />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>

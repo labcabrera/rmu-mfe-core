@@ -110,7 +110,7 @@ const CatalogView: FC = () => {
         realms={realms}
         open={addDialogOpen}
         onClose={() => setAddDialogOpen(false)}
-        onAdd={() => bindEnumerations(category)}
+        onAdd={() => bindEnumerations()}
       />
     </>
   );

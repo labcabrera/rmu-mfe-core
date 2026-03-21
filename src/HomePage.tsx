@@ -46,16 +46,22 @@ const HomePage: FC = () => {
       to: '/core/traits',
     },
     {
+      value: 'Catalogs',
+      subtitle: 'Manage catalogs',
+      image: `${imageBaseUrl}images/generic/language.png`,
+      to: '/core/catalogs',
+    },
+    {
       value: 'Maneuvers',
       subtitle: 'Maneuvers',
       image: `${imageBaseUrl}images/generic/configuration.png`,
       to: '/core/maneuvers',
     },
     {
-      value: 'Catalogs',
-      subtitle: 'Manage catalogs',
-      image: `${imageBaseUrl}images/generic/language.png`,
-      to: '/core/catalogs',
+      value: 'Resistance rolls',
+      subtitle: 'Resistance rolls',
+      image: `${imageBaseUrl}images/generic/configuration.png`,
+      to: '/core/resistance-rolls',
     },
   ];
 
