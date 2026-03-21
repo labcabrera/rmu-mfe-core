@@ -35,13 +35,13 @@ const RealmList: FC = () => {
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
-            {categories.map((realm, index) => (
+            {categories.map((category, index) => (
               <Grid size={gridSizeCard} key={index}>
                 <RmuTextCard
-                  value={realm}
+                  value={t(category)}
                   subtitle={t('Category')}
                   image={`${imageBaseUrl}images/generic/configuration.png`}
-                  onClick={() => handleRealmClick(realm)}
+                  onClick={() => handleRealmClick(category)}
                 />
               </Grid>
             ))}

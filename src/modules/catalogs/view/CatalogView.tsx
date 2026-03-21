@@ -85,7 +85,7 @@ const CatalogView: FC = () => {
                     <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`} size="small">
                       <Stack direction="row" justifyContent="space-between">
                         <Stack direction="column">
-                          <Typography>{e.key}</Typography>
+                          <Typography>{t(e.key)}</Typography>
                           <Typography color="secondary">
                             <em>{getRealmName(e)}</em>
                           </Typography>
