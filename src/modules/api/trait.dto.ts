@@ -1,3 +1,5 @@
+export const traits = ['combat', 'discipline', 'magical', 'physical', 'racial', 'senses', 'other'];
+
 export type Trait = {
   id: string;
   name: string;
