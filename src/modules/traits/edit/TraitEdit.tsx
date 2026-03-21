@@ -7,6 +7,7 @@ import { Trait } from '../../api/trait.dto';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import TraitForm from '../shared/TraitForm';
 import RealmEditActions from './TraitEditActions';
 
@@ -44,6 +45,9 @@ const TraitEdit: FC = () => {
         </Grid>
         <Grid size={gridSizeMain}>
           <TraitForm formData={formData} setFormData={setFormData} />
+          <TechnicalInfo>
+            <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
+          </TechnicalInfo>
         </Grid>
       </Grid>
     </>

@@ -75,7 +75,7 @@ const TraitForm: FC<{
           label={t('specialization')}
           value={formData.specialization}
           options={enumerationCategories}
-          onChange={(e) => setFormData({ ...formData, specialization: e })}
+          onChange={(e) => setFormData({ ...formData, specialization: e !== '' ? e : null })}
         />
       </Grid>
       <Grid size={12}>

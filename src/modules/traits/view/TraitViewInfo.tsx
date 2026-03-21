@@ -34,7 +34,7 @@ const TraitViewInfo: FC<{
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <RmuTextCard
-              value={t(trait.specialization)}
+              value={trait.specialization ? t(trait.specialization) : t('None')}
               subtitle={t('specialization')}
               image={`${imageBaseUrl}images/generic/dev-points.png`}
             />

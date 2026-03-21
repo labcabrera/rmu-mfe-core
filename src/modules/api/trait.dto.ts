@@ -5,7 +5,7 @@ export type Trait = {
   name: string;
   category: string;
   isTalent: boolean;
-  specialization: string;
+  specialization: string | null;
   isTierBased: boolean;
   maxTier: number | undefined;
   adquisitionCost: number;
