@@ -7,8 +7,8 @@ import { Trait } from '../../api/trait.dto';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import TraitForm from '../shared/TraitForm';
 import RealmEditActions from './TraitEditActions';
-import TraitEditAttributes from './TraitEditAttributes';
 
 const TraitEdit: FC = () => {
   const location = useLocation();
@@ -43,7 +43,7 @@ const TraitEdit: FC = () => {
           <GenericAvatar imageUrl={getTraitImage(trait)} />
         </Grid>
         <Grid size={gridSizeMain}>
-          <TraitEditAttributes formData={formData} setFormData={setFormData} />
+          <TraitForm formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
     </>

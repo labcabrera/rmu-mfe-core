@@ -1,4 +1,4 @@
-export const traits = ['combat', 'discipline', 'magical', 'physical', 'racial', 'senses', 'other'];
+export const traitCategories = ['combat', 'discipline', 'magical', 'physical', 'racial', 'senses', 'other'];
 
 export type Trait = {
   id: string;

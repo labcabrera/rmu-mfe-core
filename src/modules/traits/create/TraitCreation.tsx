@@ -3,8 +3,8 @@ import { Grid } from '@mui/material';
 import { CreateTraitDto, Trait } from '../../api/trait.dto';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
+import TraitForm from '../shared/TraitForm';
 import TraitCreationActions from './TraitCreationActions';
-import TraitCreationAttributes from './TraitCreationAttributes';
 
 const template = {
   name: '',
@@ -36,7 +36,7 @@ const TraitCreation: FC = () => {
       <Grid container spacing={2}>
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
-          <TraitCreationAttributes formData={formData} setFormData={setFormData} />
+          <TraitForm formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
       <TechnicalInfo>

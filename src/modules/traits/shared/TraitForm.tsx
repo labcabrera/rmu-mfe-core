@@ -1,16 +1,25 @@
-import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
-import { useTranslation } from 'react-i18next';
-import { FormControl, FormControlLabel, Grid, MenuItem, Switch, TextField, Typography } from '@mui/material';
-import { CreateTraitDto } from '../../api/trait.dto';
+import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { FormControl, FormControlLabel, Grid, MenuItem, Switch, TextField } from '@mui/material';
+import { t } from 'i18next';
+import { useError } from '../../../ErrorContext';
+import { fetchEnumerationCategories } from '../../api/enumerations';
+import { CreateTraitDto, UpdateTraitDto } from '../../api/trait.dto';
 import { NumericInput } from '../../shared/inputs/NumericInput';
+import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';
-import SelectTraitSpecialization from '../../shared/selects/SelectTraitSpecialization';
 
-const TraitCreationAttributes: FC<{
-  formData: CreateTraitDto;
-  setFormData: Dispatch<SetStateAction<CreateTraitDto>>;
+const TraitForm: FC<{
+  formData: CreateTraitDto | UpdateTraitDto;
+  setFormData: Dispatch<SetStateAction<CreateTraitDto | UpdateTraitDto>>;
 }> = ({ formData, setFormData }) => {
-  const { t } = useTranslation();
+  const { showError } = useError();
+  const [enumerationCategories, setEnumerationCategories] = useState<SelectOption[]>();
+
+  const bindEnumerationCategories = () => {
+    fetchEnumerationCategories()
+      .then((response) => setEnumerationCategories(response.map((e) => ({ value: e, description: t(e) }))))
+      .catch((err) => showError(err.message));
+  };
 
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -26,10 +35,14 @@ const TraitCreationAttributes: FC<{
     });
   };
 
-  if (!formData || !setFormData) return <p>Loading...</p>;
+  useEffect(() => {
+    bindEnumerationCategories();
+  }, []);
+
+  if (!formData || !setFormData || !enumerationCategories) return <p>Loading...</p>;
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1}>
       <Grid size={12}>
         <TextField
           label={t('name')}
@@ -58,11 +71,11 @@ const TraitCreationAttributes: FC<{
       </Grid>
 
       <Grid size={12}>
-        <SelectTraitSpecialization
+        <RmuSelect
           label={t('specialization')}
           value={formData.specialization}
-          name={'specialization'}
-          onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
+          options={enumerationCategories}
+          onChange={(e) => setFormData({ ...formData, specialization: e })}
         />
       </Grid>
       <Grid size={12}>
@@ -84,7 +97,7 @@ const TraitCreationAttributes: FC<{
         <NumericInput
           label={t('adquisition-cost')}
           name="adquisitionCost"
-          value={formData.adquisitionCost}
+          value={formData.adquisitionCost || null}
           onChange={(e) => setFormData({ ...formData, adquisitionCost: e })}
           integer
         />
@@ -130,4 +143,4 @@ const TraitCreationAttributes: FC<{
   );
 };
 
-export default TraitCreationAttributes;
+export default TraitForm;

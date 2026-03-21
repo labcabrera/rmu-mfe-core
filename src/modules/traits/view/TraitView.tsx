@@ -7,6 +7,7 @@ import { Trait } from '../../api/trait.dto';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import TraitViewActions from './TraitViewActions';
 import TraitViewInfo from './TraitViewInfo';
 
@@ -43,6 +44,9 @@ const TraitView: FC = () => {
         </Grid>
         <Grid size={gridSizeMain}>
           <TraitViewInfo trait={trait} />
+          <TechnicalInfo>
+            <pre>{JSON.stringify(trait, null, 2)}</pre>
+          </TechnicalInfo>
         </Grid>
       </Grid>
     </>
