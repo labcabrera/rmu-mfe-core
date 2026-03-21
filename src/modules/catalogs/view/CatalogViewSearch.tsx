@@ -7,7 +7,7 @@ import SelectRealm from '../../shared/selects/SelectRealm';
 type Props = {
   category: string;
   realms: Realm[];
-  setQueryString: Dispatch<SetStateAction<string>>;
+  setQueryString: Dispatch<SetStateAction<string>> | undefined;
 };
 
 const CatalogListSearch: FC<Props> = ({ category, realms, setQueryString }) => {
@@ -22,8 +22,10 @@ const CatalogListSearch: FC<Props> = ({ category, realms, setQueryString }) => {
     if (searchRealm) {
       queryString += `;realmId==${searchRealm}`;
     }
-    setQueryString(queryString);
+    setQueryString!(queryString);
   }, [searchName, searchRealm]);
+
+  if (!setQueryString) return <p>Loading...</p>;
 
   return (
     <Grid container spacing={1}>
