@@ -3,9 +3,9 @@ export interface KeyValue {
   value: number;
 }
 export interface ResistanceRollQuery {
-  attackLevel: number;
-  targetLevel: number;
-  roll: number;
+  attackLevel: number | null;
+  targetLevel: number | null;
+  roll: number | null;
   modifiers: KeyValue[] | undefined;
 }
 
@@ -15,3 +15,10 @@ export interface ResistanceRollResult {
   totalRoll: number;
   failure: number;
 }
+
+export const emptyResistanceRollQuery: ResistanceRollQuery = {
+  attackLevel: null,
+  targetLevel: null,
+  roll: null,
+  modifiers: [{ key: 'other', value: 0 }],
+};

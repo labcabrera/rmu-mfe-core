@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { useError } from '../../ErrorContext';
 import { resistanceRoll } from '../api/resistance-roll';
-import { ResistanceRollQuery, ResistanceRollResult } from '../api/resistance-roll.dto';
+import { emptyResistanceRollQuery, ResistanceRollQuery, ResistanceRollResult } from '../api/resistance-roll.dto';
 import { gridSizeResume, gridSizeMain } from '../services/display';
 import { openEndedRoll } from '../services/random-service';
 import ResistanceRollViewForm from './ResistanceRollViewForm';
@@ -10,12 +10,7 @@ import ResistanceRollViewResult from './ResistanceRollViewResult';
 
 const ResistanceRollView: FC = () => {
   const { showError } = useError();
-  const [formData, setFormData] = useState<ResistanceRollQuery>({
-    attackLevel: null,
-    targetLevel: null,
-    roll: null,
-    modifiers: [{ key: 'other', value: 0 }],
-  } as ResistanceRollQuery);
+  const [formData, setFormData] = useState<ResistanceRollQuery>(emptyResistanceRollQuery);
   const [result, setResult] = useState<ResistanceRollResult>();
 
   const onRandom = () => {
