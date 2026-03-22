@@ -13,6 +13,6 @@ export type Trait = {
   description: string | undefined;
 };
 
-export type CreateTraitDto = Omit<Trait, 'id'>;
+export type CreateTraitDto = Partial<Omit<Trait, 'id'>>;
 
 export type UpdateTraitDto = Partial<Omit<Trait, 'id'>>;

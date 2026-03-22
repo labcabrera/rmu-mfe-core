@@ -15,7 +15,7 @@ const template = {
   adquisitionCost: null,
   tierCost: null,
   description: '',
-} as Trait;
+} as CreateTraitDto;
 
 const TraitCreation: FC = () => {
   const [formData, setFormData] = useState<CreateTraitDto>(template);

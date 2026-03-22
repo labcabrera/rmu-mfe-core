@@ -54,7 +54,12 @@ const TraitForm: FC<{
         />
       </Grid>
       <Grid size={12}>
-        <SelectTraitCategory label={t('category')} name="category" value={formData.category} onChange={onChange} />
+        <SelectTraitCategory
+          label={t('category')}
+          name="category"
+          value={formData.category || ''}
+          onChange={(e) => setFormData({ ...formData, category: e })}
+        />
       </Grid>
       <Grid size={12}>
         <TextField
