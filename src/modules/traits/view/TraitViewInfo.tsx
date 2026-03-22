@@ -41,7 +41,7 @@ const TraitViewInfo: FC<{
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <RmuTextCard
-              value={trait.isTierBased ? t('Yes') : t('No')}
+              value={trait.isTierBased ? `1 - ${trait.maxTier}` : t('No')}
               subtitle={t('tier-based')}
               image={`${imageBaseUrl}images/generic/dev-points.png`}
             />
@@ -53,21 +53,15 @@ const TraitViewInfo: FC<{
               image={`${imageBaseUrl}images/generic/dev-points.png`}
             />
           </Grid>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <RmuTextCard
-              value={trait.tierCost || ''}
-              subtitle={t('tier-cost')}
-              image={`${imageBaseUrl}images/generic/dev-points.png`}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <RmuTextCard
-              value={trait.maxTier || ''}
-              subtitle={t('max-tier')}
-              image={`${imageBaseUrl}images/generic/dev-points.png`}
-              applyColor={false}
-            />
-          </Grid>
+          {trait.tierCost && (
+            <Grid size={{ xs: 12, md: 4 }}>
+              <RmuTextCard
+                value={trait.tierCost || ''}
+                subtitle={t('tier-cost')}
+                image={`${imageBaseUrl}images/generic/dev-points.png`}
+              />
+            </Grid>
+          )}
         </Grid>
       </Grid>
 
