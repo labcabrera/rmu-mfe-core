@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Grid, Pagination } from '@mui/material';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { fetchRealms } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
+import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import RaceListActions from './RaceListActions';
 import RaceListSearch from './RaceListSearch';
@@ -33,7 +33,7 @@ const RaceList: FC = () => {
 
   const bindRealms = () => {
     fetchRealms('', 0, 100)
-      .then((response) => setRealms(response))
+      .then((response) => setRealms(response.content))
       .catch((err: Error) => showError(err.message));
   };
 
@@ -55,14 +55,14 @@ const RaceList: FC = () => {
     <>
       <RaceListActions onRefresh={bindRealms} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
             <Grid size={12}>
               <RaceListSearch setQueryString={setQueryString} realms={realms} />
             </Grid>
             {races.map((race) => (
-              <Grid size={{ xs: 12, md: 3 }} key={race.id}>
+              <Grid size={gridSizeCard} key={race.id}>
                 <RmuTextCard
                   value={race.name}
                   subtitle={race.realm.name}
@@ -72,7 +72,7 @@ const RaceList: FC = () => {
               </Grid>
             ))}
           </Grid>
-          <Grid size={12}>{races.length === 0 && <p>No races found.</p>}</Grid>
+          {races.length === 0 && <Grid size={12}>No races found.</Grid>}
           <Box mt={2} display="flex" justifyContent="center">
             <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
           </Box>

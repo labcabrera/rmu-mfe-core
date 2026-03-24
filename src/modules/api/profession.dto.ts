@@ -1,3 +1,5 @@
+import { AccessType } from './common.dto';
+
 export type RealmType = 'channeling' | 'essence' | 'mentalism';
 
 export type ProfessionArchetype = 'non-spellcaster' | 'semi-spellcaster' | 'pure-spellcaster' | 'hybrid';
@@ -11,28 +13,12 @@ export interface Profession {
   professionalSkills: [];
   description: string;
   imageUrl?: string;
+  accessType: AccessType;
 }
 
-export interface CreateProfessionDto {
-  id: string;
-  archetype: ProfessionArchetype;
-  availableRealmTypes: RealmType[];
-  fixedRealmTypes: RealmType[];
-  skillCosts: ProfessionSkillCosts;
-  professionalSkills: [];
-  description: string;
-  imageUrl?: string;
-}
+export type CreateProfessionDto = Profession;
 
-export interface UpdateProfessionDto {
-  archetype: ProfessionArchetype | undefined;
-  availableRealmTypes: RealmType[] | undefined;
-  fixedRealmTypes: RealmType[] | undefined;
-  skillCosts: ProfessionSkillCosts | undefined;
-  professionalSkills: [] | undefined;
-  description: string | undefined;
-  imageUrl: string | undefined;
-}
+export type UpdateProfessionDto = Partial<Omit<Profession, 'id'>>;
 
 export interface ProfessionSkillCosts {
   animal: number[];

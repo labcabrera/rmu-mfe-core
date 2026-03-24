@@ -4,8 +4,10 @@ import { Grid } from '@mui/material';
 import { useError } from '../../../ErrorContext';
 import { fetchTrait } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
+import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import TraitViewActions from './TraitViewActions';
 import TraitViewInfo from './TraitViewInfo';
 
@@ -37,11 +39,14 @@ const TraitView: FC = () => {
     <>
       <TraitViewActions trait={trait} onRefresh={bindTrait} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}>
+        <Grid size={gridSizeResume}>
           <GenericAvatar imageUrl={getTraitImage(trait)} />
         </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid size={gridSizeMain}>
           <TraitViewInfo trait={trait} />
+          <TechnicalInfo>
+            <pre>{JSON.stringify(trait, null, 2)}</pre>
+          </TechnicalInfo>
         </Grid>
       </Grid>
     </>

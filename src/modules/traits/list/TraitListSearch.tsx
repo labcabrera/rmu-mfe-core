@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, FC, SetStateAction, use, useEffect, useState } from 'react';
+import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { t } from 'i18next';
 import ClearableTextField from '../../shared/inputs/ClearableTextField';
@@ -38,7 +38,7 @@ const TraitListSearch: FC<{
       <Grid size={{ xs: 12, md: 3 }}>
         <SelectTraitCategory
           value={category}
-          onChange={(e: ChangeEvent<{ value: unknown }>) => setCategory(e.target.value as string)}
+          onChange={(e) => setCategory(e)}
           addAllOption={true}
           label={t('category')}
           name={'category'}

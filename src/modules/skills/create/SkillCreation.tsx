@@ -1,17 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { CreateSkillDto } from '../../api/skill.dto';
-import { imageBaseUrl } from '../../services/config';
-import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import { gridSizeResume, gridSizeMain } from '../../services/display';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
+import SkillForm from '../shared/SkillForm';
 import SkillCreationActions from './SkillCreationActions';
-import SkillCreationAttributes from './SkillCreationAttributes';
 
 const SkillCreation: FC = () => {
   const [formData, setFormData] = useState<CreateSkillDto>({
     id: '',
     categoryId: '',
     bonus: [],
-    specialization: null,
+    specialization: '',
+    accessType: 'public',
   });
   const [isValid, setIsValid] = useState(false);
 
@@ -29,14 +30,14 @@ const SkillCreation: FC = () => {
     <>
       <SkillCreationActions formData={formData} isValid={isValid} />
       <Grid container spacing={2}>
-        <Grid size={2}>
-          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} />
-        </Grid>
-        <Grid size={7}>
-          <SkillCreationAttributes formData={formData} setFormData={setFormData} />
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
+          <SkillForm formData={formData} setFormData={setFormData} create={true} />
         </Grid>
       </Grid>
-      <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
+      <TechnicalInfo>
+        <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
+      </TechnicalInfo>
     </>
   );
 };

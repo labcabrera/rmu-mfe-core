@@ -1,12 +1,13 @@
-import React, { FC, use, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Grid, Typography } from '@mui/material';
+import { Chip, Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { updateRace } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { fetchRealm } from '../../api/realm';
+import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
 import EdditableAvatar from '../../shared/avatars/EditableAvatar';
 import AddButton from '../../shared/buttons/AddButton';
@@ -29,7 +30,7 @@ const RaceView: FC = () => {
   const [traitDialogOpen, setTraitDialogOpen] = useState(false);
 
   const onUpdateImage = (imageUrl: string) => {
-    updateRace(race!.id, { imageUrl: imageUrl! })
+    updateRace(race!.id, { imageUrl: imageUrl })
       .then((updatedRace) => setRace(updatedRace))
       .catch((err: Error) => showError(err.message));
   };
@@ -58,6 +59,12 @@ const RaceView: FC = () => {
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
           <EdditableAvatar imageUrl={race.imageUrl || ''} onImageChange={(avatar) => onUpdateImage(avatar)} />
+          <Chip
+            label={t(race.accessType)}
+            color={race.accessType === 'public' ? 'success' : 'error'}
+            size="small"
+            sx={{ mt: 2 }}
+          />
           <Typography variant="h6" color="primary">
             {t(race.name)}
           </Typography>
@@ -70,7 +77,7 @@ const RaceView: FC = () => {
             {race.description}
           </Typography>
         </Grid>
-        <Grid size={{ xs: 12, md: 8 }} padding={1}>
+        <Grid size={{ xs: 12, md: 9 }}>
           <CategorySeparator text={t('realm')} />
           <Grid container spacing={1} columns={10}>
             <Grid size={{ xs: 12, md: 2 }}>
@@ -99,10 +106,9 @@ const RaceView: FC = () => {
                 <Grid container spacing={1} columns={10}>
                   <Grid size={{ xs: 12, md: 2 }}>
                     <RmuTextCard
-                      value={race.defaultLanguage?.name || 'Undefined'}
+                      value={race.defaultLanguage || 'Undefined'}
                       subtitle={t('default-language')}
                       image={`${imageBaseUrl}images/generic/language.png`}
-                      onClick={() => navigate(`/core/languages/view/${race.defaultLanguage?.id}`)}
                     />
                   </Grid>
                 </Grid>

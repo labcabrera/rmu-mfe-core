@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { createSkill } from '../../api/skill';
-import { CreateTraitDto } from '../../api/trait.dto';
+import { CreateSkillDto } from '../../api/skill.dto';
 import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
 import CancelButton from '../../shared/buttons/CancelButton';
 import SaveButton from '../../shared/buttons/SaveButton';
 
 const SkillCreationActions: FC<{
-  formData: CreateTraitDto;
+  formData: CreateSkillDto;
   isValid?: boolean;
 }> = ({ formData, isValid = false }) => {
   const navigate = useNavigate();

@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Pagination, Box, Grid } from '@mui/material';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchPagedSkills } from '../../api/skill';
+import { fetchSkills } from '../../api/skill';
 import { fetchSkillCategories } from '../../api/skill-category';
 import { SkillCategory } from '../../api/skill-category.dto';
 import { Skill } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
+import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import SkillListActions from './SkillListActions';
 import SkillListSearch from './SkillListSearch';
@@ -24,7 +25,7 @@ const SkillList: FC = () => {
   const [queryString, setQueryString] = useState<string>('');
 
   const bindSkills = (queryString: string, pageNumber: number = 0) => {
-    fetchPagedSkills(queryString, pageNumber, PAGE_SIZE)
+    fetchSkills(queryString, pageNumber, PAGE_SIZE)
       .then((response) => {
         setSkills(response.content);
         setTotalPages(response.pagination.totalPages || 1);
@@ -53,16 +54,16 @@ const SkillList: FC = () => {
     <>
       <SkillListActions />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
             <Grid size={12}>
               <SkillListSearch setQueryString={setQueryString} categories={skillCategories} />
             </Grid>
             {skills.map((skill) => (
-              <Grid size={{ xs: 12, md: 3 }} key={skill.id}>
+              <Grid size={gridSizeCard} key={skill.id}>
                 <RmuTextCard
-                  value={t(skill.id)}
+                  value={`${t(skill.id)}${skill.specialization ? ' *' : ''}`}
                   subtitle={t(skill.categoryId)}
                   image={`${imageBaseUrl}images/generic/configuration.png`}
                   onClick={() => navigate(`/core/skills/view/${skill.id}`, { state: { skill } })}

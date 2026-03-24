@@ -5,9 +5,11 @@ import { useError } from '../../../ErrorContext';
 import { fetchRealm } from '../../api/realm';
 import { Realm, UpdateRealmDto } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
+import { gridSizeResume, gridSizeMain } from '../../services/display';
 import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
+import RealmForm from '../shared/RealmForm';
 import RealmEditActions from './RealmEditActions';
-import RealmEditAttributes from './RealmEditAttributes';
 
 const RealmEdit: FC = () => {
   const location = useLocation();
@@ -18,11 +20,9 @@ const RealmEdit: FC = () => {
 
   useEffect(() => {
     if (realm) {
-      setFormData({
-        name: realm.name,
-        shortDescription: realm.shortDescription,
-        description: realm.description,
-      });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+      const { id, ...rest } = realm;
+      setFormData(rest);
     }
   }, [realm]);
 
@@ -41,12 +41,15 @@ const RealmEdit: FC = () => {
   return (
     <>
       <RealmEditActions realm={realm} formData={formData} />
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 2 }}>
+      <Grid container spacing={1}>
+        <Grid size={gridSizeResume}>
           <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/realm.png`} />
         </Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
-          <RealmEditAttributes formData={formData} setFormData={setFormData} />
+        <Grid size={gridSizeMain}>
+          <RealmForm formData={formData} setFormData={setFormData} />
+          <TechnicalInfo>
+            <pre>{JSON.stringify(formData, null, 2)}</pre>
+          </TechnicalInfo>
         </Grid>
       </Grid>
     </>

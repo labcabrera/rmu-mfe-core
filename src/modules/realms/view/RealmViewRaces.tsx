@@ -6,6 +6,7 @@ import { useError } from '../../../ErrorContext';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { Realm } from '../../api/realm.dto';
+import { gridSizeCard } from '../../services/display';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const RealmViewRaces: FC<{
@@ -26,7 +27,7 @@ const RealmViewRaces: FC<{
   return (
     <Grid container spacing={1}>
       {races.map((race) => (
-        <Grid size={{ xs: 12, md: 3 }} key={race.id}>
+        <Grid size={gridSizeCard} key={race.id}>
           <RmuTextCard
             key={race.id}
             image={race.imageUrl || ''}

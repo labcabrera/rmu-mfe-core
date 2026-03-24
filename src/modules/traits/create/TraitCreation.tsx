@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { CreateTraitDto, Trait } from '../../api/trait.dto';
-import { imageBaseUrl } from '../../services/config';
-import GenericAvatar from '../../shared/avatars/GenericAvatar';
+import { gridSizeResume, gridSizeMain } from '../../services/display';
+import TechnicalInfo from '../../shared/display/TechnicalInfo';
+import TraitForm from '../shared/TraitForm';
 import TraitCreationActions from './TraitCreationActions';
-import TraitCreationAttributes from './TraitCreationAttributes';
 
 const template = {
   name: '',
@@ -15,7 +15,7 @@ const template = {
   adquisitionCost: null,
   tierCost: null,
   description: '',
-} as Trait;
+} as CreateTraitDto;
 
 const TraitCreation: FC = () => {
   const [formData, setFormData] = useState<CreateTraitDto>(template);
@@ -34,14 +34,14 @@ const TraitCreation: FC = () => {
     <>
       <TraitCreationActions formData={formData} isValid={isValid} />
       <Grid container spacing={2}>
-        <Grid size={2}>
-          <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/trait.png`} />
-        </Grid>
-        <Grid size={7}>
-          <TraitCreationAttributes formData={formData} setFormData={setFormData} />
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
+          <TraitForm formData={formData} setFormData={setFormData} />
         </Grid>
       </Grid>
-      <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
+      <TechnicalInfo>
+        <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
+      </TechnicalInfo>
     </>
   );
 };

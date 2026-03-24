@@ -1,10 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRealms } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
+import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RmuTextCard from '../../shared/cards/RmuTextCard';
 import RealmListActions from './RealmListActions';
 
@@ -16,8 +18,8 @@ const RealmList: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchRealms('', 0, 20)
-      .then((response) => setRealms(response))
+    fetchRealms('', 0, 100)
+      .then((response) => setRealms(response.content))
       .catch((err) => showError(err.message));
   }, [showError]);
 
@@ -28,15 +30,15 @@ const RealmList: FC = () => {
     <>
       <RealmListActions setRealms={setRealms} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeResume}></Grid>
+        <Grid size={gridSizeMain}>
           <Grid container spacing={1}>
             {realms.map((realm) => (
-              <Grid size={{ xs: 12, md: 3 }} key={realm.id}>
+              <Grid size={gridSizeCard} key={realm.id}>
                 <RmuTextCard
                   key={realm.id}
                   value={realm.name}
-                  subtitle={realm.shortDescription}
+                  subtitle={realm.shortDescription || t('No description')}
                   image={realm.imageUrl || defaultImage}
                   onClick={() => handleRealmClick(realm)}
                 />
