@@ -2,7 +2,6 @@ import { initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
 import { imageBaseUrl } from './modules/services/config';
 
-// const BASE_REMOTE = `${imageBaseUrl}/locales` as const;
 const STORAGE_KEY = 'lang';
 
 function getLangFromLocalStorage(): string {
@@ -32,38 +31,34 @@ function remoteUrlsFor(lang: string) {
     common: `${imageBaseUrl}locales/common_${lang}.json`,
     skills: `${imageBaseUrl}locales/skills_${lang}.json`,
     skillDescriptions: `${imageBaseUrl}locales/skills_desc_${lang}.json`,
-    items: `${imageBaseUrl}locales/traits_${lang}.json`,
+    traits: `${imageBaseUrl}locales/traits_${lang}.json`,
   };
 }
 
 (async () => {
   const lang = getLangFromLocalStorage();
   const urls = remoteUrlsFor(lang);
-
   const [commonRemote, skillsRemote, skillDescriptionsRemote, itemsRemote] = await Promise.all([
     fetchJsonOrNull(urls.common),
     fetchJsonOrNull(urls.skills),
     fetchJsonOrNull(urls.skillDescriptions),
-    fetchJsonOrNull(urls.items),
+    fetchJsonOrNull(urls.traits),
   ]);
-
   const merged: Record<string, any> = {
     ...(commonRemote || {}),
     ...(skillsRemote || {}),
     ...(skillDescriptionsRemote || {}),
     ...(itemsRemote || {}),
   };
-
   const resources: Record<string, { translation: Record<string, any> }> = {};
   resources[lang] = { translation: merged };
-
   if (lang !== 'en') {
     const enUrls = remoteUrlsFor('en');
     const [enCommon, enSkills, enSkillDescriptions, enItems] = await Promise.all([
       fetchJsonOrNull(enUrls.common),
       fetchJsonOrNull(enUrls.skills),
       fetchJsonOrNull(enUrls.skillDescriptions),
-      fetchJsonOrNull(enUrls.items),
+      fetchJsonOrNull(enUrls.traits),
     ]);
     resources['en'] = {
       translation: { ...(enCommon || {}), ...(enSkills || {}), ...(enSkillDescriptions || {}), ...(enItems || {}) },
