@@ -1,11 +1,12 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Chip, Grid, Typography } from '@mui/material';
+import { EditableAvatar } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { updateRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
-import EditableAvatar from '../../shared/avatars/EditableAvatar';
+import { getAvatarImages } from '../../services/image-service';
 
 const RealmViewResume: FC<{
   realm: Realm;
@@ -25,6 +26,7 @@ const RealmViewResume: FC<{
         <EditableAvatar
           imageUrl={realm.imageUrl || `${imageBaseUrl}images/generic/realm.png`}
           onImageChange={(image) => onImageChange(image)}
+          images={getAvatarImages()}
         />
         <Chip
           size="small"

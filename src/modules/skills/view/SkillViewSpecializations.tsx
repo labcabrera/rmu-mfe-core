@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 import { Grid, Stack, Typography } from '@mui/material';
+import { CategorySeparator, RmuCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { Enumeration } from '../../api/enumerations.dto';
 import { imageBaseUrl } from '../../services/config';
-import RmuCard from '../../shared/cards/RmuCard';
-import CategorySeparator from '../../shared/display/CategorySeparator';
 
 const SkillViewSpecializations: FC<{
   enumerations: Enumeration[];
@@ -16,7 +15,7 @@ const SkillViewSpecializations: FC<{
         <Grid container spacing={1}>
           {enumerations.map((e) => (
             <Grid key={e.id} size={{ xs: 12, md: 3 }}>
-              <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`} size="small">
+              <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`}>
                 <Stack direction="row" justifyContent="space-between">
                   <Stack direction="column">
                     <Typography>{e.key}</Typography>

@@ -1,7 +1,7 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
+import { ClearableTextField } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
-import ClearableTextField from '../../shared/inputs/ClearableTextField';
 import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';
 import SelectTraitType from '../../shared/selects/SelectTraitType';
 

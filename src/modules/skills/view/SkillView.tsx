@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { fetchEnumerations } from '../../api/enumerations';
 import { Enumeration } from '../../api/enumerations.dto';
 import { fetchSkill } from '../../api/skill';
 import { Skill } from '../../api/skill.dto';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
-import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import SkillViewActions from './SkillViewActions';
 import SkillViewInfo from './SkillViewInfo';
 import SkillViewSpecializations from './SkillViewSpecializations';

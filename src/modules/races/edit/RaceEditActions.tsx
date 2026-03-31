@@ -1,12 +1,10 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { RmuBreadcrumbs, CancelButton, SaveButton } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { updateRace } from '../../api/race';
 import { Race, UpdateRaceDto } from '../../api/race.dto';
-import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
-import CancelButton from '../../shared/buttons/CancelButton';
-import SaveButton from '../../shared/buttons/SaveButton';
 
 const RaceEditActions: FC<{
   race: Race;

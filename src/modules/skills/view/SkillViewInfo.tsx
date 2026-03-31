@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Paper, Typography } from '@mui/material';
-import { t, i18n } from 'i18next';
+import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { t } from 'i18next';
 import { Skill } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const SkillViewInfo: FC<{
   skill: Skill;
@@ -46,7 +46,6 @@ const SkillViewInfo: FC<{
             <RmuTextCard
               image={`${imageBaseUrl}images/generic/configuration.png`}
               onClick={onCategoryClick}
-              size="small"
               value={t(skill.categoryId)}
               subtitle={t('category')}
             />

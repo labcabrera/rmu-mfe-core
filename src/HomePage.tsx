@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { RmuBreadcrumbs, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from './modules/services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from './modules/services/display';
-import RmuBreadcrumbs from './modules/shared/breadcrumbs/RmuBreadcrumbs';
-import RmuTextCard from './modules/shared/cards/RmuTextCard';
 
 const HomePage: FC = () => {
   const navigate = useNavigate();

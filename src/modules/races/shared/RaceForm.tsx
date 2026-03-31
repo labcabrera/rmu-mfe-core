@@ -1,8 +1,8 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Grid } from '@mui/material';
+import { CategorySeparator } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { CreateRaceDto, UpdateRaceDto } from '../../api/race.dto';
-import CharacterSeparator from '../../shared/display/CategorySeparator';
 import RaceFormAttributes from './RaceFormAttributes';
 import RaceFormLore from './RaceFormLore';
 import RaceFormResistances from './RaceFormResistances';
@@ -17,11 +17,11 @@ const RaceForm: FC<{
     <Grid container spacing={1}>
       <Grid size={{ xs: 12, md: 12 }}>
         <RaceFormAttributes formData={formData} setFormData={setFormData} />
-        <CharacterSeparator text={t('statistics')} />
+        <CategorySeparator text={t('statistics')} />
         <RaceFormStats formData={formData} setFormData={setFormData} />
-        <CharacterSeparator text={t('resistances')} />
+        <CategorySeparator text={t('resistances')} />
         <RaceFormResistances formData={formData} setFormData={setFormData} />
-        <CharacterSeparator text={t('lore')} />
+        <CategorySeparator text={t('lore')} />
         <RaceFormLore realmId={realmId} formData={formData} setFormData={setFormData} />
       </Grid>
     </Grid>

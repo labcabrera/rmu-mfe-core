@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { EditableAvatar, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
 import { Race, UpdateRaceDto } from '../../api/race.dto';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
-import EditableAvatar from '../../shared/avatars/EditableAvatar';
-import TechnicalInfo from '../../shared/display/TechnicalInfo';
+import { getAvatarImages } from '../../services/image-service';
 import RaceForm from '../shared/RaceForm';
 import RaceEditActions from './RaceEditActions';
 
@@ -43,6 +43,7 @@ const RaceEdit: FC = () => {
           <EditableAvatar
             imageUrl={formData.imageUrl || ''}
             onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
+            images={getAvatarImages()}
           />
         </Grid>
         <Grid size={gridSizeMain} padding={1}>

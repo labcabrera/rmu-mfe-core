@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Pagination, Box, Grid } from '@mui/material';
+import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchSkills } from '../../api/skill';
@@ -9,7 +10,6 @@ import { SkillCategory } from '../../api/skill-category.dto';
 import { Skill } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
 import SkillListActions from './SkillListActions';
 import SkillListSearch from './SkillListSearch';
 

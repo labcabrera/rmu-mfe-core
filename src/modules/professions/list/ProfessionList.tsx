@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Grid, Pagination } from '@mui/material';
+import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedProfessions } from '../../api/profession';
 import { Profession } from '../../api/profession.dto';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
 import ProfessionListActions from './ProfessionListActions';
 import ProfessionListSearch from './ProfessionListSearch';
 

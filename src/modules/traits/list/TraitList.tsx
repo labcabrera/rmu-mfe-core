@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Pagination, Box, Grid } from '@mui/material';
+import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedTraits } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
 import TraitListActions from './TraitListActions';
 import TraitListSearch from './TraitListSearch';
 

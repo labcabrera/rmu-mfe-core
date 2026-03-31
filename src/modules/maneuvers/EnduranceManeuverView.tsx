@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
+import { NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
 import { fetchEnduranceManeuver } from '../api/maneuver';
 import { EnduranceManeuverResult } from '../api/maneuver.dto';
-import { NumericInput } from '../shared/inputs/NumericInput';
 
 const EnduranceManeuverView: FC = () => {
   const { showError } = useError();

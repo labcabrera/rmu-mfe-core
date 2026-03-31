@@ -1,13 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { GenericAvatar, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { fetchTrait } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
-import GenericAvatar from '../../shared/avatars/GenericAvatar';
-import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import TraitViewActions from './TraitViewActions';
 import TraitViewInfo from './TraitViewInfo';
 

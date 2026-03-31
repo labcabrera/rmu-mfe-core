@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { EditableAvatar, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { CreateRaceDto, raceCreateTemplate } from '../../api/race.dto';
 import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
-import EdditableAvatar from '../../shared/avatars/EditableAvatar';
-import TechnicalInfo from '../../shared/display/TechnicalInfo';
+import { getAvatarImages } from '../../services/image-service';
 import RaceForm from '../shared/RaceForm';
 import RaceCreationActions from './RaceCreationActions';
 
@@ -49,9 +49,10 @@ const RaceCreation: FC = () => {
       <RaceCreationActions formData={formData} isValid={isValid} />
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
-          <EdditableAvatar
+          <EditableAvatar
             imageUrl={formData.imageUrl || ''}
             onImageChange={(avatar) => setFormData({ ...formData, imageUrl: avatar })}
+            images={getAvatarImages()}
           />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
