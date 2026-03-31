@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
+import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { Race, resistances } from '../../api/race.dto';
 import { imageBaseUrl } from '../../services/config';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const RaceViewResistances: FC<{
   race: Race;

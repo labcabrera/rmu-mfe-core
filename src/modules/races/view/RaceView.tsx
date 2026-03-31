@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Chip, Grid, Typography } from '@mui/material';
+import { AddButton, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
@@ -9,9 +10,6 @@ import { Race } from '../../api/race.dto';
 import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
-import EdditableAvatar from '../../shared/avatars/EditableAvatar';
-import AddButton from '../../shared/buttons/AddButton';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
 import CategorySeparator from '../../shared/display/CategorySeparator';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RaceViewActions from './RaceViewActions';
@@ -84,7 +82,7 @@ const RaceView: FC = () => {
               <RmuTextCard
                 value={race.realm.name}
                 subtitle={t('realm')}
-                image={realm ? realm.imageUrl : `${imageBaseUrl}images/generic/realm.png`}
+                image={realm?.imageUrl ? realm.imageUrl : `${imageBaseUrl}images/generic/realm.png`}
                 onClick={() => navigate(`/core/realms/view/${race.realm.id}`, { state: { realm: realm } })}
               />
             </Grid>

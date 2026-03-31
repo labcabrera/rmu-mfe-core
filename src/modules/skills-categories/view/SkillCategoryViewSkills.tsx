@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { AddButton, CategorySeparator, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { Skill } from '../../api/skill.dto';
-import AddButton from '../../shared/buttons/AddButton';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
-import CategorySeparator from '../../shared/display/CategorySeparator';
+import { defaultImage } from '../../services/image-service';
 
 const SkillCategoryViewSkills: FC<{
   skills: Skill[];
@@ -27,6 +26,7 @@ const SkillCategoryViewSkills: FC<{
                 <RmuTextCard
                   value={`${t(skill.id)}${skill.specialization ? ' *' : ''}`}
                   subtitle={t('skill')}
+                  image={defaultImage}
                   onClick={() => navigate(`/core/skills/view/${skill.id}`, { state: { skill } })}
                 />
               </Grid>

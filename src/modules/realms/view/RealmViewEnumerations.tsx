@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid, Typography } from '@mui/material';
+import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchEnumerations } from '../../api/enumerations';
 import { Enumeration } from '../../api/enumerations.dto';
 import { Realm } from '../../api/realm.dto';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const RealmViewEnumerations: FC<{
   realm: Realm;

@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Pagination, Box, Grid } from '@mui/material';
+import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedSkillCategories } from '../../api/skill-category';
 import { SkillCategory } from '../../api/skill-category.dto';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
 import SkillCategoryListActions from './SkillCategoryListActions';
 import SkillCategoryListSearch from './SkillCategoryListSearch';
 

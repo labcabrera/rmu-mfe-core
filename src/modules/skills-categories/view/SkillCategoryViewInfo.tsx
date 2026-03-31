@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Grid, Paper, Typography } from '@mui/material';
+import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { Skill } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const SkillCategoryViewInfo: FC<{
   skillCategory: Skill;

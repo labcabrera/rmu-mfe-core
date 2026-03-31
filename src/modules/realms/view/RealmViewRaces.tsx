@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
+import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { Realm } from '../../api/realm.dto';
 import { gridSizeCard } from '../../services/display';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const RealmViewRaces: FC<{
   realm: Realm;

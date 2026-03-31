@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Grid } from '@mui/material';
+import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { Race } from '../../api/race.dto';
 import { imageBaseUrl } from '../../services/config';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
 
 const grayscale = 0.7;
 

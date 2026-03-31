@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Grid, Pagination } from '@mui/material';
+import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedRaces } from '../../api/race';
 import { Race } from '../../api/race.dto';
 import { fetchRealms } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
-import RmuTextCard from '../../shared/cards/RmuTextCard';
 import RaceListActions from './RaceListActions';
 import RaceListSearch from './RaceListSearch';
 
