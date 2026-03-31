@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, Tab, Box } from '@mui/material';
+import { AddButton } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
-import AddButton from '../../shared/buttons/AddButton';
 import RealmViewEnumerations from './RealmViewEnumerations';
 import RealmViewRaces from './RealmViewRaces';
 

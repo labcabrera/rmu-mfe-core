@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
+import { RmuBreadcrumbs, RefreshButton } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { Skill } from '../../api/skill.dto';
-import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
-import RefreshButton from '../../shared/buttons/RefreshButton';
 
 const SkillCategoryViewActions: FC<{
   skill: Skill;

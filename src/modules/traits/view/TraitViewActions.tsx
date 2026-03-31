@@ -1,14 +1,16 @@
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  RmuBreadcrumbs,
+  RefreshButton,
+  EditButton,
+  DeleteButton,
+  DeleteDialog,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { deleteTrait } from '../../api/trait';
 import { Trait } from '../../api/trait.dto';
-import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
-import DeleteButton from '../../shared/buttons/DeleteButton';
-import EditButton from '../../shared/buttons/EditButton';
-import RefreshButton from '../../shared/buttons/RefreshButton';
-import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
 const TraitViewActions: FC<{
   trait: Trait;

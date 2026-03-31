@@ -1,14 +1,16 @@
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  RmuBreadcrumbs,
+  RefreshButton,
+  EditButton,
+  DeleteButton,
+  DeleteDialog,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { deleteSkill } from '../../api/skill';
 import { Skill } from '../../api/skill.dto';
-import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
-import DeleteButton from '../../shared/buttons/DeleteButton';
-import EditButton from '../../shared/buttons/EditButton';
-import RefreshButton from '../../shared/buttons/RefreshButton';
-import DeleteDialog from '../../shared/dialogs/DeleteDialog';
 
 const SkillViewActions: FC<{
   skill: Skill;

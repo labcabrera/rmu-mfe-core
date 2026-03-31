@@ -1,9 +1,7 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { RmuBreadcrumbs, RefreshButton, AddButton } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
-import RmuBreadcrumbs from '../../shared/breadcrumbs/RmuBreadcrumbs';
-import AddButton from '../../shared/buttons/AddButton';
-import RefreshButton from '../../shared/buttons/RefreshButton';
 
 const TraitListActions: FC<{
   onRefresh: () => void;

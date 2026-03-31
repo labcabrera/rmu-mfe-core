@@ -1,12 +1,12 @@
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Grid, Chip, Typography } from '@mui/material';
+import { AddButton } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { CreateProfessionDto, UpdateProfessionDto } from '../../api/profession.dto';
 import { fetchSkills } from '../../api/skill';
 import { Skill } from '../../api/skill.dto';
-import AddButton from '../../shared/buttons/AddButton';
 import SelectSkill from '../../shared/selects/SelectSkill';
 
 const ProfessionFormProfessionalSkills: FC<{
