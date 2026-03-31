@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
+import { TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { CreateSkillDto } from '../../api/skill.dto';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
-import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import SkillForm from '../shared/SkillForm';
 import SkillCreationActions from './SkillCreationActions';
 

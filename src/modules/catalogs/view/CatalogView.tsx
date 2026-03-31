@@ -1,7 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Grid, Stack, Typography } from '@mui/material';
-import { AddButton, DeleteButton } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  AddButton,
+  CategorySeparator,
+  DeleteButton,
+  RmuCard,
+  TechnicalInfo,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { deleteEnumeration, fetchEnumerations } from '../../api/enumerations';
@@ -10,9 +16,6 @@ import { fetchRealms } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
-import RmuCard from '../../shared/cards/RmuCard';
-import CategorySeparator from '../../shared/display/CategorySeparator';
-import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import AddEnumerationDialog from '../shared/AddEnumerationDialog';
 import CatalogViewActions from './CatalogViewActions';
 import CatalogListSearch from './CatalogViewSearch';

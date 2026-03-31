@@ -2,13 +2,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { GenericAvatar } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { GenericAvatar, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { fetchSkill } from '../../api/skill';
 import { Skill, UpdateSkillDto } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
-import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import SkillForm from '../shared/SkillForm';
 import SkillEditActions from './SkillEditActions';
 

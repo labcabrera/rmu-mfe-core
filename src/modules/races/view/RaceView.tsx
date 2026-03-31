@@ -1,7 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Chip, Grid, Typography } from '@mui/material';
-import { AddButton, EditableAvatar, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  AddButton,
+  CategorySeparator,
+  EditableAvatar,
+  RmuTextCard,
+  TechnicalInfo,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
@@ -11,8 +17,6 @@ import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
 import { getAvatarImages } from '../../services/image-service';
-import CategorySeparator from '../../shared/display/CategorySeparator';
-import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RaceViewActions from './RaceViewActions';
 import RaceViewAttributes from './RaceViewAttributes';
 import RaceViewResistances from './RaceViewResistances';
