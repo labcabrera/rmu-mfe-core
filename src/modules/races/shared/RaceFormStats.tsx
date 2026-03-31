@@ -1,8 +1,8 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Grid } from '@mui/material';
+import { NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { CreateRaceDto, stats, UpdateRaceDto } from '../../api/race.dto';
-import { NumericInput } from '../../shared/inputs/NumericInput';
 
 const RaceFormStats: FC<{
   formData: CreateRaceDto | UpdateRaceDto;

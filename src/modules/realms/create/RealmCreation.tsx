@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
+import { EditableAvatar } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { CreateRealmDto } from '../../api/realm.dto';
-import { DEFAULT_REALM_IMAGE } from '../../services/image-service';
-import EditableAvatar from '../../shared/avatars/EditableAvatar';
+import { DEFAULT_REALM_IMAGE, getAvatarImages } from '../../services/image-service';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RealmForm from '../shared/RealmForm';
 import RealmCreationActions from './RealmCreationActions';
@@ -34,6 +34,7 @@ const RealmCreation: FC = () => {
           <EditableAvatar
             imageUrl={formData.imageUrl || DEFAULT_REALM_IMAGE}
             onImageChange={(newImageUrl) => setFormData({ ...formData, imageUrl: newImageUrl })}
+            images={getAvatarImages()}
           />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>

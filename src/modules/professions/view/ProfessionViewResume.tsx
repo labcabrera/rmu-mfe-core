@@ -1,10 +1,11 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Chip, Stack, Typography } from '@mui/material';
+import { EditableAvatar } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { updateProfession } from '../../api/profession';
 import { Profession, UpdateProfessionDto } from '../../api/profession.dto';
-import EditableAvatar from '../../shared/avatars/EditableAvatar';
+import { getAvatarImages } from '../../services/image-service';
 
 const ProfessionViewResume: FC<{
   profession: Profession;
@@ -23,7 +24,11 @@ const ProfessionViewResume: FC<{
 
   return (
     <>
-      <EditableAvatar imageUrl={profession.imageUrl || ''} onImageChange={(avatar) => onUpdateImage(avatar)} />
+      <EditableAvatar
+        imageUrl={profession.imageUrl || ''}
+        onImageChange={(avatar) => onUpdateImage(avatar)}
+        images={getAvatarImages()}
+      />
       <Stack direction="row" spacing={1} mt={2}>
         <Chip
           label={t(profession.accessType)}

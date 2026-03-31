@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Chip, Grid, Typography } from '@mui/material';
-import { AddButton, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { AddButton, EditableAvatar, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRace } from '../../api/race';
@@ -10,6 +10,7 @@ import { Race } from '../../api/race.dto';
 import { fetchRealm } from '../../api/realm';
 import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
+import { getAvatarImages } from '../../services/image-service';
 import CategorySeparator from '../../shared/display/CategorySeparator';
 import TechnicalInfo from '../../shared/display/TechnicalInfo';
 import RaceViewActions from './RaceViewActions';
@@ -56,7 +57,11 @@ const RaceView: FC = () => {
       <RaceViewActions race={race} setRace={setRace} />
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 2 }}>
-          <EdditableAvatar imageUrl={race.imageUrl || ''} onImageChange={(avatar) => onUpdateImage(avatar)} />
+          <EditableAvatar
+            imageUrl={race.imageUrl || ''}
+            onImageChange={(avatar) => onUpdateImage(avatar)}
+            images={getAvatarImages()}
+          />
           <Chip
             label={t(race.accessType)}
             color={race.accessType === 'public' ? 'success' : 'error'}

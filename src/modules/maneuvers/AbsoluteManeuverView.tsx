@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Button, Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
+import { NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
 import { fetchAbsoluteManeuver, fetchAbsoluteManeuverTable, fetchAbsoluteManeuverTables } from '../api/maneuver';
 import { AbsoluteManeuverResult, AbsoluteManeuverTable } from '../api/maneuver.dto';
 import { openEndedRoll } from '../services/random-service';
-import { NumericInput } from '../shared/inputs/NumericInput';
 import SelectManeuverTable from '../shared/selects/SelectManeuverTable';
 import AbsoluteManeuverTableView from './AbsoluteManeuverTableView';
 

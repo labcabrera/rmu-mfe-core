@@ -1,8 +1,8 @@
 import React, { Dispatch, FC, Fragment, SetStateAction } from 'react';
 import { Grid, Typography } from '@mui/material';
+import { NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { CreateProfessionDto, UpdateProfessionDto } from '../../api/profession.dto';
-import { NumericInput } from '../../shared/inputs/NumericInput';
 
 const SKILLS = [
   'animal',

@@ -1,12 +1,12 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, TextField } from '@mui/material';
+import { NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../../ErrorContext';
 import { addRaceTrait } from '../../../api/race';
 import { Race, AddRaceTraitDto } from '../../../api/race.dto';
 import { fetchTraits } from '../../../api/trait';
 import { Trait } from '../../../api/trait.dto';
-import { NumericInput } from '../../../shared/inputs/NumericInput';
 import SelectTrait from '../../../shared/selects/SelectTrait';
 import SelectTraitCategory from '../../../shared/selects/SelectTraitCategory';
 

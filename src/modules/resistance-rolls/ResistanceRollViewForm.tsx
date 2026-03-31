@@ -1,8 +1,8 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Grid, Button, Stack } from '@mui/material';
+import { NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { ResistanceRollQuery } from '../api/resistance-roll.dto';
-import { NumericInput } from '../shared/inputs/NumericInput';
 
 const ResistanceRollViewForm: FC<{
   formData: ResistanceRollQuery;
