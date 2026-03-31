@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { Grid } from '@mui/material';
+import { ClearableTextField } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { Realm } from '../../api/realm.dto';
-import ClearableTextField from '../../shared/inputs/ClearableTextField';
 import SelectRealm from '../../shared/selects/SelectRealm';
 
 type Props = {

@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
+import { ClearableTextField } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
-import ClearableTextField from '../../shared/inputs/ClearableTextField';
 
 const SkillCategoryListSearch: FC<{
   setQueryString: Dispatch<SetStateAction<string>>;
