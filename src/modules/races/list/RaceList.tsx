@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Grid, Pagination } from '@mui/material';
@@ -28,13 +29,13 @@ const RaceList: FC = () => {
         setRaces(response.content);
         setTotalPages(response.pagination.totalPages || 1);
       })
-      .catch((err: Error) => showError(err.message));
+      .catch((err) => showError(err.message));
   };
 
   const bindRealms = () => {
     fetchRealms('', 0, 100)
       .then((response) => setRealms(response.content))
-      .catch((err: Error) => showError(err.message));
+      .catch((err) => showError(err.message));
   };
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
