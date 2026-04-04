@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Grid, Pagination } from '@mui/material';
-import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Grid } from '@mui/material';
+import { RmuPagination, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchRealms } from '../../api/realm';
@@ -15,19 +15,16 @@ import RealmListSearch from './RealmListSearch';
 const defaultImage = `${imageBaseUrl}images/generic/realm.png`;
 
 const RealmList: FC = () => {
+  const navigate = useNavigate();
   const { showError } = useError();
   const [realms, setRealms] = useState<Realm[]>([]);
   const [queryString, setQueryString] = useState<string>('');
   const [page, setPage] = useState<number>(0);
+  const [pageSize, setPageSize] = useState<number>(24);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const navigate = useNavigate();
-
-  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value - 1);
-  };
 
   useEffect(() => {
-    fetchRealms(queryString, 0, 100)
+    fetchRealms(queryString, page, pageSize)
       .then((response) => {
         setRealms(response.content);
         setTotalPages(response.pagination.totalPages);
@@ -38,6 +35,7 @@ const RealmList: FC = () => {
   const handleRealmClick = (realm: Realm) => {
     navigate(`/core/realms/view/${realm.id}`, { state: { realm } });
   };
+
   return (
     <>
       <RealmListActions setRealms={setRealms} />
@@ -65,9 +63,13 @@ const RealmList: FC = () => {
               </Grid>
             </Grid>
             <Grid size={12}>
-              <Box mt={2} display="flex" justifyContent="center">
-                <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
-              </Box>
+              <RmuPagination
+                page={page}
+                pageSize={pageSize}
+                totalPages={totalPages}
+                setPage={setPage}
+                setPageSize={setPageSize}
+              />
             </Grid>
           </Grid>
         </Grid>
