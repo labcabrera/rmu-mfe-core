@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Pagination, Box, Grid } from '@mui/material';
-import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Grid } from '@mui/material';
+import { RmuPagination, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedTraits } from '../../api/trait';
@@ -11,35 +12,31 @@ import { getTraitImage } from '../../services/trait-image-service';
 import TraitListActions from './TraitListActions';
 import TraitListSearch from './TraitListSearch';
 
-const PAGE_SIZE = 24;
-
 const TraitList: FC = () => {
   const navigate = useNavigate();
   const { showError } = useError();
   const [traits, setTraits] = useState<Trait[]>([]);
   const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState<number>(24);
   const [searchString, setSearchString] = useState('');
   const [totalPages, setTotalPages] = useState(1);
 
   const bindTraits = () => {
-    fetchPagedTraits(searchString, page, PAGE_SIZE)
+    fetchPagedTraits(searchString, page, pageSize)
       .then((response) => {
         setTraits(response.content);
         setTotalPages(response.pagination.totalPages || 1);
       })
-      .catch((err: unknown) => {
-        if (err instanceof Error) showError(err.message);
-        else showError('An unknown error occurred');
-      });
-  };
-
-  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value - 1);
+      .catch((err) => showError(err.message));
   };
 
   useEffect(() => {
     bindTraits();
-  }, [searchString, page]);
+  }, [searchString, page, pageSize]);
+
+  const getTraitSubtitle = (trait: Trait): string => {
+    return `${t(trait.isTalent ? t('trait') : t('flaw'))} • ${trait.category} • ${trait.adquisitionCost}`;
+  };
 
   return (
     <>
@@ -47,30 +44,36 @@ const TraitList: FC = () => {
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
-          <TraitListSearch setSearchString={setSearchString} />
-          <Grid container spacing={1} mt={1}>
-            {traits.map((trait) => (
-              <Grid size={gridSizeCard} key={trait.id}>
-                <RmuTextCard
-                  value={`${t(trait.name)}${trait.isTierBased ? ' *' : ''}`}
-                  subtitle={
-                    t(trait.isTalent ? t('trait') : t('flaw')) +
-                    ' • ' +
-                    t(trait.category) +
-                    ' • ' +
-                    trait.adquisitionCost
-                  }
-                  image={getTraitImage(trait)}
-                  onClick={() => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })}
-                  grayscale={trait.isTalent ? 0 : 0.8}
-                />
+          <Grid container spacing={1}>
+            <Grid size={12}>
+              <TraitListSearch setSearchString={setSearchString} />
+            </Grid>
+            <Grid size={12}>
+              <Grid container spacing={1}>
+                {traits.map((trait) => (
+                  <Grid size={gridSizeCard} key={trait.id}>
+                    <RmuTextCard
+                      value={`${t(trait.name)}${trait.isTierBased ? ' *' : ''}`}
+                      subtitle={getTraitSubtitle(trait)}
+                      image={getTraitImage(trait)}
+                      onClick={() => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })}
+                      grayscale={trait.isTalent ? 0 : 0.8}
+                    />
+                  </Grid>
+                ))}
+                {traits.length === 0 ? <p>No traits found.</p> : null}
               </Grid>
-            ))}
+            </Grid>
+            <Grid size={12}>
+              <RmuPagination
+                page={page}
+                setPage={setPage}
+                pageSize={pageSize}
+                setPageSize={setPageSize}
+                totalPages={totalPages}
+              />
+            </Grid>
           </Grid>
-          {traits.length === 0 ? <p>No traits found.</p> : null}
-          <Box mt={2} display="flex" justifyContent="center">
-            <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
-          </Box>
         </Grid>
       </Grid>
     </>

@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Pagination, Box, Grid } from '@mui/material';
-import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Grid } from '@mui/material';
+import { RmuPagination, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchPagedSkillCategories } from '../../api/skill-category';
@@ -11,32 +12,27 @@ import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/displ
 import SkillCategoryListActions from './SkillCategoryListActions';
 import SkillCategoryListSearch from './SkillCategoryListSearch';
 
-const PAGE_SIZE = 24;
-
 const SkillCategoryList: FC = () => {
   const navigate = useNavigate();
   const { showError } = useError();
   const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([]);
   const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(48);
   const [totalPages, setTotalPages] = useState(1);
   const [queryString, setQueryString] = useState<string>('');
 
   const bindSkillCategories = () => {
-    fetchPagedSkillCategories(queryString, page, PAGE_SIZE)
+    fetchPagedSkillCategories(queryString, page, pageSize)
       .then((response) => {
         setSkillCategories(response.content);
         setTotalPages(response.pagination.totalPages || 1);
       })
-      .catch((err: Error) => showError(err.message));
-  };
-
-  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value - 1);
+      .catch((err) => showError(err.message));
   };
 
   useEffect(() => {
     bindSkillCategories();
-  }, [queryString, page]);
+  }, [queryString, page, pageSize]);
 
   if (!skillCategories) return <p>Loading...</p>;
 
@@ -60,11 +56,17 @@ const SkillCategoryList: FC = () => {
                 />
               </Grid>
             ))}
+            {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
           </Grid>
-          {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
-          <Box mt={2} display="flex" justifyContent="center">
-            <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
-          </Box>
+          <Grid size={12}>
+            <RmuPagination
+              page={page}
+              pageSize={pageSize}
+              totalPages={totalPages}
+              setPage={setPage}
+              setPageSize={setPageSize}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </>

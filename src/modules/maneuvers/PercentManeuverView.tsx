@@ -29,7 +29,7 @@ const PercentManeuverView: FC = () => {
   }, [roll, difficulty, modifier, showError]);
 
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={2}>
       <Grid size={{ xs: 12, md: 4 }}>
         <Grid size={12}>
           <SelectDifficulty label={t('difficulty')} value={difficulty?.id || 'm'} onChange={(e) => setDifficulty(e)} />

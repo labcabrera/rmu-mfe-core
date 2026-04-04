@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Pagination, Box, Grid } from '@mui/material';
-import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Grid } from '@mui/material';
+import { RmuPagination, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { fetchSkills } from '../../api/skill';
@@ -13,40 +14,39 @@ import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/displ
 import SkillListActions from './SkillListActions';
 import SkillListSearch from './SkillListSearch';
 
-const PAGE_SIZE = 24;
-
 const SkillList: FC = () => {
   const navigate = useNavigate();
   const { showError } = useError();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([]);
   const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(24);
   const [totalPages, setTotalPages] = useState(1);
   const [queryString, setQueryString] = useState<string>('');
 
   const bindSkills = (queryString: string, pageNumber: number = 0) => {
-    fetchSkills(queryString, pageNumber, PAGE_SIZE)
+    fetchSkills(queryString, pageNumber, pageSize)
       .then((response) => {
         setSkills(response.content);
         setTotalPages(response.pagination.totalPages || 1);
       })
-      .catch((err: Error) => showError(err.message));
+      .catch((err) => showError(err.message));
   };
 
   const bindSkillCategories = () => {
     fetchSkillCategories()
       .then((data) => setSkillCategories(data))
-      .catch((err: Error) => showError(err.message));
+      .catch((err) => showError(err.message));
   };
 
-  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value - 1);
-  };
+  useEffect(() => {
+    setPage(0);
+  }, [pageSize]);
 
   useEffect(() => {
     bindSkills(queryString, page);
     bindSkillCategories();
-  }, [queryString, page]);
+  }, [queryString, page, pageSize]);
 
   if (!skills) return <p>Loading...</p>;
 
@@ -70,11 +70,17 @@ const SkillList: FC = () => {
                 />
               </Grid>
             ))}
+            {skills.length === 0 ? <p>No skills found.</p> : null}
           </Grid>
-          {skills.length === 0 ? <p>No skills found.</p> : null}
-          <Box mt={2} display="flex" justifyContent="center">
-            <Pagination count={totalPages} page={page + 1} onChange={handlePageChange} color="primary" />
-          </Box>
+          <Grid size={12}>
+            <RmuPagination
+              page={page}
+              pageSize={pageSize}
+              totalPages={totalPages}
+              setPage={setPage}
+              setPageSize={setPageSize}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </>
