@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
-import { TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { RmuBreadcrumbs, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
 import { resistanceRoll } from '../api/resistance-roll';
 import { emptyResistanceRollQuery, ResistanceRollQuery, ResistanceRollResult } from '../api/resistance-roll.dto';
@@ -13,6 +14,7 @@ const ResistanceRollView: FC = () => {
   const { showError } = useError();
   const [formData, setFormData] = useState<ResistanceRollQuery>(emptyResistanceRollQuery);
   const [result, setResult] = useState<ResistanceRollResult>();
+  const breadcrumbs = [{ name: t('Core'), link: '/core' }, { name: t('Resistance rolls') }];
 
   const onRandom = () => {
     setFormData({ ...formData, roll: openEndedRoll() });
@@ -38,6 +40,7 @@ const ResistanceRollView: FC = () => {
 
   return (
     <>
+      <RmuBreadcrumbs items={breadcrumbs}></RmuBreadcrumbs>
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
