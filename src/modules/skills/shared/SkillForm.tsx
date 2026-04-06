@@ -6,10 +6,10 @@ import {
   UpdateSkillDto,
   SkillCategory,
   fetchSkillCategories,
+  STATS,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { STATISTICS } from '../../api/common.dto';
 import SelectAccessType from '../../shared/selects/SelectAccessType';
 import SelectSkillCategory from '../../shared/selects/SelectSkillCategory';
 import SelectSkillSpecialization from '../../shared/selects/SelectSkillSpecialization';
@@ -89,7 +89,7 @@ const StatsSelection: FC<{ formData: any; setFormData: Dispatch<SetStateAction<a
 
   return (
     <ButtonGroup orientation="horizontal" fullWidth aria-label="stats-button-group" sx={{ width: '100%' }}>
-      {STATISTICS.map((stat) => (
+      {STATS.map((stat) => (
         <Button
           key={stat}
           variant={selected.includes(stat) ? 'contained' : 'outlined'}
