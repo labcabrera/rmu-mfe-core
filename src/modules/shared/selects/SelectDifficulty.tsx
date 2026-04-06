@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC } from 'react';
 import { MenuItem, TextField } from '@mui/material';
+import { MANEUVER_DIFFICULTIES, ManeuverDifficulty } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
-import { MANEUVER_DIFFICULTIES, ManeuverDifficulty } from '../../api/maneuver.dto';
 
 const SelectDifficulty: FC<{
   value: string;

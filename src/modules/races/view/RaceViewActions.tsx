@@ -6,11 +6,12 @@ import {
   EditButton,
   DeleteButton,
   DeleteDialog,
+  deleteRace,
+  fetchRace,
+  Race,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { deleteRace, fetchRace } from '../../api/race';
-import { Race } from '../../api/race.dto';
 
 const RaceViewActions: FC<{
   race: Race;

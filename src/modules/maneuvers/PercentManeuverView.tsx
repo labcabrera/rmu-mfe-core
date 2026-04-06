@@ -1,10 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Button, Grid, Paper, Typography } from '@mui/material';
-import { NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  fetchPercentManeuver,
+  ManeuverDifficulty,
+  NumericInput,
+  PercentManeuverResult,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
-import { fetchPercentManeuver } from '../api/maneuver';
-import { ManeuverDifficulty, PercentManeuverResult } from '../api/maneuver.dto';
 import { openEndedRoll } from '../services/random-service';
 import SelectDifficulty from '../shared/selects/SelectDifficulty';
 

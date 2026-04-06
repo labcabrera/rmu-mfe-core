@@ -1,6 +1,6 @@
+import { buildErrorFromResponse } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { getAuthHeaders, mergeJsonHeaders } from '../services/auth-token-service';
 import { apiCoreUrl } from '../services/config';
-import { buildErrorFromResponse } from './api-errors';
 import { Page } from './common.dto';
 import { CreateTraitDto, Trait, UpdateTraitDto } from './trait.dto';
 

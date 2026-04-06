@@ -1,6 +1,6 @@
+import { buildErrorFromResponse } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { mergeJsonHeaders } from '../services/auth-token-service';
 import { apiCoreUrl } from '../services/config';
-import { buildErrorFromResponse } from './api-errors';
 import { ResistanceRollQuery, ResistanceRollResult } from './resistance-roll.dto';
 
 export async function resistanceRoll(dto: ResistanceRollQuery): Promise<ResistanceRollResult> {

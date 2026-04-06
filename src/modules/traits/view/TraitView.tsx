@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
@@ -30,7 +31,7 @@ const TraitView: FC = () => {
     } else if (traitId) {
       bindTrait();
     }
-  }, [location.state, traitId, showError]);
+  }, [location.state, traitId]);
 
   if (!trait) return <p>Loading...</p>;
 
