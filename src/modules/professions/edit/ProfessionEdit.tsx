@@ -1,11 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
-import { EditableAvatar, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  EditableAvatar,
+  TechnicalInfo,
+  Profession,
+  UpdateProfessionDto,
+  fetchProfession,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchProfession } from '../../api/profession';
-import { Profession, UpdateProfessionDto } from '../../api/profession.dto';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getAvatarImages } from '../../services/image-service';
 import ProfessionForm from '../shared/ProfessionForm';

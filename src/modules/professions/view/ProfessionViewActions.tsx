@@ -6,11 +6,12 @@ import {
   EditButton,
   DeleteButton,
   DeleteDialog,
+  Profession,
+  deleteProfession,
+  fetchProfession,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { deleteProfession, fetchProfession } from '../../api/profession';
-import { Profession } from '../../api/profession.dto';
 
 const ProfessionViewActions: FC<{
   profession: Profession;

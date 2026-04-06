@@ -1,10 +1,13 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Chip, Stack, Typography } from '@mui/material';
-import { EditableAvatar } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  EditableAvatar,
+  updateProfession,
+  Profession,
+  UpdateProfessionDto,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { updateProfession } from '../../api/profession';
-import { Profession, UpdateProfessionDto } from '../../api/profession.dto';
 import { getAvatarImages } from '../../services/image-service';
 
 const ProfessionViewResume: FC<{
