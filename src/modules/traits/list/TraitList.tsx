@@ -2,11 +2,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { RmuPagination, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { fetchTraits, RmuPagination, RmuTextCard, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchPagedTraits } from '../../api/trait';
-import { Trait } from '../../api/trait.dto';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
 import TraitListActions from './TraitListActions';
@@ -22,7 +20,7 @@ const TraitList: FC = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const bindTraits = () => {
-    fetchPagedTraits(searchString, page, pageSize)
+    fetchTraits(searchString, page, pageSize)
       .then((response) => {
         setTraits(response.content);
         setTotalPages(response.pagination.totalPages || 1);

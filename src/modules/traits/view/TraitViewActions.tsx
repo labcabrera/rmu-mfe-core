@@ -6,11 +6,11 @@ import {
   EditButton,
   DeleteButton,
   DeleteDialog,
+  deleteTrait,
+  Trait,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { deleteTrait } from '../../api/trait';
-import { Trait } from '../../api/trait.dto';
 
 const TraitViewActions: FC<{
   trait: Trait;
