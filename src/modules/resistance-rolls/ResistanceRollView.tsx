@@ -1,10 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
-import { RmuBreadcrumbs, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  emptyResistanceRollQuery,
+  resistanceRoll,
+  ResistanceRollQuery,
+  ResistanceRollResult,
+  RmuBreadcrumbs,
+  TechnicalInfo,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
-import { resistanceRoll } from '../api/resistance-roll';
-import { emptyResistanceRollQuery, ResistanceRollQuery, ResistanceRollResult } from '../api/resistance-roll.dto';
 import { gridSizeResume, gridSizeMain } from '../services/display';
 import { openEndedRoll } from '../services/random-service';
 import ResistanceRollViewForm from './ResistanceRollViewForm';
