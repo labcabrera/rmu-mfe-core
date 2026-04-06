@@ -1,10 +1,14 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CancelButton, RmuBreadcrumbs, SaveButton } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  CancelButton,
+  createSkill,
+  CreateSkillDto,
+  RmuBreadcrumbs,
+  SaveButton,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { createSkill } from '../../api/skill';
-import { CreateSkillDto } from '../../api/skill.dto';
 
 const SkillCreationActions: FC<{
   formData: CreateSkillDto;

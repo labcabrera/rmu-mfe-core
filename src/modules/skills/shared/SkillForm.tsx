@@ -1,12 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { Grid, TextField, Button, ButtonGroup } from '@mui/material';
+import {
+  CreateSkillDto,
+  UpdateSkillDto,
+  SkillCategory,
+  fetchSkillCategories,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { STATISTICS } from '../../api/common.dto';
-import { fetchSkillCategories } from '../../api/skill-category';
-import { SkillCategory } from '../../api/skill-category.dto';
-import { CreateSkillDto, UpdateSkillDto } from '../../api/skill.dto';
 import SelectAccessType from '../../shared/selects/SelectAccessType';
 import SelectSkillCategory from '../../shared/selects/SelectSkillCategory';
 import SelectSkillSpecialization from '../../shared/selects/SelectSkillSpecialization';
@@ -20,8 +23,8 @@ const SkillForm: FC<{
   const [categories, setCategories] = React.useState<SkillCategory[]>([]);
 
   useEffect(() => {
-    fetchSkillCategories()
-      .then((data) => setCategories(data))
+    fetchSkillCategories('', 0, 1000)
+      .then((data) => setCategories(data.content))
       .catch((err) => showError(err.message));
   }, []);
 

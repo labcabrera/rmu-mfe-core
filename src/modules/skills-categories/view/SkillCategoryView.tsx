@@ -1,10 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { fetchSkillCategory, fetchSkills, Skill, SkillCategory } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { fetchSkills } from '../../api/skill';
-import { fetchSkillCategory } from '../../api/skill-category';
-import { Skill } from '../../api/skill.dto';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import SkillCategoryViewActions from './SkillCategoryViewActions';
 import SkillCategoryViewInfo from './SkillCategoryViewInfo';
@@ -14,7 +13,7 @@ const SkillCategoryView: FC = () => {
   const location = useLocation();
   const { skillCategoryId } = useParams<{ skillCategoryId?: string }>();
   const { showError } = useError();
-  const [skillCategory, setSkillCategory] = useState<Skill | null>(null);
+  const [skillCategory, setSkillCategory] = useState<SkillCategory | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
 
   const bindSkillCategory = () => {

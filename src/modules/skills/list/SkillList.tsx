@@ -2,13 +2,16 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { RmuPagination, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  fetchSkillCategories,
+  fetchSkills,
+  RmuPagination,
+  RmuTextCard,
+  Skill,
+  SkillCategory,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchSkills } from '../../api/skill';
-import { fetchSkillCategories } from '../../api/skill-category';
-import { SkillCategory } from '../../api/skill-category.dto';
-import { Skill } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import SkillListActions from './SkillListActions';

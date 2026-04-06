@@ -2,11 +2,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { RmuPagination, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { RmuPagination, RmuTextCard, SkillCategory, fetchSkillCategories } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchPagedSkillCategories } from '../../api/skill-category';
-import { SkillCategory } from '../../api/skill-category.dto';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import SkillCategoryListActions from './SkillCategoryListActions';
@@ -22,7 +20,7 @@ const SkillCategoryList: FC = () => {
   const [queryString, setQueryString] = useState<string>('');
 
   const bindSkillCategories = () => {
-    fetchPagedSkillCategories(queryString, page, pageSize)
+    fetchSkillCategories(queryString, page, pageSize)
       .then((response) => {
         setSkillCategories(response.content);
         setTotalPages(response.pagination.totalPages || 1);
