@@ -1,10 +1,14 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RmuBreadcrumbs, CancelButton, SaveButton } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  RmuBreadcrumbs,
+  CancelButton,
+  SaveButton,
+  createRealm,
+  CreateRealmDto,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { createRealm } from '../../api/realm';
-import { CreateRealmDto } from '../../api/realm.dto';
 
 const RealmCreationActions: FC<{
   formData: CreateRealmDto;

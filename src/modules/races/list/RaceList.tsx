@@ -2,12 +2,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { RmuPagination, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { RmuPagination, RmuTextCard, Race, Realm, fetchRaces, fetchRealms } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { fetchPagedRaces } from '../../api/race';
-import { Race } from '../../api/race.dto';
-import { fetchRealms } from '../../api/realm';
-import { Realm } from '../../api/realm.dto';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RaceListActions from './RaceListActions';
 import RaceListSearch from './RaceListSearch';
@@ -23,7 +19,7 @@ const RaceList: FC = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const bindRaces = () => {
-    fetchPagedRaces(queryString, page, pageSize)
+    fetchRaces(queryString, page, pageSize)
       .then((response) => {
         setRaces(response.content);
         setTotalPages(response.pagination.totalPages || 1);

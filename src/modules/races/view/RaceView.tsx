@@ -7,14 +7,14 @@ import {
   EditableAvatar,
   RmuTextCard,
   TechnicalInfo,
+  Race,
+  Realm,
+  fetchRace,
+  fetchRealm,
+  updateRace,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchRace } from '../../api/race';
-import { updateRace } from '../../api/race';
-import { Race } from '../../api/race.dto';
-import { fetchRealm } from '../../api/realm';
-import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
 import { getAvatarImages } from '../../services/image-service';
 import RaceViewActions from './RaceViewActions';

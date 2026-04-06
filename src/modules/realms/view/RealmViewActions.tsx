@@ -6,11 +6,12 @@ import {
   EditButton,
   DeleteButton,
   DeleteDialog,
+  Realm,
+  fetchRealm,
+  deleteRealm,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { deleteRealm, fetchRealm } from '../../api/realm';
-import { Realm } from '../../api/realm.dto';
 
 const RealmViewActions: FC<{
   realm: Realm;

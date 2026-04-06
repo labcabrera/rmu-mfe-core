@@ -2,11 +2,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { RmuPagination, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { RmuPagination, RmuTextCard, Realm, fetchRealms } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchRealms } from '../../api/realm';
-import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RealmListActions from './RealmListActions';

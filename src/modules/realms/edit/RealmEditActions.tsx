@@ -1,10 +1,15 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RmuBreadcrumbs, CancelButton, SaveButton } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  RmuBreadcrumbs,
+  CancelButton,
+  SaveButton,
+  Realm,
+  UpdateRealmDto,
+  updateRealm,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { updateRealm } from '../../api/realm';
-import { Realm, UpdateRealmDto } from '../../api/realm.dto';
 
 const RealmEditActions: FC<{
   realm: Realm;

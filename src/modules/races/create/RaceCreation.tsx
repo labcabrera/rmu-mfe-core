@@ -1,11 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { EditableAvatar, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  EditableAvatar,
+  TechnicalInfo,
+  CreateRaceDto,
+  Realm,
+  fetchRealm,
+  raceCreateTemplate,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { CreateRaceDto, raceCreateTemplate } from '../../api/race.dto';
-import { fetchRealm } from '../../api/realm';
-import { Realm } from '../../api/realm.dto';
 import { getAvatarImages } from '../../services/image-service';
 import RaceForm from '../shared/RaceForm';
 import RaceCreationActions from './RaceCreationActions';

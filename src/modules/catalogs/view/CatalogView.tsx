@@ -2,18 +2,18 @@ import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Grid, Stack, Typography } from '@mui/material';
 import {
+  Realm,
   AddButton,
   CategorySeparator,
   DeleteButton,
   RmuCard,
   TechnicalInfo,
+  fetchRealms,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { deleteEnumeration, fetchEnumerations } from '../../api/enumerations';
 import { Enumeration } from '../../api/enumerations.dto';
-import { fetchRealms } from '../../api/realm';
-import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import AddEnumerationDialog from '../shared/AddEnumerationDialog';
@@ -84,7 +84,7 @@ const CatalogView: FC = () => {
               <Grid container spacing={1}>
                 {enumerations.map((e, index) => (
                   <Grid key={index} size={gridSizeCard}>
-                    <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`} size="small">
+                    <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`}>
                       <Stack direction="row" justifyContent="space-between">
                         <Stack direction="column">
                           <Typography>{t(e.key)}</Typography>
