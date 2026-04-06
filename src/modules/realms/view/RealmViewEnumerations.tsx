@@ -1,11 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { Grid, Typography } from '@mui/material';
-import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Enumeration, fetchEnumerations, Realm, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchEnumerations } from '../../api/enumerations';
-import { Enumeration } from '../../api/enumerations.dto';
-import { Realm } from '../../api/realm.dto';
 
 const RealmViewEnumerations: FC<{
   realm: Realm;

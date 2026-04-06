@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { Grid, TextField } from '@mui/material';
+import { CreateRaceDto, UpdateRaceDto, fetchEnumerations } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchEnumerations } from '../../api/enumerations';
-import { CreateRaceDto, UpdateRaceDto } from '../../api/race.dto';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 
 const RaceFormLore: FC<{

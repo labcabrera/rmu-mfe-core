@@ -1,9 +1,8 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { FormControl, FormControlLabel, Grid, MenuItem, Switch, TextField } from '@mui/material';
-import { NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { fetchEnumerationCategories, NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchEnumerationCategories } from '../../api/enumerations';
 import { CreateTraitDto, UpdateTraitDto } from '../../api/trait.dto';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';

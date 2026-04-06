@@ -9,11 +9,12 @@ import {
   RmuCard,
   TechnicalInfo,
   fetchRealms,
+  Enumeration,
+  deleteEnumeration,
+  fetchEnumerations,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { deleteEnumeration, fetchEnumerations } from '../../api/enumerations';
-import { Enumeration } from '../../api/enumerations.dto';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import AddEnumerationDialog from '../shared/AddEnumerationDialog';
