@@ -24,7 +24,6 @@ import RaceViewResistances from './RaceViewResistances';
 import RaceViewSkills from './RaceViewSkills';
 import RaceViewStats from './RaceViewStats';
 import RaceViewTraits from './RaceViewTraits';
-import AddRaceTraitDialog from './traits/AddRaceTraitDialog';
 
 const RaceView: FC = () => {
   const navigate = useNavigate();
@@ -32,7 +31,6 @@ const RaceView: FC = () => {
   const [realm, setRealm] = useState<Realm>();
   const { showError } = useError();
   const [race, setRace] = useState<Race>();
-  const [traitDialogOpen, setTraitDialogOpen] = useState(false);
 
   const onUpdateImage = (imageUrl: string) => {
     updateRace(race!.id, { imageUrl: imageUrl })
@@ -104,13 +102,8 @@ const RaceView: FC = () => {
           <RaceViewResistances race={race} />
           <CategorySeparator text={t('race-features')} />
           <RaceViewAttributes race={race} />
-          <CategorySeparator text={t('Traits')}>
-            <AddButton onClick={() => setTraitDialogOpen(true)} />
-          </CategorySeparator>
+
           <RaceViewTraits race={race} setRace={setRace} />
-          <CategorySeparator text={t('Skills')}>
-            <AddButton onClick={() => setTraitDialogOpen(true)} />
-          </CategorySeparator>
           <RaceViewSkills race={race} setRace={setRace} />
 
           {race.defaultLanguage && (
@@ -136,12 +129,6 @@ const RaceView: FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <AddRaceTraitDialog
-        open={traitDialogOpen}
-        race={race}
-        setRace={setRace}
-        onClose={() => setTraitDialogOpen(false)}
-      />
     </>
   );
 };
