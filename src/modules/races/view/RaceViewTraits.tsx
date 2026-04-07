@@ -1,9 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import { Grid, Typography } from '@mui/material';
-import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Race, RaceTrait, RmuTextCard, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
-import { Race, RaceTrait } from '../../api/race.dto';
-import { Trait } from '../../api/trait.dto';
 import { imageBaseUrl } from '../../services/config';
 import ViewTraitDialog from './traits/ViewTraitDialog';
 

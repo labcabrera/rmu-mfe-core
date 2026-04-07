@@ -1,6 +1,6 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Grid } from '@mui/material';
-import { NumericInput, CreateRaceDto, stats, UpdateRaceDto } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { NumericInput, CreateRaceDto, UpdateRaceDto, STATS } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 
 const RaceFormStats: FC<{
@@ -9,7 +9,7 @@ const RaceFormStats: FC<{
 }> = ({ formData, setFormData }) => {
   return (
     <Grid container columns={10} spacing={1}>
-      {stats.map((stat) => (
+      {STATS.map((stat) => (
         <Grid key={stat} size={{ xs: 5, md: 2 }}>
           <NumericInput
             label={t(stat)}
