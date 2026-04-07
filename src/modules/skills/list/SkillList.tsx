@@ -37,8 +37,8 @@ const SkillList: FC = () => {
   };
 
   const bindSkillCategories = () => {
-    fetchSkillCategories()
-      .then((data) => setSkillCategories(data))
+    fetchSkillCategories('', 0, 100)
+      .then((data) => setSkillCategories(data.content))
       .catch((err) => showError(err.message));
   };
 
