@@ -67,6 +67,7 @@ const AddRaceTraitDialog: FC<{
               onTierChange={(v) => setFormData({ ...formData, tier: v || undefined })}
               onSpecializationChange={(v) => setFormData({ ...formData, specialization: v || undefined })}
               onError={(err) => showError(err)}
+              t={(msg) => t(msg)}
             />
             <Grid size={12}>
               <TextField
