@@ -1,5 +1,6 @@
 export function getBearerToken(): string | null {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const auth = (globalThis as any).RMU_AUTH;
     if (!auth) {
       console.warn('RMU_AUTH is not defined on globalThis');
