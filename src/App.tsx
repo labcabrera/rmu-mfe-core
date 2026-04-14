@@ -7,6 +7,10 @@ import HomePage from './HomePage';
 import './i18n';
 import CatalogList from './modules/catalogs/list/CatalogList';
 import CatalogView from './modules/catalogs/view/CatalogView';
+import CultureCreation from './modules/cultures/create/CultureCreation';
+import CultureEdit from './modules/cultures/edit/CultureEdit';
+import CultureList from './modules/cultures/list/CultureList';
+import CultureView from './modules/cultures/view/CultureView';
 import ManeuversView from './modules/maneuvers/ManeuversView';
 import ProfessionCreation from './modules/professions/create/ProfessionCreation';
 import ProfessionEdit from './modules/professions/edit/ProfessionEdit';
@@ -54,6 +58,10 @@ const App = () => {
             <Route path="/races/create" element={<RaceCreation />} />
             <Route path="/races/view/:raceId" element={<RaceView />} />
             <Route path="/races/edit/:raceId" element={<RaceEdit />} />
+            <Route path="/cultures" element={<CultureList />} />
+            <Route path="/cultures/create" element={<CultureCreation />} />
+            <Route path="/cultures/view/:cultureId" element={<CultureView />} />
+            <Route path="/cultures/edit/:cultureId" element={<CultureEdit />} />
             <Route path="/professions" element={<ProfessionList />} />
             <Route path="/professions/create" element={<ProfessionCreation />} />
             <Route path="/professions/view/:professionId" element={<ProfessionView />} />

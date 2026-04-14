@@ -1,0 +1,22 @@
+import React, { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { RmuBreadcrumbs, RefreshButton, AddButton } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { t } from 'i18next';
+
+interface Props {
+  onRefresh: () => void;
+}
+
+const CultureListActions: FC<Props> = ({ onRefresh }) => {
+  const navigate = useNavigate();
+  const breadcrumbs = [{ name: t('core'), link: '/core' }, { name: t('Cultures') }];
+
+  return (
+    <RmuBreadcrumbs items={breadcrumbs}>
+      <AddButton onClick={() => navigate('/core/cultures/create')} />
+      <RefreshButton onClick={onRefresh} />
+    </RmuBreadcrumbs>
+  );
+};
+
+export default CultureListActions;
