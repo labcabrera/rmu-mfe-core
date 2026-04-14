@@ -44,12 +44,14 @@ function remoteUrlsFor(lang: string) {
     fetchJsonOrNull(urls.skillDescriptions),
     fetchJsonOrNull(urls.traits),
   ]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const merged: Record<string, any> = {
     ...(commonRemote || {}),
     ...(skillsRemote || {}),
     ...(skillDescriptionsRemote || {}),
     ...(itemsRemote || {}),
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const resources: Record<string, { translation: Record<string, any> }> = {};
   resources[lang] = { translation: merged };
   if (lang !== 'en') {

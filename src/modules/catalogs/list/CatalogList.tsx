@@ -1,10 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { fetchEnumerationCategories, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchEnumerationCategories } from '../../api/enumerations';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import CatalogListActions from './CatalogListActions';

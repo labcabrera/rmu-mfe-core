@@ -1,12 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
-import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { fetchRaces, Race, Realm, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchRaces } from '../../api/race';
-import { Race } from '../../api/race.dto';
-import { Realm } from '../../api/realm.dto';
 import { gridSizeCard } from '../../services/display';
 
 const RealmViewRaces: FC<{
@@ -18,8 +15,8 @@ const RealmViewRaces: FC<{
 
   useEffect(() => {
     if (realm) {
-      fetchRaces(`realm.id==${realm.id}`, 0, 50)
-        .then((response) => setRaces(response))
+      fetchRaces(`realm.id==${realm.id}`, 0, 100)
+        .then((response) => setRaces(response.content))
         .catch((err) => showError(err.message));
     }
   }, [realm, showError]);

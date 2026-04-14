@@ -27,6 +27,12 @@ const HomePage: FC = () => {
       to: '/core/professions',
     },
     {
+      value: 'Cultures',
+      subtitle: 'Manage cultures',
+      image: `${imageBaseUrl}images/generic/configuration.png`,
+      to: '/core/cultures',
+    },
+    {
       value: 'Skill categories',
       subtitle: 'Skill category reference',
       image: `${imageBaseUrl}images/generic/configuration.png`,

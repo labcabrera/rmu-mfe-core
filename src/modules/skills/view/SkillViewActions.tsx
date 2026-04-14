@@ -6,11 +6,11 @@ import {
   EditButton,
   DeleteButton,
   DeleteDialog,
+  deleteSkill,
+  Skill,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { deleteSkill } from '../../api/skill';
-import { Skill } from '../../api/skill.dto';
 
 const SkillViewActions: FC<{
   skill: Skill;

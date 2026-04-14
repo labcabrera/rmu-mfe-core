@@ -1,10 +1,14 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RmuBreadcrumbs, CancelButton, SaveButton } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  RmuBreadcrumbs,
+  CancelButton,
+  SaveButton,
+  createProfession,
+  CreateProfessionDto,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { createProfession } from '../../api/profession';
-import { CreateProfessionDto } from '../../api/profession.dto';
 
 const ProfessionCreationActions: FC<{
   formData: CreateProfessionDto;

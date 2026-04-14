@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Chip, Grid, Typography } from '@mui/material';
@@ -7,22 +8,22 @@ import {
   EditableAvatar,
   RmuTextCard,
   TechnicalInfo,
+  Race,
+  Realm,
+  fetchRace,
+  fetchRealm,
+  updateRace,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchRace } from '../../api/race';
-import { updateRace } from '../../api/race';
-import { Race } from '../../api/race.dto';
-import { fetchRealm } from '../../api/realm';
-import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
 import { getAvatarImages } from '../../services/image-service';
 import RaceViewActions from './RaceViewActions';
 import RaceViewAttributes from './RaceViewAttributes';
 import RaceViewResistances from './RaceViewResistances';
+import RaceViewSkills from './RaceViewSkills';
 import RaceViewStats from './RaceViewStats';
 import RaceViewTraits from './RaceViewTraits';
-import AddRaceTraitDialog from './traits/AddRaceTraitDialog';
 
 const RaceView: FC = () => {
   const navigate = useNavigate();
@@ -30,21 +31,20 @@ const RaceView: FC = () => {
   const [realm, setRealm] = useState<Realm>();
   const { showError } = useError();
   const [race, setRace] = useState<Race>();
-  const [traitDialogOpen, setTraitDialogOpen] = useState(false);
 
   const onUpdateImage = (imageUrl: string) => {
     updateRace(race!.id, { imageUrl: imageUrl })
       .then((updatedRace) => setRace(updatedRace))
-      .catch((err: Error) => showError(err.message));
+      .catch((err) => showError(err.message));
   };
 
   useEffect(() => {
     if (raceId) {
       fetchRace(raceId)
         .then((response) => setRace(response))
-        .catch((err: Error) => showError(err.message));
+        .catch((err) => showError(err.message));
     }
-  }, [raceId, showError]);
+  }, [raceId]);
 
   useEffect(() => {
     if (race) {
@@ -96,16 +96,16 @@ const RaceView: FC = () => {
               />
             </Grid>
           </Grid>
-          <CategorySeparator text={t('statistics')} />
+          <CategorySeparator text={t('Statistics')} />
           <RaceViewStats race={race} />
-          <CategorySeparator text={t('resistances')} />
+          <CategorySeparator text={t('Resistances')} />
           <RaceViewResistances race={race} />
           <CategorySeparator text={t('race-features')} />
           <RaceViewAttributes race={race} />
-          <CategorySeparator text={t('traits')}>
-            <AddButton onClick={() => setTraitDialogOpen(true)} />
-          </CategorySeparator>
+
           <RaceViewTraits race={race} setRace={setRace} />
+          <RaceViewSkills race={race} setRace={setRace} />
+
           {race.defaultLanguage && (
             <>
               <CategorySeparator text={t('language')} />
@@ -129,12 +129,6 @@ const RaceView: FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <AddRaceTraitDialog
-        open={traitDialogOpen}
-        race={race}
-        setRace={setRace}
-        onClose={() => setTraitDialogOpen(false)}
-      />
     </>
   );
 };

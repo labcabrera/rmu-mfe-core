@@ -1,9 +1,8 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, Typography } from '@mui/material';
+import { Race, RaceTrait, deleteRaceTrait } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../../ErrorContext';
-import { deleteRaceTrait } from '../../../api/race';
-import { Race, RaceTrait } from '../../../api/race.dto';
 
 const ViewTraitDialog: FC<{
   race: Race;

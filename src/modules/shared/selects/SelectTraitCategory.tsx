@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { MenuItem, TextField } from '@mui/material';
+import { traitCategories } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
-import { traitCategories } from '../../api/trait.dto';
 
 const SelectTraitCategory: FC<{
   label: string;

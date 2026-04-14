@@ -1,10 +1,8 @@
 import React, { FC, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, TextField } from '@mui/material';
+import { Realm, CreateEnumerationDto, createEnumeration } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { createEnumeration } from '../../api/enumerations';
-import { CreateEnumerationDto, Enumeration } from '../../api/enumerations.dto';
-import { Realm } from '../../api/realm.dto';
 import SelectRealm from '../../shared/selects/SelectRealm';
 
 type Props = {

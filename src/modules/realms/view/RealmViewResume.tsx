@@ -1,10 +1,8 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Chip, Grid, Typography } from '@mui/material';
-import { EditableAvatar } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { EditableAvatar, Realm, updateRealm } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { updateRealm } from '../../api/realm';
-import { Realm } from '../../api/realm.dto';
 import { imageBaseUrl } from '../../services/config';
 import { getAvatarImages } from '../../services/image-service';
 
@@ -17,7 +15,7 @@ const RealmViewResume: FC<{
   const onImageChange = (imageUrl: string) => {
     updateRealm(realm.id, { imageUrl })
       .then((updated) => setRealm(updated))
-      .catch((err: Error) => showError(err.message));
+      .catch((err) => showError(err.message));
   };
 
   return (

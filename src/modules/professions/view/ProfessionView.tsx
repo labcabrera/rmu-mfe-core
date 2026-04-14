@@ -1,11 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Chip, Grid, Stack } from '@mui/material';
-import { CategorySeparator, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { CategorySeparator, TechnicalInfo, Profession, fetchProfession } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchProfession } from '../../api/profession';
-import { Profession } from '../../api/profession.dto';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import ProfessionViewActions from './ProfessionViewActions';
 import ProfessionViewProfessionalSkills from './ProfessionViewProfessionalSkills';

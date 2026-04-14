@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Divider, Grid, Paper, Typography } from '@mui/material';
+import { AbsoluteManeuverTable } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
-import { AbsoluteManeuverTable } from '../api/maneuver.dto';
 
 const AbsoluteManeuverTableView: FC<{ table: AbsoluteManeuverTable; result: string | undefined }> = ({
   table,

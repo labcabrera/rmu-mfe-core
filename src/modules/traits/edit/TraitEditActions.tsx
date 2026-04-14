@@ -1,10 +1,15 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RmuBreadcrumbs, CancelButton, SaveButton } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  RmuBreadcrumbs,
+  CancelButton,
+  SaveButton,
+  Trait,
+  updateTrait,
+  UpdateTraitDto,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { updateTrait } from '../../api/trait';
-import { Trait, UpdateTraitDto } from '../../api/trait.dto';
 
 const TraitEditActions: FC<{
   trait: Trait;

@@ -2,10 +2,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { GenericAvatar, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { fetchSkill, GenericAvatar, Skill, TechnicalInfo, UpdateSkillDto } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { fetchSkill } from '../../api/skill';
-import { Skill, UpdateSkillDto } from '../../api/skill.dto';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import SkillForm from '../shared/SkillForm';
@@ -26,7 +24,6 @@ const SkillEdit: FC = () => {
   };
 
   const validateForm = () => {
-    console.log('validateForm');
     if (!formData) return false;
     if (formData.categoryId) return false;
     return true;

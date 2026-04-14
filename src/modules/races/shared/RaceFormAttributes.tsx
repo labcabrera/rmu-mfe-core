@@ -1,10 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { Grid, TextField } from '@mui/material';
-import { NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { CreateRaceDto, fetchEnumerations, NumericInput, UpdateRaceDto } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchEnumerations } from '../../api/enumerations';
-import { CreateRaceDto, UpdateRaceDto } from '../../api/race.dto';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
 

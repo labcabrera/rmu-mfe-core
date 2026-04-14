@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
-import { TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { CreateTraitDto } from '../../api/trait.dto';
+import { CreateTraitDto, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import TraitForm from '../shared/TraitForm';
 import TraitCreationActions from './TraitCreationActions';

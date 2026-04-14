@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { MenuItem, TextField } from '@mui/material';
+import { fetchEnumerationCategories } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
-import { fetchEnumerationCategories } from '../../api/enumerations';
 
 const SelectSkillSpecialization: FC<{
   value: string | null;

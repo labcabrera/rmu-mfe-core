@@ -1,10 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Button, Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
-import { NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  AbsoluteManeuverResult,
+  AbsoluteManeuverTable,
+  fetchAbsoluteManeuver,
+  fetchAbsoluteManeuverTable,
+  fetchAbsoluteManeuverTables,
+  NumericInput,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
-import { fetchAbsoluteManeuver, fetchAbsoluteManeuverTable, fetchAbsoluteManeuverTables } from '../api/maneuver';
-import { AbsoluteManeuverResult, AbsoluteManeuverTable } from '../api/maneuver.dto';
 import { openEndedRoll } from '../services/random-service';
 import SelectManeuverTable from '../shared/selects/SelectManeuverTable';
 import AbsoluteManeuverTableView from './AbsoluteManeuverTableView';
@@ -69,7 +74,7 @@ const AbsoluteManeuverView: FC = () => {
             <NumericInput
               label={t('Modifier')}
               value={modifier}
-              onChange={(e) => setModifier(e)}
+              onChange={(e) => setModifier(e || 0)}
               integer
               min={-1000}
               max={1000}
