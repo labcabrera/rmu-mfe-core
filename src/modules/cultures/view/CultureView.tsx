@@ -8,18 +8,23 @@ import {
   updateCulture,
   Culture,
   fetchCulture,
+  CategorySeparator,
+  AddButton,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { gridSizeMain, gridSizeResume } from '../../services/display';
 import { getAvatarImages } from '../../services/image-service';
 import CultureViewActions from './CultureViewActions';
+import AddCultureFixedSkillDialog from './skills/AddCultureFixedSkillDialog';
+import CultureSkillTable from './skills/CultureSkillTable';
 
 const CultureView: FC = () => {
   const location = useLocation();
   const { showError } = useError();
   const { cultureId } = useParams<{ cultureId: string | undefined }>();
-  const [culture, setCulture] = useState<Culture>();
+  const [culture, setCulture] = useState<Culture>({} as Culture);
+  const [addCultureFixedSkillDialogOpen, setAddCultureFixedSkillDialogOpen] = useState<boolean>(false);
 
   const onUpdateImage = (imageUrl: string) => {
     updateCulture(culture!.id, { imageUrl: imageUrl })
@@ -63,6 +68,14 @@ const CultureView: FC = () => {
           </Typography>
         </Grid>
         <Grid size={gridSizeMain}>
+          <Grid size={12}>
+            <CategorySeparator text={t('Fixed skills')}>
+              <AddButton onClick={() => setAddCultureFixedSkillDialogOpen(true)} />
+            </CategorySeparator>
+          </Grid>
+          <Grid size={12}>
+            <CultureSkillTable culture={culture} setCulture={setCulture} />
+          </Grid>
           <Grid size={12} mt={5}>
             <TechnicalInfo>
               <pre>{JSON.stringify(culture, null, 2)} </pre>
@@ -70,6 +83,12 @@ const CultureView: FC = () => {
           </Grid>
         </Grid>
       </Grid>
+      <AddCultureFixedSkillDialog
+        open={addCultureFixedSkillDialogOpen}
+        culture={culture}
+        setCulture={setCulture}
+        onClose={() => setAddCultureFixedSkillDialogOpen(false)}
+      />
     </>
   );
 };

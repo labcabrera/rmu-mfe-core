@@ -15,7 +15,7 @@ import { useError } from '../../../ErrorContext';
 
 const CultureViewActions: FC<{
   culture: Culture;
-  setCulture: Dispatch<SetStateAction<Culture | undefined>>;
+  setCulture: Dispatch<SetStateAction<Culture>>;
 }> = ({ culture, setCulture }) => {
   const navigate = useNavigate();
   const { showError } = useError();

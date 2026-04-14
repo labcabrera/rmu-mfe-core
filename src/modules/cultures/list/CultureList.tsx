@@ -53,7 +53,7 @@ const CultureList: FC = () => {
 
   return (
     <>
-      <CultureListActions onRefresh={bindRealms} />
+      <CultureListActions onRefresh={bindCultures} />
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
