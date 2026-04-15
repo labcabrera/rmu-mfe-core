@@ -52,39 +52,37 @@ const CultureList: FC = () => {
   if (!cultures) return <p>Loading...</p>;
 
   return (
-    <>
-      <CultureListActions onRefresh={bindCultures} />
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <Grid container spacing={1}>
-            <Grid size={12}>
-              <CultureListSearch setQueryString={setQueryString} realms={realms} />
-            </Grid>
-            {cultures.map((culture) => (
-              <Grid size={gridSizeCard} key={culture.id}>
-                <RmuTextCard
-                  value={culture.name}
-                  subtitle={t('Culture')}
-                  image={culture.imageUrl || ''}
-                  onClick={() => navigate(`/core/cultures/view/${culture.id}`, { state: { race: culture } })}
-                />
-              </Grid>
-            ))}
-            {cultures.length === 0 && <Grid size={12}>No cultures found.</Grid>}
-          </Grid>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}></Grid>
+      <Grid size={gridSizeMain}>
+        <CultureListActions onRefresh={bindCultures} />
+        <Grid container spacing={1}>
           <Grid size={12}>
-            <RmuPagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              setPage={setPage}
-              setPageSize={setPageSize}
-            />
+            <CultureListSearch setQueryString={setQueryString} realms={realms} />
           </Grid>
+          {cultures.map((culture) => (
+            <Grid size={gridSizeCard} key={culture.id}>
+              <RmuTextCard
+                value={culture.name}
+                subtitle={t('Culture')}
+                image={culture.imageUrl || ''}
+                onClick={() => navigate(`/core/cultures/view/${culture.id}`, { state: { race: culture } })}
+              />
+            </Grid>
+          ))}
+          {cultures.length === 0 && <Grid size={12}>No cultures found.</Grid>}
+        </Grid>
+        <Grid size={12}>
+          <RmuPagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            setPage={setPage}
+            setPageSize={setPageSize}
+          />
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

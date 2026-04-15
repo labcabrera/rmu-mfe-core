@@ -44,16 +44,14 @@ const SkillCategoryView: FC = () => {
   if (!skillCategory) return <p>Loading...</p>;
 
   return (
-    <>
-      <SkillCategoryViewActions skill={skillCategory} onRefresh={bindSkillCategory} />
-      <Grid container spacing={2}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <SkillCategoryViewInfo skillCategory={skillCategory} />
-          <SkillCategoryViewSkills skills={skills} />
-        </Grid>
+    <Grid container spacing={2}>
+      <Grid size={gridSizeResume}></Grid>
+      <Grid size={gridSizeMain}>
+        <SkillCategoryViewActions skill={skillCategory} onRefresh={bindSkillCategory} />
+        <SkillCategoryViewInfo skillCategory={skillCategory} />
+        <SkillCategoryViewSkills skills={skills} />
       </Grid>
-    </>
+    </Grid>
   );
 };
 

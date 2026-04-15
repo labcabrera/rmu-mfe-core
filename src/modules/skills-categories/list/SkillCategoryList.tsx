@@ -35,39 +35,37 @@ const SkillCategoryList: FC = () => {
   if (!skillCategories) return <p>Loading...</p>;
 
   return (
-    <>
-      <SkillCategoryListActions onRefresh={() => bindSkillCategories()} />
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <Grid container spacing={1}>
-            <Grid size={12}>
-              <SkillCategoryListSearch setQueryString={setQueryString} />
-            </Grid>
-            {skillCategories.map((category) => (
-              <Grid size={gridSizeCard} key={category.id}>
-                <RmuTextCard
-                  value={t(category.id)}
-                  subtitle={t('Skill category')}
-                  image={`${imageBaseUrl}images/generic/configuration.png`}
-                  onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { category } })}
-                />
-              </Grid>
-            ))}
-            {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
-          </Grid>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}></Grid>
+      <Grid size={gridSizeMain}>
+        <SkillCategoryListActions onRefresh={() => bindSkillCategories()} />
+        <Grid container spacing={1}>
           <Grid size={12}>
-            <RmuPagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              setPage={setPage}
-              setPageSize={setPageSize}
-            />
+            <SkillCategoryListSearch setQueryString={setQueryString} />
           </Grid>
+          {skillCategories.map((category) => (
+            <Grid size={gridSizeCard} key={category.id}>
+              <RmuTextCard
+                value={t(category.id)}
+                subtitle={t('Skill category')}
+                image={`${imageBaseUrl}images/generic/configuration.png`}
+                onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { category } })}
+              />
+            </Grid>
+          ))}
+          {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
+        </Grid>
+        <Grid size={12}>
+          <RmuPagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            setPage={setPage}
+            setPageSize={setPageSize}
+          />
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

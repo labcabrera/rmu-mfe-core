@@ -36,10 +36,10 @@ const RealmList: FC = () => {
 
   return (
     <>
-      <RealmListActions setRealms={setRealms} />
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
+          <RealmListActions setRealms={setRealms} />
           <Grid container spacing={1}>
             <Grid size={12}>
               <RealmListSearch setQueryString={setQueryString} />

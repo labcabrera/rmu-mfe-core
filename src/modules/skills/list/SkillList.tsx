@@ -54,39 +54,37 @@ const SkillList: FC = () => {
   if (!skills) return <p>Loading...</p>;
 
   return (
-    <>
-      <SkillListActions />
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <Grid container spacing={1}>
-            <Grid size={12}>
-              <SkillListSearch setQueryString={setQueryString} categories={skillCategories} />
-            </Grid>
-            {skills.map((skill) => (
-              <Grid size={gridSizeCard} key={skill.id}>
-                <RmuTextCard
-                  value={`${t(skill.id)}${skill.specialization ? ' *' : ''}`}
-                  subtitle={t(skill.categoryId)}
-                  image={`${imageBaseUrl}images/generic/configuration.png`}
-                  onClick={() => navigate(`/core/skills/view/${skill.id}`, { state: { skill } })}
-                />
-              </Grid>
-            ))}
-            {skills.length === 0 ? <p>No skills found.</p> : null}
-          </Grid>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}></Grid>
+      <Grid size={gridSizeMain}>
+        <SkillListActions />
+        <Grid container spacing={1}>
           <Grid size={12}>
-            <RmuPagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              setPage={setPage}
-              setPageSize={setPageSize}
-            />
+            <SkillListSearch setQueryString={setQueryString} categories={skillCategories} />
           </Grid>
+          {skills.map((skill) => (
+            <Grid size={gridSizeCard} key={skill.id}>
+              <RmuTextCard
+                value={`${t(skill.id)}${skill.specialization ? ' *' : ''}`}
+                subtitle={t(skill.categoryId)}
+                image={`${imageBaseUrl}images/generic/configuration.png`}
+                onClick={() => navigate(`/core/skills/view/${skill.id}`, { state: { skill } })}
+              />
+            </Grid>
+          ))}
+          {skills.length === 0 ? <p>No skills found.</p> : null}
+        </Grid>
+        <Grid size={12}>
+          <RmuPagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            setPage={setPage}
+            setPageSize={setPageSize}
+          />
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

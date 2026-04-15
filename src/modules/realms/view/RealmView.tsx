@@ -28,12 +28,12 @@ const RealmView: FC = () => {
 
   return (
     <>
-      <RealmViewActions realm={realm} setRealm={setRealm} />
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}>
           <RealmViewResume realm={realm} setRealm={setRealm} />
         </Grid>
         <Grid size={gridSizeMain}>
+          <RealmViewActions realm={realm} setRealm={setRealm} />
           <RealmViewTabs realm={realm} />
           <TechnicalInfo>
             <pre>{JSON.stringify(realm, null, 2)}</pre>

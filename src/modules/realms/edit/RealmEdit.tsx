@@ -37,24 +37,22 @@ const RealmEdit: FC = () => {
   if (!realm || !formData) return <div>Loading realm...</div>;
 
   return (
-    <>
-      <RealmEditActions realm={realm} formData={formData} />
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}>
-          <EditableAvatar
-            imageUrl={`${imageBaseUrl}images/generic/realm.png`}
-            images={getAvatarImages()}
-            onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl: imageUrl })}
-          />
-        </Grid>
-        <Grid size={gridSizeMain}>
-          <RealmForm formData={formData} setFormData={setFormData} />
-          <TechnicalInfo>
-            <pre>{JSON.stringify(formData, null, 2)}</pre>
-          </TechnicalInfo>
-        </Grid>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}>
+        <EditableAvatar
+          imageUrl={`${imageBaseUrl}images/generic/realm.png`}
+          images={getAvatarImages()}
+          onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl: imageUrl })}
+        />
       </Grid>
-    </>
+      <Grid size={gridSizeMain}>
+        <RealmEditActions realm={realm} formData={formData} />
+        <RealmForm formData={formData} setFormData={setFormData} />
+        <TechnicalInfo>
+          <pre>{JSON.stringify(formData, null, 2)}</pre>
+        </TechnicalInfo>
+      </Grid>
+    </Grid>
   );
 };
 

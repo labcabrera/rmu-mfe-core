@@ -44,33 +44,31 @@ const ManeuversView: FC = () => {
   }
 
   return (
-    <>
-      <ManeuversActions />
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab label={t('absolute')} {...a11yProps(0)} />
-              <Tab label={t('percent')} {...a11yProps(1)} />
-              <Tab label={t('endurance')} {...a11yProps(2)} />
-            </Tabs>
-          </Box>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}></Grid>
+      <Grid size={gridSizeMain}>
+        <ManeuversActions />
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab label={t('absolute')} {...a11yProps(0)} />
+            <Tab label={t('percent')} {...a11yProps(1)} />
+            <Tab label={t('endurance')} {...a11yProps(2)} />
+          </Tabs>
+        </Box>
 
-          <CustomTabPanel value={value} index={0}>
-            <AbsoluteManeuverView />
-          </CustomTabPanel>
+        <CustomTabPanel value={value} index={0}>
+          <AbsoluteManeuverView />
+        </CustomTabPanel>
 
-          <CustomTabPanel value={value} index={1}>
-            <PercentManeuverView />
-          </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <PercentManeuverView />
+        </CustomTabPanel>
 
-          <CustomTabPanel value={value} index={2}>
-            <EnduranceManeuverView />
-          </CustomTabPanel>
-        </Grid>
+        <CustomTabPanel value={value} index={2}>
+          <EnduranceManeuverView />
+        </CustomTabPanel>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

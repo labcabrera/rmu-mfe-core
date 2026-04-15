@@ -3,7 +3,6 @@ import React, { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Chip, Grid, Typography } from '@mui/material';
 import {
-  AddButton,
   CategorySeparator,
   EditableAvatar,
   RmuTextCard,
@@ -13,10 +12,12 @@ import {
   fetchRace,
   fetchRealm,
   updateRace,
+  UpdateRaceDto,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
+import { gridSizeMain, gridSizeResume } from '../../services/display';
 import { getAvatarImages } from '../../services/image-service';
 import RaceViewActions from './RaceViewActions';
 import RaceViewAttributes from './RaceViewAttributes';
@@ -33,7 +34,8 @@ const RaceView: FC = () => {
   const [race, setRace] = useState<Race>();
 
   const onUpdateImage = (imageUrl: string) => {
-    updateRace(race!.id, { imageUrl: imageUrl })
+    const props = { imageUrl } as UpdateRaceDto;
+    updateRace(race!.id, props)
       .then((updatedRace) => setRace(updatedRace))
       .catch((err) => showError(err.message));
   };
@@ -58,9 +60,8 @@ const RaceView: FC = () => {
 
   return (
     <>
-      <RaceViewActions race={race} setRace={setRace} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}>
+        <Grid size={gridSizeResume}>
           <EditableAvatar
             imageUrl={race.imageUrl || ''}
             onImageChange={(avatar) => onUpdateImage(avatar)}
@@ -84,7 +85,8 @@ const RaceView: FC = () => {
             {race.description}
           </Typography>
         </Grid>
-        <Grid size={{ xs: 12, md: 9 }}>
+        <Grid size={gridSizeMain}>
+          <RaceViewActions race={race} setRace={setRace} />
           <CategorySeparator text={t('realm')} />
           <Grid container spacing={1} columns={10}>
             <Grid size={{ xs: 12, md: 2 }}>

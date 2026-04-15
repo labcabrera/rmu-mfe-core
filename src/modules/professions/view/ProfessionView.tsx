@@ -27,12 +27,12 @@ const ProfessionView: FC = () => {
 
   return (
     <>
-      <ProfessionViewActions profession={profession} setProfession={setProfession} />
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}>
           <ProfessionViewResume profession={profession} setProfession={setProfession} />
         </Grid>
         <Grid size={gridSizeMain} padding={1}>
+          <ProfessionViewActions profession={profession} setProfession={setProfession} />
           {profession.availableRealmTypes.length > 0 && (
             <>
               <CategorySeparator text={t('Available realms')} />

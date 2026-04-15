@@ -39,10 +39,10 @@ const ProfessionList: FC = () => {
 
   return (
     <>
-      <ProfessionListActions onRefresh={bindProfessions} />
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
+          <ProfessionListActions onRefresh={bindProfessions} />
           <Grid container spacing={1}>
             <Grid size={12}>
               <ProfessionListSearch setQueryString={setQueryString} />

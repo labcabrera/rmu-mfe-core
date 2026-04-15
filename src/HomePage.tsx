@@ -72,10 +72,10 @@ const HomePage: FC = () => {
 
   return (
     <>
-      <RmuBreadcrumbs items={[{ name: 'Core' }]} />
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
+          <RmuBreadcrumbs items={[{ name: 'Core' }]} />
           <Grid container spacing={1}>
             {cards.map((c) => (
               <Grid size={gridSizeCard} key={c.value}>

@@ -35,7 +35,6 @@ const RaceEdit: FC = () => {
 
   return (
     <>
-      <RaceEditActions race={race} formData={formData} />
       <Grid container spacing={2} padding={1}>
         <Grid size={gridSizeResume}>
           <EditableAvatar
@@ -44,7 +43,8 @@ const RaceEdit: FC = () => {
             images={getAvatarImages()}
           />
         </Grid>
-        <Grid size={gridSizeMain} padding={1}>
+        <Grid size={gridSizeMain} spacing={1}>
+          <RaceEditActions race={race} formData={formData} />
           <RaceForm realmId={race.realm.id} formData={formData} setFormData={setFormData} />
           <TechnicalInfo>
             <pre>Form: {JSON.stringify(formData, null, 2)}</pre>

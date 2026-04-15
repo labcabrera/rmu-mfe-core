@@ -2,7 +2,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { GenericAvatar, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { fetchTrait, GenericAvatar, TechnicalInfo, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
@@ -34,20 +34,18 @@ const TraitView: FC = () => {
   if (!trait) return <p>Loading...</p>;
 
   return (
-    <>
-      <TraitViewActions trait={trait} onRefresh={bindTrait} />
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}>
-          <GenericAvatar imageUrl={getTraitImage(trait)} />
-        </Grid>
-        <Grid size={gridSizeMain}>
-          <TraitViewInfo trait={trait} />
-          <TechnicalInfo>
-            <pre>{JSON.stringify(trait, null, 2)}</pre>
-          </TechnicalInfo>
-        </Grid>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}>
+        <GenericAvatar imageUrl={getTraitImage(trait)} />
       </Grid>
-    </>
+      <Grid size={gridSizeMain}>
+        <TraitViewActions trait={trait} onRefresh={bindTrait} />
+        <TraitViewInfo trait={trait} />
+        <TechnicalInfo>
+          <pre>{JSON.stringify(trait, null, 2)}</pre>
+        </TechnicalInfo>
+      </Grid>
+    </Grid>
   );
 };
 

@@ -14,7 +14,7 @@ const RealmListActions: FC<{ setRealms: Dispatch<SetStateAction<Realm[]>> }> = (
 
   const onRefreshButtonClick = () => {
     fetchRealms('', 0, 20)
-      .then((response) => setRealms(response))
+      .then((response) => setRealms(response.content))
       .catch((err) => showError(err.message));
   };
 

@@ -28,26 +28,24 @@ const RealmList: FC = () => {
   };
 
   return (
-    <>
-      <CatalogListActions onRefresh={bindCategories} />
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <Grid container spacing={1}>
-            {categories.map((category, index) => (
-              <Grid size={gridSizeCard} key={index}>
-                <RmuTextCard
-                  value={t(category)}
-                  subtitle={t('Category')}
-                  image={`${imageBaseUrl}images/generic/configuration.png`}
-                  onClick={() => handleRealmClick(category)}
-                />
-              </Grid>
-            ))}
-          </Grid>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}></Grid>
+      <Grid size={gridSizeMain}>
+        <CatalogListActions onRefresh={bindCategories} />
+        <Grid container spacing={1}>
+          {categories.map((category, index) => (
+            <Grid size={gridSizeCard} key={index}>
+              <RmuTextCard
+                value={t(category)}
+                subtitle={t('Category')}
+                image={`${imageBaseUrl}images/generic/configuration.png`}
+                onClick={() => handleRealmClick(category)}
+              />
+            </Grid>
+          ))}
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 
