@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { Grid, TextField } from '@mui/material';
-import { CreateRaceDto, fetchEnumerations, NumericInput, UpdateRaceDto } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { fetchEnumerations, NumericInput, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
 
 const RaceFormAttributes: FC<{
-  formData: CreateRaceDto | UpdateRaceDto;
-  setFormData: Dispatch<SetStateAction<CreateRaceDto | UpdateRaceDto | undefined>>;
+  formData: Race;
+  setFormData: Dispatch<SetStateAction<Race>>;
 }> = ({ formData, setFormData }) => {
   const { showError } = useError();
   const [archetypes, setArchetypes] = useState<SelectOption[]>([]);
@@ -55,7 +55,7 @@ const RaceFormAttributes: FC<{
           label={t('base-hit-points')}
           name="baseHitsMale"
           value={formData.baseHits}
-          onChange={(value) => setFormData({ ...formData, baseHits: value })}
+          onChange={(value) => setFormData({ ...formData, baseHits: value || 0 })}
         />
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
@@ -63,7 +63,7 @@ const RaceFormAttributes: FC<{
           label={t('stride-bonus')}
           name="strideBonusMale"
           value={formData.strideBonus}
-          onChange={(value) => setFormData({ ...formData, strideBonus: value })}
+          onChange={(value) => setFormData({ ...formData, strideBonus: value || 0 })}
         />
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
@@ -71,7 +71,7 @@ const RaceFormAttributes: FC<{
           label={t('endurance-bonus')}
           name="enduranceBonusMale"
           value={formData.enduranceBonus}
-          onChange={(value) => setFormData({ ...formData, enduranceBonus: value })}
+          onChange={(value) => setFormData({ ...formData, enduranceBonus: value || 0 })}
         />
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
@@ -82,7 +82,7 @@ const RaceFormAttributes: FC<{
           integer={false}
           min={0}
           maxFractionDigits={2}
-          onChange={(value) => setFormData({ ...formData, recoveryMultiplier: value })}
+          onChange={(value) => setFormData({ ...formData, recoveryMultiplier: value || 0 })}
         />
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
@@ -90,7 +90,7 @@ const RaceFormAttributes: FC<{
           label={t('base-dev-points')}
           name="baseDevPointsMale"
           value={formData.baseDevPoints}
-          onChange={(value) => setFormData({ ...formData, baseDevPoints: value })}
+          onChange={(value) => setFormData({ ...formData, baseDevPoints: value || 0 })}
           min={0}
         />
       </Grid>
@@ -99,7 +99,7 @@ const RaceFormAttributes: FC<{
           label={t('base-at')}
           name="baseAtMale"
           value={formData.baseAt}
-          onChange={(value) => setFormData({ ...formData, baseAt: value })}
+          onChange={(value) => setFormData({ ...formData, baseAt: value || 0 })}
           min={1}
           max={10}
           integer

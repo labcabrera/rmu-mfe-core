@@ -48,7 +48,7 @@ const RaceList: FC = () => {
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
-          <RaceListActions onRefresh={bindRealms} />
+          <RaceListActions onRefresh={bindRaces} />
           <Grid container spacing={1}>
             <Grid size={12}>
               <RaceListSearch setQueryString={setQueryString} realms={realms} />

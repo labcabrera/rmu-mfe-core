@@ -10,6 +10,7 @@ import {
   raceCreateTemplate,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
+import { gridSizeMain, gridSizeResume } from '../../services/display';
 import { getAvatarImages } from '../../services/image-service';
 import RaceForm from '../shared/RaceForm';
 import RaceCreationActions from './RaceCreationActions';
@@ -49,24 +50,22 @@ const RaceCreation: FC = () => {
   if (!realm || !formData) return <div>Loading...</div>;
 
   return (
-    <>
-      <RaceCreationActions formData={formData} isValid={isValid} />
-      <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}>
-          <EditableAvatar
-            imageUrl={formData.imageUrl || ''}
-            onImageChange={(avatar) => setFormData({ ...formData, imageUrl: avatar })}
-            images={getAvatarImages()}
-          />
-        </Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
-          <RaceForm realmId={realm.id} formData={formData} setFormData={setFormData} />
-          <TechnicalInfo>
-            <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
-          </TechnicalInfo>
-        </Grid>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}>
+        <EditableAvatar
+          imageUrl={formData.imageUrl || ''}
+          onImageChange={(avatar) => setFormData({ ...formData, imageUrl: avatar })}
+          images={getAvatarImages()}
+        />
       </Grid>
-    </>
+      <Grid size={gridSizeMain}>
+        <RaceCreationActions formData={formData} isValid={isValid} />
+        <RaceForm realmId={realm.id} formData={formData} setFormData={setFormData} />
+        <TechnicalInfo>
+          <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
+        </TechnicalInfo>
+      </Grid>
+    </Grid>
   );
 };
 

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Chip, Grid, Typography } from '@mui/material';
 import {
   CategorySeparator,
@@ -28,6 +28,7 @@ import RaceViewTraits from './RaceViewTraits';
 
 const RaceView: FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { raceId } = useParams<{ raceId: string | undefined }>();
   const [realm, setRealm] = useState<Realm>();
   const { showError } = useError();
@@ -41,20 +42,22 @@ const RaceView: FC = () => {
   };
 
   useEffect(() => {
-    if (raceId) {
-      fetchRace(raceId)
-        .then((response) => setRace(response))
-        .catch((err) => showError(err.message));
-    }
-  }, [raceId]);
-
-  useEffect(() => {
     if (race) {
       fetchRealm(race.realm.id)
         .then((response) => setRealm(response))
         .catch((err: Error) => showError(err.message));
     }
   }, [race]);
+
+  useEffect(() => {
+    if (location.state.race) {
+      setRace(location.state.race);
+    } else if (raceId) {
+      fetchRace(raceId)
+        .then((response) => setRace(response))
+        .catch((err) => showError(err.message));
+    }
+  }, [location, raceId]);
 
   if (!race) return <p>Loading race...</p>;
 
