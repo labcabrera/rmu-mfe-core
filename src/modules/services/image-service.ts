@@ -111,6 +111,13 @@ export const getAvatarImages = () => {
     `${imageBaseUrl}images/races/unknown-full.png`,
     `${imageBaseUrl}images/races/unknown.png`,
 
+    `${imageBaseUrl}images/professions/fighter.png`,
+    `${imageBaseUrl}images/professions/rogue.png`,
+    `${imageBaseUrl}images/professions/ranger.png`,
+    `${imageBaseUrl}images/professions/thief.png`,
+    `${imageBaseUrl}images/professions/bard.png`,
+    `${imageBaseUrl}images/professions/magician.png`,
+
     `${imageBaseUrl}images/npcs/bear.png`,
     `${imageBaseUrl}images/npcs/boar.png`,
     `${imageBaseUrl}images/npcs/cat.png`,

@@ -1,11 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { EditableAvatar, TechnicalInfo, Culture } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { imageBaseUrl } from '../../services/config';
+import { gridSizeMain, gridSizeResume } from '../../services/display';
 import { getAvatarImages } from '../../services/image-service';
 import CultureForm from '../shared/CultureForm';
 import CultureCreationActions from './CultureCreationActions';
 
-const EMPTY_CULTURE = {} as Culture;
+const EMPTY_CULTURE = {
+  name: '',
+  description: '',
+  imageUrl: `${imageBaseUrl}images/generic/cultures.png`,
+  accessType: 'private',
+} as Culture;
 
 const CultureCreation: FC = () => {
   const [formData, setFormData] = useState<Culture>(EMPTY_CULTURE);
@@ -23,16 +30,16 @@ const CultureCreation: FC = () => {
 
   return (
     <>
-      <CultureCreationActions formData={formData} isValid={isValid} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}>
+        <Grid size={gridSizeResume}>
           <EditableAvatar
             imageUrl={formData.imageUrl || ''}
             onImageChange={(avatar) => setFormData({ ...formData, imageUrl: avatar })}
             images={getAvatarImages()}
           />
         </Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={gridSizeMain}>
+          <CultureCreationActions formData={formData} isValid={isValid} />
           <CultureForm formData={formData} setFormData={setFormData} />
           <TechnicalInfo>
             <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>

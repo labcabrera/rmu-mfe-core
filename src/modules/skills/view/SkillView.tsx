@@ -46,19 +46,17 @@ const SkillView: FC = () => {
   if (!skill) return <p>Loading...</p>;
 
   return (
-    <>
-      <SkillViewActions skill={skill} onRefresh={() => bindSkill(skillId!)} />
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <SkillViewInfo skill={skill} />
-          {enumerations && <SkillViewSpecializations enumerations={enumerations} />}
-          <TechnicalInfo>
-            <pre>Skill: {JSON.stringify(skill, null, 2)}</pre>
-          </TechnicalInfo>
-        </Grid>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}></Grid>
+      <Grid size={gridSizeMain}>
+        <SkillViewActions skill={skill} onRefresh={() => bindSkill(skillId!)} />
+        <SkillViewInfo skill={skill} />
+        {enumerations && <SkillViewSpecializations enumerations={enumerations} />}
+        <TechnicalInfo>
+          <pre>Skill: {JSON.stringify(skill, null, 2)}</pre>
+        </TechnicalInfo>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

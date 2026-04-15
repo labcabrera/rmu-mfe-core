@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Grid, Stack, Typography } from '@mui/material';
@@ -59,7 +60,6 @@ const CatalogView: FC = () => {
   useEffect(() => {
     if (category) {
       setQueryString(`category==${category}`);
-      // bindEnumerations();
     }
     bindRealms();
   }, [category]);
@@ -68,10 +68,10 @@ const CatalogView: FC = () => {
 
   return (
     <>
-      <CatalogViewActions onRefresh={() => bindEnumerations()} />
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
+          <CatalogViewActions onRefresh={() => bindEnumerations()} />
           <Grid container spacing={1}>
             <Grid size={12}>
               <CategorySeparator text={t(category)}>

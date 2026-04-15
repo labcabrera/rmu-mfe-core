@@ -46,7 +46,6 @@ const CultureView: FC = () => {
 
   return (
     <>
-      <CultureViewActions culture={culture} setCulture={setCulture} />
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}>
           <EditableAvatar
@@ -68,6 +67,7 @@ const CultureView: FC = () => {
           </Typography>
         </Grid>
         <Grid size={gridSizeMain}>
+          <CultureViewActions culture={culture} setCulture={setCulture} />
           <Grid size={12}>
             <CategorySeparator text={t('Fixed skills')}>
               <AddButton onClick={() => setAddCultureFixedSkillDialogOpen(true)} />

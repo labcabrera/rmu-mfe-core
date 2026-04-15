@@ -10,18 +10,6 @@ const CultureFormAttributes: FC<{
   return (
     <Grid container spacing={1} columns={10}>
       <Grid size={12}>
-        <ToggleButtonGroup
-          color={formData.accessType === 'private' ? 'error' : 'success'}
-          value={formData.accessType}
-          exclusive
-          onChange={(_e, v) => setFormData({ ...formData, accessType: v })}
-          aria-label="Platform"
-        >
-          <ToggleButton value="public">Public</ToggleButton>
-          <ToggleButton value="private">Private</ToggleButton>
-        </ToggleButtonGroup>
-      </Grid>
-      <Grid size={12}>
         <TextField
           label={t('Name')}
           name="name"
@@ -30,6 +18,18 @@ const CultureFormAttributes: FC<{
           fullWidth
           error={!formData.name}
         />
+      </Grid>
+      <Grid size={12}>
+        <ToggleButtonGroup
+          color={formData.accessType === 'private' ? 'error' : 'success'}
+          value={formData.accessType}
+          exclusive
+          onChange={(_e, v) => setFormData({ ...formData, accessType: v })}
+          size="small"
+        >
+          <ToggleButton value="public">Public</ToggleButton>
+          <ToggleButton value="private">Private</ToggleButton>
+        </ToggleButtonGroup>
       </Grid>
       <Grid size={12}>
         <TextField

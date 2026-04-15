@@ -23,25 +23,25 @@ const HomePage: FC = () => {
     {
       value: 'Professions',
       subtitle: 'Manage professions',
-      image: `${imageBaseUrl}images/generic/configuration.png`,
+      image: `${imageBaseUrl}images/generic/professions.png`,
       to: '/core/professions',
     },
     {
       value: 'Cultures',
       subtitle: 'Manage cultures',
-      image: `${imageBaseUrl}images/generic/configuration.png`,
+      image: `${imageBaseUrl}images/generic/cultures.png`,
       to: '/core/cultures',
     },
     {
       value: 'Skill categories',
       subtitle: 'Skill category reference',
-      image: `${imageBaseUrl}images/generic/configuration.png`,
+      image: `${imageBaseUrl}images/generic/skills.png`,
       to: '/core/skill-categories',
     },
     {
       value: 'Skills',
       subtitle: 'Skill reference',
-      image: `${imageBaseUrl}images/generic/configuration.png`,
+      image: `${imageBaseUrl}images/generic/skills.png`,
       to: '/core/skills',
     },
     {
@@ -59,13 +59,13 @@ const HomePage: FC = () => {
     {
       value: 'Maneuvers',
       subtitle: 'Maneuvers',
-      image: `${imageBaseUrl}images/generic/configuration.png`,
+      image: `${imageBaseUrl}images/generic/maneuver-penalty.png`,
       to: '/core/maneuvers',
     },
     {
       value: 'Resistance rolls',
       subtitle: 'Resistance rolls',
-      image: `${imageBaseUrl}images/generic/configuration.png`,
+      image: `${imageBaseUrl}images/generic/poison.png`,
       to: '/core/resistance-rolls',
     },
   ];

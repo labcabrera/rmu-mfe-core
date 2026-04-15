@@ -37,8 +37,7 @@ const CultureEdit: FC = () => {
 
   return (
     <>
-      <RaceEditActions culture={culture} formData={formData} />
-      <Grid container spacing={2} padding={1}>
+      <Grid container spacing={2}>
         <Grid size={gridSizeResume}>
           <EditableAvatar
             imageUrl={formData.imageUrl || ''}
@@ -46,7 +45,8 @@ const CultureEdit: FC = () => {
             images={getAvatarImages()}
           />
         </Grid>
-        <Grid size={gridSizeMain} padding={1}>
+        <Grid size={gridSizeMain}>
+          <RaceEditActions culture={culture} formData={formData} />
           <CultureForm formData={formData} setFormData={setFormData} />
           <TechnicalInfo>
             <pre>Form: {JSON.stringify(formData, null, 2)}</pre>

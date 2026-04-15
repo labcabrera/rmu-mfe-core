@@ -24,7 +24,7 @@ const ProfessionEdit: FC = () => {
 
   useEffect(() => {
     if (profession) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       const { id, ...rest } = profession;
       setFormData(rest as UpdateProfessionDto);
     }
@@ -43,27 +43,25 @@ const ProfessionEdit: FC = () => {
   if (!profession || !formData) return <div>Loading profession...</div>;
 
   return (
-    <>
-      <ProfessionEditActions profession={profession} formData={formData} />
-      <Grid container spacing={2} padding={1}>
-        <Grid size={gridSizeResume}>
-          <EditableAvatar
-            imageUrl={formData.imageUrl || ''}
-            onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
-            images={getAvatarImages()}
-          />
-          <Typography variant="h6" mt={2}>
-            {t(profession.id)}
-          </Typography>
-        </Grid>
-        <Grid size={gridSizeMain} padding={1}>
-          <ProfessionForm formData={formData} setFormData={setFormData} creationMode={false} />
-          <TechnicalInfo>
-            <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
-          </TechnicalInfo>
-        </Grid>
+    <Grid container spacing={2}>
+      <Grid size={gridSizeResume}>
+        <EditableAvatar
+          imageUrl={formData.imageUrl || ''}
+          onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
+          images={getAvatarImages()}
+        />
+        <Typography variant="h6" mt={2}>
+          {t(profession.id)}
+        </Typography>
       </Grid>
-    </>
+      <Grid size={gridSizeMain}>
+        <ProfessionEditActions profession={profession} formData={formData} />
+        <ProfessionForm formData={formData} setFormData={setFormData} creationMode={false} />
+        <TechnicalInfo>
+          <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
+        </TechnicalInfo>
+      </Grid>
+    </Grid>
   );
 };
 
