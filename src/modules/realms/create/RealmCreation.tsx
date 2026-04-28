@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
-import { EditableAvatar, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { CreateRealmDto } from '../../api/realm.dto';
+import { CreateRealmDto, EditableAvatar, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { gridSizeMain, gridSizeResume } from '../../services/display';
 import { DEFAULT_REALM_IMAGE, getAvatarImages } from '../../services/image-service';
 import RealmForm from '../shared/RealmForm';

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { RmuPagination, RmuTextCard, Realm, fetchRealms } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -14,6 +15,7 @@ const defaultImage = `${imageBaseUrl}images/generic/realm.png`;
 
 const RealmList: FC = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
   const { showError } = useError();
   const [realms, setRealms] = useState<Realm[]>([]);
   const [queryString, setQueryString] = useState<string>('');
@@ -22,17 +24,21 @@ const RealmList: FC = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
 
   useEffect(() => {
-    fetchRealms(queryString, page, pageSize)
+    fetchRealms(queryString, page, pageSize, auth)
       .then((response) => {
         setRealms(response.content);
         setTotalPages(response.pagination.totalPages);
       })
       .catch((err) => showError(err.message));
-  }, [queryString]);
+  }, [queryString, auth]);
 
   const handleRealmClick = (realm: Realm) => {
     navigate(`/core/realms/view/${realm.id}`, { state: { realm } });
   };
+
+  if (!auth || !auth.isAuthenticated) {
+    return <p>Required authentication.</p>;
+  }
 
   return (
     <>

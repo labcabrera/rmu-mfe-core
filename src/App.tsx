@@ -47,7 +47,7 @@ const App = () => {
   return (
     <ThemeProvider theme={useTheme()}>
       <ErrorProvider>
-        <Box padding={2}>
+        <Box sx={{ p: 2, minHeight: '600pt' }}>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/realms" element={<RealmList />} />

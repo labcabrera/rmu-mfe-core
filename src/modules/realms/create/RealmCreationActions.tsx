@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -14,6 +15,7 @@ const RealmCreationActions: FC<{
   formData: CreateRealmDto;
   isValid: boolean;
 }> = ({ formData, isValid }) => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const { showError } = useError();
   const breadcrumbs = [
@@ -23,7 +25,7 @@ const RealmCreationActions: FC<{
   ];
 
   const onSaveClick = async () => {
-    createRealm(formData)
+    createRealm(formData, auth)
       .then((realm) => navigate(`/core/realms/view/${realm.id}`))
       .catch((err) => showError(err.message));
   };
