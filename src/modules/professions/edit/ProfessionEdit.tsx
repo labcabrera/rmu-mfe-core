@@ -14,9 +14,11 @@ import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getAvatarImages } from '../../services/image-service';
 import ProfessionForm from '../shared/ProfessionForm';
 import ProfessionEditActions from './ProfessionEditActions';
+import { useAuth } from 'react-oidc-context';
 
 const ProfessionEdit: FC = () => {
   const location = useLocation();
+  const auth = useAuth();
   const { showError } = useError();
   const { professionId } = useParams<{ professionId: string }>();
   const [profession, setProfession] = useState<Profession>();
@@ -34,11 +36,11 @@ const ProfessionEdit: FC = () => {
     if (location.state && location.state.profession) {
       setProfession(location.state.profession);
     } else if (professionId) {
-      fetchProfession(professionId)
+      fetchProfession(professionId, auth)
         .then((response) => setProfession(response))
         .catch((err) => showError(err.message));
     }
-  }, [location.state, professionId, showError]);
+  }, [location.state, professionId]);
 
   if (!profession || !formData) return <div>Loading profession...</div>;
 
@@ -50,7 +52,7 @@ const ProfessionEdit: FC = () => {
           onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
           images={getAvatarImages()}
         />
-        <Typography variant="h6" mt={2}>
+        <Typography variant="h6" sx={{mt:2}}>
           {t(profession.id)}
         </Typography>
       </Grid>

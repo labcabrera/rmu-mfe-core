@@ -8,9 +8,11 @@ import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import ProfessionListActions from './ProfessionListActions';
 import ProfessionListSearch from './ProfessionListSearch';
+import { useAuth } from 'react-oidc-context';
 
 const ProfessionList: FC = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
   const { showError } = useError();
   const [queryString, setQueryString] = useState('');
   const [professions, setProfessions] = useState<Profession[]>([]);
@@ -19,7 +21,7 @@ const ProfessionList: FC = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const bindProfessions = () => {
-    fetchProfessions(queryString, page, pageSize)
+    fetchProfessions(queryString, page, pageSize, auth)
       .then((response) => {
         setProfessions(response.content);
         setTotalPages(response.pagination.totalPages || 1);

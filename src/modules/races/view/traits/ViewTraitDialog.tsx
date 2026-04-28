@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, Typography } from '@mui/material';
 import { Race, RaceTrait, deleteRaceTrait } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
@@ -11,13 +12,14 @@ const ViewTraitDialog: FC<{
   open: boolean;
   onClose: () => void;
 }> = ({ race, setRace, trait, open, onClose }) => {
+  const auth = useAuth();
   const { showError } = useError();
 
   if (!trait) return null;
 
   const onDelete = () => {
     if (!trait) return;
-    deleteRaceTrait(race.id, trait.id)
+    deleteRaceTrait(race.id, trait.id, auth)
       .then((updated) => {
         setRace(updated);
         onClose();

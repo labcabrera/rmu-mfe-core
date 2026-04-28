@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import {
   Culture,
@@ -14,6 +15,7 @@ const CultureSkillTable: FC<{
   culture: Culture;
   setCulture: Dispatch<SetStateAction<Culture>>;
 }> = ({ culture, setCulture }) => {
+  const auth = useAuth();
   const { showError } = useError();
   const [selectedSkill, setSelectedSkill] = useState<CultureSkillRank>();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
@@ -25,7 +27,7 @@ const CultureSkillTable: FC<{
 
   const deleteSkill = () => {
     if (!selectedSkill) return;
-    deleteCultureFixedSkillRank(culture.id, selectedSkill.skillId, selectedSkill.specialization)
+    deleteCultureFixedSkillRank(culture.id, selectedSkill.skillId, selectedSkill.specialization, auth)
       .then((response) => {
         setCulture(response);
         setDeleteDialogOpen(false);

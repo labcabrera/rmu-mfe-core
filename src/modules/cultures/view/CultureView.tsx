@@ -18,16 +18,18 @@ import { getAvatarImages } from '../../services/image-service';
 import CultureViewActions from './CultureViewActions';
 import AddCultureFixedSkillDialog from './skills/AddCultureFixedSkillDialog';
 import CultureSkillTable from './skills/CultureSkillTable';
+import { useAuth } from 'react-oidc-context';
 
 const CultureView: FC = () => {
   const location = useLocation();
+  const auth = useAuth();
   const { showError } = useError();
   const { cultureId } = useParams<{ cultureId: string | undefined }>();
   const [culture, setCulture] = useState<Culture>({} as Culture);
   const [addCultureFixedSkillDialogOpen, setAddCultureFixedSkillDialogOpen] = useState<boolean>(false);
 
   const onUpdateImage = (imageUrl: string) => {
-    updateCulture(culture!.id, { imageUrl: imageUrl })
+    updateCulture(culture!.id, { imageUrl: imageUrl }, auth)
       .then((response) => setCulture(response))
       .catch((err) => showError(err.message));
   };
@@ -36,7 +38,7 @@ const CultureView: FC = () => {
     if (location.state && location.state.culture) {
       setCulture(location.state.culture);
     } else if (cultureId) {
-      fetchCulture(cultureId)
+      fetchCulture(cultureId, auth)
         .then((response) => setCulture(response))
         .catch((err) => showError(err.message));
     }
@@ -76,7 +78,7 @@ const CultureView: FC = () => {
           <Grid size={12}>
             <CultureSkillTable culture={culture} setCulture={setCulture} />
           </Grid>
-          <Grid size={12} mt={5}>
+          <Grid size={12} sx={{mt: 5}}>
             <TechnicalInfo>
               <pre>{JSON.stringify(culture, null, 2)} </pre>
             </TechnicalInfo>

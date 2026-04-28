@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -14,6 +15,7 @@ const ProfessionCreationActions: FC<{
   formData: CreateProfessionDto;
   isValid: boolean;
 }> = ({ formData, isValid }) => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const { showError } = useError();
   const breadcrumbs = [
@@ -23,7 +25,7 @@ const ProfessionCreationActions: FC<{
   ];
 
   const onSave = () => {
-    createProfession(formData)
+    createProfession(formData, auth)
       .then((result) => navigate(`/core/professions/view/${result.id}`))
       .catch((err: Error) => showError(err.message));
   };

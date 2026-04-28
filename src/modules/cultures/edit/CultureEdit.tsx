@@ -7,9 +7,11 @@ import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getAvatarImages } from '../../services/image-service';
 import CultureForm from '../shared/CultureForm';
 import RaceEditActions from './CultureEditActions';
+import { useAuth } from 'react-oidc-context';
 
 const CultureEdit: FC = () => {
   const location = useLocation();
+  const auth = useAuth();
   const { showError } = useError();
   const { cultureId } = useParams<{ cultureId: string }>();
   const [culture, setCulture] = useState<Culture>();
@@ -27,11 +29,11 @@ const CultureEdit: FC = () => {
     if (location.state && location.state.culture) {
       setCulture(location.state.culture);
     } else if (cultureId) {
-      fetchCulture(cultureId)
+      fetchCulture(cultureId, auth)
         .then((response) => setCulture(response))
         .catch((err) => showError(err.message));
     }
-  }, [location.state, cultureId, showError]);
+  }, [location.state, cultureId]);
 
   if (!culture || !formData) return <div>Loading race...</div>;
 

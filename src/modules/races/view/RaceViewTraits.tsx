@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import HelpIcon from '@mui/icons-material/Help';
 import {
   IconButton,
@@ -31,6 +32,7 @@ const RaceViewTraits: FC<{
   race: Race;
   setRace: Dispatch<SetStateAction<Race | undefined>>;
 }> = ({ race, setRace }) => {
+  const auth = useAuth();
   const { showError } = useError();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -44,7 +46,7 @@ const RaceViewTraits: FC<{
   };
 
   const onTraitDialogView = (raceTrait: RaceTrait) => {
-    fetchTrait(raceTrait.traitId)
+    fetchTrait(raceTrait.traitId, auth)
       .then(setSelectedTrait)
       .then(() => setDialogOpen(true))
       .catch((err) => showError(err.message));
@@ -56,7 +58,7 @@ const RaceViewTraits: FC<{
   };
 
   const onDeleteTrait = () => {
-    deleteRaceTrait(race.id, traitToDelete!.id)
+    deleteRaceTrait(race.id, traitToDelete!.id, auth)
       .then((response) => {
         setRace(response);
         setTraitToDelete(undefined);

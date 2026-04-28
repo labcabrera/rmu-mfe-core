@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -17,6 +18,7 @@ const CultureViewActions: FC<{
   culture: Culture;
   setCulture: Dispatch<SetStateAction<Culture>>;
 }> = ({ culture, setCulture }) => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -38,13 +40,13 @@ const CultureViewActions: FC<{
   };
 
   const onRefresh = () => {
-    fetchCulture(culture.id)
+    fetchCulture(culture.id, auth)
       .then((response) => setCulture(response))
       .catch((err) => showError(err.message));
   };
 
   const onDelete = () => {
-    deleteCulture(culture.id)
+    deleteCulture(culture.id, auth)
       .then(() => navigate(`/core/cultures`))
       .catch((err) => showError(err.message));
   };

@@ -1,11 +1,11 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Grid } from '@mui/material';
-import { NumericInput, CreateRaceDto, resistances, UpdateRaceDto } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { NumericInput, resistances, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 
 const RaceFormResistances: FC<{
-  formData: CreateRaceDto | UpdateRaceDto;
-  setFormData: Dispatch<SetStateAction<CreateRaceDto | UpdateRaceDto>>;
+  formData: Race;
+  setFormData: Dispatch<SetStateAction<Race>>;
 }> = ({ formData, setFormData }) => {
   return (
     <Grid container spacing={2} columns={10}>

@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { fetchEnumerationCategories, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -9,12 +10,13 @@ import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/displ
 import CatalogListActions from './CatalogListActions';
 
 const RealmList: FC = () => {
+  const auth = useAuth();
   const { showError } = useError();
   const [categories, setCategories] = useState<string[]>([]);
   const navigate = useNavigate();
 
   const bindCategories = () => {
-    fetchEnumerationCategories()
+    fetchEnumerationCategories(auth)
       .then((response) => setCategories(response))
       .catch((err) => showError(err.message));
   };

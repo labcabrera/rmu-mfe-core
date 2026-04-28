@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useParams } from 'react-router-dom';
 import { Box, Chip, Grid, Stack } from '@mui/material';
 import { CategorySeparator, TechnicalInfo, Profession, fetchProfession } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -11,17 +12,18 @@ import ProfessionViewResume from './ProfessionViewResume';
 import ProfessionViewSkillCosts from './ProfessionViewSkillCosts';
 
 const ProfessionView: FC = () => {
+  const auth = useAuth();
   const { showError } = useError();
   const { professionId } = useParams<{ professionId: string | undefined }>();
   const [profession, setProfession] = useState<Profession>();
 
   useEffect(() => {
     if (professionId) {
-      fetchProfession(professionId)
+      fetchProfession(professionId, auth)
         .then((response) => setProfession(response))
         .catch((err: Error) => showError(err.message));
     }
-  }, [professionId, showError]);
+  }, [professionId, auth]);
 
   if (!profession) return <p>Loading profession...</p>;
 
@@ -31,7 +33,7 @@ const ProfessionView: FC = () => {
         <Grid size={gridSizeResume}>
           <ProfessionViewResume profession={profession} setProfession={setProfession} />
         </Grid>
-        <Grid size={gridSizeMain} padding={1}>
+        <Grid size={gridSizeMain} sx={{ p: 1 }}>
           <ProfessionViewActions profession={profession} setProfession={setProfession} />
           {profession.availableRealmTypes.length > 0 && (
             <>
@@ -50,7 +52,7 @@ const ProfessionView: FC = () => {
           <CategorySeparator text={t('Professional skills')} />
           <ProfessionViewProfessionalSkills profession={profession} />
 
-          <Box mt={2}>
+          <Box sx={{ mt: 2 }}>
             <TechnicalInfo>
               <pre>{JSON.stringify(profession, null, 2)}</pre>
             </TechnicalInfo>
@@ -62,7 +64,7 @@ const ProfessionView: FC = () => {
 };
 
 const RealmTypeChips = ({ realmTypes }: { realmTypes: string[] }) => (
-  <Stack direction="row" spacing={1} flexWrap="wrap">
+  <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
     {realmTypes.map((rt) => (
       <Chip key={rt} label={t(rt)} />
     ))}

@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { Chip, Stack, Typography } from '@mui/material';
 import {
   EditableAvatar,
@@ -14,13 +15,14 @@ const ProfessionViewResume: FC<{
   profession: Profession;
   setProfession: Dispatch<SetStateAction<Profession | undefined>>;
 }> = ({ profession, setProfession }) => {
+  const auth = useAuth();
   const { showError } = useError();
 
   if (!profession) return <p>Loading...</p>;
 
   const onUpdateImage = (imageUrl: string) => {
     const dto = { imageUrl } as UpdateProfessionDto;
-    updateProfession(profession!.id, dto)
+    updateProfession(profession!.id, dto, auth)
       .then((updatedProfession) => setProfession(updatedProfession))
       .catch((err: Error) => showError(err.message));
   };
@@ -32,7 +34,7 @@ const ProfessionViewResume: FC<{
         onImageChange={(avatar) => onUpdateImage(avatar)}
         images={getAvatarImages()}
       />
-      <Stack direction="row" spacing={1} mt={2}>
+      <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
         <Chip
           label={t(profession.accessType)}
           color={profession.accessType === 'public' ? 'success' : 'error'}

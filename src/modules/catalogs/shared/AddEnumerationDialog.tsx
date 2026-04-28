@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, TextField } from '@mui/material';
 import { Realm, CreateEnumerationDto, createEnumeration } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
@@ -14,6 +15,7 @@ type Props = {
 };
 
 const AddEnumerationDialog: FC<Props> = ({ open, category, realms, onClose, onAdd }) => {
+  const auth = useAuth();
   const { showError } = useError();
   const [form, setForm] = useState<CreateEnumerationDto>({
     category: category,
@@ -23,7 +25,7 @@ const AddEnumerationDialog: FC<Props> = ({ open, category, realms, onClose, onAd
   });
 
   const onSave = () => {
-    createEnumeration(form!)
+    createEnumeration(form!, auth)
       .then(() => onAdd())
       .catch((err) => showError(err.message));
     setForm({

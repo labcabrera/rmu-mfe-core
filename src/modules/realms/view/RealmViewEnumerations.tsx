@@ -4,18 +4,20 @@ import { Grid, Typography } from '@mui/material';
 import { Enumeration, fetchEnumerations, Realm, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
+import { useAuth } from 'react-oidc-context';
 
 const RealmViewEnumerations: FC<{
   realm: Realm;
   category: string;
   imageUrl: string;
 }> = ({ realm, category, imageUrl }) => {
+  const auth = useAuth();
   const { showError } = useError();
   const [enumerations, setEnumerations] = useState<Enumeration[]>([]);
 
   useEffect(() => {
     if (realm) {
-      fetchEnumerations(`realmId==${realm.id};category==${category}`, 0, 100)
+      fetchEnumerations(`realmId==${realm.id};category==${category}`, 0, 100, auth)
         .then((response) => setEnumerations(response.content))
         .catch((err) => showError(err.message));
     }

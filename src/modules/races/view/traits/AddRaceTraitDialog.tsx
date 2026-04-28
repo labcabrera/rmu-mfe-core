@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, TextField } from '@mui/material';
 import {
   addRaceTrait,
@@ -25,6 +26,7 @@ const AddRaceTraitDialog: FC<{
   open: boolean;
   onClose: () => void;
 }> = ({ race, setRace, open: open, onClose }) => {
+  const auth = useAuth();
   const { showError } = useError();
   const [trait, setTrait] = useState<Trait | null>();
   const [formData, setFormData] = useState<AddRaceTraitDto>(EMPTY_TEMPLATE);
@@ -46,7 +48,7 @@ const AddRaceTraitDialog: FC<{
   }, [trait]);
 
   const onSave = () => {
-    addRaceTrait(race.id, formData)
+    addRaceTrait(race.id, formData, auth)
       .then((updatedRace) => {
         setRace(updatedRace);
         setFormData(EMPTY_TEMPLATE);

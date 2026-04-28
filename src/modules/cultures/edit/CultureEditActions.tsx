@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { RmuBreadcrumbs, CancelButton, SaveButton, Culture, updateCulture } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
@@ -8,6 +9,7 @@ const RaceEditActions: FC<{
   culture: Culture;
   formData: Culture;
 }> = ({ culture, formData }) => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const { showError } = useError();
   const breadcrumbs = [
@@ -19,7 +21,7 @@ const RaceEditActions: FC<{
   if (!culture || !formData) return <p>Loading race...</p>;
 
   const onSave = async () => {
-    updateCulture(culture.id, formData)
+    updateCulture(culture.id, formData, auth)
       .then((response) => navigate(`/core/cultures/view/${culture.id}`, { state: { race: response } }))
       .catch((err) => showError(err.message));
   };

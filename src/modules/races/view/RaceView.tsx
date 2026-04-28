@@ -25,8 +25,10 @@ import RaceViewResistances from './RaceViewResistances';
 import RaceViewSkills from './RaceViewSkills';
 import RaceViewStats from './RaceViewStats';
 import RaceViewTraits from './RaceViewTraits';
+import { useAuth } from 'react-oidc-context';
 
 const RaceView: FC = () => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { raceId } = useParams<{ raceId: string | undefined }>();
@@ -36,14 +38,14 @@ const RaceView: FC = () => {
 
   const onUpdateImage = (imageUrl: string) => {
     const props = { imageUrl } as UpdateRaceDto;
-    updateRace(race!.id, props)
+    updateRace(race!.id, props, auth)
       .then((updatedRace) => setRace(updatedRace))
       .catch((err) => showError(err.message));
   };
 
   useEffect(() => {
     if (race) {
-      fetchRealm(race.realm.id)
+      fetchRealm(race.realmId, auth)
         .then((response) => setRealm(response))
         .catch((err: Error) => showError(err.message));
     }
@@ -53,13 +55,13 @@ const RaceView: FC = () => {
     if (location.state.race) {
       setRace(location.state.race);
     } else if (raceId) {
-      fetchRace(raceId)
+      fetchRace(raceId, auth)
         .then((response) => setRace(response))
         .catch((err) => showError(err.message));
     }
   }, [location, raceId]);
 
-  if (!race) return <p>Loading race...</p>;
+  if (!race || !realm) return <p>Loading race...</p>;
 
   return (
     <>
@@ -94,10 +96,10 @@ const RaceView: FC = () => {
           <Grid container spacing={1} columns={10}>
             <Grid size={{ xs: 12, md: 2 }}>
               <RmuTextCard
-                value={race.realm.name}
+                value={realm.name}
                 subtitle={t('realm')}
                 image={realm?.imageUrl ? realm.imageUrl : `${imageBaseUrl}images/generic/realm.png`}
-                onClick={() => navigate(`/core/realms/view/${race.realm.id}`, { state: { realm: realm } })}
+                onClick={() => navigate(`/core/realms/view/${race.realmId}`, { state: { realm: realm } })}
               />
             </Grid>
           </Grid>
@@ -114,7 +116,7 @@ const RaceView: FC = () => {
           {race.defaultLanguage && (
             <>
               <CategorySeparator text={t('language')} />
-              <Grid size={12} mt={2}>
+              <Grid size={12} sx={{mt:2}}>
                 <Grid container spacing={1} columns={10}>
                   <Grid size={{ xs: 12, md: 2 }}>
                     <RmuTextCard
@@ -127,7 +129,7 @@ const RaceView: FC = () => {
               </Grid>
             </>
           )}
-          <Grid size={12} mt={5}>
+          <Grid size={12} sx={{mt: 5}}>
             <TechnicalInfo>
               <pre>{JSON.stringify(race, null, 2)} </pre>
             </TechnicalInfo>

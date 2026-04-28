@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, TextField } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid } from '@mui/material';
 import {
   addRaceSkillBonus,
   NumericInput,
@@ -11,6 +11,7 @@ import {
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../../../ErrorContext';
+import { useAuth } from 'react-oidc-context';
 
 const EMPTY_TEMPLATE = {
   skillId: '',
@@ -24,6 +25,7 @@ const AddRaceSkillDialog: FC<{
   open: boolean;
   onClose: () => void;
 }> = ({ race, setRace, open: open, onClose }) => {
+  const auth = useAuth();
   const { showError } = useError();
   const [formData, setFormData] = useState<RaceSkillBonus>(EMPTY_TEMPLATE);
   const [validForm, setValidForm] = useState<boolean>(false);
@@ -34,7 +36,7 @@ const AddRaceSkillDialog: FC<{
   };
 
   const onSave = () => {
-    addRaceSkillBonus(race.id, formData)
+    addRaceSkillBonus(race.id, formData, auth)
       .then((updatedRace) => {
         setRace(updatedRace);
         setFormData(EMPTY_TEMPLATE);
@@ -55,7 +57,7 @@ const AddRaceSkillDialog: FC<{
           <Grid container spacing={2} sx={{ pt: 1 }}>
             <Grid size={{ xs: 12, md: 12 }}>
               <SkillSelector
-                realmId={race.realm.id}
+                realmId={race.realmId}
                 onSkillChange={(s) => setFormData({ ...formData, skillId: s || '', specialization: null })}
                 onSpecializationChange={(s) => setFormData({ ...formData, specialization: s })}
                 onError={(err) => showError(err)}

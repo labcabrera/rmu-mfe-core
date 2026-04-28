@@ -1,8 +1,7 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Grid, TextField } from '@mui/material';
-import { CategorySeparator } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { CategorySeparator, Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
-import { CreateProfessionDto, UpdateProfessionDto } from '../../api/profession.dto';
 import SelectAccessType from '../../shared/selects/SelectAccessType';
 import ProfessionFormAttributes from './ProfessionFormAttributes';
 import ProfessionFormProfessionalSkills from './ProfessionFormProfessionalSkills';
@@ -10,8 +9,8 @@ import ProfessionFormRealmTypes from './ProfessionFormRealmTypes';
 import ProfessionFormSkillCosts from './ProfessionFormSkillCosts';
 
 const ProfessionForm: FC<{
-  formData: CreateProfessionDto | UpdateProfessionDto;
-  setFormData: Dispatch<SetStateAction<CreateProfessionDto | UpdateProfessionDto | undefined>>;
+  formData: Profession;
+  setFormData: Dispatch<SetStateAction<Profession | undefined>>;
   creationMode: boolean;
 }> = ({ formData, setFormData, creationMode }) => {
   return (

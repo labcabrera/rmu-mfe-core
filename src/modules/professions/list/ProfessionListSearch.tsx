@@ -1,8 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
-import { ClearableTextField } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { ClearableTextField, ProfessionArchetype } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
-import { ProfessionArchetype } from '../../api/profession.dto';
 import SelectProfessionArchetype from '../../shared/selects/SelectProfessionArchetype';
 
 type Props = {

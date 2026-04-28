@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -17,6 +18,7 @@ const ProfessionViewActions: FC<{
   profession: Profession;
   setProfession: Dispatch<SetStateAction<Profession | undefined>>;
 }> = ({ profession, setProfession }) => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -38,13 +40,13 @@ const ProfessionViewActions: FC<{
   };
 
   const onRefresh = () => {
-    fetchProfession(profession.id)
+    fetchProfession(profession.id, auth)
       .then((response) => setProfession(response))
       .catch((err) => showError(err.message));
   };
 
   const onDelete = () => {
-    deleteProfession(profession.id)
+    deleteProfession(profession.id, auth)
       .then(() => navigate(`/core/professions`))
       .catch((err) => showError(err.message));
   };

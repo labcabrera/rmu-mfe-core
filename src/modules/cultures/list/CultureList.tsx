@@ -15,9 +15,11 @@ import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import CultureListActions from './CultureListActions';
 import CultureListSearch from './CultureListSearch';
+import { useAuth } from 'react-oidc-context';
 
 const CultureList: FC = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
   const { showError } = useError();
   const [queryString, setQueryString] = useState('');
   const [realms, setRealms] = useState<Realm[]>([]);
@@ -27,7 +29,7 @@ const CultureList: FC = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const bindCultures = () => {
-    fetchCultures(queryString, page, pageSize)
+    fetchCultures(queryString, page, pageSize, auth)
       .then((response) => {
         setCultures(response.content);
         setTotalPages(response.pagination.totalPages || 1);
@@ -36,7 +38,7 @@ const CultureList: FC = () => {
   };
 
   const bindRealms = () => {
-    fetchRealms('', 0, 100)
+    fetchRealms('', 0, 100, auth)
       .then((response) => setRealms(response.content))
       .catch((err) => showError(err.message));
   };

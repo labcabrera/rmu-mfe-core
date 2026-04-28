@@ -1,13 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useSearchParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import {
   EditableAvatar,
   TechnicalInfo,
-  CreateRaceDto,
   Realm,
   fetchRealm,
   raceCreateTemplate,
+  Race,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { gridSizeMain, gridSizeResume } from '../../services/display';
@@ -16,14 +17,15 @@ import RaceForm from '../shared/RaceForm';
 import RaceCreationActions from './RaceCreationActions';
 
 const RaceCreation: FC = () => {
+  const auth = useAuth();
   const [searchParams] = useSearchParams();
   const realmId = searchParams.get('realmId');
   const { showError } = useError();
   const [realm, setRealm] = useState<Realm | null>(null);
-  const [formData, setFormData] = useState<CreateRaceDto>(raceCreateTemplate);
+  const [formData, setFormData] = useState<Race>(raceCreateTemplate as unknown as Race);
   const [isValid, setIsValid] = useState(false);
 
-  const validateForm = (formData: CreateRaceDto) => {
+  const validateForm = (formData: Race) => {
     if (!formData.name) return false;
     if (!formData.realmId) return false;
     return true;
@@ -37,15 +39,15 @@ const RaceCreation: FC = () => {
     if (realm) {
       setFormData({ ...formData, realmId: realm.id });
     }
-  }, [realm]);
+  }, [realm, formData]);
 
   useEffect(() => {
     if (realmId) {
-      fetchRealm(realmId)
+      fetchRealm(realmId, auth)
         .then((response) => setRealm(response))
         .catch((err) => showError(err.message));
     }
-  }, [realmId, showError]);
+  }, [realmId, auth, showError]);
 
   if (!realm || !formData) return <div>Loading...</div>;
 

@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -17,6 +18,7 @@ const RaceViewActions: FC<{
   race: Race;
   setRace: Dispatch<SetStateAction<Race | undefined>>;
 }> = ({ race, setRace }) => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -38,14 +40,14 @@ const RaceViewActions: FC<{
   };
 
   const onRefresh = () => {
-    fetchRace(race.id)
+    fetchRace(race.id, auth)
       .then((response) => setRace(response))
       .catch((err) => showError(err.message));
   };
 
   const onDelete = () => {
-    deleteRace(race.id)
-      .then(() => navigate(`/core/realms/view/${race.realm.id}`))
+    deleteRace(race.id, auth)
+      .then(() => navigate(`/core/realms/view/${race.realmId}`))
       .catch((err) => showError(err.message));
   };
 

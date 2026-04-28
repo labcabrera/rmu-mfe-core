@@ -7,9 +7,13 @@ import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RaceListActions from './RaceListActions';
 import RaceListSearch from './RaceListSearch';
+import { useAuth } from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
 
 const RaceList: FC = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
+  const { t} = useTranslation();
   const { showError } = useError();
   const [queryString, setQueryString] = useState('');
   const [realms, setRealms] = useState<Realm[]>([]);
@@ -19,7 +23,7 @@ const RaceList: FC = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const bindRaces = () => {
-    fetchRaces(queryString, page, pageSize)
+    fetchRaces(queryString, page, pageSize, auth)
       .then((response) => {
         setRaces(response.content);
         setTotalPages(response.pagination.totalPages || 1);
@@ -28,7 +32,7 @@ const RaceList: FC = () => {
   };
 
   const bindRealms = () => {
-    fetchRealms('', 0, 100)
+    fetchRealms('', 0, 100, auth)
       .then((response) => setRealms(response.content))
       .catch((err) => showError(err.message));
   };
@@ -57,7 +61,7 @@ const RaceList: FC = () => {
               <Grid size={gridSizeCard} key={race.id}>
                 <RmuTextCard
                   value={race.name}
-                  subtitle={race.realm.name}
+                  subtitle={t(race.archetype || "-")}
                   image={race.imageUrl || ''}
                   onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
                 />

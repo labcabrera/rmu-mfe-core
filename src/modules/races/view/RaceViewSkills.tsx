@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import {
   AddButton,
@@ -17,6 +18,7 @@ const RaceViewSkills: FC<{
   race: Race;
   setRace: Dispatch<SetStateAction<Race | undefined>>;
 }> = ({ race, setRace }) => {
+  const auth = useAuth();
   const { showError } = useError();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -29,7 +31,7 @@ const RaceViewSkills: FC<{
 
   const onDeleteSkill = () => {
     if (!skillToDelete) return;
-    deleteRaceSkillBonus(race.id, skillToDelete.skillId, skillToDelete.specialization)
+    deleteRaceSkillBonus(race.id, skillToDelete.skillId, skillToDelete.specialization, auth)
       .then((response) => {
         setRace(response);
         setSkillToDelete(undefined);

@@ -15,6 +15,7 @@ import {
 import { t } from 'i18next';
 import { useError } from '../../../../ErrorContext';
 import { gridSizeCard } from '../../../services/display';
+import { useAuth } from 'react-oidc-context';
 
 const AddCultureFixedSkillDialog: FC<{
   open: boolean;
@@ -22,6 +23,7 @@ const AddCultureFixedSkillDialog: FC<{
   setCulture: Dispatch<SetStateAction<Culture>>;
   onClose: () => void;
 }> = ({ open, culture, setCulture, onClose }) => {
+  const auth = useAuth();
   const { showError } = useError();
   const [formData, setFormData] = useState<CultureSkillRank>({} as CultureSkillRank);
   const [validFormData, setValidFormData] = useState<boolean>(false);
@@ -34,7 +36,7 @@ const AddCultureFixedSkillDialog: FC<{
 
   const onSelectedSkill = (skillId: string) => {
     if (!skillId) return;
-    fetchSkill(skillId)
+    fetchSkill(skillId, auth)
       .then((response) => {
         setSelectedSkill(response);
         setFormData({ ...formData, skillId });
@@ -43,7 +45,7 @@ const AddCultureFixedSkillDialog: FC<{
   };
 
   const onAddSkill = async () => {
-    addCultureFixedSkillRank(culture.id, formData!)
+    addCultureFixedSkillRank(culture.id, formData!, auth)
       .then((response) => {
         setCulture(response);
         resetForm();
@@ -85,7 +87,7 @@ const AddCultureFixedSkillDialog: FC<{
             t={(msg) => t(msg)}
           />
         </Grid>
-        <Grid size={gridSizeCard} mt={5}>
+        <Grid size={gridSizeCard} sx={{mt:5}}>
           <NumericInput
             label={t('Ranks')}
             value={formData.ranks}

@@ -16,9 +16,11 @@ import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import SkillListActions from './SkillListActions';
 import SkillListSearch from './SkillListSearch';
+import { useAuth } from 'react-oidc-context';
 
 const SkillList: FC = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
   const { showError } = useError();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([]);
@@ -28,7 +30,7 @@ const SkillList: FC = () => {
   const [queryString, setQueryString] = useState<string>('');
 
   const bindSkills = (queryString: string, pageNumber: number = 0) => {
-    fetchSkills(queryString, pageNumber, pageSize)
+    fetchSkills(queryString, pageNumber, pageSize, auth)
       .then((response) => {
         setSkills(response.content);
         setTotalPages(response.pagination.totalPages || 1);
@@ -37,7 +39,7 @@ const SkillList: FC = () => {
   };
 
   const bindSkillCategories = () => {
-    fetchSkillCategories('', 0, 100)
+    fetchSkillCategories('', 0, 100, auth)
       .then((data) => setSkillCategories(data.content))
       .catch((err) => showError(err.message));
   };
