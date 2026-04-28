@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { Button, Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
 import {
   AbsoluteManeuverResult,
@@ -15,6 +16,7 @@ import SelectManeuverTable from '../shared/selects/SelectManeuverTable';
 import AbsoluteManeuverTableView from './AbsoluteManeuverTableView';
 
 const AbsoluteManeuverView: FC = () => {
+  const auth = useAuth();
   const { showError } = useError();
 
   const [roll, setRoll] = useState<number | null>(null);
@@ -27,7 +29,7 @@ const AbsoluteManeuverView: FC = () => {
   const [table, setTable] = useState<AbsoluteManeuverTable>();
 
   useEffect(() => {
-    fetchAbsoluteManeuverTables()
+    fetchAbsoluteManeuverTables(auth)
       .then((data) => setTableNames(data))
       .catch((err: Error) => showError(err.message));
   }, []);
@@ -38,7 +40,7 @@ const AbsoluteManeuverView: FC = () => {
 
   useEffect(() => {
     if (tableName) {
-      fetchAbsoluteManeuverTable(tableName)
+      fetchAbsoluteManeuverTable(tableName, auth)
         .then((data) => setTable(data))
         .catch((err: Error) => showError(err.message));
     } else {
@@ -48,13 +50,13 @@ const AbsoluteManeuverView: FC = () => {
 
   useEffect(() => {
     if (totalRoll !== null) {
-      fetchAbsoluteManeuver(totalRoll, tableName, unusualEvent)
+      fetchAbsoluteManeuver(totalRoll, tableName, unusualEvent, auth)
         .then((data) => setResult(data))
         .catch((err: Error) => showError(err.message));
     } else {
       setResult(null);
     }
-  }, [totalRoll, unusualEvent, tableName, showError]);
+  }, [totalRoll, unusualEvent, tableName]);
 
   if (!table) return <p>Loading...</p>;
 

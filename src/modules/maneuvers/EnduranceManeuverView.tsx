@@ -1,10 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
 import { EnduranceManeuverResult, fetchEnduranceManeuver, NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
 
 const EnduranceManeuverView: FC = () => {
+  const auth = useAuth();
   const { showError } = useError();
 
   const [roll, setRoll] = useState<number | null>(null);
@@ -13,13 +15,13 @@ const EnduranceManeuverView: FC = () => {
 
   useEffect(() => {
     if (roll !== null) {
-      fetchEnduranceManeuver(roll, unusualEvent)
+      fetchEnduranceManeuver(roll, unusualEvent, auth)
         .then((data) => setResult(data))
         .catch((err) => showError(err));
     } else {
       setResult(null);
     }
-  }, [roll, unusualEvent, showError]);
+  }, [roll]);
 
   return (
     <Grid container spacing={1}>
@@ -46,17 +48,17 @@ const EnduranceManeuverView: FC = () => {
                 {result.message}
               </Typography>
               {result.fatigue !== undefined && (
-                <Typography variant="body1" gutterBottom mt={2}>
+                <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
                   Fatigue: {result.fatigue}
                 </Typography>
               )}
               {result.hitPoints !== undefined && result.hitPoints !== 0 && (
-                <Typography variant="body1" gutterBottom mt={2}>
+                <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
                   Hit Points: {result.hitPoints}
                 </Typography>
               )}
               {result.bonus !== undefined && result.bonus !== 0 && (
-                <Typography variant="body1" gutterBottom mt={2}>
+                <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
                   Bonus: {result.bonus}
                 </Typography>
               )}
