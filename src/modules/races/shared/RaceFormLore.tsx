@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { Grid, TextField } from '@mui/material';
 import { Race, fetchEnumerations } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
-import { useAuth } from 'react-oidc-context';
 
 const RaceFormLore: FC<{
   realmId: string;
@@ -13,6 +13,7 @@ const RaceFormLore: FC<{
   setFormData: Dispatch<SetStateAction<Race>>;
 }> = ({ realmId, formData, setFormData }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [languages, setLanguages] = React.useState<SelectOption[]>([]);
 
@@ -31,7 +32,7 @@ const RaceFormLore: FC<{
     <Grid container spacing={1} columns={10}>
       <Grid size={12}>
         <RmuSelect
-          label={t('Language')}
+          label={t('language')}
           value={formData.defaultLanguage}
           options={languages}
           onChange={(e) => setFormData({ ...formData, defaultLanguage: e })}

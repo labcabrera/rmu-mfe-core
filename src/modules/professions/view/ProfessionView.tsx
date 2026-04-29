@@ -38,19 +38,27 @@ const ProfessionView: FC = () => {
           <ProfessionViewActions profession={profession} setProfession={setProfession} />
           {profession.availableRealmTypes.length > 0 && (
             <>
-              <CategorySeparator text={t('Available realms')} />
-              <RealmTypeChips realmTypes={profession.availableRealmTypes} />
+              <CategorySeparator text={t('availabe-realms')} />
+              <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
+                {profession.availableRealmTypes.map((rt, index) => (
+                  <Chip key={index} label={t(rt)} />
+                ))}
+              </Stack>
             </>
           )}
           {profession.fixedRealmTypes.length > 0 && (
             <>
-              <CategorySeparator text={t('Fixed realms')} />
-              <RealmTypeChips realmTypes={profession.fixedRealmTypes} />
+              <CategorySeparator text={t('fixed-realms')} />
+              <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
+                {profession.fixedRealmTypes.map((rt, index) => (
+                  <Chip key={index} label={t(rt)} />
+                ))}
+              </Stack>
             </>
           )}
-          <CategorySeparator text={t('Skill costs')} />
+          <CategorySeparator text={t('skill-costs')} />
           <ProfessionViewSkillCosts profession={profession} />
-          <CategorySeparator text={t('Professional skills')} />
+          <CategorySeparator text={t('professional-skills')} />
           <ProfessionViewProfessionalSkills profession={profession} />
 
           <Box sx={{ mt: 2 }}>
@@ -63,14 +71,5 @@ const ProfessionView: FC = () => {
     </>
   );
 };
-
-const RealmTypeChips = ({ realmTypes }: { realmTypes: string[] }) => (
-  <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
-    {realmTypes.map((rt) => (
-      //TODO translate
-      <Chip key={rt} label={rt} />
-    ))}
-  </Stack>
-);
 
 export default ProfessionView;

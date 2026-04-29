@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import { EditableAvatar, TechnicalInfo, Realm, UpdateRealmDto, fetchRealm } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
@@ -48,7 +48,9 @@ const RealmEdit: FC = () => {
       </Grid>
       <Grid size={gridSizeMain}>
         <RealmEditActions realm={realm} formData={formData} />
-        <RealmForm formData={formData} setFormData={setFormData} />
+        <Paper sx={{ p: 2 }}>
+          <RealmForm formData={formData} setFormData={setFormData} />
+        </Paper>
         <TechnicalInfo>
           <pre>{JSON.stringify(formData, null, 2)}</pre>
         </TechnicalInfo>

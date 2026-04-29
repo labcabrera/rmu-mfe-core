@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import { EditableAvatar, fetchRace, Race, TechnicalInfo, UpdateRaceDto } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
@@ -15,7 +15,7 @@ const RaceEdit: FC = () => {
   const { showError } = useError();
   const { raceId } = useParams<{ raceId: string }>();
   const [race, setRace] = useState<Race | null>(null);
-  const [formData, setFormData] = useState<Race>();
+  const [formData, setFormData] = useState<Race>({} as unknown as Race);
 
   useEffect(() => {
     if (race) {
@@ -47,7 +47,9 @@ const RaceEdit: FC = () => {
         </Grid>
         <Grid size={gridSizeMain} spacing={1}>
           <RaceEditActions race={race} formData={formData} />
-          <RaceForm realmId={race.realmId} formData={formData} setFormData={setFormData} />
+          <Paper sx={{ p: 2 }}>
+            <RaceForm realmId={race.realmId} formData={formData} setFormData={setFormData} />
+          </Paper>
           <TechnicalInfo>
             <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

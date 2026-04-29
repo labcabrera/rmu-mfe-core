@@ -24,8 +24,8 @@ const ProfessionViewActions: FC<{
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const breadcrumbs = [
-    { name: t('Core'), link: '/core' },
-    { name: t('Professions'), link: '/core/professions' },
+    { name: t('core'), link: '/core' },
+    { name: t('professions'), link: '/core/professions' },
   ];
 
   const handleEditClick = () => {

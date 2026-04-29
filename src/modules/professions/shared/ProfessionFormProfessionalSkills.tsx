@@ -1,9 +1,9 @@
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Grid, Chip, Typography } from '@mui/material';
 import { AddButton, fetchSkills, Profession, Skill } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import SelectSkill from '../../shared/selects/SelectSkill';
 
@@ -12,6 +12,7 @@ const ProfessionFormProfessionalSkills: FC<{
   setFormData: Dispatch<SetStateAction<Profession | undefined>>;
 }> = ({ formData, setFormData }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [allSkills, setAllSkills] = React.useState<string[]>([]);
   const [selectedSkillId, setSelectedSkillId] = React.useState<string | null>(null);
@@ -41,7 +42,7 @@ const ProfessionFormProfessionalSkills: FC<{
     <Grid container spacing={1}>
       <Grid size={6}>
         <SelectSkill
-          label={t('Skill')}
+          label={t('skill')}
           value={selectedSkillId || undefined}
           name={''}
           onChange={(skillId) => setSelectedSkillId(skillId)}

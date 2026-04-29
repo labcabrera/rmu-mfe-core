@@ -1,12 +1,16 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
 import { NumericInput, STATS, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 
 const RaceFormStats: FC<{
   formData: Race;
   setFormData: Dispatch<SetStateAction<Race>>;
 }> = ({ formData, setFormData }) => {
+  const { t } = useTranslation();
+
+  if (!formData.stats) return <p>Loading...</p>;
+
   return (
     <Grid container columns={10} spacing={1}>
       {STATS.map((stat) => (

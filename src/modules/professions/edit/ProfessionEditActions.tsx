@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -9,7 +10,6 @@ import {
   UpdateProfessionDto,
   updateProfession,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 
 const ProfessionEditActions: FC<{
@@ -17,6 +17,7 @@ const ProfessionEditActions: FC<{
   formData: UpdateProfessionDto;
 }> = ({ profession, formData }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
   const breadcrumbs = [

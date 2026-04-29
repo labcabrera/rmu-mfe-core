@@ -1,18 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { Grid, TextField } from '@mui/material';
 import { fetchEnumerations, NumericInput, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
-import { useAuth } from 'react-oidc-context';
 
 const RaceFormAttributes: FC<{
   formData: Race;
   setFormData: Dispatch<SetStateAction<Race>>;
 }> = ({ formData, setFormData }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [archetypes, setArchetypes] = useState<SelectOption[]>([]);
 
@@ -111,8 +112,10 @@ const RaceFormAttributes: FC<{
         <NumericInput
           label={t('average-height-male')}
           name="averageHeightMale"
-          value={formData.averageHeight.male}
-          onChange={(value) => setFormData({ ...formData, averageHeight: { ...formData.averageHeight, male: value || 0 } })}
+          value={formData.averageHeight?.male || 0}
+          onChange={(value) =>
+            setFormData({ ...formData, averageHeight: { ...formData.averageHeight, male: value || 0 } })
+          }
           min={0}
         />
       </Grid>
@@ -120,7 +123,7 @@ const RaceFormAttributes: FC<{
         <NumericInput
           label={t('average-height-female')}
           name="averageHeightFemale"
-          value={formData.averageHeight.female}
+          value={formData.averageHeight?.female || 0}
           onChange={(value) =>
             setFormData({ ...formData, averageHeight: { ...formData.averageHeight, female: value || 0 } })
           }
@@ -131,8 +134,10 @@ const RaceFormAttributes: FC<{
         <NumericInput
           label={t('average-weight-male')}
           name="averageWeightMale"
-          value={formData.averageWeight.male}
-          onChange={(value) => setFormData({ ...formData, averageWeight: { ...formData.averageWeight, male: value || 0 } })}
+          value={formData.averageWeight?.male || 0}
+          onChange={(value) =>
+            setFormData({ ...formData, averageWeight: { ...formData.averageWeight, male: value || 0 } })
+          }
           min={0}
         />
       </Grid>
@@ -140,7 +145,7 @@ const RaceFormAttributes: FC<{
         <NumericInput
           label={t('average-weight-female')}
           name="averageWeightFemale"
-          value={formData.averageWeight.female}
+          value={formData.averageWeight?.female || 0}
           onChange={(value) =>
             setFormData({ ...formData, averageWeight: { ...formData.averageWeight, female: value || 0 } })
           }

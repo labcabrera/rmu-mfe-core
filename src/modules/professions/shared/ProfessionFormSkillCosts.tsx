@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, Fragment, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid, Typography } from '@mui/material';
 import { NumericInput, Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 
 const SKILLS = [
   'animal',
@@ -42,6 +42,8 @@ const ProfessionCreationSkillCosts: FC<{
   formData: Profession;
   setFormData: Dispatch<SetStateAction<Profession | undefined>>;
 }> = ({ formData, setFormData }) => {
+  const { t } = useTranslation();
+
   const handleChange = (skillKey: string, index: number, value: number | null) => {
     const prev = (formData.skillCosts as Record<string, number[]> | undefined) || {};
     const next: Record<string, number[]> = { ...prev };
