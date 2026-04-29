@@ -1,29 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { Grid, TextField, Button, ButtonGroup } from '@mui/material';
-import {
-  CreateSkillDto,
-  UpdateSkillDto,
-  SkillCategory,
-  fetchSkillCategories,
-  STATS,
-} from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
+import { SkillCategory, fetchSkillCategories, STATS, Skill } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import SelectAccessType from '../../shared/selects/SelectAccessType';
 import SelectSkillCategory from '../../shared/selects/SelectSkillCategory';
 import SelectSkillSpecialization from '../../shared/selects/SelectSkillSpecialization';
 
 const SkillForm: FC<{
-  formData: CreateSkillDto | UpdateSkillDto;
-  setFormData: Dispatch<SetStateAction<CreateSkillDto>>;
+  formData: Skill;
+  setFormData: Dispatch<SetStateAction<Skill>>;
   create: boolean;
 }> = ({ formData, setFormData, create }) => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [categories, setCategories] = React.useState<SkillCategory[]>([]);
 
   useEffect(() => {
-    fetchSkillCategories('', 0, 1000)
+    fetchSkillCategories('', 0, 1000, auth)
       .then((data) => setCategories(data.content))
       .catch((err) => showError(err.message));
   }, []);
@@ -42,8 +39,8 @@ const SkillForm: FC<{
         {create && (
           <Grid size={12}>
             <TextField
-              label={t('skill-id')}
-              name="skill-id"
+              label={t('id')}
+              name="id"
               value={formData.id || ''}
               onChange={(e) => setFormData({ ...formData, id: e.target.value })}
               error={!formData.id}
@@ -54,7 +51,7 @@ const SkillForm: FC<{
         <Grid size={12}>
           <SelectSkillCategory
             label={t('skill-category')}
-            value={formData.categoryId || null}
+            value={formData.categoryId || ''}
             onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
             categories={categories}
             required

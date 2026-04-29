@@ -10,7 +10,7 @@ interface Props {
 const ProfessionListActions: FC<Props> = ({ onRefresh }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const breadcrumbs = [{ name: t('Core'), link: '/core' }, { name: t('Professions') }];
+  const breadcrumbs = [{ name: t('core'), link: '/core' }, { name: t('professions') }];
 
   return (
     <RmuBreadcrumbs items={breadcrumbs}>

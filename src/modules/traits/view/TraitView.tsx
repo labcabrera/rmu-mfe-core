@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { fetchTrait, GenericAvatar, TechnicalInfo, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -11,16 +12,16 @@ import TraitViewInfo from './TraitViewInfo';
 
 const TraitView: FC = () => {
   const location = useLocation();
+  const auth = useAuth();
   const { traitId } = useParams<{ traitId?: string }>();
   const { showError } = useError();
   const [trait, setTrait] = useState<Trait | null>(null);
 
   const bindTrait = () => {
-    if (traitId) {
-      fetchTrait(traitId)
-        .then((response) => setTrait(response))
-        .catch((err: Error) => showError(err.message));
-    }
+    if (!traitId) return;
+    fetchTrait(traitId, auth)
+      .then((response) => setTrait(response))
+      .catch((err: Error) => showError(err.message));
   };
 
   useEffect(() => {

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -8,7 +9,6 @@ import {
   createRealm,
   CreateRealmDto,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 
 const RealmCreationActions: FC<{
@@ -16,6 +16,7 @@ const RealmCreationActions: FC<{
   isValid: boolean;
 }> = ({ formData, isValid }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
   const breadcrumbs = [

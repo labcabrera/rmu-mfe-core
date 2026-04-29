@@ -1,15 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
-import { CreateRealmDto, EditableAvatar, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { CreateRealmDto, EditableAvatar, Realm, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { gridSizeMain, gridSizeResume } from '../../services/display';
 import { DEFAULT_REALM_IMAGE, getAvatarImages } from '../../services/image-service';
 import RealmForm from '../shared/RealmForm';
 import RealmCreationActions from './RealmCreationActions';
 
 const RealmCreation: FC = () => {
-  const [formData, setFormData] = useState<CreateRealmDto>({
+  const [formData, setFormData] = useState<Realm>({
     imageUrl: DEFAULT_REALM_IMAGE,
-  } as CreateRealmDto);
+  } as unknown as Realm);
   const [isValid, setIsValid] = useState(false);
 
   const validateForm = (formData: CreateRealmDto) => {

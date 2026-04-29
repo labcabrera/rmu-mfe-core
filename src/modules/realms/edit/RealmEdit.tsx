@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { EditableAvatar, TechnicalInfo, Realm, UpdateRealmDto, fetchRealm } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -11,24 +12,24 @@ import RealmEditActions from './RealmEditActions';
 
 const RealmEdit: FC = () => {
   const location = useLocation();
+  const auth = useAuth();
   const { showError } = useError();
   const { realmId } = useParams<{ realmId?: string }>();
   const [realm, setRealm] = useState<Realm | null>(null);
-  const [formData, setFormData] = useState<UpdateRealmDto | null>(null);
+  const [formData, setFormData] = useState<Realm>({} as unknown as Realm);
 
   useEffect(() => {
-    if (realm) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-      const { id, ...rest } = realm;
-      setFormData(rest);
-    }
+    if (!realm) return;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+    const { id, ...rest } = realm;
+    setFormData(rest as unknown as Realm);
   }, [realm]);
 
   useEffect(() => {
     if (location.state && location.state.realm) {
       setRealm(location.state.realm);
     } else if (realmId) {
-      fetchRealm(realmId)
+      fetchRealm(realmId, auth)
         .then((response) => setRealm(response))
         .catch((err) => showError(err.message));
     }

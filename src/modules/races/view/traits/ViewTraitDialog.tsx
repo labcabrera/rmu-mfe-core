@@ -1,8 +1,8 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, Typography } from '@mui/material';
 import { Race, RaceTrait, deleteRaceTrait } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../../ErrorContext';
 
 const ViewTraitDialog: FC<{
@@ -13,6 +13,7 @@ const ViewTraitDialog: FC<{
   onClose: () => void;
 }> = ({ race, setRace, trait, open, onClose }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
 
   if (!trait) return null;
@@ -50,9 +51,9 @@ const ViewTraitDialog: FC<{
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>{t('close') || 'Close'}</Button>
+        <Button onClick={onClose}>{t('cancel')}</Button>
         <Button color="error" variant="contained" onClick={onDelete} disabled={!trait}>
-          {t('delete') || 'Delete'}
+          {t('delete')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -1,20 +1,22 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid, TextField } from '@mui/material';
-import { t } from 'i18next';
-import { CreateRealmDto, UpdateRealmDto } from '../../api/realm.dto';
+import { Realm } from '@labcabrera-rmu/rmu-react-shared-lib';
 import SelectAccessType from '../../shared/selects/SelectAccessType';
 import SelectMagicPresence from '../../shared/selects/SelectMagicPresence';
 
 const RealmForm: FC<{
-  formData: CreateRealmDto | UpdateRealmDto;
-  setFormData: Dispatch<SetStateAction<CreateRealmDto | UpdateRealmDto | undefined>>;
+  formData: Realm;
+  setFormData: Dispatch<SetStateAction<Realm>>;
 }> = ({ formData, setFormData }) => {
+  const { t } = useTranslation();
+
   return (
     <Grid container spacing={2}>
       <Grid size={12}>
         <SelectAccessType
           value={formData.accessType}
-          label={t('Access type')}
+          label={t('access-type')}
           onChange={(value) => setFormData({ ...formData, accessType: value })}
         />
       </Grid>
@@ -31,7 +33,7 @@ const RealmForm: FC<{
       <Grid size={12}>
         <SelectMagicPresence
           value={formData.magicPresence}
-          label={t('Magic presence')}
+          label={t('magic-presence')}
           onChange={(value) => setFormData({ ...formData, magicPresence: value })}
         />
       </Grid>

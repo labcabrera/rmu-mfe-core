@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField } from '@mui/material';
-import { t } from 'i18next';
-import { SkillCategory } from '../../api/skill-category.dto';
+import { SkillCategory } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const SelectSkillCategory: FC<{
   categories: SkillCategory[];
@@ -11,6 +11,7 @@ const SelectSkillCategory: FC<{
   allowEmpty?: boolean;
   onChange: (event: ChangeEvent<{ value: string }>) => void;
 }> = ({ categories, label, value, required = false, allowEmpty = false, onChange }) => {
+  const { t } = useTranslation();
   if (!categories) return <p>Loading...</p>;
 
   return (

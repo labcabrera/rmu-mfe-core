@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import HelpIcon from '@mui/icons-material/Help';
 import {
@@ -23,7 +24,6 @@ import {
   RaceTrait,
   Trait,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import AddRaceTraitDialog from './traits/AddRaceTraitDialog';
 import ViewTraitDialog from './traits/ViewTraitDialog';
@@ -33,6 +33,7 @@ const RaceViewTraits: FC<{
   setRace: Dispatch<SetStateAction<Race | undefined>>;
 }> = ({ race, setRace }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -71,7 +72,7 @@ const RaceViewTraits: FC<{
 
   return (
     <>
-      <CategorySeparator text={t('Traits')}>
+      <CategorySeparator text={t('traits')}>
         <AddButton onClick={() => setAddDialogOpen(true)} />
       </CategorySeparator>
       {race.traits.length === 0 ? (
@@ -83,9 +84,9 @@ const RaceViewTraits: FC<{
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell>{t('Trait')}</TableCell>
-                <TableCell>{t('Tier')}</TableCell>
-                <TableCell>{t('Description')}</TableCell>
+                <TableCell>{t('trait')}</TableCell>
+                <TableCell>{t('tier')}</TableCell>
+                <TableCell>{t('description')}</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>

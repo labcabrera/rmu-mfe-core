@@ -1,18 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { fetchTraits, RmuPagination, RmuTextCard, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
 import TraitListActions from './TraitListActions';
 import TraitListSearch from './TraitListSearch';
-import { useAuth } from 'react-oidc-context';
 
 const TraitList: FC = () => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
   const [traits, setTraits] = useState<Trait[]>([]);

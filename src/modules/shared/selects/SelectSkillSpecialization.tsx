@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { MenuItem, TextField } from '@mui/material';
 import { fetchEnumerationCategories } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 
 const SelectSkillSpecialization: FC<{
@@ -9,11 +10,13 @@ const SelectSkillSpecialization: FC<{
   label: string;
   onSpecializationChange: (value: string | null) => void;
 }> = ({ label, value, onSpecializationChange }) => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [categories, setCategories] = useState<string[]>();
 
   const bindCategories = () => {
-    fetchEnumerationCategories()
+    fetchEnumerationCategories(auth)
       .then((response) => setCategories(response))
       .catch((err) => showError(err.message));
   };

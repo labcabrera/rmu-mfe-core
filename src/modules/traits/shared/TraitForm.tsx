@@ -1,21 +1,23 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { FormControl, FormControlLabel, Grid, MenuItem, Switch, TextField } from '@mui/material';
-import { fetchEnumerationCategories, NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
+import { fetchEnumerationCategories, NumericInput, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { CreateTraitDto, UpdateTraitDto } from '../../api/trait.dto';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';
 
 const TraitForm: FC<{
-  formData: CreateTraitDto | UpdateTraitDto;
-  setFormData: Dispatch<SetStateAction<CreateTraitDto | UpdateTraitDto>>;
+  formData: Trait;
+  setFormData: Dispatch<SetStateAction<Trait>>;
 }> = ({ formData, setFormData }) => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [enumerationCategories, setEnumerationCategories] = useState<SelectOption[]>();
 
   const bindEnumerationCategories = () => {
-    fetchEnumerationCategories()
+    fetchEnumerationCategories(auth)
       .then((response) => setEnumerationCategories(response.map((e) => ({ value: e, description: t(e) }))))
       .catch((err) => showError(err.message));
   };

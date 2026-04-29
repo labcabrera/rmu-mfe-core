@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -8,7 +10,6 @@ import {
   updateTrait,
   UpdateTraitDto,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 
 const TraitEditActions: FC<{
@@ -16,6 +17,8 @@ const TraitEditActions: FC<{
   formData: UpdateTraitDto;
 }> = ({ trait, formData }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const auth = useAuth();
   const { showError } = useError();
   const breadcrumbs = [
     { name: t('core'), link: '/core' },
@@ -26,7 +29,7 @@ const TraitEditActions: FC<{
   if (!trait) return <p>Loading...</p>;
 
   const handleSaveButtonClick = async () => {
-    updateTrait(trait.id, formData)
+    updateTrait(trait.id, formData, auth)
       .then((data) => {
         navigate(`/core/traits/view/${trait.id}`, { state: { trait: data } });
       })

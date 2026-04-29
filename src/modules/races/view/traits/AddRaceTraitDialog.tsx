@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, TextField } from '@mui/material';
 import {
@@ -9,7 +10,6 @@ import {
   Trait,
   TraitSelector,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../../ErrorContext';
 
 const EMPTY_TEMPLATE = {
@@ -27,6 +27,7 @@ const AddRaceTraitDialog: FC<{
   onClose: () => void;
 }> = ({ race, setRace, open: open, onClose }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [trait, setTrait] = useState<Trait | null>();
   const [formData, setFormData] = useState<AddRaceTraitDto>(EMPTY_TEMPLATE);
@@ -61,7 +62,7 @@ const AddRaceTraitDialog: FC<{
   return (
     <>
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="xl">
-        <DialogTitle>{t('Add trait')}</DialogTitle>
+        <DialogTitle>{t('add-trait')}</DialogTitle>
         <DialogContent dividers>
           <Grid container spacing={1}>
             <TraitSelector
@@ -90,9 +91,9 @@ const AddRaceTraitDialog: FC<{
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>{t('Cancel')}</Button>
+          <Button onClick={onClose}>{t('cancel')}</Button>
           <Button onClick={onSave} variant="contained" disabled={!formData.traitId}>
-            {t('Add')}
+            {t('add')}
           </Button>
         </DialogActions>
       </Dialog>

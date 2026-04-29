@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid, Paper, Typography } from '@mui/material';
-import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
-import { Trait } from '../../api/trait.dto';
+import { RmuTextCard, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from '../../services/config';
 
 const TraitViewInfo: FC<{
   trait: Trait;
 }> = ({ trait }) => {
+  const { t } = useTranslation();
+
   return (
     <Grid container spacing={1}>
       <Grid size={12}>
