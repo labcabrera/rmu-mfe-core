@@ -14,7 +14,6 @@ import {
   updateRace,
   UpdateRaceDto,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeMain, gridSizeResume } from '../../services/display';
@@ -26,9 +25,11 @@ import RaceViewSkills from './RaceViewSkills';
 import RaceViewStats from './RaceViewStats';
 import RaceViewTraits from './RaceViewTraits';
 import { useAuth } from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
 
 const RaceView: FC = () => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const { raceId } = useParams<{ raceId: string | undefined }>();

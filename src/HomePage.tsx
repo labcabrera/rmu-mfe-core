@@ -1,74 +1,77 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { RmuBreadcrumbs, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from './modules/services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from './modules/services/display';
 
+const OPTIONS = [
+  {
+    value: 'realms',
+    subtitle: 'manage-realms',
+    image: `${imageBaseUrl}images/generic/realm.png`,
+    to: '/core/realms',
+  },
+  {
+    value: 'races',
+    subtitle: 'manage-races',
+    image: `${imageBaseUrl}images/generic/races.png`,
+    to: '/core/races',
+  },
+  {
+    value: 'professions',
+    subtitle: 'manage-professions',
+    image: `${imageBaseUrl}images/generic/professions.png`,
+    to: '/core/professions',
+  },
+  {
+    value: 'cultures',
+    subtitle: 'manage-cultures',
+    image: `${imageBaseUrl}images/generic/cultures.png`,
+    to: '/core/cultures',
+  },
+  {
+    value: 'skill-categories',
+    subtitle: 'manage-skill-categories',
+    image: `${imageBaseUrl}images/generic/skills.png`,
+    to: '/core/skill-categories',
+  },
+  {
+    value: 'skills',
+    subtitle: 'manage-skills',
+    image: `${imageBaseUrl}images/generic/skills.png`,
+    to: '/core/skills',
+  },
+  {
+    value: 'traits',
+    subtitle: 'manage-traits',
+    image: `${imageBaseUrl}images/generic/trait.png`,
+    to: '/core/traits',
+  },
+  {
+    value: 'catalogs',
+    subtitle: 'manage-catalogs',
+    image: `${imageBaseUrl}images/generic/language.png`,
+    to: '/core/catalogs',
+  },
+  {
+    value: 'maneuvers',
+    subtitle: 'execute-maneuvers',
+    image: `${imageBaseUrl}images/generic/maneuver-penalty.png`,
+    to: '/core/maneuvers',
+  },
+  {
+    value: 'resistance-rolls',
+    subtitle: 'execute-resistance-rolls',
+    image: `${imageBaseUrl}images/generic/poison.png`,
+    to: '/core/resistance-rolls',
+  },
+];
+
 const HomePage: FC = () => {
   const navigate = useNavigate();
-  const cards = [
-    {
-      value: 'Realms',
-      subtitle: 'Manage realms',
-      image: `${imageBaseUrl}images/generic/realm.png`,
-      to: '/core/realms',
-    },
-    {
-      value: 'Races',
-      subtitle: 'Manage races',
-      image: `${imageBaseUrl}images/generic/races.png`,
-      to: '/core/races',
-    },
-    {
-      value: 'Professions',
-      subtitle: 'Manage professions',
-      image: `${imageBaseUrl}images/generic/professions.png`,
-      to: '/core/professions',
-    },
-    {
-      value: 'Cultures',
-      subtitle: 'Manage cultures',
-      image: `${imageBaseUrl}images/generic/cultures.png`,
-      to: '/core/cultures',
-    },
-    {
-      value: 'Skill categories',
-      subtitle: 'Skill category reference',
-      image: `${imageBaseUrl}images/generic/skills.png`,
-      to: '/core/skill-categories',
-    },
-    {
-      value: 'Skills',
-      subtitle: 'Skill reference',
-      image: `${imageBaseUrl}images/generic/skills.png`,
-      to: '/core/skills',
-    },
-    {
-      value: 'Traits',
-      subtitle: 'Manage traits',
-      image: `${imageBaseUrl}images/generic/trait.png`,
-      to: '/core/traits',
-    },
-    {
-      value: 'Catalogs',
-      subtitle: 'Manage catalogs',
-      image: `${imageBaseUrl}images/generic/language.png`,
-      to: '/core/catalogs',
-    },
-    {
-      value: 'Maneuvers',
-      subtitle: 'Maneuvers',
-      image: `${imageBaseUrl}images/generic/maneuver-penalty.png`,
-      to: '/core/maneuvers',
-    },
-    {
-      value: 'Resistance rolls',
-      subtitle: 'Resistance rolls',
-      image: `${imageBaseUrl}images/generic/poison.png`,
-      to: '/core/resistance-rolls',
-    },
-  ];
+  const { t } = useTranslation();
 
   return (
     <>
@@ -77,9 +80,14 @@ const HomePage: FC = () => {
         <Grid size={gridSizeMain}>
           <RmuBreadcrumbs items={[{ name: 'Core' }]} />
           <Grid container spacing={1}>
-            {cards.map((c) => (
+            {OPTIONS.map((c) => (
               <Grid size={gridSizeCard} key={c.value}>
-                <RmuTextCard value={c.value} subtitle={c.subtitle} image={c.image} onClick={() => navigate(c.to)} />
+                <RmuTextCard
+                  value={t(c.value)}
+                  subtitle={t(c.subtitle)}
+                  image={c.image}
+                  onClick={() => navigate(c.to)}
+                />
               </Grid>
             ))}
           </Grid>

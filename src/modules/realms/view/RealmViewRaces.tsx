@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { fetchRaces, Race, Realm, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { gridSizeCard } from '../../services/display';
 
@@ -11,6 +11,7 @@ const RealmViewRaces: FC<{
   realm: Realm;
 }> = ({ realm }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const auth = useAuth();
   const { showError } = useError();
   const [races, setRaces] = useState<Race[]>([]);

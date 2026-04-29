@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, Tabs, Tab, Grid } from '@mui/material';
-import { t } from 'i18next';
 import { gridSizeResume, gridSizeMain } from '../services/display';
 import AbsoluteManeuverView from './AbsoluteManeuverView';
 import EnduranceManeuverView from './EnduranceManeuverView';
@@ -14,6 +14,7 @@ interface TabPanelProps {
 }
 
 const ManeuversView: FC = () => {
+  const { t } = useTranslation();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

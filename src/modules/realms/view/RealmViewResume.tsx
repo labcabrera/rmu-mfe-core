@@ -1,7 +1,8 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { Chip, Grid, Typography } from '@mui/material';
 import { EditableAvatar, Realm, updateRealm } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
 import { getAvatarImages } from '../../services/image-service';
@@ -10,10 +11,12 @@ const RealmViewResume: FC<{
   realm: Realm;
   setRealm: Dispatch<SetStateAction<Realm | undefined>>;
 }> = ({ realm, setRealm }) => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
 
   const onImageChange = (imageUrl: string) => {
-    updateRealm(realm.id, { imageUrl })
+    updateRealm(realm.id, { imageUrl }, auth)
       .then((updated) => setRealm(updated))
       .catch((err) => showError(err.message));
   };

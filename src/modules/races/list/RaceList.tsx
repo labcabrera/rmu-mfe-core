@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 const RaceList: FC = () => {
   const navigate = useNavigate();
   const auth = useAuth();
-  const { t} = useTranslation();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [queryString, setQueryString] = useState('');
   const [realms, setRealms] = useState<Realm[]>([]);

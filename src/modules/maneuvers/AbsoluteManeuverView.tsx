@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Button, Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
 import {
@@ -9,7 +10,6 @@ import {
   fetchAbsoluteManeuverTables,
   NumericInput,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
 import { openEndedRoll } from '../services/random-service';
 import SelectManeuverTable from '../shared/selects/SelectManeuverTable';
@@ -17,6 +17,7 @@ import AbsoluteManeuverTableView from './AbsoluteManeuverTableView';
 
 const AbsoluteManeuverView: FC = () => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
 
   const [roll, setRoll] = useState<number | null>(null);
@@ -74,7 +75,7 @@ const AbsoluteManeuverView: FC = () => {
           </Grid>
           <Grid size={12}>
             <NumericInput
-              label={t('Modifier')}
+              label={t('modifier')}
               value={modifier}
               onChange={(e) => setModifier(e || 0)}
               integer
@@ -83,17 +84,17 @@ const AbsoluteManeuverView: FC = () => {
             />
           </Grid>
           <Grid size={12}>
-            <NumericInput label={t('Roll')} value={roll} onChange={(e) => setRoll(e)} integer min={-1000} max={1000} />
+            <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer min={-1000} max={1000} />
           </Grid>
           <Grid size={12}>
             <FormControlLabel
               control={<Checkbox checked={unusualEvent} onChange={(e) => setUnusualEvent(e.target.checked)} />}
-              label={t('Unusual Event')}
+              label={t('unusual-event')}
             />
           </Grid>
           <Grid size={12}>
             <Button variant="contained" color="primary" onClick={() => setRoll(openEndedRoll())}>
-              {t('Random')}
+              {t('random')}
             </Button>
           </Grid>
         </Grid>

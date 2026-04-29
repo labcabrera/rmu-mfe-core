@@ -1,12 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
 import { EnduranceManeuverResult, fetchEnduranceManeuver, NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
 
 const EnduranceManeuverView: FC = () => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
 
   const [roll, setRoll] = useState<number | null>(null);

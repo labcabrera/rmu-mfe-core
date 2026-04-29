@@ -2,9 +2,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid, Typography } from '@mui/material';
 import { Enumeration, fetchEnumerations, Realm, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { useAuth } from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
 
 const RealmViewEnumerations: FC<{
   realm: Realm;
@@ -12,6 +12,7 @@ const RealmViewEnumerations: FC<{
   imageUrl: string;
 }> = ({ realm, category, imageUrl }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [enumerations, setEnumerations] = useState<Enumeration[]>([]);
 

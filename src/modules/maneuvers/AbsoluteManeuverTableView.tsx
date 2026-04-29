@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Divider, Grid, Paper, Typography } from '@mui/material';
 import { AbsoluteManeuverTable } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 
 const AbsoluteManeuverTableView: FC<{ table: AbsoluteManeuverTable; result: string | undefined }> = ({
   table,
   result,
 }) => {
+  const { t } = useTranslation();
   if (!table) return <p>Loading...</p>;
 
   const getRangeText = (min: number | null, max: number | null) => {

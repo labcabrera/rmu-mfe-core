@@ -1,12 +1,14 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
 import { RmuTextCard, Race, STATS } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { imageBaseUrl } from '../../services/config';
 
 const RaceViewStats: FC<{
   race: Race;
 }> = ({ race }) => {
+  const { t } = useTranslation();
+
   return (
     <Grid container spacing={1} columns={10}>
       {STATS.map((stat, index) => (

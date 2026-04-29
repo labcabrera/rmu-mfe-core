@@ -4,18 +4,19 @@ import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { RmuPagination, RmuTextCard, Realm, fetchRealms } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RealmListActions from './RealmListActions';
 import RealmListSearch from './RealmListSearch';
+import { useTranslation } from 'react-i18next';
 
 const defaultImage = `${imageBaseUrl}images/generic/realm.png`;
 
 const RealmList: FC = () => {
   const navigate = useNavigate();
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [realms, setRealms] = useState<Realm[]>([]);
   const [queryString, setQueryString] = useState<string>('');
