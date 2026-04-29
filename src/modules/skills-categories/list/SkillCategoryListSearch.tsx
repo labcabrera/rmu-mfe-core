@@ -1,11 +1,12 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
 import { ClearableTextField } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 
 const SkillCategoryListSearch: FC<{
   setQueryString: Dispatch<SetStateAction<string>>;
 }> = ({ setQueryString }) => {
+  const { t } = useTranslation();
   const [id, setId] = useState('');
 
   useEffect(() => {

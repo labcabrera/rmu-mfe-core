@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { fetchEnumerationCategories, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
@@ -11,6 +11,7 @@ import CatalogListActions from './CatalogListActions';
 
 const RealmList: FC = () => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [categories, setCategories] = useState<string[]>([]);
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const RealmList: FC = () => {
             <Grid size={gridSizeCard} key={index}>
               <RmuTextCard
                 value={t(category)}
-                subtitle={t('Category')}
+                subtitle={t('category')}
                 image={`${imageBaseUrl}images/generic/configuration.png`}
                 onClick={() => handleRealmClick(category)}
               />

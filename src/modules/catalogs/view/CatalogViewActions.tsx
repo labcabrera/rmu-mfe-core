@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RmuBreadcrumbs, RefreshButton } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 
 const CatalogViewActions: FC<{
   onRefresh: () => void;
 }> = ({ onRefresh }) => {
+  const { t } = useTranslation();
   const breadcrumbs = [
-    { name: t('Core'), link: '/core' },
-    { name: t('Catalogs'), link: '/core/catalogs' },
+    { name: t('core'), link: '/core' },
+    { name: t('catalogs'), link: '/core/catalogs' },
   ];
 
   return (

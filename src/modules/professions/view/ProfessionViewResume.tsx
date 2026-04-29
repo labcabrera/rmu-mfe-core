@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Chip, Stack, Typography } from '@mui/material';
 import {
@@ -7,7 +8,6 @@ import {
   Profession,
   UpdateProfessionDto,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { getAvatarImages } from '../../services/image-service';
 
@@ -16,6 +16,7 @@ const ProfessionViewResume: FC<{
   setProfession: Dispatch<SetStateAction<Profession | undefined>>;
 }> = ({ profession, setProfession }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
 
   if (!profession) return <p>Loading...</p>;

@@ -10,16 +10,17 @@ import {
   Skill,
   SkillCategory,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import SkillListActions from './SkillListActions';
 import SkillListSearch from './SkillListSearch';
 import { useAuth } from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
 
 const SkillList: FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const auth = useAuth();
   const { showError } = useError();
   const [skills, setSkills] = useState<Skill[]>([]);

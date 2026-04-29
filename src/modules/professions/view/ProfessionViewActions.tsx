@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -11,7 +12,6 @@ import {
   deleteProfession,
   fetchProfession,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 
 const ProfessionViewActions: FC<{
@@ -19,6 +19,7 @@ const ProfessionViewActions: FC<{
   setProfession: Dispatch<SetStateAction<Profession | undefined>>;
 }> = ({ profession, setProfession }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);

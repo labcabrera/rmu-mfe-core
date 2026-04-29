@@ -1,19 +1,19 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { AddButton, CategorySeparator, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
-import { Skill } from '../../api/skill.dto';
+import { AddButton, CategorySeparator, RmuTextCard, Skill } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { defaultImage } from '../../services/image-service';
 
 const SkillCategoryViewSkills: FC<{
   skills: Skill[];
 }> = ({ skills }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
     <>
-      <Grid container spacing={1} mt={5}>
+      <Grid container spacing={1} sx={{ mt: 5 }}>
         <Grid size={12}>
           <CategorySeparator text={t('Skills')}>
             <AddButton onClick={() => navigate(`/core/skills/create`)} />

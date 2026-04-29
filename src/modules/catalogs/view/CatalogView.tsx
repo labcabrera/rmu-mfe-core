@@ -14,7 +14,6 @@ import {
   deleteEnumeration,
   fetchEnumerations,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
@@ -22,10 +21,12 @@ import AddEnumerationDialog from '../shared/AddEnumerationDialog';
 import CatalogViewActions from './CatalogViewActions';
 import CatalogListSearch from './CatalogViewSearch';
 import { useAuth } from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
 
 const CatalogView: FC = () => {
   const auth = useAuth();
   const { showError } = useError();
+  const { t } = useTranslation();
   const { category } = useParams<{ category?: string }>();
   const [enumerations, setEnumerations] = useState<Enumeration[]>();
   const [addDialogOpen, setAddDialogOpen] = useState<boolean>(false);

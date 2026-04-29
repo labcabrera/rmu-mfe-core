@@ -1,18 +1,18 @@
 import React, { FC } from 'react';
-import { RmuBreadcrumbs, RefreshButton } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
-import { Skill } from '../../api/skill.dto';
+import { useTranslation } from 'react-i18next';
+import { RmuBreadcrumbs, RefreshButton, SkillCategory } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const SkillCategoryViewActions: FC<{
-  skill: Skill;
+  skillCategory: SkillCategory;
   onRefresh: () => void;
-}> = ({ skill, onRefresh }) => {
+}> = ({ skillCategory, onRefresh }) => {
+  const { t } = useTranslation();
   const breadcrumbs = [
-    { name: t('Core'), link: '/core' },
-    { name: t('Skill categories'), link: '/core/skill-categories' },
+    { name: t('core'), link: '/core' },
+    { name: t('skill-categories'), link: '/core/skill-categories' },
   ];
 
-  if (!skill) return <p>Loading...</p>;
+  if (!skillCategory) return <p>Loading...</p>;
 
   return (
     <RmuBreadcrumbs items={breadcrumbs}>

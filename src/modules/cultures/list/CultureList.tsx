@@ -10,15 +10,16 @@ import {
   Culture,
   fetchCultures,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import CultureListActions from './CultureListActions';
 import CultureListSearch from './CultureListSearch';
 import { useAuth } from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
 
 const CultureList: FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const auth = useAuth();
   const { showError } = useError();
   const [queryString, setQueryString] = useState('');

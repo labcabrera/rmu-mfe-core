@@ -8,16 +8,18 @@ import { gridSizeResume, gridSizeMain } from '../../services/display';
 import SkillCategoryViewActions from './SkillCategoryViewActions';
 import SkillCategoryViewInfo from './SkillCategoryViewInfo';
 import SkillCategoryViewSkills from './SkillCategoryViewSkills';
+import { useAuth } from 'react-oidc-context';
 
 const SkillCategoryView: FC = () => {
   const location = useLocation();
+  const auth = useAuth();
   const { skillCategoryId } = useParams<{ skillCategoryId?: string }>();
   const { showError } = useError();
   const [skillCategory, setSkillCategory] = useState<SkillCategory | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
 
   const bindSkillCategory = () => {
-    fetchSkillCategory(skillCategoryId!)
+    fetchSkillCategory(skillCategoryId!, auth)
       .then((response) => setSkillCategory(response))
       .catch((err) => showError(err.message));
   };
@@ -32,7 +34,7 @@ const SkillCategoryView: FC = () => {
 
   useEffect(() => {
     if (skillCategory) {
-      fetchSkills(`categoryId==${skillCategory.id}`, 0, 100)
+      fetchSkills(`categoryId==${skillCategory.id}`, 0, 100, auth)
         .then((response) => setSkills(response.content))
         .catch((err: unknown) => {
           if (err instanceof Error) showError(err.message);
@@ -47,7 +49,7 @@ const SkillCategoryView: FC = () => {
     <Grid container spacing={2}>
       <Grid size={gridSizeResume}></Grid>
       <Grid size={gridSizeMain}>
-        <SkillCategoryViewActions skill={skillCategory} onRefresh={bindSkillCategory} />
+        <SkillCategoryViewActions skillCategory={skillCategory} onRefresh={bindSkillCategory} />
         <SkillCategoryViewInfo skillCategory={skillCategory} />
         <SkillCategoryViewSkills skills={skills} />
       </Grid>

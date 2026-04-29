@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid, Paper, Typography } from '@mui/material';
-import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
-import { Skill } from '../../api/skill.dto';
+import { RmuTextCard, SkillCategory } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from '../../services/config';
 
 const SkillCategoryViewInfo: FC<{
-  skillCategory: Skill;
+  skillCategory: SkillCategory;
 }> = ({ skillCategory }) => {
+  const { t } = useTranslation();
   if (!skillCategory) return <p>Loading...</p>;
 
   function capitalize(str: string): string {
@@ -51,7 +51,7 @@ const SkillCategoryViewInfo: FC<{
           </Grid>
         )}
       </Grid>
-      <Grid size={12} mt={1}>
+      <Grid size={12} sx={{ mt: 1 }}>
         <Paper sx={{ p: 2 }}>
           <Typography variant="body1" gutterBottom sx={{ whiteSpace: 'pre-wrap' }}>
             {t(`skill-category-${skillCategory.id}-description`)}

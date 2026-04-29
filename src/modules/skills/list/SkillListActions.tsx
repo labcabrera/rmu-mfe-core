@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { AddButton, RefreshButton, RmuBreadcrumbs } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 
 const SkillListActions: FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const breadcrumbs = [
     { name: t('core'), link: '/core' },

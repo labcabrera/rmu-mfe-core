@@ -8,8 +8,10 @@ import { gridSizeResume, gridSizeMain } from '../../services/display';
 import SkillViewActions from './SkillViewActions';
 import SkillViewInfo from './SkillViewInfo';
 import SkillViewSpecializations from './SkillViewSpecializations';
+import { useAuth } from 'react-oidc-context';
 
 const SkillView: FC = () => {
+  const auth = useAuth();
   const location = useLocation();
   const { showError } = useError();
   const { skillId } = useParams<{ skillId?: string }>();
@@ -17,14 +19,14 @@ const SkillView: FC = () => {
   const [enumerations, setEnumerations] = useState<Enumeration[]>();
 
   const bindSkill = (skillId: string) => {
-    fetchSkill(skillId)
+    fetchSkill(skillId, auth)
       .then((response) => setSkill(response))
       .catch((err) => showError(err.message));
   };
 
   const bindEnumerations = () => {
     if (!skill?.specialization) return;
-    fetchEnumerations(`category==${skill?.specialization}`, 0, 100)
+    fetchEnumerations(`category==${skill?.specialization}`, 0, 100, auth)
       .then((response) => setEnumerations(response.content))
       .catch((err) => showError(err.message));
   };

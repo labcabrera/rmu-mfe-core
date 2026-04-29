@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
 import { ClearableTextField, Realm } from '@labcabrera-rmu/rmu-react-shared-lib';
 import SelectRealm from '../../shared/selects/SelectRealm';
@@ -10,6 +11,7 @@ type Props = {
 };
 
 const CatalogListSearch: FC<Props> = ({ category, realms, setQueryString }) => {
+  const { t } = useTranslation();
   const [searchName, setSearchName] = React.useState('');
   const [searchRealm, setSearchRealm] = React.useState('');
 
@@ -28,7 +30,7 @@ const CatalogListSearch: FC<Props> = ({ category, realms, setQueryString }) => {
     <Grid container spacing={1}>
       <Grid size={{ xs: 12, md: 3 }}>
         <ClearableTextField
-          label="Name"
+          label={t('name')}
           name="name"
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}

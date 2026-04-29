@@ -3,16 +3,17 @@ import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { RmuPagination, RmuTextCard, SkillCategory, fetchSkillCategories } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import SkillCategoryListActions from './SkillCategoryListActions';
 import SkillCategoryListSearch from './SkillCategoryListSearch';
 import { useAuth } from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
 
 const SkillCategoryList: FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const auth = useAuth();
   const { showError } = useError();
   const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([]);

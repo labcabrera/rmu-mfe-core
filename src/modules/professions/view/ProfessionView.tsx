@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useParams } from 'react-router-dom';
 import { Box, Chip, Grid, Stack } from '@mui/material';
 import { CategorySeparator, TechnicalInfo, Profession, fetchProfession } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import ProfessionViewActions from './ProfessionViewActions';
@@ -13,6 +13,7 @@ import ProfessionViewSkillCosts from './ProfessionViewSkillCosts';
 
 const ProfessionView: FC = () => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const { professionId } = useParams<{ professionId: string | undefined }>();
   const [profession, setProfession] = useState<Profession>();
@@ -66,7 +67,8 @@ const ProfessionView: FC = () => {
 const RealmTypeChips = ({ realmTypes }: { realmTypes: string[] }) => (
   <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
     {realmTypes.map((rt) => (
-      <Chip key={rt} label={t(rt)} />
+      //TODO translate
+      <Chip key={rt} label={rt} />
     ))}
   </Stack>
 );
