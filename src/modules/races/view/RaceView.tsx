@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Chip, Grid, Typography } from '@mui/material';
 import {
@@ -24,8 +26,6 @@ import RaceViewResistances from './RaceViewResistances';
 import RaceViewSkills from './RaceViewSkills';
 import RaceViewStats from './RaceViewStats';
 import RaceViewTraits from './RaceViewTraits';
-import { useAuth } from 'react-oidc-context';
-import { useTranslation } from 'react-i18next';
 
 const RaceView: FC = () => {
   const auth = useAuth();
@@ -104,9 +104,9 @@ const RaceView: FC = () => {
               />
             </Grid>
           </Grid>
-          <CategorySeparator text={t('Statistics')} />
+          <CategorySeparator text={t('statistics')} />
           <RaceViewStats race={race} />
-          <CategorySeparator text={t('Resistances')} />
+          <CategorySeparator text={t('resistances')} />
           <RaceViewResistances race={race} />
           <CategorySeparator text={t('race-features')} />
           <RaceViewAttributes race={race} />
@@ -117,7 +117,7 @@ const RaceView: FC = () => {
           {race.defaultLanguage && (
             <>
               <CategorySeparator text={t('language')} />
-              <Grid size={12} sx={{mt:2}}>
+              <Grid size={12} sx={{ mt: 2 }}>
                 <Grid container spacing={1} columns={10}>
                   <Grid size={{ xs: 12, md: 2 }}>
                     <RmuTextCard
@@ -130,7 +130,7 @@ const RaceView: FC = () => {
               </Grid>
             </>
           )}
-          <Grid size={12} sx={{mt: 5}}>
+          <Grid size={12} sx={{ mt: 5 }}>
             <TechnicalInfo>
               <pre>{JSON.stringify(race, null, 2)} </pre>
             </TechnicalInfo>

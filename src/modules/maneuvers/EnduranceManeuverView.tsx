@@ -25,49 +25,52 @@ const EnduranceManeuverView: FC = () => {
   }, [roll]);
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <Grid size={12}>
-          <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
-        </Grid>
-        <Grid size={12}>
-          <FormControlLabel
-            control={<Checkbox checked={unusualEvent} onChange={(e) => setUnusualEvent(e.target.checked)} />}
-            label={t('unusual-event')}
-          />
-        </Grid>
-      </Grid>
-
-      <Grid size={{ xs: 12, md: 4 }}>
-        {result && (
-          <Paper sx={{ p: 2 }}>
+    <Paper sx={{ p: 2 }}>
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Grid container spacing={2}>
             <Grid size={12}>
-              <Typography variant="h6" color="primary" gutterBottom>
-                {t(result.result)}
-              </Typography>
-              <Typography variant="body1" color="secondary" gutterBottom>
-                {result.message}
-              </Typography>
-              {result.fatigue !== undefined && (
-                <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
-                  Fatigue: {result.fatigue}
-                </Typography>
-              )}
-              {result.hitPoints !== undefined && result.hitPoints !== 0 && (
-                <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
-                  Hit Points: {result.hitPoints}
-                </Typography>
-              )}
-              {result.bonus !== undefined && result.bonus !== 0 && (
-                <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
-                  Bonus: {result.bonus}
-                </Typography>
-              )}
+              <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
             </Grid>
-          </Paper>
-        )}
+            <Grid size={12}>
+              <FormControlLabel
+                control={<Checkbox checked={unusualEvent} onChange={(e) => setUnusualEvent(e.target.checked)} />}
+                label={t('unusual-event')}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          {result && (
+            <Paper sx={{ p: 2 }}>
+              <Grid size={12}>
+                <Typography variant="h6" color="primary" gutterBottom>
+                  {t(result.result)}
+                </Typography>
+                <Typography variant="body1" color="secondary" gutterBottom>
+                  {result.message}
+                </Typography>
+                {result.fatigue !== undefined && (
+                  <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
+                    {t('fatigue')}: {result.fatigue}
+                  </Typography>
+                )}
+                {result.hitPoints !== undefined && result.hitPoints !== 0 && (
+                  <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
+                    {t('hit-points')}: {result.hitPoints}
+                  </Typography>
+                )}
+                {result.bonus !== undefined && result.bonus !== 0 && (
+                  <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
+                    {t('bonus')}: {result.bonus}
+                  </Typography>
+                )}
+              </Grid>
+            </Paper>
+          )}
+        </Grid>
       </Grid>
-    </Grid>
+    </Paper>
   );
 };
 

@@ -7,10 +7,10 @@ import {
   KeyValue,
   NumericInput,
   PercentManeuverResult,
+  SelectDifficulty,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../ErrorContext';
 import { openEndedRoll } from '../services/random-service';
-import SelectDifficulty from '../shared/selects/SelectDifficulty';
 
 const PercentManeuverView: FC = () => {
   const auth = useAuth();
@@ -35,48 +35,57 @@ const PercentManeuverView: FC = () => {
   }, [roll, difficulty, modifier]);
 
   return (
-    <Grid container spacing={2}>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <SelectDifficulty label={t('difficulty')} value={difficulty?.key || 'm'} onChange={(e) => setDifficulty(e)} />
-      </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <NumericInput
-          label={t('modifier')}
-          value={modifier}
-          onChange={(e) => setModifier(e || 0)}
-          integer
-          min={-1000}
-          max={1000}
-        />
-      </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
-      </Grid>
-      <Grid size={12} sx={{ mt: 1 }}>
-        <Button variant="contained" color="primary" onClick={() => setRoll(openEndedRoll())}>
-          {t('Random')}
-        </Button>
-      </Grid>
-
-      <Grid size={{ xs: 12, md: 4 }}>
-        {result && (
-          <Paper sx={{ p: 2 }}>
-            <Grid size={{ xs: 12, md: 12 }}>
-              <Typography variant="h6" color="primary" gutterBottom>
-                {t(result.message)}
-              </Typography>
-              <Typography variant="body1" color="secondary" gutterBottom>
-                {t('total-roll')}: {totalRoll}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                {t('Percent')}: {result.percent}%
-              </Typography>
-              {result.critical && <Typography variant="body1">Critical: {result.critical}</Typography>}
+    <Paper sx={{ p: 2 }}>
+      <Grid container>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Grid container spacing={2}>
+            <Grid size={12}>
+              <SelectDifficulty
+                label={t('difficulty')}
+                value={difficulty?.key || 'm'}
+                onChange={(e) => setDifficulty(e)}
+              />
             </Grid>
-          </Paper>
-        )}
+            <Grid size={12}>
+              <NumericInput
+                label={t('modifier')}
+                value={modifier}
+                onChange={(e) => setModifier(e || 0)}
+                integer
+                min={-1000}
+                max={1000}
+              />
+            </Grid>
+            <Grid size={12}>
+              <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
+            </Grid>
+            <Grid size={12} sx={{ mt: 1 }}>
+              <Button variant="contained" color="primary" onClick={() => setRoll(openEndedRoll())}>
+                {t('Random')}
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          {result && (
+            <Paper sx={{ p: 2 }}>
+              <Grid size={{ xs: 12, md: 12 }}>
+                <Typography variant="h6" color="primary" gutterBottom>
+                  {t(result.message)}
+                </Typography>
+                <Typography variant="body1" color="secondary" gutterBottom>
+                  {t('roll-total')}: {totalRoll}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  {t('percent')}: {result.percent}%
+                </Typography>
+                {result.critical && <Typography variant="body1">Critical: {result.critical}</Typography>}
+              </Grid>
+            </Paper>
+          )}
+        </Grid>
       </Grid>
-    </Grid>
+    </Paper>
   );
 };
 

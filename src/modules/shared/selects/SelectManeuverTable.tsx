@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField } from '@mui/material';
-import { t } from 'i18next';
 
 const SelectManeuverTable: FC<{
   value: string | null;
@@ -8,6 +8,7 @@ const SelectManeuverTable: FC<{
   tables: string[];
   onChange: (event: string | null) => void;
 }> = ({ value, label, tables, onChange }) => {
+  const { t } = useTranslation();
   return (
     <TextField
       select
