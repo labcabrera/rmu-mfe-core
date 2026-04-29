@@ -52,7 +52,7 @@ const RaceView: FC = () => {
   }, [race]);
 
   useEffect(() => {
-    if (location.state.race) {
+    if (location && location.state && location.state.race) {
       setRace(location.state.race);
     } else if (raceId) {
       fetchRace(raceId, auth)

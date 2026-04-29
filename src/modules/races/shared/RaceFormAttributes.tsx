@@ -6,11 +6,13 @@ import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
+import { useAuth } from 'react-oidc-context';
 
 const RaceFormAttributes: FC<{
   formData: Race;
   setFormData: Dispatch<SetStateAction<Race>>;
 }> = ({ formData, setFormData }) => {
+  const auth = useAuth();
   const { showError } = useError();
   const [archetypes, setArchetypes] = useState<SelectOption[]>([]);
 
@@ -20,7 +22,7 @@ const RaceFormAttributes: FC<{
   };
 
   useEffect(() => {
-    fetchEnumerations('category==race-archetype', 0, 100)
+    fetchEnumerations('category==race-archetype', 0, 100, auth)
       .then((response) => setArchetypes(response.content.map((e) => ({ value: e.key, description: e.key }))))
       .catch((err) => showError(err.message));
   }, []);
@@ -110,7 +112,7 @@ const RaceFormAttributes: FC<{
           label={t('average-height-male')}
           name="averageHeightMale"
           value={formData.averageHeight.male}
-          onChange={(value) => setFormData({ ...formData, averageHeight: { ...formData.averageHeight, male: value } })}
+          onChange={(value) => setFormData({ ...formData, averageHeight: { ...formData.averageHeight, male: value || 0 } })}
           min={0}
         />
       </Grid>
@@ -120,7 +122,7 @@ const RaceFormAttributes: FC<{
           name="averageHeightFemale"
           value={formData.averageHeight.female}
           onChange={(value) =>
-            setFormData({ ...formData, averageHeight: { ...formData.averageHeight, female: value } })
+            setFormData({ ...formData, averageHeight: { ...formData.averageHeight, female: value || 0 } })
           }
           min={0}
         />
@@ -130,7 +132,7 @@ const RaceFormAttributes: FC<{
           label={t('average-weight-male')}
           name="averageWeightMale"
           value={formData.averageWeight.male}
-          onChange={(value) => setFormData({ ...formData, averageWeight: { ...formData.averageWeight, male: value } })}
+          onChange={(value) => setFormData({ ...formData, averageWeight: { ...formData.averageWeight, male: value || 0 } })}
           min={0}
         />
       </Grid>
@@ -140,7 +142,7 @@ const RaceFormAttributes: FC<{
           name="averageWeightFemale"
           value={formData.averageWeight.female}
           onChange={(value) =>
-            setFormData({ ...formData, averageWeight: { ...formData.averageWeight, female: value } })
+            setFormData({ ...formData, averageWeight: { ...formData.averageWeight, female: value || 0 } })
           }
           min={0}
         />

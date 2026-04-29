@@ -9,8 +9,10 @@ import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/displ
 import { getTraitImage } from '../../services/trait-image-service';
 import TraitListActions from './TraitListActions';
 import TraitListSearch from './TraitListSearch';
+import { useAuth } from 'react-oidc-context';
 
 const TraitList: FC = () => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const { showError } = useError();
   const [traits, setTraits] = useState<Trait[]>([]);
@@ -20,7 +22,7 @@ const TraitList: FC = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const bindTraits = () => {
-    fetchTraits(searchString, page, pageSize)
+    fetchTraits(searchString, page, pageSize, auth)
       .then((response) => {
         setTraits(response.content);
         setTotalPages(response.pagination.totalPages || 1);
