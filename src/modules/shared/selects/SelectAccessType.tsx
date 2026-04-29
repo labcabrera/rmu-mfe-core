@@ -7,7 +7,7 @@ const SelectAccessType: FC<{
   value: AccessType | undefined;
   label?: string;
   onChange: (accessType: AccessType) => void;
-}> = ({ value, label = 'Access type', onChange }) => {
+}> = ({ value, label = 'access-type', onChange }) => {
   const { t } = useTranslation();
 
   const handleChange = (_: MouseEvent<HTMLElement>, newValue: string | null) => {
@@ -17,7 +17,7 @@ const SelectAccessType: FC<{
 
   return (
     <FormControl component="fieldset">
-      <FormLabel component="legend">{label}</FormLabel>
+      <FormLabel component="legend">{t(label)}</FormLabel>
       <ToggleButtonGroup value={value ?? null} exclusive onChange={handleChange} aria-label={label} size="small">
         <ToggleButton value="public" aria-label="public">
           {t('public')}

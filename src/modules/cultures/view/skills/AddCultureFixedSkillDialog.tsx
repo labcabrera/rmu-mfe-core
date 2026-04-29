@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, FC, Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { Grid } from '@mui/material';
 import {
   addCultureFixedSkillRank,
@@ -12,10 +14,8 @@ import {
   SkillSelector,
   TechnicalInfo,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../../ErrorContext';
 import { gridSizeCard } from '../../../services/display';
-import { useAuth } from 'react-oidc-context';
 
 const AddCultureFixedSkillDialog: FC<{
   open: boolean;
@@ -24,6 +24,7 @@ const AddCultureFixedSkillDialog: FC<{
   onClose: () => void;
 }> = ({ open, culture, setCulture, onClose }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [formData, setFormData] = useState<CultureSkillRank>({} as CultureSkillRank);
   const [validFormData, setValidFormData] = useState<boolean>(false);
@@ -72,7 +73,7 @@ const AddCultureFixedSkillDialog: FC<{
 
   return (
     <RmuDialog
-      title={t('Add fixed culture skill')}
+      title={t('add')}
       open={open}
       onCancel={handleClose}
       onConfirm={onAddSkill}
@@ -84,12 +85,11 @@ const AddCultureFixedSkillDialog: FC<{
             onSkillChange={(v) => onSelectedSkill(v || '')}
             onSpecializationChange={(v) => setFormData({ ...formData, specialization: v })}
             onError={(err) => showError(err)}
-            t={(msg) => t(msg)}
           />
         </Grid>
-        <Grid size={gridSizeCard} sx={{mt:5}}>
+        <Grid size={gridSizeCard} sx={{ mt: 5 }}>
           <NumericInput
-            label={t('Ranks')}
+            label={t('ranks')}
             value={formData.ranks}
             onChange={(v) => setFormData({ ...formData, ranks: v || 0 })}
           />

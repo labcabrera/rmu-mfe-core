@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useLocation, useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import { Culture, EditableAvatar, fetchCulture, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getAvatarImages } from '../../services/image-service';
 import CultureForm from '../shared/CultureForm';
 import RaceEditActions from './CultureEditActions';
-import { useAuth } from 'react-oidc-context';
 
 const CultureEdit: FC = () => {
   const location = useLocation();
@@ -49,7 +49,9 @@ const CultureEdit: FC = () => {
         </Grid>
         <Grid size={gridSizeMain}>
           <RaceEditActions culture={culture} formData={formData} />
-          <CultureForm formData={formData} setFormData={setFormData} />
+          <Paper sx={{ p: 2 }}>
+            <CultureForm formData={formData} setFormData={setFormData} />
+          </Paper>
           <TechnicalInfo>
             <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

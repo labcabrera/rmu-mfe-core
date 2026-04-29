@@ -18,7 +18,7 @@ const SkillViewSpecializations: FC<{
               <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`}>
                 <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
                   <Stack direction="column">
-                    <Typography>{e.key}</Typography>
+                    <Typography>{t(e.key)}</Typography>
                   </Stack>
                 </Stack>
               </RmuCard>

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import { TechnicalInfo, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import TraitForm from '../shared/TraitForm';
@@ -34,7 +34,9 @@ const TraitCreation: FC = () => {
       <Grid size={gridSizeResume}></Grid>
       <Grid size={gridSizeMain}>
         <TraitCreationActions formData={formData} isValid={isValid} />
-        <TraitForm formData={formData} setFormData={setFormData} />
+        <Paper sx={{ p: 2 }}>
+          <TraitForm formData={formData} setFormData={setFormData} />
+        </Paper>
         <TechnicalInfo>
           <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
         </TechnicalInfo>

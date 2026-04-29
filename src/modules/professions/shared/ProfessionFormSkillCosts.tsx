@@ -40,7 +40,7 @@ const SKILLS = [
 
 const ProfessionCreationSkillCosts: FC<{
   formData: Profession;
-  setFormData: Dispatch<SetStateAction<Profession | undefined>>;
+  setFormData: Dispatch<SetStateAction<Profession>>;
 }> = ({ formData, setFormData }) => {
   const { t } = useTranslation();
 

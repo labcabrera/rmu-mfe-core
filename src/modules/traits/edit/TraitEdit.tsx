@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import { fetchTrait, GenericAvatar, TechnicalInfo, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
@@ -43,7 +43,9 @@ const TraitEdit: FC = () => {
         </Grid>
         <Grid size={gridSizeMain}>
           <RealmEditActions trait={trait} formData={formData} />
-          <TraitForm formData={formData} setFormData={setFormData} />
+          <Paper sx={{ p: 2 }}>
+            <TraitForm formData={formData} setFormData={setFormData} />
+          </Paper>
           <TechnicalInfo>
             <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

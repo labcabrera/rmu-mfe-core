@@ -1,4 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import {
@@ -8,7 +9,6 @@ import {
   deleteCultureFixedSkillRank,
   DeleteDialog,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../../ErrorContext';
 
 const CultureSkillTable: FC<{
@@ -16,6 +16,7 @@ const CultureSkillTable: FC<{
   setCulture: Dispatch<SetStateAction<Culture>>;
 }> = ({ culture, setCulture }) => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [selectedSkill, setSelectedSkill] = useState<CultureSkillRank>();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
@@ -46,9 +47,9 @@ const CultureSkillTable: FC<{
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell align="left">{t('Skill')}</TableCell>
-              <TableCell align="left">{t('Specialization')}</TableCell>
-              <TableCell align="left">{t('Ranks')}</TableCell>
+              <TableCell align="left">{t('skill')}</TableCell>
+              <TableCell align="left">{t('specialization')}</TableCell>
+              <TableCell align="left">{t('ranks')}</TableCell>
               <TableCell align="left"></TableCell>
             </TableRow>
           </TableHead>
