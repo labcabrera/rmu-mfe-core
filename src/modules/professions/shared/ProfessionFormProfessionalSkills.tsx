@@ -1,21 +1,18 @@
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Grid, Chip, Typography } from '@mui/material';
-import {
-  AddButton,
-  CreateProfessionDto,
-  fetchSkills,
-  Skill,
-  UpdateProfessionDto,
-} from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
+import { AddButton, fetchSkills, Profession, Skill } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import SelectSkill from '../../shared/selects/SelectSkill';
 
 const ProfessionFormProfessionalSkills: FC<{
-  formData: CreateProfessionDto | UpdateProfessionDto;
-  setFormData: Dispatch<SetStateAction<CreateProfessionDto | UpdateProfessionDto | undefined>>;
+  formData: Profession;
+  setFormData: Dispatch<SetStateAction<Profession | undefined>>;
 }> = ({ formData, setFormData }) => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [allSkills, setAllSkills] = React.useState<string[]>([]);
   const [selectedSkillId, setSelectedSkillId] = React.useState<string | null>(null);
@@ -34,7 +31,7 @@ const ProfessionFormProfessionalSkills: FC<{
   };
 
   useEffect(() => {
-    fetchSkills('', 0, 500)
+    fetchSkills('', 0, 500, auth)
       .then((response) => setAllSkills(response.content.map((s: Skill) => s.id)))
       .catch((err: Error) => showError(err.message));
   }, []);
@@ -45,7 +42,7 @@ const ProfessionFormProfessionalSkills: FC<{
     <Grid container spacing={1}>
       <Grid size={6}>
         <SelectSkill
-          label={t('Skill')}
+          label={t('skill')}
           value={selectedSkillId || undefined}
           name={''}
           onChange={(skillId) => setSelectedSkillId(skillId)}

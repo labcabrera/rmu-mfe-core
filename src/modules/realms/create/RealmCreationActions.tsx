@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -7,13 +9,14 @@ import {
   createRealm,
   CreateRealmDto,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 
 const RealmCreationActions: FC<{
   formData: CreateRealmDto;
   isValid: boolean;
 }> = ({ formData, isValid }) => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
   const breadcrumbs = [
@@ -23,7 +26,7 @@ const RealmCreationActions: FC<{
   ];
 
   const onSaveClick = async () => {
-    createRealm(formData)
+    createRealm(formData, auth)
       .then((realm) => navigate(`/core/realms/view/${realm.id}`))
       .catch((err) => showError(err.message));
   };

@@ -3,15 +3,18 @@ import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { RmuPagination, RmuTextCard, SkillCategory, fetchSkillCategories } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import SkillCategoryListActions from './SkillCategoryListActions';
 import SkillCategoryListSearch from './SkillCategoryListSearch';
+import { useAuth } from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
 
 const SkillCategoryList: FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const auth = useAuth();
   const { showError } = useError();
   const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([]);
   const [page, setPage] = useState(0);
@@ -20,7 +23,7 @@ const SkillCategoryList: FC = () => {
   const [queryString, setQueryString] = useState<string>('');
 
   const bindSkillCategories = () => {
-    fetchSkillCategories(queryString, page, pageSize)
+    fetchSkillCategories(queryString, page, pageSize, auth)
       .then((response) => {
         setSkillCategories(response.content);
         setTotalPages(response.pagination.totalPages || 1);
@@ -35,39 +38,37 @@ const SkillCategoryList: FC = () => {
   if (!skillCategories) return <p>Loading...</p>;
 
   return (
-    <>
-      <SkillCategoryListActions onRefresh={() => bindSkillCategories()} />
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <Grid container spacing={1}>
-            <Grid size={12}>
-              <SkillCategoryListSearch setQueryString={setQueryString} />
-            </Grid>
-            {skillCategories.map((category) => (
-              <Grid size={gridSizeCard} key={category.id}>
-                <RmuTextCard
-                  value={t(category.id)}
-                  subtitle={t('Skill category')}
-                  image={`${imageBaseUrl}images/generic/configuration.png`}
-                  onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { category } })}
-                />
-              </Grid>
-            ))}
-            {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
-          </Grid>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}></Grid>
+      <Grid size={gridSizeMain}>
+        <SkillCategoryListActions onRefresh={() => bindSkillCategories()} />
+        <Grid container spacing={1}>
           <Grid size={12}>
-            <RmuPagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              setPage={setPage}
-              setPageSize={setPageSize}
-            />
+            <SkillCategoryListSearch setQueryString={setQueryString} />
           </Grid>
+          {skillCategories.map((category) => (
+            <Grid size={gridSizeCard} key={category.id}>
+              <RmuTextCard
+                value={t(category.id)}
+                subtitle={t('Skill category')}
+                image={`${imageBaseUrl}images/generic/configuration.png`}
+                onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { category } })}
+              />
+            </Grid>
+          ))}
+          {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
+        </Grid>
+        <Grid size={12}>
+          <RmuPagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            setPage={setPage}
+            setPageSize={setPageSize}
+          />
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

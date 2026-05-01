@@ -1,16 +1,16 @@
 import React, { ChangeEvent, FC } from 'react';
 import { MenuItem, TextField } from '@mui/material';
-import { MANEUVER_DIFFICULTIES, ManeuverDifficulty } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { MANEUVER_DIFFICULTIES, KeyValue } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { t } from 'i18next';
 
 const SelectDifficulty: FC<{
   value: string;
   label: string;
-  onChange: (difficulty: ManeuverDifficulty) => void;
+  onChange: (difficulty: KeyValue) => void;
 }> = ({ value, label, onChange }) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedValue = event.target.value;
-    const selectedDifficulty = MANEUVER_DIFFICULTIES.find((option) => option.id === selectedValue);
+    const selectedDifficulty = MANEUVER_DIFFICULTIES.find((option) => option.key === selectedValue);
     onChange(selectedDifficulty!);
   };
 
@@ -22,9 +22,9 @@ const SelectDifficulty: FC<{
       onChange={handleChange}
       fullWidth
     >
-      {MANEUVER_DIFFICULTIES.map((option) => (
-        <MenuItem key={option.id} value={option.id}>
-          {`${t(`difficulty-${option.id}`)} (${option.modifier})`}
+      {MANEUVER_DIFFICULTIES.map((option, index) => (
+        <MenuItem key={index} value={option.key}>
+          {`${t(`difficulty-${option.key}`)} (${option.value})`}
         </MenuItem>
       ))}
     </TextField>

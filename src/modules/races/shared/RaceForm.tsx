@@ -1,8 +1,7 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
-import { CategorySeparator } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
-import { CreateRaceDto, UpdateRaceDto } from '../../api/race.dto';
+import { CategorySeparator, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
 import RaceFormAttributes from './RaceFormAttributes';
 import RaceFormLore from './RaceFormLore';
 import RaceFormResistances from './RaceFormResistances';
@@ -10,9 +9,11 @@ import RaceFormStats from './RaceFormStats';
 
 const RaceForm: FC<{
   realmId: string;
-  formData: CreateRaceDto | UpdateRaceDto;
-  setFormData: Dispatch<SetStateAction<CreateRaceDto | UpdateRaceDto | undefined>>;
+  formData: Race;
+  setFormData: Dispatch<SetStateAction<Race>>;
 }> = ({ realmId, formData, setFormData }) => {
+  const { t } = useTranslation();
+
   return (
     <Grid container spacing={1}>
       <Grid size={{ xs: 12, md: 12 }}>

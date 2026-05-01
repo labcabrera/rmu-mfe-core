@@ -1,16 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { Grid, TextField } from '@mui/material';
-import { CreateRaceDto, fetchEnumerations, NumericInput, UpdateRaceDto } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
+import { fetchEnumerations, NumericInput, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
 
 const RaceFormAttributes: FC<{
-  formData: CreateRaceDto | UpdateRaceDto;
-  setFormData: Dispatch<SetStateAction<CreateRaceDto | UpdateRaceDto | undefined>>;
+  formData: Race;
+  setFormData: Dispatch<SetStateAction<Race>>;
 }> = ({ formData, setFormData }) => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [archetypes, setArchetypes] = useState<SelectOption[]>([]);
 
@@ -20,7 +23,7 @@ const RaceFormAttributes: FC<{
   };
 
   useEffect(() => {
-    fetchEnumerations('category==race-archetype', 0, 100)
+    fetchEnumerations('category==race-archetype', 0, 100, auth)
       .then((response) => setArchetypes(response.content.map((e) => ({ value: e.key, description: e.key }))))
       .catch((err) => showError(err.message));
   }, []);
@@ -55,7 +58,7 @@ const RaceFormAttributes: FC<{
           label={t('base-hit-points')}
           name="baseHitsMale"
           value={formData.baseHits}
-          onChange={(value) => setFormData({ ...formData, baseHits: value })}
+          onChange={(value) => setFormData({ ...formData, baseHits: value || 0 })}
         />
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
@@ -63,7 +66,7 @@ const RaceFormAttributes: FC<{
           label={t('stride-bonus')}
           name="strideBonusMale"
           value={formData.strideBonus}
-          onChange={(value) => setFormData({ ...formData, strideBonus: value })}
+          onChange={(value) => setFormData({ ...formData, strideBonus: value || 0 })}
         />
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
@@ -71,7 +74,7 @@ const RaceFormAttributes: FC<{
           label={t('endurance-bonus')}
           name="enduranceBonusMale"
           value={formData.enduranceBonus}
-          onChange={(value) => setFormData({ ...formData, enduranceBonus: value })}
+          onChange={(value) => setFormData({ ...formData, enduranceBonus: value || 0 })}
         />
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
@@ -82,7 +85,7 @@ const RaceFormAttributes: FC<{
           integer={false}
           min={0}
           maxFractionDigits={2}
-          onChange={(value) => setFormData({ ...formData, recoveryMultiplier: value })}
+          onChange={(value) => setFormData({ ...formData, recoveryMultiplier: value || 0 })}
         />
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
@@ -90,7 +93,7 @@ const RaceFormAttributes: FC<{
           label={t('base-dev-points')}
           name="baseDevPointsMale"
           value={formData.baseDevPoints}
-          onChange={(value) => setFormData({ ...formData, baseDevPoints: value })}
+          onChange={(value) => setFormData({ ...formData, baseDevPoints: value || 0 })}
           min={0}
         />
       </Grid>
@@ -99,7 +102,7 @@ const RaceFormAttributes: FC<{
           label={t('base-at')}
           name="baseAtMale"
           value={formData.baseAt}
-          onChange={(value) => setFormData({ ...formData, baseAt: value })}
+          onChange={(value) => setFormData({ ...formData, baseAt: value || 0 })}
           min={1}
           max={10}
           integer
@@ -109,8 +112,10 @@ const RaceFormAttributes: FC<{
         <NumericInput
           label={t('average-height-male')}
           name="averageHeightMale"
-          value={formData.averageHeight.male}
-          onChange={(value) => setFormData({ ...formData, averageHeight: { ...formData.averageHeight, male: value } })}
+          value={formData.averageHeight?.male || 0}
+          onChange={(value) =>
+            setFormData({ ...formData, averageHeight: { ...formData.averageHeight, male: value || 0 } })
+          }
           min={0}
         />
       </Grid>
@@ -118,9 +123,9 @@ const RaceFormAttributes: FC<{
         <NumericInput
           label={t('average-height-female')}
           name="averageHeightFemale"
-          value={formData.averageHeight.female}
+          value={formData.averageHeight?.female || 0}
           onChange={(value) =>
-            setFormData({ ...formData, averageHeight: { ...formData.averageHeight, female: value } })
+            setFormData({ ...formData, averageHeight: { ...formData.averageHeight, female: value || 0 } })
           }
           min={0}
         />
@@ -129,8 +134,10 @@ const RaceFormAttributes: FC<{
         <NumericInput
           label={t('average-weight-male')}
           name="averageWeightMale"
-          value={formData.averageWeight.male}
-          onChange={(value) => setFormData({ ...formData, averageWeight: { ...formData.averageWeight, male: value } })}
+          value={formData.averageWeight?.male || 0}
+          onChange={(value) =>
+            setFormData({ ...formData, averageWeight: { ...formData.averageWeight, male: value || 0 } })
+          }
           min={0}
         />
       </Grid>
@@ -138,9 +145,9 @@ const RaceFormAttributes: FC<{
         <NumericInput
           label={t('average-weight-female')}
           name="averageWeightFemale"
-          value={formData.averageWeight.female}
+          value={formData.averageWeight?.female || 0}
           onChange={(value) =>
-            setFormData({ ...formData, averageWeight: { ...formData.averageWeight, female: value } })
+            setFormData({ ...formData, averageWeight: { ...formData.averageWeight, female: value || 0 } })
           }
           min={0}
         />

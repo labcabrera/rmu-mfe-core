@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, Tab, Box } from '@mui/material';
-import { AddButton } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { Realm } from '../../api/realm.dto';
+import { AddButton, Realm } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from '../../services/config';
 import RealmViewEnumerations from './RealmViewEnumerations';
 import RealmViewRaces from './RealmViewRaces';
@@ -14,6 +14,7 @@ type RealmViewTabsProps = {
 
 const RealmViewTabs: FC<RealmViewTabsProps> = ({ realm, initialTab = 0 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [value, setValue] = useState<number>(initialTab);
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
@@ -35,11 +36,11 @@ const RealmViewTabs: FC<RealmViewTabsProps> = ({ realm, initialTab = 0 }) => {
           scrollButtons="auto"
           sx={{ flex: 1 }}
         >
-          <Tab label="Races" />
-          <Tab label="Languages" />
-          <Tab label="Regions" />
-          <Tab label="Religions" />
-          <Tab label="Historic" />
+          <Tab label={t('races')} />
+          <Tab label={t('languages')} />
+          <Tab label={t('regions')} />
+          <Tab label={t('religions')} />
+          <Tab label={t('historic')} />
         </Tabs>
 
         <Box sx={{ ml: 2, display: value === 0 ? 'block' : 'none' }}>

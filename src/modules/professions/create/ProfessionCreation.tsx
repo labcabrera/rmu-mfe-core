@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
-import { TechnicalInfo, EditableAvatar } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { CreateProfessionDto } from '../../api/profession.dto';
+import { TechnicalInfo, EditableAvatar, CreateProfessionDto } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from '../../services/config';
 import { getAvatarImages } from '../../services/image-service';
 import ProfessionForm from '../shared/ProfessionForm';
@@ -49,7 +48,7 @@ const TEMPLATE = {
   professionalSkills: [],
   description: '',
   imageUrl: `${imageBaseUrl}images/generic/configuration.png`,
-} as CreateProfessionDto;
+} as unknown as CreateProfessionDto;
 
 const ProfessionCreation: FC = () => {
   const [formData, setFormData] = useState<CreateProfessionDto>(TEMPLATE);

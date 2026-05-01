@@ -10,14 +10,17 @@ import {
   Culture,
   fetchCultures,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import CultureListActions from './CultureListActions';
 import CultureListSearch from './CultureListSearch';
+import { useAuth } from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
 
 const CultureList: FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const auth = useAuth();
   const { showError } = useError();
   const [queryString, setQueryString] = useState('');
   const [realms, setRealms] = useState<Realm[]>([]);
@@ -27,7 +30,7 @@ const CultureList: FC = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const bindCultures = () => {
-    fetchCultures(queryString, page, pageSize)
+    fetchCultures(queryString, page, pageSize, auth)
       .then((response) => {
         setCultures(response.content);
         setTotalPages(response.pagination.totalPages || 1);
@@ -36,7 +39,7 @@ const CultureList: FC = () => {
   };
 
   const bindRealms = () => {
-    fetchRealms('', 0, 100)
+    fetchRealms('', 0, 100, auth)
       .then((response) => setRealms(response.content))
       .catch((err) => showError(err.message));
   };
@@ -52,39 +55,37 @@ const CultureList: FC = () => {
   if (!cultures) return <p>Loading...</p>;
 
   return (
-    <>
-      <CultureListActions onRefresh={bindRealms} />
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <Grid container spacing={1}>
-            <Grid size={12}>
-              <CultureListSearch setQueryString={setQueryString} realms={realms} />
-            </Grid>
-            {cultures.map((culture) => (
-              <Grid size={gridSizeCard} key={culture.id}>
-                <RmuTextCard
-                  value={culture.name}
-                  subtitle={t('Culture')}
-                  image={culture.imageUrl || ''}
-                  onClick={() => navigate(`/core/cultures/view/${culture.id}`, { state: { race: culture } })}
-                />
-              </Grid>
-            ))}
-            {cultures.length === 0 && <Grid size={12}>No cultures found.</Grid>}
-          </Grid>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}></Grid>
+      <Grid size={gridSizeMain}>
+        <CultureListActions onRefresh={bindCultures} />
+        <Grid container spacing={1}>
           <Grid size={12}>
-            <RmuPagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              setPage={setPage}
-              setPageSize={setPageSize}
-            />
+            <CultureListSearch setQueryString={setQueryString} realms={realms} />
           </Grid>
+          {cultures.map((culture) => (
+            <Grid size={gridSizeCard} key={culture.id}>
+              <RmuTextCard
+                value={culture.name}
+                subtitle={t('Culture')}
+                image={culture.imageUrl || ''}
+                onClick={() => navigate(`/core/cultures/view/${culture.id}`, { state: { race: culture } })}
+              />
+            </Grid>
+          ))}
+          {cultures.length === 0 && <Grid size={12}>No cultures found.</Grid>}
+        </Grid>
+        <Grid size={12}>
+          <RmuPagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            setPage={setPage}
+            setPageSize={setPageSize}
+          />
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

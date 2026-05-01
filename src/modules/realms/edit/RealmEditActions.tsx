@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -8,7 +10,6 @@ import {
   UpdateRealmDto,
   updateRealm,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 
 const RealmEditActions: FC<{
@@ -16,6 +17,8 @@ const RealmEditActions: FC<{
   formData: UpdateRealmDto;
 }> = ({ realm, formData }) => {
   const navigate = useNavigate();
+  const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const breadcrumbItems = [
     { name: t('core'), link: '/core' },
@@ -24,7 +27,7 @@ const RealmEditActions: FC<{
   ];
 
   const onSaveButtonClick = async () => {
-    updateRealm(realm.id, formData)
+    updateRealm(realm.id, formData, auth)
       .then((data) => {
         navigate(`/core/realms/view/${realm.id}`, { state: { realm: data } });
       })

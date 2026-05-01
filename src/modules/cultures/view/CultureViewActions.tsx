@@ -1,4 +1,6 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -10,13 +12,14 @@ import {
   deleteCulture,
   fetchCulture,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 
 const CultureViewActions: FC<{
   culture: Culture;
-  setCulture: Dispatch<SetStateAction<Culture | undefined>>;
+  setCulture: Dispatch<SetStateAction<Culture>>;
 }> = ({ culture, setCulture }) => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -38,13 +41,13 @@ const CultureViewActions: FC<{
   };
 
   const onRefresh = () => {
-    fetchCulture(culture.id)
+    fetchCulture(culture.id, auth)
       .then((response) => setCulture(response))
       .catch((err) => showError(err.message));
   };
 
   const onDelete = () => {
-    deleteCulture(culture.id)
+    deleteCulture(culture.id, auth)
       .then(() => navigate(`/core/cultures`))
       .catch((err) => showError(err.message));
   };

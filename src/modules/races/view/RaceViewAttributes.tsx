@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
-import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
-import { Race } from '../../api/race.dto';
+import { Race, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from '../../services/config';
 
 const grayscale = 0.7;
@@ -10,6 +9,7 @@ const grayscale = 0.7;
 const RaceViewAttributes: FC<{
   race: Race;
 }> = ({ race }) => {
+  const { t } = useTranslation();
   const cards: Array<{
     value: string | number;
     subtitle: string;

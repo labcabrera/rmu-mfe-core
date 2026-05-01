@@ -1,4 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { Grid } from '@mui/material';
 import {
   emptyResistanceRollQuery,
@@ -8,7 +10,6 @@ import {
   RmuBreadcrumbs,
   TechnicalInfo,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
 import { gridSizeResume, gridSizeMain } from '../services/display';
 import { openEndedRoll } from '../services/random-service';
@@ -17,6 +18,8 @@ import ResistanceRollViewResult from './ResistanceRollViewResult';
 
 const ResistanceRollView: FC = () => {
   const { showError } = useError();
+  const auth = useAuth();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<ResistanceRollQuery>(emptyResistanceRollQuery);
   const [result, setResult] = useState<ResistanceRollResult>();
   const breadcrumbs = [{ name: t('Core'), link: '/core' }, { name: t('Resistance rolls') }];
@@ -26,7 +29,7 @@ const ResistanceRollView: FC = () => {
   };
 
   const onSubmit = () => {
-    resistanceRoll(formData)
+    resistanceRoll(formData, auth)
       .then((result) => setResult(result))
       .catch((err) => showError(err.message));
   };
@@ -44,28 +47,26 @@ const ResistanceRollView: FC = () => {
   }, [formData]);
 
   return (
-    <>
-      <RmuBreadcrumbs items={breadcrumbs}></RmuBreadcrumbs>
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <Grid container spacing={1}>
-            <Grid size={{ xs: 12, md: 4 }}>
-              <ResistanceRollViewForm formData={formData} setFormData={setFormData} onRandom={onRandom} />
-            </Grid>
-            <Grid size={{ xs: 12, md: 8 }}>
-              <ResistanceRollViewResult result={result} />
-            </Grid>
-            <Grid size={12}>
-              <TechnicalInfo>
-                <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
-                <pre>Result: {JSON.stringify(result, null, 2)}</pre>
-              </TechnicalInfo>
-            </Grid>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}></Grid>
+      <Grid size={gridSizeMain}>
+        <RmuBreadcrumbs items={breadcrumbs}></RmuBreadcrumbs>
+        <Grid container spacing={1}>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <ResistanceRollViewForm formData={formData} setFormData={setFormData} onRandom={onRandom} />
+          </Grid>
+          <Grid size={{ xs: 12, md: 8 }}>
+            <ResistanceRollViewResult result={result} />
+          </Grid>
+          <Grid size={12}>
+            <TechnicalInfo>
+              <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
+              <pre>Result: {JSON.stringify(result, null, 2)}</pre>
+            </TechnicalInfo>
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

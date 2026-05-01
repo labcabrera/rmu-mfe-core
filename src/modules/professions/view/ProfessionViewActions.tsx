@@ -1,4 +1,6 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -10,19 +12,20 @@ import {
   deleteProfession,
   fetchProfession,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 
 const ProfessionViewActions: FC<{
   profession: Profession;
   setProfession: Dispatch<SetStateAction<Profession | undefined>>;
 }> = ({ profession, setProfession }) => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const breadcrumbs = [
-    { name: t('Core'), link: '/core' },
-    { name: t('Professions'), link: '/core/professions' },
+    { name: t('core'), link: '/core' },
+    { name: t('professions'), link: '/core/professions' },
   ];
 
   const handleEditClick = () => {
@@ -38,13 +41,13 @@ const ProfessionViewActions: FC<{
   };
 
   const onRefresh = () => {
-    fetchProfession(profession.id)
+    fetchProfession(profession.id, auth)
       .then((response) => setProfession(response))
       .catch((err) => showError(err.message));
   };
 
   const onDelete = () => {
-    deleteProfession(profession.id)
+    deleteProfession(profession.id, auth)
       .then(() => navigate(`/core/professions`))
       .catch((err) => showError(err.message));
   };

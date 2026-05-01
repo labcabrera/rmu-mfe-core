@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { AddButton, RefreshButton, RmuBreadcrumbs } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 
 interface Props {
   onRefresh: () => void;
@@ -9,7 +9,8 @@ interface Props {
 
 const ProfessionListActions: FC<Props> = ({ onRefresh }) => {
   const navigate = useNavigate();
-  const breadcrumbs = [{ name: t('Core'), link: '/core' }, { name: t('Professions') }];
+  const { t } = useTranslation();
+  const breadcrumbs = [{ name: t('core'), link: '/core' }, { name: t('professions') }];
 
   return (
     <RmuBreadcrumbs items={breadcrumbs}>

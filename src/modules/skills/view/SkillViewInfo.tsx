@@ -2,16 +2,14 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Paper, Typography } from '@mui/material';
-import { RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
-import { Skill } from '../../api/skill.dto';
+import { RmuTextCard, Skill } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from '../../services/config';
 
 const SkillViewInfo: FC<{
   skill: Skill;
 }> = ({ skill }) => {
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   if (!skill) return <p>Loading...</p>;
 
@@ -23,14 +21,9 @@ const SkillViewInfo: FC<{
     navigate(`/core/skill-categories/view/${skill.categoryId}`);
   };
 
-  function capitalize(str: string): string {
-    if (!str) return str;
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
   const getCategoryBonus = (): string => {
     if (!skill.bonus || skill.bonus.length === 0) return t('none');
-    return skill.bonus.map((bonus) => capitalize(bonus)).join('+');
+    return skill.bonus.map((bonus) => t(bonus)).join('+');
   };
 
   return (
@@ -73,7 +66,7 @@ const SkillViewInfo: FC<{
           )}
         </Grid>
       </Grid>
-      <Grid size={12} mt={1}>
+      <Grid size={12} sx={{ mt: 1 }}>
         <Paper sx={{ p: 1 }}>
           <Typography variant="body1" gutterBottom sx={{ whiteSpace: 'pre-wrap' }}>
             {i18n.exists(descriptionKey) ? (

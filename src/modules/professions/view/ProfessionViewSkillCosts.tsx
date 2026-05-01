@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import CircleIcon from '@mui/icons-material/Circle';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import {
@@ -12,12 +13,12 @@ import {
   TableBody,
   Rating,
 } from '@mui/material';
-import { t } from 'i18next';
-import { Profession } from '../../api/profession.dto';
+import { Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const ProfessionViewSkillCosts: FC<{
   profession: Profession;
 }> = ({ profession }) => {
+  const { t } = useTranslation();
   const skillEntries = (Object.entries(profession.skillCosts || {}) as [string, number[]][]).filter(
     ([, vals]) => Array.isArray(vals) && vals.length > 0
   );

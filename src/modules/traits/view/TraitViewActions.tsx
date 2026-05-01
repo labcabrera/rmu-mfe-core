@@ -1,4 +1,6 @@
 import React, { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -9,13 +11,14 @@ import {
   deleteTrait,
   Trait,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 
 const TraitViewActions: FC<{
   trait: Trait;
   onRefresh: () => void;
 }> = ({ trait, onRefresh }) => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -25,7 +28,7 @@ const TraitViewActions: FC<{
   ];
 
   const onDelete = () => {
-    deleteTrait(trait.id)
+    deleteTrait(trait.id, auth)
       .then(() => navigate('/core/traits'))
       .catch((err: Error) => showError(err.message));
   };

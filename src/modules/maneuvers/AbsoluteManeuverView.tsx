@@ -1,4 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { Button, Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
 import {
   AbsoluteManeuverResult,
@@ -7,14 +9,16 @@ import {
   fetchAbsoluteManeuverTable,
   fetchAbsoluteManeuverTables,
   NumericInput,
+  TechnicalInfo,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../ErrorContext';
 import { openEndedRoll } from '../services/random-service';
 import SelectManeuverTable from '../shared/selects/SelectManeuverTable';
 import AbsoluteManeuverTableView from './AbsoluteManeuverTableView';
 
 const AbsoluteManeuverView: FC = () => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
 
   const [roll, setRoll] = useState<number | null>(null);
@@ -27,9 +31,9 @@ const AbsoluteManeuverView: FC = () => {
   const [table, setTable] = useState<AbsoluteManeuverTable>();
 
   useEffect(() => {
-    fetchAbsoluteManeuverTables()
+    fetchAbsoluteManeuverTables(auth)
       .then((data) => setTableNames(data))
-      .catch((err: Error) => showError(err.message));
+      .catch((err) => showError(err.message));
   }, []);
 
   useEffect(() => {
@@ -38,7 +42,7 @@ const AbsoluteManeuverView: FC = () => {
 
   useEffect(() => {
     if (tableName) {
-      fetchAbsoluteManeuverTable(tableName)
+      fetchAbsoluteManeuverTable(tableName, auth)
         .then((data) => setTable(data))
         .catch((err: Error) => showError(err.message));
     } else {
@@ -48,81 +52,93 @@ const AbsoluteManeuverView: FC = () => {
 
   useEffect(() => {
     if (totalRoll !== null) {
-      fetchAbsoluteManeuver(totalRoll, tableName, unusualEvent)
+      fetchAbsoluteManeuver(totalRoll, tableName, unusualEvent, auth)
         .then((data) => setResult(data))
         .catch((err: Error) => showError(err.message));
     } else {
       setResult(null);
     }
-  }, [totalRoll, unusualEvent, tableName, showError]);
+  }, [totalRoll, unusualEvent, tableName]);
 
   if (!table) return <p>Loading...</p>;
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <Grid container spacing={1}>
-          <Grid size={12}>
-            <SelectManeuverTable
-              value={tableName}
-              label={t('maneuver-table')}
-              tables={tableNames}
-              onChange={(value) => setTableName(value ?? 'generic')}
-            />
-          </Grid>
-          <Grid size={12}>
-            <NumericInput
-              label={t('Modifier')}
-              value={modifier}
-              onChange={(e) => setModifier(e || 0)}
-              integer
-              min={-1000}
-              max={1000}
-            />
-          </Grid>
-          <Grid size={12}>
-            <NumericInput label={t('Roll')} value={roll} onChange={(e) => setRoll(e)} integer min={-1000} max={1000} />
-          </Grid>
-          <Grid size={12}>
-            <FormControlLabel
-              control={<Checkbox checked={unusualEvent} onChange={(e) => setUnusualEvent(e.target.checked)} />}
-              label={t('Unusual Event')}
-            />
-          </Grid>
-          <Grid size={12}>
-            <Button variant="contained" color="primary" onClick={() => setRoll(openEndedRoll())}>
-              {t('Random')}
-            </Button>
+    <Paper sx={{ p: 2 }}>
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Grid container spacing={1}>
+            <Grid size={12}>
+              <SelectManeuverTable
+                value={tableName}
+                label={t('maneuver-table')}
+                tables={tableNames}
+                onChange={(value) => setTableName(value ?? 'generic')}
+              />
+            </Grid>
+            <Grid size={12}>
+              <NumericInput
+                label={t('modifier')}
+                value={modifier}
+                onChange={(e) => setModifier(e || 0)}
+                integer
+                min={-1000}
+                max={1000}
+              />
+            </Grid>
+            <Grid size={12}>
+              <NumericInput
+                label={t('roll')}
+                value={roll}
+                onChange={(e) => setRoll(e)}
+                integer
+                min={-1000}
+                max={1000}
+              />
+            </Grid>
+            <Grid size={12}>
+              <FormControlLabel
+                control={<Checkbox checked={unusualEvent} onChange={(e) => setUnusualEvent(e.target.checked)} />}
+                label={t('unusual-event')}
+              />
+            </Grid>
+            <Grid size={12}>
+              <Button variant="contained" color="primary" onClick={() => setRoll(openEndedRoll())}>
+                {t('random')}
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
 
-      <Grid size={{ xs: 12, md: 8 }}>
-        {table && <AbsoluteManeuverTableView table={table} result={result?.result} />}
-        {result && (
-          <Paper sx={{ p: 2, mt: 2 }}>
-            <Grid size={{ xs: 12, md: 12 }}>
-              <Typography variant="h6" color="primary" gutterBottom>
-                {t(result.result)} {totalRoll !== null ? `(${totalRoll})` : ''}
-              </Typography>
-              <Typography variant="body1" color="secondary" gutterBottom>
-                {result.message}
-              </Typography>
-              {result.penaltyUntilAbsoluteSuccess && (
-                <Typography variant="body1" gutterBottom>
-                  Penalty until absolute success: {result.penaltyUntilAbsoluteSuccess}
+        <Grid size={{ xs: 12, md: 8 }}>
+          {table && <AbsoluteManeuverTableView table={table} result={result?.result} />}
+          {result && (
+            <Paper sx={{ p: 2, mt: 2 }}>
+              <Grid size={{ xs: 12, md: 12 }}>
+                <Typography variant="h6" color="primary" gutterBottom>
+                  {t(result.result)} {totalRoll !== null ? `(${totalRoll})` : ''}
                 </Typography>
-              )}
-              {result.bonusUntilAbsoluteFailure && (
-                <Typography variant="body1" gutterBottom>
-                  Bonus until absolute failure: {result.bonusUntilAbsoluteFailure}
+                <Typography variant="body1" color="secondary" gutterBottom>
+                  {result.message}
                 </Typography>
-              )}
-            </Grid>
-          </Paper>
-        )}
+                {result.penaltyUntilAbsoluteSuccess && (
+                  <Typography variant="body1" gutterBottom>
+                    Penalty until absolute success: {result.penaltyUntilAbsoluteSuccess}
+                  </Typography>
+                )}
+                {result.bonusUntilAbsoluteFailure && (
+                  <Typography variant="body1" gutterBottom>
+                    Bonus until absolute failure: {result.bonusUntilAbsoluteFailure}
+                  </Typography>
+                )}
+              </Grid>
+            </Paper>
+          )}
+          <TechnicalInfo>
+            <pre>TableNames: {JSON.stringify(tableNames, null, 2)}</pre>
+          </TechnicalInfo>
+        </Grid>
       </Grid>
-    </Grid>
+    </Paper>
   );
 };
 

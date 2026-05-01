@@ -1,20 +1,22 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid, TextField } from '@mui/material';
-import { t } from 'i18next';
-import { CreateProfessionDto, UpdateProfessionDto } from '../../api/profession.dto';
+import { Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
 import SelectProfessionArchetype from '../../shared/selects/SelectProfessionArchetype';
 
 const ProfessionFormAttributes: FC<{
-  formData: CreateProfessionDto | UpdateProfessionDto;
-  setFormData: Dispatch<SetStateAction<CreateProfessionDto | UpdateProfessionDto | undefined>>;
+  formData: Profession;
+  setFormData: Dispatch<SetStateAction<Profession>>;
   creationMode: boolean;
 }> = ({ formData, setFormData, creationMode }) => {
+  const { t } = useTranslation();
+
   return (
     <Grid container spacing={1} columns={10}>
       {creationMode && (
         <Grid size={12}>
           <TextField
-            label={t('Name')}
+            label={t('name')}
             name="id"
             value={formData.id}
             onChange={(e) => setFormData({ ...formData, id: e.target.value })}
@@ -25,7 +27,7 @@ const ProfessionFormAttributes: FC<{
       )}
       <Grid size={12}>
         <SelectProfessionArchetype
-          label={t('Archetype')}
+          label={t('archetype')}
           name="archetype"
           value={formData.archetype}
           onChange={(archetype) => setFormData({ ...formData, archetype })}

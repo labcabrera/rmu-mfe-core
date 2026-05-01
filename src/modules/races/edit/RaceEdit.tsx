@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useLocation, useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import { EditableAvatar, fetchRace, Race, TechnicalInfo, UpdateRaceDto } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
@@ -9,11 +10,12 @@ import RaceForm from '../shared/RaceForm';
 import RaceEditActions from './RaceEditActions';
 
 const RaceEdit: FC = () => {
+  const auth = useAuth();
   const location = useLocation();
   const { showError } = useError();
   const { raceId } = useParams<{ raceId: string }>();
   const [race, setRace] = useState<Race | null>(null);
-  const [formData, setFormData] = useState<UpdateRaceDto | null>(null);
+  const [formData, setFormData] = useState<Race>({} as unknown as Race);
 
   useEffect(() => {
     if (race) {
@@ -25,18 +27,17 @@ const RaceEdit: FC = () => {
     if (location.state && location.state.realm) {
       setRace(location.state.realm);
     } else if (raceId) {
-      fetchRace(raceId)
+      fetchRace(raceId, auth)
         .then((response) => setRace(response))
         .catch((err) => showError(err.message));
     }
-  }, [location.state, raceId, showError]);
+  }, [location.state, raceId]);
 
   if (!race || !formData) return <div>Loading race...</div>;
 
   return (
     <>
-      <RaceEditActions race={race} formData={formData} />
-      <Grid container spacing={2} padding={1}>
+      <Grid container spacing={2} sx={{ p: 1 }}>
         <Grid size={gridSizeResume}>
           <EditableAvatar
             imageUrl={formData.imageUrl || ''}
@@ -44,8 +45,11 @@ const RaceEdit: FC = () => {
             images={getAvatarImages()}
           />
         </Grid>
-        <Grid size={gridSizeMain} padding={1}>
-          <RaceForm realmId={race.realm.id} formData={formData} setFormData={setFormData} />
+        <Grid size={gridSizeMain} spacing={1}>
+          <RaceEditActions race={race} formData={formData} />
+          <Paper sx={{ p: 2 }}>
+            <RaceForm realmId={race.realmId} formData={formData} setFormData={setFormData} />
+          </Paper>
           <TechnicalInfo>
             <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

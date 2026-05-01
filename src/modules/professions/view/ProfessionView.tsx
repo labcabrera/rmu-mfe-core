@@ -1,8 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useParams } from 'react-router-dom';
 import { Box, Chip, Grid, Stack } from '@mui/material';
 import { CategorySeparator, TechnicalInfo, Profession, fetchProfession } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import ProfessionViewActions from './ProfessionViewActions';
@@ -11,46 +12,56 @@ import ProfessionViewResume from './ProfessionViewResume';
 import ProfessionViewSkillCosts from './ProfessionViewSkillCosts';
 
 const ProfessionView: FC = () => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const { professionId } = useParams<{ professionId: string | undefined }>();
   const [profession, setProfession] = useState<Profession>();
 
   useEffect(() => {
     if (professionId) {
-      fetchProfession(professionId)
+      fetchProfession(professionId, auth)
         .then((response) => setProfession(response))
         .catch((err: Error) => showError(err.message));
     }
-  }, [professionId, showError]);
+  }, [professionId, auth]);
 
   if (!profession) return <p>Loading profession...</p>;
 
   return (
     <>
-      <ProfessionViewActions profession={profession} setProfession={setProfession} />
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}>
           <ProfessionViewResume profession={profession} setProfession={setProfession} />
         </Grid>
-        <Grid size={gridSizeMain} padding={1}>
+        <Grid size={gridSizeMain} sx={{ p: 1 }}>
+          <ProfessionViewActions profession={profession} setProfession={setProfession} />
           {profession.availableRealmTypes.length > 0 && (
             <>
-              <CategorySeparator text={t('Available realms')} />
-              <RealmTypeChips realmTypes={profession.availableRealmTypes} />
+              <CategorySeparator text={t('availabe-realms')} />
+              <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
+                {profession.availableRealmTypes.map((rt, index) => (
+                  <Chip key={index} label={t(rt)} />
+                ))}
+              </Stack>
             </>
           )}
           {profession.fixedRealmTypes.length > 0 && (
             <>
-              <CategorySeparator text={t('Fixed realms')} />
-              <RealmTypeChips realmTypes={profession.fixedRealmTypes} />
+              <CategorySeparator text={t('fixed-realms')} />
+              <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
+                {profession.fixedRealmTypes.map((rt, index) => (
+                  <Chip key={index} label={t(rt)} />
+                ))}
+              </Stack>
             </>
           )}
-          <CategorySeparator text={t('Skill costs')} />
+          <CategorySeparator text={t('skill-costs')} />
           <ProfessionViewSkillCosts profession={profession} />
-          <CategorySeparator text={t('Professional skills')} />
+          <CategorySeparator text={t('professional-skills')} />
           <ProfessionViewProfessionalSkills profession={profession} />
 
-          <Box mt={2}>
+          <Box sx={{ mt: 2 }}>
             <TechnicalInfo>
               <pre>{JSON.stringify(profession, null, 2)}</pre>
             </TechnicalInfo>
@@ -60,13 +71,5 @@ const ProfessionView: FC = () => {
     </>
   );
 };
-
-const RealmTypeChips = ({ realmTypes }: { realmTypes: string[] }) => (
-  <Stack direction="row" spacing={1} flexWrap="wrap">
-    {realmTypes.map((rt) => (
-      <Chip key={rt} label={t(rt)} />
-    ))}
-  </Stack>
-);
 
 export default ProfessionView;

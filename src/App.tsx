@@ -4,7 +4,6 @@ import { Box, ThemeProvider } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { ErrorProvider } from './ErrorContext';
 import HomePage from './HomePage';
-import './i18n';
 import CatalogList from './modules/catalogs/list/CatalogList';
 import CatalogView from './modules/catalogs/view/CatalogView';
 import CultureCreation from './modules/cultures/create/CultureCreation';
@@ -47,7 +46,7 @@ const App = () => {
   return (
     <ThemeProvider theme={useTheme()}>
       <ErrorProvider>
-        <Box padding={2}>
+        <Box sx={{ p: 2, minHeight: '600pt' }}>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/realms" element={<RealmList />} />

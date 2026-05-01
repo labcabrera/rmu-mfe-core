@@ -1,4 +1,6 @@
 import React, { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -9,7 +11,6 @@ import {
   deleteSkill,
   Skill,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 
 const SkillViewActions: FC<{
@@ -17,16 +18,18 @@ const SkillViewActions: FC<{
   onRefresh: () => void;
 }> = ({ skill, onRefresh }) => {
   const navigate = useNavigate();
+  const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const breadcrumbs = [
-    { name: t('Core'), link: '/core' },
-    { name: t('Skill Categories'), link: '/core/skill-categories' },
-    { name: t('Skill'), link: '/core/skills' },
+    { name: t('core'), link: '/core' },
+    { name: t('skill-categories'), link: '/core/skill-categories' },
+    { name: t('skill'), link: '/core/skills' },
   ];
 
   const onDelete = () => {
-    deleteSkill(skill.id)
+    deleteSkill(skill.id, auth)
       .then(() => navigate(`/core/skill-categories/view/${skill.categoryId}`))
       .catch((err) => showError(err.message));
   };

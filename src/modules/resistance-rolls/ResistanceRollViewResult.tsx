@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Chip, Grid, Paper, Stack, Typography } from '@mui/material';
-import { t } from 'i18next';
-import { ResistanceRollResult } from '../api/resistance-roll.dto';
+import { ResistanceRollResult } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const ResistanceRollViewResult: FC<{
   result: ResistanceRollResult | undefined;
 }> = ({ result }) => {
+  const { t } = useTranslation();
   if (!result) return;
 
   return (

@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   RmuBreadcrumbs,
@@ -8,7 +10,6 @@ import {
   updateSkill,
   UpdateSkillDto,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 
 const SkillEditActions: FC<{
@@ -17,6 +18,8 @@ const SkillEditActions: FC<{
   isValid?: boolean;
 }> = ({ skill, formData, isValid = false }) => {
   const navigate = useNavigate();
+  const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const breadcrumbs = [
     { name: t('Core'), link: '/core' },
@@ -25,7 +28,7 @@ const SkillEditActions: FC<{
   ];
 
   const handleSave = async () => {
-    updateSkill(skill.id, formData)
+    updateSkill(skill.id, formData, auth)
       .then((response) => navigate(`/core/skills/view/${response.id}`))
       .catch((err: Error) => showError(err.message));
   };

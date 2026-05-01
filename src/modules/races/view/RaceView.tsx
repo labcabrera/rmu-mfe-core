@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Chip, Grid, Typography } from '@mui/material';
 import {
-  AddButton,
   CategorySeparator,
   EditableAvatar,
   RmuTextCard,
@@ -13,10 +14,11 @@ import {
   fetchRace,
   fetchRealm,
   updateRace,
+  UpdateRaceDto,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
+import { gridSizeMain, gridSizeResume } from '../../services/display';
 import { getAvatarImages } from '../../services/image-service';
 import RaceViewActions from './RaceViewActions';
 import RaceViewAttributes from './RaceViewAttributes';
@@ -26,41 +28,46 @@ import RaceViewStats from './RaceViewStats';
 import RaceViewTraits from './RaceViewTraits';
 
 const RaceView: FC = () => {
+  const auth = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const { raceId } = useParams<{ raceId: string | undefined }>();
   const [realm, setRealm] = useState<Realm>();
   const { showError } = useError();
   const [race, setRace] = useState<Race>();
 
   const onUpdateImage = (imageUrl: string) => {
-    updateRace(race!.id, { imageUrl: imageUrl })
+    const props = { imageUrl } as UpdateRaceDto;
+    updateRace(race!.id, props, auth)
       .then((updatedRace) => setRace(updatedRace))
       .catch((err) => showError(err.message));
   };
 
   useEffect(() => {
-    if (raceId) {
-      fetchRace(raceId)
-        .then((response) => setRace(response))
-        .catch((err) => showError(err.message));
-    }
-  }, [raceId]);
-
-  useEffect(() => {
     if (race) {
-      fetchRealm(race.realm.id)
+      fetchRealm(race.realmId, auth)
         .then((response) => setRealm(response))
         .catch((err: Error) => showError(err.message));
     }
   }, [race]);
 
-  if (!race) return <p>Loading race...</p>;
+  useEffect(() => {
+    if (location && location.state && location.state.race) {
+      setRace(location.state.race);
+    } else if (raceId) {
+      fetchRace(raceId, auth)
+        .then((response) => setRace(response))
+        .catch((err) => showError(err.message));
+    }
+  }, [location, raceId]);
+
+  if (!race || !realm) return <p>Loading race...</p>;
 
   return (
     <>
-      <RaceViewActions race={race} setRace={setRace} />
       <Grid container spacing={1}>
-        <Grid size={{ xs: 12, md: 2 }}>
+        <Grid size={gridSizeResume}>
           <EditableAvatar
             imageUrl={race.imageUrl || ''}
             onImageChange={(avatar) => onUpdateImage(avatar)}
@@ -84,21 +91,22 @@ const RaceView: FC = () => {
             {race.description}
           </Typography>
         </Grid>
-        <Grid size={{ xs: 12, md: 9 }}>
+        <Grid size={gridSizeMain}>
+          <RaceViewActions race={race} setRace={setRace} />
           <CategorySeparator text={t('realm')} />
           <Grid container spacing={1} columns={10}>
             <Grid size={{ xs: 12, md: 2 }}>
               <RmuTextCard
-                value={race.realm.name}
+                value={realm.name}
                 subtitle={t('realm')}
                 image={realm?.imageUrl ? realm.imageUrl : `${imageBaseUrl}images/generic/realm.png`}
-                onClick={() => navigate(`/core/realms/view/${race.realm.id}`, { state: { realm: realm } })}
+                onClick={() => navigate(`/core/realms/view/${race.realmId}`, { state: { realm: realm } })}
               />
             </Grid>
           </Grid>
-          <CategorySeparator text={t('Statistics')} />
+          <CategorySeparator text={t('statistics')} />
           <RaceViewStats race={race} />
-          <CategorySeparator text={t('Resistances')} />
+          <CategorySeparator text={t('resistances')} />
           <RaceViewResistances race={race} />
           <CategorySeparator text={t('race-features')} />
           <RaceViewAttributes race={race} />
@@ -109,7 +117,7 @@ const RaceView: FC = () => {
           {race.defaultLanguage && (
             <>
               <CategorySeparator text={t('language')} />
-              <Grid size={12} mt={2}>
+              <Grid size={12} sx={{ mt: 2 }}>
                 <Grid container spacing={1} columns={10}>
                   <Grid size={{ xs: 12, md: 2 }}>
                     <RmuTextCard
@@ -122,7 +130,7 @@ const RaceView: FC = () => {
               </Grid>
             </>
           )}
-          <Grid size={12} mt={5}>
+          <Grid size={12} sx={{ mt: 5 }}>
             <TechnicalInfo>
               <pre>{JSON.stringify(race, null, 2)} </pre>
             </TechnicalInfo>

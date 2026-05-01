@@ -1,8 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
-import { ClearableTextField } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
-import { ProfessionArchetype } from '../../api/profession.dto';
+import { ClearableTextField, ProfessionArchetype } from '@labcabrera-rmu/rmu-react-shared-lib';
 import SelectProfessionArchetype from '../../shared/selects/SelectProfessionArchetype';
 
 type Props = {
@@ -10,6 +9,7 @@ type Props = {
 };
 
 const ProfessionListSearch: FC<Props> = ({ setQueryString }) => {
+  const { t } = useTranslation();
   const [searchName, setSearchName] = useState<string>('');
   const [searchArchetype, setSearchArchetype] = useState<ProfessionArchetype | null>(null);
 
@@ -29,7 +29,7 @@ const ProfessionListSearch: FC<Props> = ({ setQueryString }) => {
     <Grid container spacing={1}>
       <Grid size={{ xs: 12, md: 3 }}>
         <ClearableTextField
-          label={t('Name')}
+          label={t('name')}
           name="name"
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
@@ -37,7 +37,7 @@ const ProfessionListSearch: FC<Props> = ({ setQueryString }) => {
       </Grid>
       <Grid size={{ xs: 12, md: 3 }}>
         <SelectProfessionArchetype
-          label={t('Archetype')}
+          label={t('archetype')}
           name="archetype"
           value={searchArchetype}
           required={false}

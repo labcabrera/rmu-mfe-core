@@ -1,15 +1,14 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, ButtonGroup, Grid, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { t } from 'i18next';
-import { CreateProfessionDto, RealmType, UpdateProfessionDto } from '../../api/profession.dto';
-
-const REALM_TYPES: RealmType[] = ['channeling', 'essence', 'mentalism'];
+import { Profession, RealmType, REALM_TYPES } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const ProfessionFormRealmTypes: FC<{
-  formData: CreateProfessionDto | UpdateProfessionDto;
-  setFormData: Dispatch<SetStateAction<CreateProfessionDto | UpdateProfessionDto | undefined>>;
+  formData: Profession;
+  setFormData: Dispatch<SetStateAction<Profession>>;
 }> = ({ formData, setFormData }) => {
+  const { t } = useTranslation();
   const selectedAvailable = formData.availableRealmTypes || [];
   const selectedFixed = formData.fixedRealmTypes || [];
 

@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useLocation, useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import { Culture, EditableAvatar, fetchCulture, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
@@ -10,6 +11,7 @@ import RaceEditActions from './CultureEditActions';
 
 const CultureEdit: FC = () => {
   const location = useLocation();
+  const auth = useAuth();
   const { showError } = useError();
   const { cultureId } = useParams<{ cultureId: string }>();
   const [culture, setCulture] = useState<Culture>();
@@ -27,18 +29,17 @@ const CultureEdit: FC = () => {
     if (location.state && location.state.culture) {
       setCulture(location.state.culture);
     } else if (cultureId) {
-      fetchCulture(cultureId)
+      fetchCulture(cultureId, auth)
         .then((response) => setCulture(response))
         .catch((err) => showError(err.message));
     }
-  }, [location.state, cultureId, showError]);
+  }, [location.state, cultureId]);
 
   if (!culture || !formData) return <div>Loading race...</div>;
 
   return (
     <>
-      <RaceEditActions culture={culture} formData={formData} />
-      <Grid container spacing={2} padding={1}>
+      <Grid container spacing={2}>
         <Grid size={gridSizeResume}>
           <EditableAvatar
             imageUrl={formData.imageUrl || ''}
@@ -46,8 +47,11 @@ const CultureEdit: FC = () => {
             images={getAvatarImages()}
           />
         </Grid>
-        <Grid size={gridSizeMain} padding={1}>
-          <CultureForm formData={formData} setFormData={setFormData} />
+        <Grid size={gridSizeMain}>
+          <RaceEditActions culture={culture} formData={formData} />
+          <Paper sx={{ p: 2 }}>
+            <CultureForm formData={formData} setFormData={setFormData} />
+          </Paper>
           <TechnicalInfo>
             <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

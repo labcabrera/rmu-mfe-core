@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   CancelButton,
@@ -15,6 +16,7 @@ const CultureCreationActions: FC<{
   formData: Culture;
   isValid: boolean;
 }> = ({ formData, isValid }) => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const { showError } = useError();
   const breadcrumbs = [
@@ -25,7 +27,7 @@ const CultureCreationActions: FC<{
 
   const onSave = () => {
     const dto = formData as CreateCultureDto;
-    createCulture(dto)
+    createCulture(dto, auth)
       .then((response) => navigate(`/core/cultures/view/${response.id}`, { state: { culture: response } }))
       .catch((err) => showError(err.message));
   };

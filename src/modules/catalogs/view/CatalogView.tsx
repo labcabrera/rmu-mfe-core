@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Grid, Stack, Typography } from '@mui/material';
@@ -13,16 +14,19 @@ import {
   deleteEnumeration,
   fetchEnumerations,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import AddEnumerationDialog from '../shared/AddEnumerationDialog';
 import CatalogViewActions from './CatalogViewActions';
 import CatalogListSearch from './CatalogViewSearch';
+import { useAuth } from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
 
 const CatalogView: FC = () => {
+  const auth = useAuth();
   const { showError } = useError();
+  const { t } = useTranslation();
   const { category } = useParams<{ category?: string }>();
   const [enumerations, setEnumerations] = useState<Enumeration[]>();
   const [addDialogOpen, setAddDialogOpen] = useState<boolean>(false);
@@ -30,20 +34,20 @@ const CatalogView: FC = () => {
   const [queryString, setQueryString] = useState<string>();
 
   const bindRealms = () => {
-    fetchRealms('', 0, 100)
+    fetchRealms('', 0, 100, auth)
       .then((response) => setRealms(response.content))
       .catch((err) => showError(err.message));
   };
 
   const bindEnumerations = () => {
     if (!queryString) return;
-    fetchEnumerations(queryString, 0, 1000)
+    fetchEnumerations(queryString, 0, 1000, auth)
       .then((response) => setEnumerations(response.content))
       .catch((err) => showError(err.message));
   };
 
   const onDelete = (enumeration: Enumeration) => {
-    deleteEnumeration(enumeration.id)
+    deleteEnumeration(enumeration.id, auth)
       .then(() => bindEnumerations())
       .catch((err) => showError(err.message));
   };
@@ -59,7 +63,6 @@ const CatalogView: FC = () => {
   useEffect(() => {
     if (category) {
       setQueryString(`category==${category}`);
-      // bindEnumerations();
     }
     bindRealms();
   }, [category]);
@@ -68,10 +71,10 @@ const CatalogView: FC = () => {
 
   return (
     <>
-      <CatalogViewActions onRefresh={() => bindEnumerations()} />
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
+          <CatalogViewActions onRefresh={() => bindEnumerations()} />
           <Grid container spacing={1}>
             <Grid size={12}>
               <CategorySeparator text={t(category)}>
@@ -86,7 +89,7 @@ const CatalogView: FC = () => {
                 {enumerations.map((e, index) => (
                   <Grid key={index} size={gridSizeCard}>
                     <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`}>
-                      <Stack direction="row" justifyContent="space-between">
+                      <Stack direction="row" sx={{ justifyContent: "space-between"}}>
                         <Stack direction="column">
                           <Typography>{t(e.key)}</Typography>
                           <Typography color="secondary">

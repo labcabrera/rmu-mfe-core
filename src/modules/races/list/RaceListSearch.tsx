@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
-import { ClearableTextField } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { Realm } from '../../api/realm.dto';
+import { ClearableTextField, Realm } from '@labcabrera-rmu/rmu-react-shared-lib';
 import SelectRealm from '../../shared/selects/SelectRealm';
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
 };
 
 const RaceListSearch: FC<Props> = ({ setQueryString, realms }) => {
+  const { t } = useTranslation();
   const [searchName, setSearchName] = React.useState('');
   const [searchRealm, setSearchRealm] = React.useState('');
 
@@ -19,16 +20,16 @@ const RaceListSearch: FC<Props> = ({ setQueryString, realms }) => {
       queryString += `name=re=${searchName}`;
     }
     if (searchRealm) {
-      queryString += `${queryString ? ';' : ''}realm.id==${searchRealm}`;
+      queryString += `${queryString ? ';' : ''}realmId==${searchRealm}`;
     }
     setQueryString(queryString);
-  }, [searchName, searchRealm]);
+  }, [searchName, searchRealm, setQueryString]);
 
   return (
     <Grid container spacing={1}>
       <Grid size={{ xs: 12, md: 3 }}>
         <ClearableTextField
-          label="Name"
+          label={t('name')}
           name="name"
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}

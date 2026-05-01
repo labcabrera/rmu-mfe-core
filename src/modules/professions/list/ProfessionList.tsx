@@ -3,14 +3,17 @@ import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { RmuPagination, RmuTextCard, Profession, fetchProfessions } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import ProfessionListActions from './ProfessionListActions';
 import ProfessionListSearch from './ProfessionListSearch';
+import { useAuth } from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
 
 const ProfessionList: FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const auth = useAuth();
   const { showError } = useError();
   const [queryString, setQueryString] = useState('');
   const [professions, setProfessions] = useState<Profession[]>([]);
@@ -19,7 +22,7 @@ const ProfessionList: FC = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const bindProfessions = () => {
-    fetchProfessions(queryString, page, pageSize)
+    fetchProfessions(queryString, page, pageSize, auth)
       .then((response) => {
         setProfessions(response.content);
         setTotalPages(response.pagination.totalPages || 1);
@@ -39,10 +42,10 @@ const ProfessionList: FC = () => {
 
   return (
     <>
-      <ProfessionListActions onRefresh={bindProfessions} />
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
+          <ProfessionListActions onRefresh={bindProfessions} />
           <Grid container spacing={1}>
             <Grid size={12}>
               <ProfessionListSearch setQueryString={setQueryString} />

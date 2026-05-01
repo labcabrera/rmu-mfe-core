@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField } from '@mui/material';
-import { t } from 'i18next';
-import { MagicPresence } from '../../api/realm.dto';
+import { MagicPresence } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const OPTIONS: MagicPresence[] = ['unlimited', 'limited', 'none'];
 
@@ -11,6 +11,8 @@ const SelectMagicPresence: FC<{
   required?: boolean;
   onChange: (value: MagicPresence) => void;
 }> = ({ value, label, required = true, onChange }) => {
+  const { t } = useTranslation();
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedValue = event.target.value as MagicPresence;
     onChange(selectedValue);

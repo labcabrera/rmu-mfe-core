@@ -1,19 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { RmuPagination, RmuTextCard, Realm, fetchRealms } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
 import RealmListActions from './RealmListActions';
 import RealmListSearch from './RealmListSearch';
+import { useTranslation } from 'react-i18next';
 
 const defaultImage = `${imageBaseUrl}images/generic/realm.png`;
 
 const RealmList: FC = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
+  const { t } = useTranslation();
   const { showError } = useError();
   const [realms, setRealms] = useState<Realm[]>([]);
   const [queryString, setQueryString] = useState<string>('');
@@ -22,24 +25,28 @@ const RealmList: FC = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
 
   useEffect(() => {
-    fetchRealms(queryString, page, pageSize)
+    fetchRealms(queryString, page, pageSize, auth)
       .then((response) => {
         setRealms(response.content);
         setTotalPages(response.pagination.totalPages);
       })
       .catch((err) => showError(err.message));
-  }, [queryString]);
+  }, [queryString, auth]);
 
   const handleRealmClick = (realm: Realm) => {
     navigate(`/core/realms/view/${realm.id}`, { state: { realm } });
   };
 
+  if (!auth || !auth.isAuthenticated) {
+    return <p>Required authentication.</p>;
+  }
+
   return (
     <>
-      <RealmListActions setRealms={setRealms} />
       <Grid container spacing={1}>
         <Grid size={gridSizeResume}></Grid>
         <Grid size={gridSizeMain}>
+          <RealmListActions setRealms={setRealms} />
           <Grid container spacing={1}>
             <Grid size={12}>
               <RealmListSearch setQueryString={setQueryString} />

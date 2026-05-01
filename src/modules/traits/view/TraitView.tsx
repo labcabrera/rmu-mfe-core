@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useLocation, useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { GenericAvatar, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { fetchTrait, GenericAvatar, TechnicalInfo, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
@@ -11,16 +12,16 @@ import TraitViewInfo from './TraitViewInfo';
 
 const TraitView: FC = () => {
   const location = useLocation();
+  const auth = useAuth();
   const { traitId } = useParams<{ traitId?: string }>();
   const { showError } = useError();
   const [trait, setTrait] = useState<Trait | null>(null);
 
   const bindTrait = () => {
-    if (traitId) {
-      fetchTrait(traitId)
-        .then((response) => setTrait(response))
-        .catch((err: Error) => showError(err.message));
-    }
+    if (!traitId) return;
+    fetchTrait(traitId, auth)
+      .then((response) => setTrait(response))
+      .catch((err: Error) => showError(err.message));
   };
 
   useEffect(() => {
@@ -34,20 +35,18 @@ const TraitView: FC = () => {
   if (!trait) return <p>Loading...</p>;
 
   return (
-    <>
-      <TraitViewActions trait={trait} onRefresh={bindTrait} />
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}>
-          <GenericAvatar imageUrl={getTraitImage(trait)} />
-        </Grid>
-        <Grid size={gridSizeMain}>
-          <TraitViewInfo trait={trait} />
-          <TechnicalInfo>
-            <pre>{JSON.stringify(trait, null, 2)}</pre>
-          </TechnicalInfo>
-        </Grid>
+    <Grid container spacing={1}>
+      <Grid size={gridSizeResume}>
+        <GenericAvatar imageUrl={getTraitImage(trait)} />
       </Grid>
-    </>
+      <Grid size={gridSizeMain}>
+        <TraitViewActions trait={trait} onRefresh={bindTrait} />
+        <TraitViewInfo trait={trait} />
+        <TechnicalInfo>
+          <pre>{JSON.stringify(trait, null, 2)}</pre>
+        </TechnicalInfo>
+      </Grid>
+    </Grid>
   );
 };
 

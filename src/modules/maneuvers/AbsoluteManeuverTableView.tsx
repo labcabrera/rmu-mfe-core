@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Divider, Grid, Paper, Typography } from '@mui/material';
 import { AbsoluteManeuverTable } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 
 const AbsoluteManeuverTableView: FC<{ table: AbsoluteManeuverTable; result: string | undefined }> = ({
   table,
   result,
 }) => {
+  const { t } = useTranslation();
   if (!table) return <p>Loading...</p>;
 
   const getRangeText = (min: number | null, max: number | null) => {
@@ -23,12 +24,12 @@ const AbsoluteManeuverTableView: FC<{ table: AbsoluteManeuverTable; result: stri
 
   return (
     <>
-      <Paper sx={{ padding: 1 }}>
+      <Paper elevation={0} sx={{ padding: 1 }}>
         <Grid container spacing={1}>
           {table.table.map((entry, index) => {
             const color = !result || entry.result.result !== result ? 'primary' : getResultColor(result);
             return (
-              <Grid key={`tableEntry${index}`} size={12}>
+              <Grid key={index} size={12}>
                 <Grid container spacing={1}>
                   <Grid size={2}>
                     <Typography variant="body1" color={color}>
