@@ -18,7 +18,7 @@ const SkillCategoryListSearch: FC<{
   return (
     <Grid container spacing={1}>
       <Grid size={{ xs: 12, md: 3 }}>
-        <ClearableTextField label={t('name')} value={id} onChange={(e) => setId(e.target.value)} name="name" />
+        <ClearableTextField label={t('name')} value={id} onChange={(e) => setId(e || '')} name="name" />
       </Grid>
     </Grid>
   );
