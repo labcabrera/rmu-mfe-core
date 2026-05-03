@@ -3,7 +3,7 @@ import { Grid } from '@mui/material';
 import { TechnicalInfo, EditableAvatar, CreateProfessionDto } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from '../../services/config';
 import { getAvatarImages } from '../../services/image-service';
-import ProfessionForm from '../shared/ProfessionForm';
+import ProfessionForm from '../form/ProfessionForm';
 import ProfessionCreationActions from './ProfessionCreationActions';
 
 const TEMPLATE = {
