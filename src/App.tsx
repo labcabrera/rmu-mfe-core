@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Box, ThemeProvider } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { NotFound } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { ErrorProvider } from './ErrorContext';
 import HomePage from './HomePage';
 import CatalogList from './modules/catalogs/list/CatalogList';
@@ -34,13 +35,6 @@ import TraitCreation from './modules/traits/create/TraitCreation';
 import TraitEdit from './modules/traits/edit/TraitEdit';
 import TraitList from './modules/traits/list/TraitList';
 import TraitView from './modules/traits/view/TraitView';
-
-const NotFound: FC = () => (
-  <div>
-    <h2>Not found</h2>
-    <p>The requested route does not exist.</p>
-  </div>
-);
 
 const App = () => {
   return (
