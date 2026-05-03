@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Tabs, Tab, Grid } from '@mui/material';
+import { LayoutBase } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { gridSizeResume, gridSizeMain } from '../services/display';
 import AbsoluteManeuverView from './AbsoluteManeuverView';
 import EnduranceManeuverView from './EnduranceManeuverView';
-import ManeuversActions from './ManeuversActions';
 import PercentManeuverView from './PercentManeuverView';
 
 interface TabPanelProps {
@@ -45,31 +45,29 @@ const ManeuversView: FC = () => {
   }
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={gridSizeResume}></Grid>
-      <Grid size={gridSizeMain}>
-        <ManeuversActions />
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label={t('absolute')} {...a11yProps(0)} />
-            <Tab label={t('percent')} {...a11yProps(1)} />
-            <Tab label={t('endurance')} {...a11yProps(2)} />
-          </Tabs>
-        </Box>
+    <LayoutBase
+      breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('maneuvers') }]}
+    >
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label={t('absolute')} {...a11yProps(0)} />
+          <Tab label={t('percent')} {...a11yProps(1)} />
+          <Tab label={t('endurance')} {...a11yProps(2)} />
+        </Tabs>
+      </Box>
 
-        <CustomTabPanel value={value} index={0}>
-          <AbsoluteManeuverView />
-        </CustomTabPanel>
+      <CustomTabPanel value={value} index={0}>
+        <AbsoluteManeuverView />
+      </CustomTabPanel>
 
-        <CustomTabPanel value={value} index={1}>
-          <PercentManeuverView />
-        </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <PercentManeuverView />
+      </CustomTabPanel>
 
-        <CustomTabPanel value={value} index={2}>
-          <EnduranceManeuverView />
-        </CustomTabPanel>
-      </Grid>
-    </Grid>
+      <CustomTabPanel value={value} index={2}>
+        <EnduranceManeuverView />
+      </CustomTabPanel>
+    </LayoutBase>
   );
 };
 

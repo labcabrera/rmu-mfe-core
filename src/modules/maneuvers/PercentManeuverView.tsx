@@ -7,6 +7,7 @@ import {
   KeyValue,
   NumericInput,
   PercentManeuverResult,
+  Section,
   SelectDifficulty,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../ErrorContext';
@@ -35,10 +36,10 @@ const PercentManeuverView: FC = () => {
   }, [roll, difficulty, modifier]);
 
   return (
-    <Paper sx={{ p: 2 }}>
+    <Section>
       <Grid container>
         <Grid size={{ xs: 12, md: 4 }}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} sx={{ p: 2 }}>
             <Grid size={12}>
               <SelectDifficulty
                 label={t('difficulty')}
@@ -74,7 +75,7 @@ const PercentManeuverView: FC = () => {
                   {t(result.message)}
                 </Typography>
                 <Typography variant="body1" color="secondary" gutterBottom>
-                  {t('roll-total')}: {totalRoll}
+                  {t('total-roll')}: {totalRoll}
                 </Typography>
                 <Typography variant="body1" gutterBottom>
                   {t('percent')}: {result.percent}%
@@ -85,7 +86,7 @@ const PercentManeuverView: FC = () => {
           )}
         </Grid>
       </Grid>
-    </Paper>
+    </Section>
   );
 };
 
