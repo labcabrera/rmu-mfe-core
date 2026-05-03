@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import {
@@ -9,15 +11,15 @@ import {
   fetchRealms,
   Culture,
   fetchCultures,
+  LayoutBase,
+  AddButton,
+  RefreshButton,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
-import CultureListActions from './CultureListActions';
+import { gridSizeCard } from '../../services/display';
 import CultureListSearch from './CultureListSearch';
-import { useAuth } from 'react-oidc-context';
-import { useTranslation } from 'react-i18next';
 
-const CultureList: FC = () => {
+export default function CultureList() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const auth = useAuth();
@@ -55,38 +57,36 @@ const CultureList: FC = () => {
   if (!cultures) return <p>Loading...</p>;
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={gridSizeResume}></Grid>
-      <Grid size={gridSizeMain}>
-        <CultureListActions onRefresh={bindCultures} />
-        <Grid container spacing={1}>
-          <Grid size={12}>
-            <CultureListSearch setQueryString={setQueryString} realms={realms} />
-          </Grid>
-          {cultures.map((culture) => (
-            <Grid size={gridSizeCard} key={culture.id}>
-              <RmuTextCard
-                value={culture.name}
-                subtitle={t('Culture')}
-                image={culture.imageUrl || ''}
-                onClick={() => navigate(`/core/cultures/view/${culture.id}`, { state: { race: culture } })}
-              />
-            </Grid>
-          ))}
-          {cultures.length === 0 && <Grid size={12}>No cultures found.</Grid>}
-        </Grid>
+    <LayoutBase
+      breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('cultures') }]}
+      actions={[
+        <RefreshButton onClick={() => bindCultures()} />,
+        <AddButton onClick={() => navigate('/core/cultures/create')} />,
+      ]}
+    >
+      <Grid container spacing={1}>
         <Grid size={12}>
-          <RmuPagination
-            page={page}
-            pageSize={pageSize}
-            totalPages={totalPages}
-            setPage={setPage}
-            setPageSize={setPageSize}
-          />
+          <CultureListSearch setQueryString={setQueryString} realms={realms} />
         </Grid>
+        {cultures.map((culture) => (
+          <Grid size={gridSizeCard} key={culture.id}>
+            <RmuTextCard
+              value={culture.name}
+              subtitle={t('Culture')}
+              image={culture.imageUrl || ''}
+              onClick={() => navigate(`/core/cultures/view/${culture.id}`, { state: { race: culture } })}
+            />
+          </Grid>
+        ))}
+        {cultures.length === 0 && <Grid size={12}>No cultures found.</Grid>}
       </Grid>
-    </Grid>
+      <RmuPagination
+        page={page}
+        pageSize={pageSize}
+        totalPages={totalPages}
+        setPage={setPage}
+        setPageSize={setPageSize}
+      />
+    </LayoutBase>
   );
-};
-
-export default CultureList;
+}
