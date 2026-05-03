@@ -40,7 +40,7 @@ const RealmViewResume: FC<{
         <Typography variant="h6" color="primary" gutterBottom>
           {realm.name}
         </Typography>
-        <Typography variant="body1" color="secondary" sx={{ whiteSpace: 'pre-line' }}>
+        <Typography variant="caption" color="secondary" sx={{ whiteSpace: 'pre-line' }}>
           {realm.description}
         </Typography>
       </Grid>

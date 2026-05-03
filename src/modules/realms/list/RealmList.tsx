@@ -1,15 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { RmuPagination, RmuTextCard, Realm, fetchRealms } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  RmuPagination,
+  RmuTextCard,
+  Realm,
+  fetchRealms,
+  LayoutBase,
+  RefreshButton,
+  AddButton,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
-import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
-import RealmListActions from './RealmListActions';
+import { gridSizeCard } from '../../services/display';
 import RealmListSearch from './RealmListSearch';
-import { useTranslation } from 'react-i18next';
 
 const defaultImage = `${imageBaseUrl}images/generic/realm.png`;
 
@@ -33,6 +40,16 @@ const RealmList: FC = () => {
       .catch((err) => showError(err.message));
   }, [queryString, auth]);
 
+  const onAddRealmClick = () => {
+    navigate('/core/realms/create');
+  };
+
+  const onRefreshButtonClick = () => {
+    fetchRealms('', 0, 20, auth)
+      .then((response) => setRealms(response.content))
+      .catch((err) => showError(err.message));
+  };
+
   const handleRealmClick = (realm: Realm) => {
     navigate(`/core/realms/view/${realm.id}`, { state: { realm } });
   };
@@ -43,42 +60,36 @@ const RealmList: FC = () => {
 
   return (
     <>
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <RealmListActions setRealms={setRealms} />
-          <Grid container spacing={1}>
-            <Grid size={12}>
-              <RealmListSearch setQueryString={setQueryString} />
-            </Grid>
-            <Grid size={12}>
-              <Grid container spacing={1}>
-                {realms.map((realm) => (
-                  <Grid size={gridSizeCard} key={realm.id}>
-                    <RmuTextCard
-                      key={realm.id}
-                      value={realm.name}
-                      subtitle={realm.shortDescription || t('No description')}
-                      image={realm.imageUrl || defaultImage}
-                      onClick={() => handleRealmClick(realm)}
-                    />
-                  </Grid>
-                ))}
-                {realms.length === 0 ? <p>No realms found.</p> : null}
-              </Grid>
-            </Grid>
-            <Grid size={12}>
-              <RmuPagination
-                page={page}
-                pageSize={pageSize}
-                totalPages={totalPages}
-                setPage={setPage}
-                setPageSize={setPageSize}
+      <LayoutBase
+        breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('realms') }]}
+        actions={[
+          <RefreshButton onClick={() => onRefreshButtonClick()} />,
+          <AddButton onClick={() => onAddRealmClick()} />,
+        ]}
+      >
+        <RealmListSearch setQueryString={setQueryString} />
+        <Grid container spacing={1} sx={{ mt: 1 }}>
+          {realms.map((realm) => (
+            <Grid size={gridSizeCard} key={realm.id}>
+              <RmuTextCard
+                key={realm.id}
+                value={realm.name}
+                subtitle={realm.shortDescription || t('No description')}
+                image={realm.imageUrl || defaultImage}
+                onClick={() => handleRealmClick(realm)}
               />
             </Grid>
-          </Grid>
+          ))}
+          {realms.length === 0 ? <p>No realms found.</p> : null}
         </Grid>
-      </Grid>
+        <RmuPagination
+          page={page}
+          pageSize={pageSize}
+          totalPages={totalPages}
+          setPage={setPage}
+          setPageSize={setPageSize}
+        />
+      </LayoutBase>
     </>
   );
 };

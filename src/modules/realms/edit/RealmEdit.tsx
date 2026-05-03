@@ -1,22 +1,36 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { useLocation, useParams } from 'react-router-dom';
-import { Grid, Paper } from '@mui/material';
-import { EditableAvatar, TechnicalInfo, Realm, UpdateRealmDto, fetchRealm } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import {
+  EditableAvatar,
+  Realm,
+  fetchRealm,
+  LayoutBase,
+  CancelButton,
+  SaveButton,
+  updateRealm,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
-import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getAvatarImages } from '../../services/image-service';
 import RealmForm from '../shared/RealmForm';
-import RealmEditActions from './RealmEditActions';
 
 const RealmEdit: FC = () => {
-  const location = useLocation();
   const auth = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const { showError } = useError();
   const { realmId } = useParams<{ realmId?: string }>();
   const [realm, setRealm] = useState<Realm | null>(null);
   const [formData, setFormData] = useState<Realm>({} as unknown as Realm);
+
+  const onSave = () => {
+    updateRealm(realm!.id, formData, auth)
+      .then((response) => navigate(`/core/realms/view/${response.id}`, { state: { realm: response } }))
+      .catch((err) => showError(err.message));
+  };
 
   useEffect(() => {
     if (!realm) return;
@@ -38,24 +52,27 @@ const RealmEdit: FC = () => {
   if (!realm || !formData) return <div>Loading realm...</div>;
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={gridSizeResume}>
+    <LayoutBase
+      breadcrumbs={[
+        { name: t('home'), link: '/' },
+        { name: t('core'), link: '/core' },
+        { name: t('realms'), link: '/core/realms' },
+        { name: t('edit') },
+      ]}
+      actions={[
+        <CancelButton onClick={() => navigate(`/core/realms/view/${realm.id}`, { state: { realm } })} />,
+        <SaveButton onClick={onSave} />,
+      ]}
+      leftPanel={
         <EditableAvatar
           imageUrl={`${imageBaseUrl}images/generic/realm.png`}
           images={getAvatarImages()}
           onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl: imageUrl })}
         />
-      </Grid>
-      <Grid size={gridSizeMain}>
-        <RealmEditActions realm={realm} formData={formData} />
-        <Paper sx={{ p: 2 }}>
-          <RealmForm formData={formData} setFormData={setFormData} />
-        </Paper>
-        <TechnicalInfo>
-          <pre>{JSON.stringify(formData, null, 2)}</pre>
-        </TechnicalInfo>
-      </Grid>
-    </Grid>
+      }
+    >
+      <RealmForm formData={formData} setFormData={setFormData} />
+    </LayoutBase>
   );
 };
 
