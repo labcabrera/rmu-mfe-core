@@ -1,21 +1,40 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Grid, Paper } from '@mui/material';
-import { EditableAvatar, fetchRace, Race, TechnicalInfo, UpdateRaceDto } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  CancelButton,
+  EditableAvatar,
+  fetchRace,
+  LayoutBase,
+  Race,
+  SaveButton,
+  TechnicalInfo,
+  updateRace,
+  UpdateRaceDto,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getAvatarImages } from '../../services/image-service';
-import RaceForm from '../shared/RaceForm';
-import RaceEditActions from './RaceEditActions';
+import RaceForm from '../form/RaceForm';
 
-const RaceEdit: FC = () => {
+export default function RaceEdit() {
   const auth = useAuth();
+  const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
   const { showError } = useError();
   const { raceId } = useParams<{ raceId: string }>();
   const [race, setRace] = useState<Race | null>(null);
   const [formData, setFormData] = useState<Race>({} as unknown as Race);
+
+  const onSave = async () => {
+    const { id, ...rest } = formData;
+    const dto = rest as unknown as UpdateRaceDto;
+    updateRace(id, dto, auth)
+      .then((data) => navigate(`/core/races/view/${race!.id}`, { state: { race: data } }))
+      .catch((err) => showError(err.message));
+  };
 
   useEffect(() => {
     if (race) {
@@ -36,27 +55,24 @@ const RaceEdit: FC = () => {
   if (!race || !formData) return <div>Loading race...</div>;
 
   return (
-    <>
-      <Grid container spacing={2} sx={{ p: 1 }}>
-        <Grid size={gridSizeResume}>
-          <EditableAvatar
-            imageUrl={formData.imageUrl || ''}
-            onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
-            images={getAvatarImages()}
-          />
-        </Grid>
-        <Grid size={gridSizeMain} spacing={1}>
-          <RaceEditActions race={race} formData={formData} />
-          <Paper sx={{ p: 2 }}>
-            <RaceForm realmId={race.realmId} formData={formData} setFormData={setFormData} />
-          </Paper>
-          <TechnicalInfo>
-            <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
-          </TechnicalInfo>
-        </Grid>
-      </Grid>
-    </>
+    <LayoutBase
+      breadcrumbs={[{ name: t('core'), link: '/core' }, { name: t('races'), link: '/core/races' }, { name: t('edit') }]}
+      actions={[
+        <CancelButton onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race: race } })} />,
+        <SaveButton onClick={onSave} />,
+      ]}
+      leftPanel={
+        <EditableAvatar
+          imageUrl={formData.imageUrl || ''}
+          onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
+          images={getAvatarImages()}
+        />
+      }
+    >
+      <RaceForm realmId={race.realmId} formData={formData} setFormData={setFormData} />
+      <TechnicalInfo>
+        <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
+      </TechnicalInfo>
+    </LayoutBase>
   );
-};
-
-export default RaceEdit;
+}

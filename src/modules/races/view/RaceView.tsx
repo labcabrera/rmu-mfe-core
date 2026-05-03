@@ -121,7 +121,7 @@ const RaceView: FC = () => {
       >
         <CategorySeparator text={t('realm')} />
         <Grid container spacing={1} columns={10}>
-          <Grid size={{ xs: 12, md: 2 }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <RmuTextCard
               value={realm.name}
               subtitle={t('realm')}
