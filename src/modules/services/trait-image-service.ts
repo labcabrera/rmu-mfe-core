@@ -1,8 +1,8 @@
-import { Trait } from '../api/trait.dto';
-
-const imageBaseUrl = process.env.RMU_MFE_ASSETS!;
+import { Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { imageBaseUrl } from './config';
 
 export const getTraitImage = (trait: Trait) => {
+  if (!trait) return '';
   if (trait.category === 'combat') return `${imageBaseUrl}images/generic/trait-combat.png`;
   if (trait.category === 'magical') return `${imageBaseUrl}images/generic/trait-magical.png`;
   if (trait.category === 'senses') return `${imageBaseUrl}images/generic/trait-senses.png`;
