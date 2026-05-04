@@ -14,7 +14,6 @@ import {
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
-import SkillCategoryListActions from './SkillCategoryListActions';
 import SkillCategoryListSearch from './SkillCategoryListSearch';
 
 const SkillCategoryList: FC = () => {
@@ -44,45 +43,35 @@ const SkillCategoryList: FC = () => {
   if (!skillCategories) return <p>Loading...</p>;
 
   return (
-    <>
-      <LayoutBase
-        breadcrumbs={[
-          { name: t('home'), link: '/' },
-          { name: t('core'), link: '/core' },
-          { name: t('skill-categories') },
-        ]}
-      >
-        <SkillCategoryListSearch setQueryString={setQueryString} />
-        <Grid container spacing={1} sx={{ mt: 1 }}>
-          {skillCategories.map((category) => (
-            <Grid size={gridSizeCard} key={category.id}>
-              <RmuTextCard
-                value={t(category.id)}
-                subtitle={t('Skill category')}
-                image={`${imageBaseUrl}images/generic/configuration.png`}
-                onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { category } })}
-              />
-            </Grid>
-          ))}
-        </Grid>
-        {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
-        <RmuPagination
-          page={page}
-          pageSize={pageSize}
-          totalPages={totalPages}
-          setPage={setPage}
-          setPageSize={setPageSize}
-        />
-      </LayoutBase>
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <SkillCategoryListActions onRefresh={() => bindSkillCategories()} />
-
-          <Grid size={12}></Grid>
-        </Grid>
+    <LayoutBase
+      breadcrumbs={[
+        { name: t('home'), link: '/' },
+        { name: t('core'), link: '/core' },
+        { name: t('skill-categories') },
+      ]}
+    >
+      <SkillCategoryListSearch setQueryString={setQueryString} />
+      <Grid container spacing={1} sx={{ mt: 1 }}>
+        {skillCategories.map((category) => (
+          <Grid size={gridSizeCard} key={category.id}>
+            <RmuTextCard
+              value={t(category.id)}
+              subtitle={t('Skill category')}
+              image={`${imageBaseUrl}images/generic/configuration.png`}
+              onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { category } })}
+            />
+          </Grid>
+        ))}
       </Grid>
-    </>
+      {skillCategories.length === 0 ? <p>No skill categories found.</p> : null}
+      <RmuPagination
+        page={page}
+        pageSize={pageSize}
+        totalPages={totalPages}
+        setPage={setPage}
+        setPageSize={setPageSize}
+      />
+    </LayoutBase>
   );
 };
 

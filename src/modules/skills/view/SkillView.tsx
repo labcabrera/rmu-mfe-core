@@ -1,22 +1,35 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { FC, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
-import { Enumeration, fetchEnumerations, fetchSkill, Skill, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import {
+  DeleteButton,
+  DeleteDialog,
+  deleteSkill,
+  EditButton,
+  Enumeration,
+  fetchEnumerations,
+  fetchSkill,
+  LayoutBase,
+  RefreshButton,
+  Skill,
+  TechnicalInfo,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { gridSizeResume, gridSizeMain } from '../../services/display';
-import SkillViewActions from './SkillViewActions';
 import SkillViewInfo from './SkillViewInfo';
 import SkillViewSpecializations from './SkillViewSpecializations';
-import { useAuth } from 'react-oidc-context';
 
-const SkillView: FC = () => {
+export default function SkillView() {
   const auth = useAuth();
+  const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
   const { showError } = useError();
   const { skillId } = useParams<{ skillId?: string }>();
   const [skill, setSkill] = useState<Skill | null>(null);
   const [enumerations, setEnumerations] = useState<Enumeration[]>();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const bindSkill = (skillId: string) => {
     fetchSkill(skillId, auth)
@@ -28,6 +41,12 @@ const SkillView: FC = () => {
     if (!skill?.specialization) return;
     fetchEnumerations(`category==${skill?.specialization}`, 0, 100, auth)
       .then((response) => setEnumerations(response.content))
+      .catch((err) => showError(err.message));
+  };
+
+  const onDelete = () => {
+    deleteSkill(skill!.id, auth)
+      .then(() => navigate(`/core/skill-categories/view/${skill!.categoryId}`))
       .catch((err) => showError(err.message));
   };
 
@@ -48,18 +67,30 @@ const SkillView: FC = () => {
   if (!skill) return <p>Loading...</p>;
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={gridSizeResume}></Grid>
-      <Grid size={gridSizeMain}>
-        <SkillViewActions skill={skill} onRefresh={() => bindSkill(skillId!)} />
-        <SkillViewInfo skill={skill} />
-        {enumerations && <SkillViewSpecializations enumerations={enumerations} />}
-        <TechnicalInfo>
-          <pre>Skill: {JSON.stringify(skill, null, 2)}</pre>
-        </TechnicalInfo>
-      </Grid>
-    </Grid>
+    <LayoutBase
+      breadcrumbs={[
+        { name: t('home'), link: '/' },
+        { name: t('core'), link: '/core' },
+        { name: t('skill-categories'), link: '/core/skill-categories' },
+        { name: t('skill'), link: '/core/skills' },
+      ]}
+      actions={[
+        <RefreshButton onClick={() => bindEnumerations()} />,
+        <EditButton onClick={() => navigate(`/core/skills/edit/${skill.id}`)} />,
+        <DeleteButton onClick={() => setDeleteDialogOpen(true)} />,
+      ]}
+    >
+      <SkillViewInfo skill={skill} />
+      {enumerations && <SkillViewSpecializations enumerations={enumerations} />}
+      <DeleteDialog
+        open={deleteDialogOpen}
+        message={`Are you sure you want to delete skill ${skill.id}? This action cannot be undone.`}
+        onDelete={() => onDelete()}
+        onClose={() => setDeleteDialogOpen(false)}
+      />
+      <TechnicalInfo>
+        <pre>Skill: {JSON.stringify(skill, null, 2)}</pre>
+      </TechnicalInfo>
+    </LayoutBase>
   );
-};
-
-export default SkillView;
+}

@@ -1,17 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useLocation, useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
-import { fetchSkillCategory, fetchSkills, Skill, SkillCategory } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  fetchSkillCategory,
+  fetchSkills,
+  LayoutBase,
+  RefreshButton,
+  Skill,
+  SkillCategory,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { gridSizeResume, gridSizeMain } from '../../services/display';
-import SkillCategoryViewActions from './SkillCategoryViewActions';
 import SkillCategoryViewInfo from './SkillCategoryViewInfo';
 import SkillCategoryViewSkills from './SkillCategoryViewSkills';
-import { useAuth } from 'react-oidc-context';
 
-const SkillCategoryView: FC = () => {
+export default function SkillCategoryView() {
   const location = useLocation();
+  const { t } = useTranslation();
   const auth = useAuth();
   const { skillCategoryId } = useParams<{ skillCategoryId?: string }>();
   const { showError } = useError();
@@ -46,15 +52,17 @@ const SkillCategoryView: FC = () => {
   if (!skillCategory) return <p>Loading...</p>;
 
   return (
-    <Grid container spacing={2}>
-      <Grid size={gridSizeResume}></Grid>
-      <Grid size={gridSizeMain}>
-        <SkillCategoryViewActions skillCategory={skillCategory} onRefresh={bindSkillCategory} />
-        <SkillCategoryViewInfo skillCategory={skillCategory} />
-        <SkillCategoryViewSkills skills={skills} />
-      </Grid>
-    </Grid>
+    <LayoutBase
+      breadcrumbs={[
+        { name: t('home'), link: '/' },
+        { name: t('core'), link: '/core' },
+        { name: t('skill-categories'), link: '/core/skill-categories' },
+        { name: t('view') },
+      ]}
+      actions={[<RefreshButton onClick={() => bindSkillCategory()} />]}
+    >
+      <SkillCategoryViewInfo skillCategory={skillCategory} />
+      <SkillCategoryViewSkills skills={skills} />
+    </LayoutBase>
   );
-};
-
-export default SkillCategoryView;
+}

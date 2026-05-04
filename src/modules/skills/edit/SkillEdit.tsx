@@ -7,7 +7,7 @@ import { fetchSkill, GenericAvatar, Skill, TechnicalInfo, UpdateSkillDto } from 
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
-import SkillForm from '../shared/SkillForm';
+import SkillForm from '../form/SkillForm';
 import SkillEditActions from './SkillEditActions';
 
 const SkillEdit: FC = () => {
