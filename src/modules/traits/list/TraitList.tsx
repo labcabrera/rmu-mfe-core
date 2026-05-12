@@ -1,17 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { fetchTraits, RmuPagination, RmuTextCard, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  AddButton,
+  fetchTraits,
+  LayoutBase,
+  RefreshButton,
+  RmuPagination,
+  RmuTextCard,
+  Trait,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
+import { gridSizeCard } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
-import TraitListActions from './TraitListActions';
 import TraitListSearch from './TraitListSearch';
 
-const TraitList: FC = () => {
+export default function TraitList() {
   const auth = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -40,43 +47,35 @@ const TraitList: FC = () => {
   };
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={gridSizeResume}></Grid>
-      <Grid size={gridSizeMain}>
-        <TraitListActions onRefresh={bindTraits} />
-        <Grid container spacing={1}>
-          <Grid size={12}>
-            <TraitListSearch setSearchString={setSearchString} />
-          </Grid>
-          <Grid size={12}>
-            <Grid container spacing={1}>
-              {traits.map((trait) => (
-                <Grid size={gridSizeCard} key={trait.id}>
-                  <RmuTextCard
-                    value={`${t(trait.name)}${trait.isTierBased ? ' *' : ''}`}
-                    subtitle={getTraitSubtitle(trait)}
-                    image={getTraitImage(trait)}
-                    onClick={() => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })}
-                    grayscale={trait.isTalent ? 0 : 0.8}
-                  />
-                </Grid>
-              ))}
-              {traits.length === 0 ? <p>No traits found.</p> : null}
-            </Grid>
-          </Grid>
-          <Grid size={12}>
-            <RmuPagination
-              page={page}
-              setPage={setPage}
-              pageSize={pageSize}
-              setPageSize={setPageSize}
-              totalPages={totalPages}
+    <LayoutBase
+      breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('traits') }]}
+      actions={[
+        <RefreshButton onClick={() => bindTraits()} />,
+        <AddButton onClick={() => navigate('/core/traits/create')} />,
+      ]}
+    >
+      <TraitListSearch setSearchString={setSearchString} />
+      <Grid container spacing={1}>
+        {traits.map((trait) => (
+          <Grid size={gridSizeCard} key={trait.id}>
+            <RmuTextCard
+              value={`${t(trait.name)}${trait.isTierBased ? ' *' : ''}`}
+              subtitle={getTraitSubtitle(trait)}
+              image={getTraitImage(trait)}
+              onClick={() => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })}
+              grayscale={trait.isTalent ? 0 : 0.8}
             />
           </Grid>
-        </Grid>
+        ))}
+        {traits.length === 0 ? <p>No traits found.</p> : null}
       </Grid>
-    </Grid>
+      <RmuPagination
+        page={page}
+        setPage={setPage}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+        totalPages={totalPages}
+      />
+    </LayoutBase>
   );
-};
-
-export default TraitList;
+}

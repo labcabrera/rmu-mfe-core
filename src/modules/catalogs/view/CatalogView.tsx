@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useParams } from 'react-router-dom';
 import { Grid, Stack, Typography } from '@mui/material';
 import {
@@ -13,6 +15,8 @@ import {
   Enumeration,
   deleteEnumeration,
   fetchEnumerations,
+  LayoutBase,
+  RefreshButton,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
@@ -20,10 +24,8 @@ import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/displ
 import AddEnumerationDialog from '../shared/AddEnumerationDialog';
 import CatalogViewActions from './CatalogViewActions';
 import CatalogListSearch from './CatalogViewSearch';
-import { useAuth } from 'react-oidc-context';
-import { useTranslation } from 'react-i18next';
 
-const CatalogView: FC = () => {
+export default function CatalogView() {
   const auth = useAuth();
   const { showError } = useError();
   const { t } = useTranslation();
@@ -70,46 +72,35 @@ const CatalogView: FC = () => {
   if (!category || !enumerations || !realms) return <p>Loading realm...</p>;
 
   return (
-    <>
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <CatalogViewActions onRefresh={() => bindEnumerations()} />
-          <Grid container spacing={1}>
-            <Grid size={12}>
-              <CategorySeparator text={t(category)}>
-                <AddButton onClick={() => setAddDialogOpen(true)} />
-              </CategorySeparator>
-            </Grid>
-            <Grid size={12}>
-              <CatalogListSearch category={category} realms={realms} setQueryString={setQueryString} />
-            </Grid>
-            <Grid size={12}>
-              <Grid container spacing={1}>
-                {enumerations.map((e, index) => (
-                  <Grid key={index} size={gridSizeCard}>
-                    <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`}>
-                      <Stack direction="row" sx={{ justifyContent: "space-between"}}>
-                        <Stack direction="column">
-                          <Typography>{t(e.key)}</Typography>
-                          <Typography color="secondary">
-                            <em>{getRealmName(e)}</em>
-                          </Typography>
-                        </Stack>
-                        <DeleteButton onClick={() => onDelete(e)} />
-                      </Stack>
-                    </RmuCard>
-                  </Grid>
-                ))}
-              </Grid>
-            </Grid>
-            <Grid size={12}>
-              <TechnicalInfo>
-                <pre>{JSON.stringify(enumerations, null, 2)}</pre>
-              </TechnicalInfo>
-            </Grid>
+    <LayoutBase
+      breadcrumbs={[
+        { name: t('home'), link: '/' },
+        { name: t('core'), link: '/core' },
+        { name: t('catalogs'), link: '/core/catalogs' },
+        { name: t('view') },
+      ]}
+      actions={[<RefreshButton onClick={() => bindEnumerations()} />]}
+    >
+      <CategorySeparator text={t(category)}>
+        <AddButton onClick={() => setAddDialogOpen(true)} />
+      </CategorySeparator>
+      <CatalogListSearch category={category} realms={realms} setQueryString={setQueryString} />
+      <Grid container spacing={1} sx={{ mt: 2 }}>
+        {enumerations.map((e, index) => (
+          <Grid key={index} size={gridSizeCard}>
+            <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`}>
+              <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+                <Stack direction="column">
+                  <Typography>{t(e.key)}</Typography>
+                  <Typography color="secondary">
+                    <em>{getRealmName(e)}</em>
+                  </Typography>
+                </Stack>
+                <DeleteButton onClick={() => onDelete(e)} />
+              </Stack>
+            </RmuCard>
           </Grid>
-        </Grid>
+        ))}
       </Grid>
       <AddEnumerationDialog
         category={category}
@@ -118,8 +109,9 @@ const CatalogView: FC = () => {
         onClose={() => setAddDialogOpen(false)}
         onAdd={() => bindEnumerations()}
       />
-    </>
+      <TechnicalInfo>
+        <pre>{JSON.stringify(enumerations, null, 2)}</pre>
+      </TechnicalInfo>
+    </LayoutBase>
   );
-};
-
-export default CatalogView;
+}

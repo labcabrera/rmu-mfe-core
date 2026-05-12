@@ -2,7 +2,12 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
-import { EnduranceManeuverResult, fetchEnduranceManeuver, NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  EnduranceManeuverResult,
+  fetchEnduranceManeuver,
+  NumericInput,
+  Section,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../ErrorContext';
 
 const EnduranceManeuverView: FC = () => {
@@ -25,7 +30,7 @@ const EnduranceManeuverView: FC = () => {
   }, [roll]);
 
   return (
-    <Paper sx={{ p: 2 }}>
+    <Section>
       <Grid container spacing={1}>
         <Grid size={{ xs: 12, md: 4 }}>
           <Grid container spacing={2}>
@@ -70,7 +75,7 @@ const EnduranceManeuverView: FC = () => {
           )}
         </Grid>
       </Grid>
-    </Paper>
+    </Section>
   );
 };
 

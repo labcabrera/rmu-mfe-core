@@ -1,9 +1,17 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Grid, Paper } from '@mui/material';
-import { TechnicalInfo, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { gridSizeResume, gridSizeMain } from '../../services/display';
-import TraitForm from '../shared/TraitForm';
-import TraitCreationActions from './TraitCreationActions';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
+import { useNavigate } from 'react-router-dom';
+import {
+  CancelButton,
+  createTrait,
+  LayoutBase,
+  SaveButton,
+  TechnicalInfo,
+  Trait,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
+import { useError } from '../../../ErrorContext';
+import TraitForm from '../form/TraitForm';
 
 const template = {
   name: '',
@@ -16,9 +24,19 @@ const template = {
   description: '',
 } as unknown as Trait;
 
-const TraitCreation: FC = () => {
+export default function TraitCreation() {
+  const auth = useAuth();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { showError } = useError();
   const [formData, setFormData] = useState<Trait>(template);
   const [isValid, setIsValid] = useState(false);
+
+  const onCreate = async () => {
+    createTrait(formData, auth)
+      .then((trait) => navigate(`/core/traits/view/${trait.id}`))
+      .catch((err) => showError(err.message));
+  };
 
   const validateForm = () => {
     if (!formData.name) return false;
@@ -30,19 +48,22 @@ const TraitCreation: FC = () => {
   }, [formData]);
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={gridSizeResume}></Grid>
-      <Grid size={gridSizeMain}>
-        <TraitCreationActions formData={formData} isValid={isValid} />
-        <Paper sx={{ p: 2 }}>
-          <TraitForm formData={formData} setFormData={setFormData} />
-        </Paper>
-        <TechnicalInfo>
-          <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
-        </TechnicalInfo>
-      </Grid>
-    </Grid>
+    <LayoutBase
+      breadcrumbs={[
+        { name: t('home'), link: '/' },
+        { name: t('core'), link: '/core' },
+        { name: t('traits'), link: '/core/traits' },
+        { name: t('creation') },
+      ]}
+      actions={[
+        <CancelButton onClick={() => navigate(`/core/traits`)} />,
+        <SaveButton onClick={() => onCreate()} disabled={!isValid} />,
+      ]}
+    >
+      <TraitForm formData={formData} setFormData={setFormData} />
+      <TechnicalInfo>
+        <pre>Form: {JSON.stringify(formData, null, 2)}</pre>
+      </TechnicalInfo>
+    </LayoutBase>
   );
-};
-
-export default TraitCreation;
+}

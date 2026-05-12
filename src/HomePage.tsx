@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { RmuBreadcrumbs, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { LayoutBase, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from './modules/services/config';
-import { gridSizeResume, gridSizeMain, gridSizeCard } from './modules/services/display';
+import { gridSizeCard } from './modules/services/display';
 
 const OPTIONS = [
   {
@@ -74,26 +74,15 @@ const HomePage: FC = () => {
   const { t } = useTranslation();
 
   return (
-    <>
+    <LayoutBase breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core') }]}>
       <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <RmuBreadcrumbs items={[{ name: 'Core' }]} />
-          <Grid container spacing={1}>
-            {OPTIONS.map((c) => (
-              <Grid size={gridSizeCard} key={c.value}>
-                <RmuTextCard
-                  value={t(c.value)}
-                  subtitle={t(c.subtitle)}
-                  image={c.image}
-                  onClick={() => navigate(c.to)}
-                />
-              </Grid>
-            ))}
+        {OPTIONS.map((c) => (
+          <Grid size={gridSizeCard} key={c.value}>
+            <RmuTextCard value={t(c.value)} subtitle={t(c.subtitle)} image={c.image} onClick={() => navigate(c.to)} />
           </Grid>
-        </Grid>
+        ))}
       </Grid>
-    </>
+    </LayoutBase>
   );
 };
 

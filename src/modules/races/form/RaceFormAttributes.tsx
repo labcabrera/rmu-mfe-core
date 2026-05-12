@@ -3,7 +3,7 @@ import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState }
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid, TextField } from '@mui/material';
-import { fetchEnumerations, NumericInput, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { CategorySeparator, fetchEnumerations, NumericInput, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
@@ -31,6 +31,9 @@ const RaceFormAttributes: FC<{
   return (
     <Grid container spacing={1} columns={10}>
       <Grid size={12}>
+        <CategorySeparator text={t('race')} />
+      </Grid>
+      <Grid size={{ xs: 12, md: 4 }}>
         <TextField
           label={t('name')}
           variant="outlined"
@@ -41,18 +44,16 @@ const RaceFormAttributes: FC<{
           error={!formData.name}
         />
       </Grid>
-      <Grid size={12}>
+      <Grid size={{ xs: 12, md: 4 }}>
         <RmuSelect
-          label={t('Archetype')}
+          label={t('archetype')}
           value={formData.archetype}
           options={archetypes}
           onChange={(e) => setFormData({ ...formData, archetype: e })}
           required
         />
       </Grid>
-      <Grid size={{ xs: 12, md: 2 }}>
-        <SelectRaceSize label={t('race-size')} name="sizeId" value={formData.sizeId} onChange={handleChange} />
-      </Grid>
+      <Grid size={12}></Grid>
       <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
           label={t('base-hit-points')}
@@ -107,6 +108,12 @@ const RaceFormAttributes: FC<{
           max={10}
           integer
         />
+      </Grid>
+      <Grid size={12}>
+        <CategorySeparator text={t('size')} />
+      </Grid>
+      <Grid size={{ xs: 12, md: 2 }}>
+        <SelectRaceSize label={t('race-size')} name="sizeId" value={formData.sizeId} onChange={handleChange} />
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput

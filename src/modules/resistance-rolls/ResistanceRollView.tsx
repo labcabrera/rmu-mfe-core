@@ -1,28 +1,25 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Grid } from '@mui/material';
 import {
   emptyResistanceRollQuery,
+  LayoutBase,
   resistanceRoll,
   ResistanceRollQuery,
   ResistanceRollResult,
-  RmuBreadcrumbs,
   TechnicalInfo,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../ErrorContext';
-import { gridSizeResume, gridSizeMain } from '../services/display';
 import { openEndedRoll } from '../services/random-service';
 import ResistanceRollViewForm from './ResistanceRollViewForm';
 import ResistanceRollViewResult from './ResistanceRollViewResult';
 
-const ResistanceRollView: FC = () => {
+export default function ResistanceRollView() {
   const { showError } = useError();
   const auth = useAuth();
   const { t } = useTranslation();
   const [formData, setFormData] = useState<ResistanceRollQuery>(emptyResistanceRollQuery);
   const [result, setResult] = useState<ResistanceRollResult>();
-  const breadcrumbs = [{ name: t('Core'), link: '/core' }, { name: t('Resistance rolls') }];
 
   const onRandom = () => {
     setFormData({ ...formData, roll: openEndedRoll() });
@@ -47,27 +44,19 @@ const ResistanceRollView: FC = () => {
   }, [formData]);
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={gridSizeResume}></Grid>
-      <Grid size={gridSizeMain}>
-        <RmuBreadcrumbs items={breadcrumbs}></RmuBreadcrumbs>
-        <Grid container spacing={1}>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <ResistanceRollViewForm formData={formData} setFormData={setFormData} onRandom={onRandom} />
-          </Grid>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <ResistanceRollViewResult result={result} />
-          </Grid>
-          <Grid size={12}>
-            <TechnicalInfo>
-              <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
-              <pre>Result: {JSON.stringify(result, null, 2)}</pre>
-            </TechnicalInfo>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
+    <LayoutBase
+      breadcrumbs={[
+        { name: t('home'), link: '/' },
+        { name: t('core'), link: '/core' },
+        { name: t('resistance-rolls') },
+      ]}
+    >
+      <ResistanceRollViewForm formData={formData} setFormData={setFormData} onRandom={onRandom} />
+      <ResistanceRollViewResult result={result} />
+      <TechnicalInfo>
+        <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
+        <pre>Result: {JSON.stringify(result, null, 2)}</pre>
+      </TechnicalInfo>
+    </LayoutBase>
   );
-};
-
-export default ResistanceRollView;
+}

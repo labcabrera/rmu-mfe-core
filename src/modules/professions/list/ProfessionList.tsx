@@ -1,14 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { RmuPagination, RmuTextCard, Profession, fetchProfessions } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  RmuPagination,
+  RmuTextCard,
+  Profession,
+  fetchProfessions,
+  LayoutBase,
+  RefreshButton,
+  AddButton,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
-import ProfessionListActions from './ProfessionListActions';
+import { gridSizeCard } from '../../services/display';
 import ProfessionListSearch from './ProfessionListSearch';
-import { useAuth } from 'react-oidc-context';
-import { useTranslation } from 'react-i18next';
 
 const ProfessionList: FC = () => {
   const navigate = useNavigate();
@@ -41,43 +48,36 @@ const ProfessionList: FC = () => {
   if (!professions) return <p>Loading...</p>;
 
   return (
-    <>
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <ProfessionListActions onRefresh={bindProfessions} />
-          <Grid container spacing={1}>
-            <Grid size={12}>
-              <ProfessionListSearch setQueryString={setQueryString} />
-            </Grid>
-            <Grid size={12}>
-              <Grid container spacing={1}>
-                {professions.map((profession) => (
-                  <Grid size={gridSizeCard} key={profession.id}>
-                    <RmuTextCard
-                      value={t(profession.id)}
-                      subtitle={t('Profession')}
-                      image={profession.imageUrl || ''}
-                      onClick={() => navigate(`/core/professions/view/${profession.id}`, { state: { profession } })}
-                    />
-                  </Grid>
-                ))}
-                {professions.length === 0 && <p>No professions found.</p>}
-              </Grid>
-            </Grid>
-            <Grid size={12}>
-              <RmuPagination
-                page={page}
-                pageSize={pageSize}
-                totalPages={totalPages}
-                setPage={setPage}
-                setPageSize={setPageSize}
-              />
-            </Grid>
+    <LayoutBase
+      breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('professions') }]}
+      actions={[
+        <RefreshButton onClick={bindProfessions} />,
+        <AddButton onClick={() => navigate('/core/professions/create')} />,
+      ]}
+    >
+      <ProfessionListSearch setQueryString={setQueryString} />
+      <Grid container spacing={1} sx={{ mt: 1 }}>
+        {professions.map((profession) => (
+          <Grid size={gridSizeCard} key={profession.id}>
+            <RmuTextCard
+              value={t(profession.id)}
+              subtitle={t('Profession')}
+              image={profession.imageUrl || ''}
+              onClick={() => navigate(`/core/professions/view/${profession.id}`, { state: { profession } })}
+              grayscale={0.8}
+            />
           </Grid>
-        </Grid>
+        ))}
       </Grid>
-    </>
+      {professions.length === 0 && <p>No professions found.</p>}
+      <RmuPagination
+        page={page}
+        pageSize={pageSize}
+        totalPages={totalPages}
+        setPage={setPage}
+        setPageSize={setPageSize}
+      />
+    </LayoutBase>
   );
 };
 

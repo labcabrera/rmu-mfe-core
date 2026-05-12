@@ -3,11 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { fetchEnumerationCategories, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { fetchEnumerationCategories, LayoutBase, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
-import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
-import CatalogListActions from './CatalogListActions';
+import { gridSizeCard } from '../../services/display';
 
 const RealmList: FC = () => {
   const auth = useAuth();
@@ -31,24 +30,22 @@ const RealmList: FC = () => {
   };
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={gridSizeResume}></Grid>
-      <Grid size={gridSizeMain}>
-        <CatalogListActions onRefresh={bindCategories} />
-        <Grid container spacing={1}>
-          {categories.map((category, index) => (
-            <Grid size={gridSizeCard} key={index}>
-              <RmuTextCard
-                value={t(category)}
-                subtitle={t('category')}
-                image={`${imageBaseUrl}images/generic/configuration.png`}
-                onClick={() => handleRealmClick(category)}
-              />
-            </Grid>
-          ))}
-        </Grid>
+    <LayoutBase
+      breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('catalogs') }]}
+    >
+      <Grid container spacing={1}>
+        {categories.map((category, index) => (
+          <Grid size={gridSizeCard} key={index}>
+            <RmuTextCard
+              value={t(category)}
+              subtitle={t('category')}
+              image={`${imageBaseUrl}images/generic/configuration.png`}
+              onClick={() => handleRealmClick(category)}
+            />
+          </Grid>
+        ))}
       </Grid>
-    </Grid>
+    </LayoutBase>
   );
 };
 

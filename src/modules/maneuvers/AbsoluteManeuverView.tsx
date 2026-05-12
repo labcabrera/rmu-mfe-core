@@ -9,6 +9,7 @@ import {
   fetchAbsoluteManeuverTable,
   fetchAbsoluteManeuverTables,
   NumericInput,
+  Section,
   TechnicalInfo,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../ErrorContext';
@@ -63,10 +64,10 @@ const AbsoluteManeuverView: FC = () => {
   if (!table) return <p>Loading...</p>;
 
   return (
-    <Paper sx={{ p: 2 }}>
-      <Grid container spacing={1}>
+    <Section>
+      <Grid container spacing={1} sx={{ p: 1 }}>
         <Grid size={{ xs: 12, md: 4 }}>
-          <Grid container spacing={1}>
+          <Grid container spacing={1} sx={{ p: 2 }}>
             <Grid size={12}>
               <SelectManeuverTable
                 value={tableName}
@@ -138,7 +139,7 @@ const AbsoluteManeuverView: FC = () => {
           </TechnicalInfo>
         </Grid>
       </Grid>
-    </Paper>
+    </Section>
   );
 };
 

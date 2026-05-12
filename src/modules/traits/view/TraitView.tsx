@@ -1,26 +1,45 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { useLocation, useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
-import { fetchTrait, GenericAvatar, TechnicalInfo, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
+import {
+  DeleteButton,
+  DeleteDialog,
+  deleteTrait,
+  EditButton,
+  fetchTrait,
+  GenericAvatar,
+  LayoutBase,
+  RefreshButton,
+  TechnicalInfo,
+  Trait,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { gridSizeResume, gridSizeMain } from '../../services/display';
 import { getTraitImage } from '../../services/trait-image-service';
-import TraitViewActions from './TraitViewActions';
 import TraitViewInfo from './TraitViewInfo';
 
-const TraitView: FC = () => {
-  const location = useLocation();
+export default function TraitView() {
   const auth = useAuth();
+  const { t } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { traitId } = useParams<{ traitId?: string }>();
   const { showError } = useError();
-  const [trait, setTrait] = useState<Trait | null>(null);
+  const [trait, setTrait] = useState<Trait>();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const bindTrait = () => {
     if (!traitId) return;
     fetchTrait(traitId, auth)
       .then((response) => setTrait(response))
+      .catch((err: Error) => showError(err.message));
+  };
+
+  const onDelete = () => {
+    deleteTrait(trait!.id, auth)
+      .then(() => navigate('/core/traits'))
       .catch((err: Error) => showError(err.message));
   };
 
@@ -32,22 +51,37 @@ const TraitView: FC = () => {
     }
   }, [location.state, traitId]);
 
-  if (!trait) return <p>Loading...</p>;
-
   return (
-    <Grid container spacing={1}>
-      <Grid size={gridSizeResume}>
-        <GenericAvatar imageUrl={getTraitImage(trait)} />
-      </Grid>
-      <Grid size={gridSizeMain}>
-        <TraitViewActions trait={trait} onRefresh={bindTrait} />
-        <TraitViewInfo trait={trait} />
-        <TechnicalInfo>
-          <pre>{JSON.stringify(trait, null, 2)}</pre>
-        </TechnicalInfo>
-      </Grid>
-    </Grid>
+    <LayoutBase
+      breadcrumbs={[
+        { name: t('home'), link: '/' },
+        { name: t('core'), link: '/core' },
+        { name: t('traits'), link: '/core/traits' },
+        { name: t('view') },
+      ]}
+      actions={[
+        <RefreshButton onClick={() => bindTrait()} />,
+        <EditButton onClick={() => navigate(`/core/traits/edit/${trait?.id}`, { state: { trait } })} />,
+        <DeleteButton onClick={() => setDeleteDialogOpen(true)} />,
+      ]}
+      leftPanel={<GenericAvatar imageUrl={trait ? getTraitImage(trait) : ''} />}
+    >
+      {!trait ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <TraitViewInfo trait={trait} />
+          <DeleteDialog
+            message={`Are you sure you want to delete ${t(trait.id)} trait? This action cannot be undone.`}
+            onDelete={() => onDelete()}
+            open={deleteDialogOpen}
+            onClose={() => setDeleteDialogOpen(false)}
+          />
+          <TechnicalInfo>
+            <pre>{JSON.stringify(trait, null, 2)}</pre>
+          </TechnicalInfo>
+        </>
+      )}
+    </LayoutBase>
   );
-};
-
-export default TraitView;
+}

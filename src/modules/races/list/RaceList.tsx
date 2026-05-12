@@ -1,14 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { RmuPagination, RmuTextCard, Race, Realm, fetchRaces, fetchRealms } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  RmuPagination,
+  RmuTextCard,
+  Race,
+  Realm,
+  fetchRaces,
+  fetchRealms,
+  LayoutBase,
+  RefreshButton,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { gridSizeResume, gridSizeMain, gridSizeCard } from '../../services/display';
-import RaceListActions from './RaceListActions';
+import { gridSizeCard } from '../../services/display';
 import RaceListSearch from './RaceListSearch';
-import { useAuth } from 'react-oidc-context';
-import { useTranslation } from 'react-i18next';
 
 const RaceList: FC = () => {
   const navigate = useNavigate();
@@ -48,39 +56,31 @@ const RaceList: FC = () => {
   if (!races) return <p>Loading...</p>;
 
   return (
-    <>
-      <Grid container spacing={1}>
-        <Grid size={gridSizeResume}></Grid>
-        <Grid size={gridSizeMain}>
-          <RaceListActions onRefresh={bindRaces} />
-          <Grid container spacing={1}>
-            <Grid size={12}>
-              <RaceListSearch setQueryString={setQueryString} realms={realms} />
-            </Grid>
-            {races.map((race) => (
-              <Grid size={gridSizeCard} key={race.id}>
-                <RmuTextCard
-                  value={race.name}
-                  subtitle={t(race.archetype || "-")}
-                  image={race.imageUrl || ''}
-                  onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
-                />
-              </Grid>
-            ))}
-            {races.length === 0 && <Grid size={12}>No races found.</Grid>}
-          </Grid>
-          <Grid size={12}>
-            <RmuPagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              setPage={setPage}
-              setPageSize={setPageSize}
+    <LayoutBase
+      breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('races') }]}
+      actions={<RefreshButton onClick={() => bindRaces()} />}
+    >
+      <RaceListSearch setQueryString={setQueryString} realms={realms} />
+      <Grid container spacing={1} sx={{ mt: 1 }}>
+        {races.map((race) => (
+          <Grid size={gridSizeCard} key={race.id}>
+            <RmuTextCard
+              value={race.name}
+              subtitle={t(race.archetype || '-')}
+              image={race.imageUrl || ''}
+              onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
             />
           </Grid>
-        </Grid>
+        ))}
       </Grid>
-    </>
+      <RmuPagination
+        page={page}
+        pageSize={pageSize}
+        totalPages={totalPages}
+        setPage={setPage}
+        setPageSize={setPageSize}
+      />
+    </LayoutBase>
   );
 };
 

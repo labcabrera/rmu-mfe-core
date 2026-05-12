@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField } from '@mui/material';
-import { t } from 'i18next';
-import { ProfessionArchetype } from '../../api/profession.dto';
+import { ProfessionArchetype } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const SelectProfessionArchetype: FC<{
   label: string;
@@ -11,6 +11,7 @@ const SelectProfessionArchetype: FC<{
   allowAll?: boolean;
   onChange: (archetype: ProfessionArchetype) => void;
 }> = ({ label, value, name, required = true, allowAll = false, onChange }) => {
+  const { t } = useTranslation();
   const values: ProfessionArchetype[] = ['non-spellcaster', 'semi-spellcaster', 'pure-spellcaster', 'hybrid'];
 
   return (

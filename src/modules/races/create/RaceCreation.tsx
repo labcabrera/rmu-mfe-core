@@ -1,14 +1,23 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { useSearchParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
-import { EditableAvatar, TechnicalInfo, Realm, fetchRealm, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import {
+  EditableAvatar,
+  TechnicalInfo,
+  Realm,
+  fetchRealm,
+  Race,
+  LayoutBase,
+  CancelButton,
+  SaveButton,
+  createRace,
+  CreateRaceDto,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
-import { gridSizeMain, gridSizeResume } from '../../services/display';
 import { getAvatarImages } from '../../services/image-service';
-import RaceForm from '../shared/RaceForm';
-import RaceCreationActions from './RaceCreationActions';
+import RaceForm from '../form/RaceForm';
 
 export const RACE_CREATE_TEMPLATE = {
   name: '',
@@ -54,11 +63,13 @@ export const RACE_CREATE_TEMPLATE = {
   traits: [],
   defaultLanguage: null,
   description: '',
-  imageUrl: `${imageBaseUrl}images/races/unknown.png`,
+  imageUrl: `${imageBaseUrl}images/races/unknown-alt.png`,
 } as unknown as Race;
 
-const RaceCreation: FC = () => {
+export default function RaceCreation() {
   const auth = useAuth();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const realmId = searchParams.get('realmId');
   const { showError } = useError();
@@ -70,6 +81,13 @@ const RaceCreation: FC = () => {
     if (!formData.name) return false;
     if (!formData.realmId) return false;
     return true;
+  };
+
+  const onSave = () => {
+    const dto = formData as unknown as CreateRaceDto;
+    createRace(dto, auth)
+      .then((race) => navigate(`/core/races/view/${race.id}`))
+      .catch((err) => showError(err.message));
   };
 
   useEffect(() => {
@@ -91,23 +109,31 @@ const RaceCreation: FC = () => {
   if (!realm || !formData) return <div>Loading...</div>;
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={gridSizeResume}>
-        <EditableAvatar
-          imageUrl={formData.imageUrl || ''}
-          onImageChange={(avatar) => setFormData({ ...formData, imageUrl: avatar })}
-          images={getAvatarImages()}
-        />
-      </Grid>
-      <Grid size={gridSizeMain}>
-        <RaceCreationActions formData={formData} isValid={isValid} />
+    <>
+      <LayoutBase
+        breadcrumbs={[
+          { name: t('home'), link: '/' },
+          { name: t('core'), link: '/core' },
+          { name: t('races'), link: '/core/races' },
+          { name: t('create') },
+        ]}
+        actions={[
+          <CancelButton onClick={() => navigate(`/tactical/games`)} />,
+          <SaveButton onClick={onSave} disabled={!isValid} />,
+        ]}
+        leftPanel={
+          <EditableAvatar
+            imageUrl={formData.imageUrl || ''}
+            onImageChange={(avatar) => setFormData({ ...formData, imageUrl: avatar })}
+            images={getAvatarImages()}
+          />
+        }
+      >
         <RaceForm realmId={realm.id} formData={formData} setFormData={setFormData} />
         <TechnicalInfo>
           <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
         </TechnicalInfo>
-      </Grid>
-    </Grid>
+      </LayoutBase>
+    </>
   );
-};
-
-export default RaceCreation;
+}

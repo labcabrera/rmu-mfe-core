@@ -10,7 +10,7 @@ const ProfessionViewProfessionalSkills: FC<{
   return (
     <Grid container spacing={1} columns={10}>
       {profession.professionalSkills.map((skill, index) => (
-        <Chip key={index} label={t(skill)} />
+        <Chip key={index} label={t(skill)} color="primary" />
       ))}
     </Grid>
   );
