@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 import {
   RmuPagination,
   RmuTextCard,
@@ -25,7 +24,7 @@ const RaceList: FC = () => {
   const { showError } = useError();
   const [queryString, setQueryString] = useState('');
   const [realms, setRealms] = useState<Realm[]>([]);
-  const [races, setRaces] = useState<Race[]>([]);
+  const [races, setRaces] = useState<Race[]>();
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(24);
   const [totalPages, setTotalPages] = useState(1);
@@ -53,33 +52,38 @@ const RaceList: FC = () => {
     bindRealms();
   }, []);
 
-  if (!races) return <p>Loading...</p>;
-
   return (
     <LayoutBase
       breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('races') }]}
       actions={<RefreshButton onClick={() => bindRaces()} />}
     >
       <RaceListSearch setQueryString={setQueryString} realms={realms} />
-      <Grid container spacing={1} sx={{ mt: 1 }}>
-        {races.map((race) => (
-          <Grid size={gridSizeCard} key={race.id}>
-            <RmuTextCard
-              value={race.name}
-              subtitle={t(race.archetype || '-')}
-              image={race.imageUrl || ''}
-              onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
-            />
+      {!races ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <Grid container spacing={1} sx={{ mt: 1 }}>
+            {races.map((race) => (
+              <Grid size={gridSizeCard} key={race.id}>
+                <RmuTextCard
+                  value={race.name}
+                  subtitle={t(race.archetype || '-')}
+                  image={race.imageUrl || ''}
+                  lock={race.accessType === 'private'}
+                  onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-      <RmuPagination
-        page={page}
-        pageSize={pageSize}
-        totalPages={totalPages}
-        setPage={setPage}
-        setPageSize={setPageSize}
-      />
+          <RmuPagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            setPage={setPage}
+            setPageSize={setPageSize}
+          />
+        </>
+      )}
     </LayoutBase>
   );
 };
