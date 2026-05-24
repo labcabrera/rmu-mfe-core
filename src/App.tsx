@@ -11,6 +11,10 @@ import CultureCreation from './modules/cultures/create/CultureCreation';
 import CultureEdit from './modules/cultures/edit/CultureEdit';
 import CultureList from './modules/cultures/list/CultureList';
 import CultureView from './modules/cultures/view/CultureView';
+import EffectTypeCreation from './modules/effect-types/create/EffectTypeCreation';
+import EffectTypeEdit from './modules/effect-types/edit/EffectTypeEdit';
+import EffectTypeList from './modules/effect-types/list/EffectTypeList';
+import EffectTypeView from './modules/effect-types/view/EffectTypeView';
 import ManeuversView from './modules/maneuvers/ManeuversView';
 import ProfessionCreation from './modules/professions/create/ProfessionCreation';
 import ProfessionEdit from './modules/professions/edit/ProfessionEdit';
@@ -63,6 +67,10 @@ const App = () => {
             <Route path="/traits/view/:traitId" element={<TraitView />} />
             <Route path="/traits/create" element={<TraitCreation />} />
             <Route path="/traits/edit/:traitId" element={<TraitEdit />} />
+            <Route path="/effect-types" element={<EffectTypeList />} />
+            <Route path="/effect-types/create" element={<EffectTypeCreation />} />
+            <Route path="/effect-types/view/:effectTypeId" element={<EffectTypeView />} />
+            <Route path="/effect-types/edit/:effectTypeId" element={<EffectTypeEdit />} />
             <Route path="/skills" element={<SkillList />} />
             <Route path="/skills/view/:skillId" element={<SkillView />} />
             <Route path="/skills/edit/:skillId" element={<SkillEdit />} />
