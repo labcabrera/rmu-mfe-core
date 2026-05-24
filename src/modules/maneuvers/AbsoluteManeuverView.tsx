@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Button, Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
@@ -9,19 +9,20 @@ import {
   fetchAbsoluteManeuverTable,
   fetchAbsoluteManeuverTables,
   NumericInput,
+  OpenEndedRollDialog,
   Section,
   TechnicalInfo,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../ErrorContext';
-import { openEndedRoll } from '../services/random-service';
 import SelectManeuverTable from '../shared/selects/SelectManeuverTable';
 import AbsoluteManeuverTableView from './AbsoluteManeuverTableView';
 
-const AbsoluteManeuverView: FC = () => {
+export default function AbsoluteManeuverView() {
   const auth = useAuth();
   const { t } = useTranslation();
   const { showError } = useError();
 
+  const [rollDialogOpen, setRollDialogOpen] = useState<boolean>(false);
   const [roll, setRoll] = useState<number | null>(null);
   const [modifier, setModifier] = useState<number>(0);
   const [totalRoll, setTotalRoll] = useState<number | null>(null);
@@ -103,8 +104,8 @@ const AbsoluteManeuverView: FC = () => {
               />
             </Grid>
             <Grid size={12}>
-              <Button variant="contained" color="primary" onClick={() => setRoll(openEndedRoll())}>
-                {t('random')}
+              <Button variant="contained" color="primary" onClick={() => setRollDialogOpen(true)}>
+                {t('roll')}
               </Button>
             </Grid>
           </Grid>
@@ -139,8 +140,15 @@ const AbsoluteManeuverView: FC = () => {
           </TechnicalInfo>
         </Grid>
       </Grid>
+      <OpenEndedRollDialog
+        open={rollDialogOpen}
+        title={'absolute-maneuver'}
+        onClose={() => setRollDialogOpen(false)}
+        onConfirm={(v) => {
+          setRoll(v);
+          setRollDialogOpen(false);
+        }}
+      />
     </Section>
   );
-};
-
-export default AbsoluteManeuverView;
+}

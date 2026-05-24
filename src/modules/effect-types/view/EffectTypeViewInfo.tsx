@@ -1,64 +1,57 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, Typography } from '@mui/material';
-import { Stack } from '@mui/system';
-import { EffectType, RmuTextCard, Section, StatRow } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Grid } from '@mui/material';
+import { EffectType, Section, StatRow } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from '../../services/config';
 
-const EffectTypeViewInfo: FC<{
-  effectType: EffectType;
-}> = ({ effectType }) => {
+export default function EffectTypeViewInfo({ effectType }: { effectType: EffectType }) {
   const { t } = useTranslation();
   const image = `${imageBaseUrl}images/generic/configuration.png`;
 
   return (
     <Section title={t(effectType.id)}>
       <Grid container spacing={2}>
-        <Grid size={4}>
+        <Grid size={{ sm: 12, lg: 4 }}>
           <StatRow
             label={t('value')}
-            value={effectType.value}
+            value={t(effectType.value)}
             danger={effectType.value === 'forbidden'}
             success={effectType.value === 'required'}
           />
           <StatRow
             label={t('modifier')}
-            value={effectType.modifier}
+            value={t(effectType.modifier)}
             danger={effectType.modifier === 'forbidden'}
             success={effectType.modifier === 'required'}
           />
           <StatRow
             label={t('rounds')}
-            value={effectType.rounds}
+            value={t(effectType.rounds)}
             danger={effectType.rounds === 'forbidden'}
             success={effectType.rounds === 'required'}
           />
           <StatRow
             label={t('delay')}
-            value={effectType.delay}
+            value={t(effectType.delay)}
             danger={effectType.delay === 'forbidden'}
             success={effectType.delay === 'required'}
           />
           <StatRow
             label={t('text')}
-            value={effectType.text}
+            value={t(effectType.text)}
             danger={effectType.text === 'forbidden'}
             success={effectType.text === 'required'}
           />
           <StatRow
             label={t('location')}
-            value={effectType.location}
+            value={t(effectType.location)}
             danger={effectType.location === 'forbidden'}
             success={effectType.location === 'required'}
           />
-        </Grid>
-        <Grid size={4}>
-          <StatRow label={t('is-persistent')} value={effectType.isPersistent ? 'yes' : 'no'} />
-          <StatRow label={t('is-stackable')} value={effectType.isStackable ? 'yes' : 'no'} />
+          <StatRow label={t('is-persistent')} value={t(effectType.isPersistent ? 'yes' : 'no')} />
+          <StatRow label={t('is-stackable')} value={t(effectType.isStackable ? 'yes' : 'no')} />
         </Grid>
       </Grid>
     </Section>
   );
-};
-
-export default EffectTypeViewInfo;
+}
