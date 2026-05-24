@@ -21,6 +21,9 @@ const EffectTypeViewInfo: FC<{
         <RmuTextCard value={t(effectType.isPersistent ? 'yes' : 'no')} subtitle={t('is-persistent')} image={image} />
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>
+        <RmuTextCard value={t(effectType.isStackable ? 'yes' : 'no')} subtitle={t('is-stackable')} image={image} />
+      </Grid>
+      <Grid size={{ xs: 12, md: 4 }}>
         <RmuTextCard value={t(effectType.accessType)} subtitle={t('access-type')} image={image} />
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>

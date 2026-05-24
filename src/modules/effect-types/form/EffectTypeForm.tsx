@@ -82,6 +82,20 @@ const EffectTypeForm: FC<{
           />
         </FormControl>
       </Grid>
+      <Grid size={12}>
+        <FormControl>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={formData.isStackable}
+                onChange={(e) => setFormData({ ...formData, isStackable: e.target.checked })}
+              />
+            }
+            label={t('is-stackable')}
+            labelPlacement="start"
+          />
+        </FormControl>
+      </Grid>
       <Grid size={{ xs: 12, md: 4 }}>
         <EffectRequirementSelect
           label={t('value')}

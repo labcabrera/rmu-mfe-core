@@ -17,6 +17,7 @@ import EffectTypeForm from '../form/EffectTypeForm';
 const template: EffectType = {
   id: '',
   isPersistent: false,
+  isStackable: false,
   value: 'forbidden',
   modifier: 'forbidden',
   rounds: 'forbidden',
