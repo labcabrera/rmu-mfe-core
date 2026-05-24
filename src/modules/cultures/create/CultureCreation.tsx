@@ -3,7 +3,6 @@ import { Grid } from '@mui/material';
 import { EditableAvatar, TechnicalInfo, Culture } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from '../../services/config';
 import { gridSizeMain, gridSizeResume } from '../../services/display';
-import { getAvatarImages } from '../../services/image-service';
 import CultureForm from '../shared/CultureForm';
 import CultureCreationActions from './CultureCreationActions';
 
@@ -35,7 +34,6 @@ const CultureCreation: FC = () => {
           <EditableAvatar
             imageUrl={formData.imageUrl || ''}
             onImageChange={(avatar) => setFormData({ ...formData, imageUrl: avatar })}
-            images={getAvatarImages()}
           />
         </Grid>
         <Grid size={gridSizeMain}>

@@ -15,7 +15,6 @@ import {
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
-import { getAvatarImages } from '../../services/image-service';
 import ProfessionForm from '../form/ProfessionForm';
 import ProfessionEditActions from './ProfessionEditActions';
 
@@ -75,7 +74,6 @@ export default function ProfessionEdit() {
             <EditableAvatar
               imageUrl={formData.imageUrl || ''}
               onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
-              images={getAvatarImages()}
             />
             <Typography variant="h6" sx={{ mt: 2 }}>
               {t(profession.id)}

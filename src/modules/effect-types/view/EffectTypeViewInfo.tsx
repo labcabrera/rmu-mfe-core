@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, Typography } from '@mui/material';
-import { EffectType, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Stack } from '@mui/system';
+import { EffectType, RmuTextCard, Section, StatRow } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from '../../services/config';
 
 const EffectTypeViewInfo: FC<{
@@ -11,43 +12,52 @@ const EffectTypeViewInfo: FC<{
   const image = `${imageBaseUrl}images/generic/configuration.png`;
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={12}>
-        <Typography variant="h6" color="primary" gutterBottom>
-          {t(effectType.id)}
-        </Typography>
+    <Section title={t(effectType.id)}>
+      <Grid container spacing={2}>
+        <Grid size={4}>
+          <StatRow
+            label={t('value')}
+            value={effectType.value}
+            danger={effectType.value === 'forbidden'}
+            success={effectType.value === 'required'}
+          />
+          <StatRow
+            label={t('modifier')}
+            value={effectType.modifier}
+            danger={effectType.modifier === 'forbidden'}
+            success={effectType.modifier === 'required'}
+          />
+          <StatRow
+            label={t('rounds')}
+            value={effectType.rounds}
+            danger={effectType.rounds === 'forbidden'}
+            success={effectType.rounds === 'required'}
+          />
+          <StatRow
+            label={t('delay')}
+            value={effectType.delay}
+            danger={effectType.delay === 'forbidden'}
+            success={effectType.delay === 'required'}
+          />
+          <StatRow
+            label={t('text')}
+            value={effectType.text}
+            danger={effectType.text === 'forbidden'}
+            success={effectType.text === 'required'}
+          />
+          <StatRow
+            label={t('location')}
+            value={effectType.location}
+            danger={effectType.location === 'forbidden'}
+            success={effectType.location === 'required'}
+          />
+        </Grid>
+        <Grid size={4}>
+          <StatRow label={t('is-persistent')} value={effectType.isPersistent ? 'yes' : 'no'} />
+          <StatRow label={t('is-stackable')} value={effectType.isStackable ? 'yes' : 'no'} />
+        </Grid>
       </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <RmuTextCard value={t(effectType.isPersistent ? 'yes' : 'no')} subtitle={t('is-persistent')} image={image} />
-      </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <RmuTextCard value={t(effectType.isStackable ? 'yes' : 'no')} subtitle={t('is-stackable')} image={image} />
-      </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <RmuTextCard value={t(effectType.accessType)} subtitle={t('access-type')} image={image} />
-      </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <RmuTextCard value={t(effectType.entitySource)} subtitle={t('entity-source')} image={image} />
-      </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <RmuTextCard value={t(effectType.value)} subtitle={t('value')} image={image} />
-      </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <RmuTextCard value={t(effectType.modifier)} subtitle={t('modifier')} image={image} />
-      </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <RmuTextCard value={t(effectType.rounds)} subtitle={t('rounds')} image={image} />
-      </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <RmuTextCard value={t(effectType.text)} subtitle={t('text')} image={image} />
-      </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <RmuTextCard value={t(effectType.location)} subtitle={t('location')} image={image} />
-      </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <RmuTextCard value={t(effectType.delay)} subtitle={t('delay')} image={image} />
-      </Grid>
-    </Grid>
+    </Section>
   );
 };
 

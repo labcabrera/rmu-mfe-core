@@ -15,7 +15,6 @@ import {
   UpdateRaceDto,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { getAvatarImages } from '../../services/image-service';
 import RaceForm from '../form/RaceForm';
 
 export default function RaceEdit() {
@@ -65,7 +64,6 @@ export default function RaceEdit() {
         <EditableAvatar
           imageUrl={formData.imageUrl || ''}
           onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
-          images={getAvatarImages()}
         />
       }
     >

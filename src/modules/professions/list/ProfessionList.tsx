@@ -63,7 +63,7 @@ const ProfessionList: FC = () => {
               value={t(profession.id)}
               subtitle={t('Profession')}
               image={profession.imageUrl || ''}
-              grayscale={0.8}
+              grayscale={0.2}
               lock={profession.accessType === 'private'}
               onClick={() => navigate(`/core/professions/view/${profession.id}`, { state: { profession } })}
             />

@@ -13,7 +13,7 @@ import {
   TechnicalInfo,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { DEFAULT_REALM_IMAGE, getAvatarImages } from '../../services/image-service';
+import { DEFAULT_REALM_IMAGE } from '../../services/image-service';
 import RealmForm from '../shared/RealmForm';
 
 export default function RealmCreation() {
@@ -61,7 +61,6 @@ export default function RealmCreation() {
         <EditableAvatar
           imageUrl={formData.imageUrl || DEFAULT_REALM_IMAGE}
           onImageChange={(newImageUrl) => setFormData({ ...formData, imageUrl: newImageUrl })}
-          images={getAvatarImages()}
         />
       }
     >
