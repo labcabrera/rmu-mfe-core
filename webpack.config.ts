@@ -21,7 +21,8 @@ interface Configuration extends WebpackConfiguration {
 
 export default (_env: unknown, argv: { mode?: string }): Configuration => {
   const mode = argv.mode || 'development';
-  dotenv.config({ path: path.resolve(__dirname, `.env.${mode}`) });
+  // `.env.<mode>` overrides the shared `.env` (dotenv keeps the first value it finds).
+  dotenv.config({ path: [path.resolve(__dirname, `.env.${mode}`), path.resolve(__dirname, '.env')], quiet: true });
   const publicPath = process.env.RMU_MFE_CORE_PUBLIC_PATH;
   return {
     output: {
