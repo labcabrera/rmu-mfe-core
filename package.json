@@ -1,6 +1,6 @@
 {
   "name": "rmu-mfe-core",
-  "version": "0.7.5",
+  "version": "0.7.6-SNAPSHOT",
   "scripts": {
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
