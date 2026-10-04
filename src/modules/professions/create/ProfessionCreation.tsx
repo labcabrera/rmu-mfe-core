@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { TechnicalInfo, EditableAvatar, CreateProfessionDto } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { imageBaseUrl } from '../../services/config';
-import { getAvatarImages } from '../../services/image-service';
 import ProfessionForm from '../form/ProfessionForm';
 import ProfessionCreationActions from './ProfessionCreationActions';
 
@@ -73,7 +72,6 @@ const ProfessionCreation: FC = () => {
           <EditableAvatar
             imageUrl={formData.imageUrl || ''}
             onImageChange={(avatar) => setFormData({ ...formData, imageUrl: avatar })}
-            images={getAvatarImages()}
           />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>

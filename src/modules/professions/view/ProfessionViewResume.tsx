@@ -9,7 +9,6 @@ import {
   UpdateProfessionDto,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { getAvatarImages } from '../../services/image-service';
 
 const ProfessionViewResume: FC<{
   profession: Profession;
@@ -30,19 +29,14 @@ const ProfessionViewResume: FC<{
 
   return (
     <>
-      <EditableAvatar
-        imageUrl={profession.imageUrl || ''}
-        onImageChange={(avatar) => onUpdateImage(avatar)}
-        images={getAvatarImages()}
-      />
+      <EditableAvatar imageUrl={profession.imageUrl || ''} onImageChange={(avatar) => onUpdateImage(avatar)} />
       <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
         <Chip
           label={t(profession.accessType)}
           color={profession.accessType === 'public' ? 'success' : 'error'}
-          size="small"
           sx={{ mt: 2 }}
         />
-        <Chip label={t(profession.archetype)} size="small" sx={{ mt: 2 }} />
+        <Chip label={t(profession.archetype)} sx={{ mt: 2 }} />
       </Stack>
       <Typography variant="h6" color="primary" gutterBottom>
         {t(profession.id)}

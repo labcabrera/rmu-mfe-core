@@ -5,7 +5,6 @@ import { Grid, Paper } from '@mui/material';
 import { Culture, EditableAvatar, fetchCulture, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { gridSizeResume, gridSizeMain } from '../../services/display';
-import { getAvatarImages } from '../../services/image-service';
 import CultureForm from '../shared/CultureForm';
 import RaceEditActions from './CultureEditActions';
 
@@ -44,7 +43,6 @@ const CultureEdit: FC = () => {
           <EditableAvatar
             imageUrl={formData.imageUrl || ''}
             onImageChange={(image) => setFormData({ ...formData, imageUrl: image })}
-            images={getAvatarImages()}
           />
         </Grid>
         <Grid size={gridSizeMain}>

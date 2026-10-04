@@ -50,6 +50,12 @@ const OPTIONS = [
     to: '/core/traits',
   },
   {
+    value: 'effect-types',
+    subtitle: 'manage-effect-types',
+    image: `${imageBaseUrl}images/generic/configuration.png`,
+    to: '/core/effect-types',
+  },
+  {
     value: 'catalogs',
     subtitle: 'manage-catalogs',
     image: `${imageBaseUrl}images/generic/language.png`,

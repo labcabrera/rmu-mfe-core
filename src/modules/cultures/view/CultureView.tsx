@@ -20,8 +20,6 @@ import {
   deleteCulture,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { gridSizeMain, gridSizeResume } from '../../services/display';
-import { getAvatarImages } from '../../services/image-service';
 import AddCultureFixedSkillDialog from './skills/AddCultureFixedSkillDialog';
 import CultureSkillTable from './skills/CultureSkillTable';
 
@@ -79,11 +77,7 @@ export default function CultureView() {
       ]}
       leftPanel={
         <>
-          <EditableAvatar
-            imageUrl={culture.imageUrl || ''}
-            onImageChange={(avatar) => onUpdateImage(avatar)}
-            images={getAvatarImages()}
-          />
+          <EditableAvatar imageUrl={culture.imageUrl || ''} onImageChange={(avatar) => onUpdateImage(avatar)} />
           <Chip
             label={t(culture.accessType)}
             color={culture.accessType === 'public' ? 'success' : 'error'}

@@ -24,7 +24,6 @@ import {
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
-import { getAvatarImages } from '../../services/image-service';
 import RaceViewAttributes from './RaceViewAttributes';
 import RaceViewResistances from './RaceViewResistances';
 import RaceViewSkills from './RaceViewSkills';
@@ -94,11 +93,7 @@ const RaceView: FC = () => {
         ]}
         leftPanel={
           <>
-            <EditableAvatar
-              imageUrl={race.imageUrl || ''}
-              onImageChange={(avatar) => onUpdateImage(avatar)}
-              images={getAvatarImages()}
-            />
+            <EditableAvatar imageUrl={race.imageUrl || ''} onImageChange={(avatar) => onUpdateImage(avatar)} />
             <Chip
               label={t(race.accessType)}
               color={race.accessType === 'public' ? 'success' : 'error'}

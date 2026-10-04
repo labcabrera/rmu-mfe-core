@@ -5,7 +5,6 @@ import { Chip, Grid, Typography } from '@mui/material';
 import { EditableAvatar, Realm, updateRealm } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
 import { imageBaseUrl } from '../../services/config';
-import { getAvatarImages } from '../../services/image-service';
 
 const RealmViewResume: FC<{
   realm: Realm;
@@ -27,7 +26,6 @@ const RealmViewResume: FC<{
         <EditableAvatar
           imageUrl={realm.imageUrl || `${imageBaseUrl}images/generic/realm.png`}
           onImageChange={(image) => onImageChange(image)}
-          images={getAvatarImages()}
         />
         <Chip
           size="small"
