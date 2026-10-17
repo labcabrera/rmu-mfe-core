@@ -15,7 +15,6 @@ import {
   CreateRaceDto,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { imageBaseUrl } from '../../services/config';
 import RaceForm from '../form/RaceForm';
 
 export const RACE_CREATE_TEMPLATE = {
@@ -62,7 +61,7 @@ export const RACE_CREATE_TEMPLATE = {
   traits: [],
   defaultLanguage: null,
   description: '',
-  imageUrl: `${imageBaseUrl}images/races/unknown-alt.png`,
+  imageUrl: 'images/races/unknown-alt.png',
 } as unknown as Race;
 
 export default function RaceCreation() {
