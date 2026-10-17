@@ -13,7 +13,7 @@ import {
   TechnicalInfo,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { DEFAULT_REALM_IMAGE } from '../../services/image-service';
+import { DEFAULT_REALM_IMAGE_PATH } from '../../services/image-service';
 import RealmForm from '../shared/RealmForm';
 
 export default function RealmCreation() {
@@ -23,7 +23,7 @@ export default function RealmCreation() {
   const { showError } = useError();
 
   const [formData, setFormData] = useState<Realm>({
-    imageUrl: DEFAULT_REALM_IMAGE,
+    imageUrl: DEFAULT_REALM_IMAGE_PATH,
   } as unknown as Realm);
   const [isValid, setIsValid] = useState(false);
 
@@ -59,7 +59,7 @@ export default function RealmCreation() {
       ]}
       leftPanel={
         <EditableAvatar
-          imageUrl={formData.imageUrl || DEFAULT_REALM_IMAGE}
+          imageUrl={formData.imageUrl || DEFAULT_REALM_IMAGE_PATH}
           onImageChange={(newImageUrl) => setFormData({ ...formData, imageUrl: newImageUrl })}
         />
       }
