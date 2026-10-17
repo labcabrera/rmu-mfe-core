@@ -12,7 +12,7 @@ import {
   updateRealm,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { useError } from '../../../ErrorContext';
-import { imageBaseUrl } from '../../services/config';
+import { DEFAULT_REALM_IMAGE_PATH } from '../../services/image-service';
 import RealmForm from '../shared/RealmForm';
 
 const RealmEdit: FC = () => {
@@ -64,7 +64,8 @@ const RealmEdit: FC = () => {
       ]}
       leftPanel={
         <EditableAvatar
-          imageUrl={`${imageBaseUrl}images/generic/realm.png`}
+          imageUrl={formData.imageUrl}
+          altImageUrl={DEFAULT_REALM_IMAGE_PATH}
           onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl: imageUrl })}
         />
       }
