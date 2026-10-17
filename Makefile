@@ -8,7 +8,7 @@ IMAGE           ?= labcabrera/rmu-mfe-core
 IMAGE_TAG       ?= local
 
 .DEFAULT_GOAL := help
-.PHONY: help start build docker-build check-shared-lib link-shared-lib unlink-shared-lib create-release
+.PHONY: help start build docker-build docker-push check-shared-lib link-shared-lib unlink-shared-lib create-release
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
@@ -23,6 +23,9 @@ build: check-shared-lib ## Build the production bundle into dist/
 docker-build: ## Build the static nginx image $(IMAGE):$(IMAGE_TAG), taking the shared lib from SHARED_LIB_DIR
 	@test -f "$(SHARED_LIB_DIR)/package.json" || { echo "Missing $(SHARED_LIB_DIR). Set SHARED_LIB_DIR to your rmu-react-shared-lib checkout." >&2; exit 1; }
 	docker build --build-context shared-lib="$(SHARED_LIB_DIR)" -t $(IMAGE):$(IMAGE_TAG) .
+
+docker-push: docker-build ## Build and push $(IMAGE):$(IMAGE_TAG) (for example IMAGE_TAG=1.2.0)
+	docker push $(IMAGE):$(IMAGE_TAG)
 
 # The shared lib is not published to npm, so it has to be linked from a local checkout.
 # Any later `npm install` removes the link: run `make link-shared-lib` again afterwards.
