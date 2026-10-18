@@ -1,30 +1,31 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Chip, Stack, Typography } from '@mui/material';
 import {
   EditableAvatar,
-  updateProfession,
+  LoadingState,
   Profession,
+  updateProfession,
   UpdateProfessionDto,
+  useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
 
 const ProfessionViewResume: FC<{
   profession: Profession;
-  setProfession: Dispatch<SetStateAction<Profession | undefined>>;
+  setProfession: (profession: Profession) => void;
 }> = ({ profession, setProfession }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
 
-  if (!profession) return <p>Loading...</p>;
+  if (!profession) return <LoadingState />;
 
   const onUpdateImage = (imageUrl: string) => {
     const dto = { imageUrl } as UpdateProfessionDto;
     updateProfession(profession!.id, dto, auth)
       .then((updatedProfession) => setProfession(updatedProfession))
-      .catch((err: Error) => showError(err.message));
+      .catch((err: Error) => notify.error(err));
   };
 
   return (

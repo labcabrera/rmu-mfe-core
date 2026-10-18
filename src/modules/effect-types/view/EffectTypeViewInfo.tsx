@@ -2,11 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
 import { EffectType, Section, StatRow } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { imageBaseUrl } from '../../services/config';
 
 export default function EffectTypeViewInfo({ effectType }: { effectType: EffectType }) {
   const { t } = useTranslation();
-  const image = `${imageBaseUrl}images/generic/configuration.png`;
 
   return (
     <Section title={t(effectType.id)}>

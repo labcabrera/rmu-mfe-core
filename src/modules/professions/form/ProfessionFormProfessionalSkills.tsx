@@ -1,42 +1,49 @@
-import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Grid, Chip, Typography } from '@mui/material';
-import { AddButton, fetchSkills, Profession, Skill } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
+import {
+  AddButton,
+  fetchSkills,
+  LoadingState,
+  Profession,
+  Skill,
+  useNotify,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import SelectSkill from '../../shared/selects/SelectSkill';
 
 const ProfessionFormProfessionalSkills: FC<{
   formData: Profession;
-  setFormData: Dispatch<SetStateAction<Profession | undefined>>;
+  setFormData: (data: Profession) => void;
 }> = ({ formData, setFormData }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [allSkills, setAllSkills] = React.useState<string[]>([]);
   const [selectedSkillId, setSelectedSkillId] = React.useState<string | null>(null);
-  const skills = formData.professionalSkills ?? [];
+  // The lib DTO types professionalSkills as `[]`; it holds skill ids.
+  const skills: string[] = formData.professionalSkills ?? [];
 
   const handleDelete = (index: number) => {
     const next = [...skills];
     next.splice(index, 1);
-    setFormData({ ...formData, professionalSkills: next });
+    setFormData({ ...formData, professionalSkills: next as [] });
   };
 
   const onAddSkill = (skillId: string) => {
     const next = [...skills, skillId];
-    setFormData({ ...formData, professionalSkills: next });
+    setFormData({ ...formData, professionalSkills: next as [] });
     setSelectedSkillId(null);
   };
 
   useEffect(() => {
     fetchSkills('', 0, 500, auth)
       .then((response) => setAllSkills(response.content.map((s: Skill) => s.id)))
-      .catch((err: Error) => showError(err.message));
+      .catch((err: Error) => notify.error(err));
   }, []);
 
-  if (!allSkills || allSkills.length === 0) return <p>Loading skills...</p>;
+  if (!allSkills || allSkills.length === 0) return <LoadingState />;
 
   return (
     <Grid container spacing={1}>
@@ -54,10 +61,10 @@ const ProfessionFormProfessionalSkills: FC<{
       </Grid>
       <Grid size={12}>
         {skills.length === 0 ? (
-          <Typography>No professional skills</Typography>
+          <Typography>{t('no-results')}</Typography>
         ) : (
           <Grid container spacing={1}>
-            {skills.map((s: any, idx: number) => (
+            {skills.map((s, idx) => (
               <Chip
                 key={`professional-skill-${idx}`}
                 label={t(s)}

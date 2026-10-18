@@ -1,20 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid, TextField } from '@mui/material';
-import { CategorySeparator, fetchEnumerations, NumericInput, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
+import {
+  CategorySeparator,
+  fetchEnumerations,
+  NumericInput,
+  Race,
+  useNotify,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectRaceSize from '../../shared/selects/SelectRaceSize';
 
 const RaceFormAttributes: FC<{
   formData: Race;
-  setFormData: Dispatch<SetStateAction<Race>>;
+  setFormData: (data: Race) => void;
 }> = ({ formData, setFormData }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [archetypes, setArchetypes] = useState<SelectOption[]>([]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -25,7 +30,7 @@ const RaceFormAttributes: FC<{
   useEffect(() => {
     fetchEnumerations('category==race-archetype', 0, 100, auth)
       .then((response) => setArchetypes(response.content.map((e) => ({ value: e.key, description: e.key }))))
-      .catch((err) => showError(err.message));
+      .catch((err) => notify.error(err));
   }, []);
 
   return (

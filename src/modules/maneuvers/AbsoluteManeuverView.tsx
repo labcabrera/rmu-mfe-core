@@ -8,19 +8,20 @@ import {
   fetchAbsoluteManeuver,
   fetchAbsoluteManeuverTable,
   fetchAbsoluteManeuverTables,
+  LoadingState,
   NumericInput,
   OpenEndedRollDialog,
   Section,
   TechnicalInfo,
+  useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../ErrorContext';
 import SelectManeuverTable from '../shared/selects/SelectManeuverTable';
 import AbsoluteManeuverTableView from './AbsoluteManeuverTableView';
 
 export default function AbsoluteManeuverView() {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
 
   const [rollDialogOpen, setRollDialogOpen] = useState<boolean>(false);
   const [roll, setRoll] = useState<number | null>(null);
@@ -35,7 +36,7 @@ export default function AbsoluteManeuverView() {
   useEffect(() => {
     fetchAbsoluteManeuverTables(auth)
       .then((data) => setTableNames(data))
-      .catch((err) => showError(err.message));
+      .catch((err) => notify.error(err));
   }, []);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export default function AbsoluteManeuverView() {
     if (tableName) {
       fetchAbsoluteManeuverTable(tableName, auth)
         .then((data) => setTable(data))
-        .catch((err: Error) => showError(err.message));
+        .catch((err: Error) => notify.error(err));
     } else {
       setTable(undefined);
     }
@@ -56,13 +57,13 @@ export default function AbsoluteManeuverView() {
     if (totalRoll !== null) {
       fetchAbsoluteManeuver(totalRoll, tableName, unusualEvent, auth)
         .then((data) => setResult(data))
-        .catch((err: Error) => showError(err.message));
+        .catch((err: Error) => notify.error(err));
     } else {
       setResult(null);
     }
   }, [totalRoll, unusualEvent, tableName]);
 
-  if (!table) return <p>Loading...</p>;
+  if (!table) return <LoadingState />;
 
   return (
     <Section>
@@ -124,25 +125,25 @@ export default function AbsoluteManeuverView() {
                 </Typography>
                 {result.penaltyUntilAbsoluteSuccess && (
                   <Typography variant="body1" gutterBottom>
-                    Penalty until absolute success: {result.penaltyUntilAbsoluteSuccess}
+                    {t('penalty-until-absolute-success')}: {result.penaltyUntilAbsoluteSuccess}
                   </Typography>
                 )}
                 {result.bonusUntilAbsoluteFailure && (
                   <Typography variant="body1" gutterBottom>
-                    Bonus until absolute failure: {result.bonusUntilAbsoluteFailure}
+                    {t('bonus-until-absolute-failure')}: {result.bonusUntilAbsoluteFailure}
                   </Typography>
                 )}
               </Grid>
             </Paper>
           )}
           <TechnicalInfo>
-            <pre>TableNames: {JSON.stringify(tableNames, null, 2)}</pre>
+            <pre>{JSON.stringify({ tableNames }, null, 2)}</pre>
           </TechnicalInfo>
         </Grid>
       </Grid>
       <OpenEndedRollDialog
         open={rollDialogOpen}
-        title={'absolute-maneuver'}
+        title={t('absolute-maneuver')}
         onClose={() => setRollDialogOpen(false)}
         onConfirm={(v) => {
           setRoll(v);

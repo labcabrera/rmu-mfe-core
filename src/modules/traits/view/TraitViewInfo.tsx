@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, Paper, Typography } from '@mui/material';
-import { RmuTextCard, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { imageBaseUrl } from '../../services/config';
+import { imageBaseUrl, RmuTextCard, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const TraitViewInfo: FC<{
   trait: Trait;
@@ -35,14 +34,14 @@ const TraitViewInfo: FC<{
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <RmuTextCard
-              value={trait.specialization ? t(trait.specialization) : t('None')}
+              value={trait.specialization ? t(trait.specialization) : t('none')}
               subtitle={t('specialization')}
               image={`${imageBaseUrl}images/generic/dev-points.png`}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <RmuTextCard
-              value={trait.isTierBased ? `1 - ${trait.maxTier}` : t('No')}
+              value={trait.isTierBased ? `1 - ${trait.maxTier}` : t('no')}
               subtitle={t('tier-based')}
               image={`${imageBaseUrl}images/generic/dev-points.png`}
             />

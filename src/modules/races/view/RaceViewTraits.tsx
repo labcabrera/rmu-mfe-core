@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import HelpIcon from '@mui/icons-material/Help';
@@ -19,26 +19,25 @@ import {
   DeleteButton,
   DeleteDialog,
   deleteRaceTrait,
-  fetchTrait,
+  LoadingState,
   Race,
   RaceTrait,
-  Trait,
+  useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
 import AddRaceTraitDialog from './traits/AddRaceTraitDialog';
 import ViewTraitDialog from './traits/ViewTraitDialog';
 
 const RaceViewTraits: FC<{
   race: Race;
-  setRace: Dispatch<SetStateAction<Race | undefined>>;
+  setRace: (race: Race) => void;
 }> = ({ race, setRace }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedTrait, setSelectedTrait] = useState<Trait>();
+  const [selectedTrait, setSelectedTrait] = useState<RaceTrait>();
   const [traitToDelete, setTraitToDelete] = useState<RaceTrait>();
 
   const getRomanNumeral = (num: number) => {
@@ -47,10 +46,9 @@ const RaceViewTraits: FC<{
   };
 
   const onTraitDialogView = (raceTrait: RaceTrait) => {
-    fetchTrait(raceTrait.traitId, auth)
-      .then(setSelectedTrait)
-      .then(() => setDialogOpen(true))
-      .catch((err) => showError(err.message));
+    // The dialog shows (and deletes) the race's trait entry, not the trait from the catalog.
+    setSelectedTrait(raceTrait);
+    setDialogOpen(true);
   };
 
   const onPrepareDelete = (raceTrait: RaceTrait) => {
@@ -65,10 +63,10 @@ const RaceViewTraits: FC<{
         setTraitToDelete(undefined);
         setDeleteDialogOpen(false);
       })
-      .catch((err) => showError(err.message));
+      .catch((err) => notify.error(err));
   };
 
-  if (!race) return <p>Loading...</p>;
+  if (!race) return <LoadingState />;
 
   return (
     <>
@@ -77,7 +75,7 @@ const RaceViewTraits: FC<{
       </CategorySeparator>
       {race.traits.length === 0 ? (
         <Typography variant="body1" color="textSecondary">
-          Race has no traits.
+          {t('race-has-no-traits')}
         </Typography>
       ) : (
         <TableContainer component={Paper}>
@@ -119,7 +117,7 @@ const RaceViewTraits: FC<{
       )}
       <AddRaceTraitDialog open={addDialogOpen} race={race} setRace={setRace} onClose={() => setAddDialogOpen(false)} />
       <DeleteDialog
-        message={`Are you sure you want to delete skill ${t(traitToDelete?.traitId || '')}? This action cannot be undone`}
+        message={t('confirmation-delete-message')}
         open={deleteDialogOpen}
         onDelete={() => onDeleteTrait()}
         onClose={() => setDeleteDialogOpen(false)}

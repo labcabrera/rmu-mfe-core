@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
-import { RmuTextCard, Race, resistances } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { imageBaseUrl } from '../../services/config';
+import { imageBaseUrl, Race, resistances, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const RaceViewResistances: FC<{
   race: Race;
@@ -26,7 +25,7 @@ const RaceViewResistances: FC<{
       {resistances.map((resistance, index) => (
         <Grid size={{ xs: 5, md: 2 }} key={`resistance-${index}`}>
           <RmuTextCard
-            value={race.resistances[resistance]}
+            value={(race.resistances as unknown as Record<string, number>)[resistance]}
             subtitle={t(resistance)}
             image={getImage(resistance)}
             grayscale={0.7}

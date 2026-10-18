@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField } from '@mui/material';
 
 export interface SelectOption {
@@ -13,6 +14,7 @@ export const RmuSelect: FC<{
   required?: boolean;
   onChange: (key: string) => void;
 }> = ({ value, label, options, required = false, onChange }) => {
+  const { t } = useTranslation();
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
   };
@@ -20,7 +22,7 @@ export const RmuSelect: FC<{
   return (
     <TextField select label={label} value={value ?? ''} onChange={handleChange} fullWidth error={required && !value}>
       <MenuItem value={''}>
-        <em>None</em>
+        <em>{t('none')}</em>
       </MenuItem>
       {options.map((option, index) => (
         <MenuItem key={index} value={option.value}>

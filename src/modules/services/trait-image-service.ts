@@ -1,5 +1,4 @@
-import { Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { imageBaseUrl } from './config';
+import { imageBaseUrl, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 export const getTraitImage = (trait: Trait) => {
   if (!trait) return '';

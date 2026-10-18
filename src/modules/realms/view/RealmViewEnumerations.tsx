@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
-import { Grid, Typography } from '@mui/material';
-import { Enumeration, fetchEnumerations, Realm, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
-import { useAuth } from 'react-oidc-context';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
+import { Grid, Typography } from '@mui/material';
+import { Enumeration, fetchEnumerations, Realm, RmuTextCard, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const RealmViewEnumerations: FC<{
   realm: Realm;
@@ -13,16 +12,16 @@ const RealmViewEnumerations: FC<{
 }> = ({ realm, category, imageUrl }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [enumerations, setEnumerations] = useState<Enumeration[]>([]);
 
   useEffect(() => {
     if (realm) {
       fetchEnumerations(`realmId==${realm.id};category==${category}`, 0, 100, auth)
         .then((response) => setEnumerations(response.content))
-        .catch((err) => showError(err.message));
+        .catch((err) => notify.error(err));
     }
-  }, [realm, showError]);
+  }, [realm, notify]);
 
   return (
     <Grid container spacing={1}>
@@ -33,7 +32,7 @@ const RealmViewEnumerations: FC<{
       ))}
       {enumerations.length === 0 && (
         <Typography variant="body1" color="textSecondary">
-          Not enumeration defined.
+          {t('no-results')}
         </Typography>
       )}
     </Grid>

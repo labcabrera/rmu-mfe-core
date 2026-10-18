@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid } from '@mui/material';
@@ -8,10 +8,10 @@ import {
   NumericInput,
   Race,
   RaceSkillBonus,
-  TechnicalInfo,
   SkillSelector,
+  TechnicalInfo,
+  useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../../ErrorContext';
 
 const EMPTY_TEMPLATE = {
   skillId: '',
@@ -21,13 +21,13 @@ const EMPTY_TEMPLATE = {
 
 const AddRaceSkillDialog: FC<{
   race: Race;
-  setRace: Dispatch<SetStateAction<Race | undefined>>;
+  setRace: (race: Race) => void;
   open: boolean;
   onClose: () => void;
 }> = ({ race, setRace, open: open, onClose }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [formData, setFormData] = useState<RaceSkillBonus>(EMPTY_TEMPLATE);
   const [validForm, setValidForm] = useState<boolean>(false);
 
@@ -43,7 +43,7 @@ const AddRaceSkillDialog: FC<{
         setFormData(EMPTY_TEMPLATE);
         onClose();
       })
-      .catch((err) => showError(err.message));
+      .catch((err) => notify.error(err));
   };
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const AddRaceSkillDialog: FC<{
                 realmId={race.realmId}
                 onSkillChange={(s) => setFormData({ ...formData, skillId: s || '', specialization: null })}
                 onSpecializationChange={(s) => setFormData({ ...formData, specialization: s })}
-                onError={(err) => showError(err)}
+                onError={(err) => notify.error(err)}
               />
             </Grid>
             <Grid size={12}>
@@ -79,7 +79,7 @@ const AddRaceSkillDialog: FC<{
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>{t('Cancel')}</Button>
+          <Button onClick={onClose}>{t('cancel')}</Button>
           <Button onClick={onSave} variant="contained" disabled={!validForm}>
             {t('add')}
           </Button>

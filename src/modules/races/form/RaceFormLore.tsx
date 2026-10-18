@@ -1,20 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid, TextField } from '@mui/material';
-import { Race, fetchEnumerations } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
+import { fetchEnumerations, Race, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 
 const RaceFormLore: FC<{
   realmId: string;
   formData: Race;
-  setFormData: Dispatch<SetStateAction<Race>>;
+  setFormData: (data: Race) => void;
 }> = ({ realmId, formData, setFormData }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [languages, setLanguages] = React.useState<SelectOption[]>([]);
 
   useEffect(() => {
@@ -24,7 +23,7 @@ const RaceFormLore: FC<{
           const mapped = data.content.map((e) => ({ value: e.key, description: e.key }));
           setLanguages(mapped);
         })
-        .catch((err) => showError(err.message));
+        .catch((err) => notify.error(err));
     }
   }, [realmId]);
 

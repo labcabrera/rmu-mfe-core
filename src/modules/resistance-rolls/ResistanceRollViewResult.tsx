@@ -18,10 +18,10 @@ const ResistanceRollViewResult: FC<{
               {t(result.result)}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {t('Total roll')}: {result.totalRoll}
+              {t('total-roll')}: {result.totalRoll}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {t('Failure')}: {result.failure}
+              {t('failure')}: {result.failure}
             </Typography>
           </Grid>
           <Grid size={12}>

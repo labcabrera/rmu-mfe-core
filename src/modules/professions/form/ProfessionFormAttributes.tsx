@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, TextField } from '@mui/material';
 import { Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -6,7 +6,7 @@ import SelectProfessionArchetype from '../../shared/selects/SelectProfessionArch
 
 const ProfessionFormAttributes: FC<{
   formData: Profession;
-  setFormData: Dispatch<SetStateAction<Profession>>;
+  setFormData: (data: Profession) => void;
   creationMode: boolean;
 }> = ({ formData, setFormData, creationMode }) => {
   const { t } = useTranslation();

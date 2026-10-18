@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Tabs, Tab, Grid } from '@mui/material';
+import { Box, Tabs, Tab } from '@mui/material';
 import { LayoutBase } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { gridSizeResume, gridSizeMain } from '../services/display';
 import AbsoluteManeuverView from './AbsoluteManeuverView';
 import EnduranceManeuverView from './EnduranceManeuverView';
 import PercentManeuverView from './PercentManeuverView';
@@ -32,7 +31,7 @@ const ManeuversView: FC = () => {
         aria-labelledby={`simple-tab-${index}`}
         {...other}
       >
-        {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        {value === index && <Box sx={{ px: { xs: 0, sm: 2, md: 3 }, py: { xs: 2, md: 3 } }}>{children}</Box>}
       </div>
     );
   }
@@ -49,7 +48,7 @@ const ManeuversView: FC = () => {
       breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('maneuvers') }]}
     >
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+        <Tabs value={value} onChange={handleChange} aria-label={t('maneuvers')}>
           <Tab label={t('absolute')} {...a11yProps(0)} />
           <Tab label={t('percent')} {...a11yProps(1)} />
           <Tab label={t('endurance')} {...a11yProps(2)} />

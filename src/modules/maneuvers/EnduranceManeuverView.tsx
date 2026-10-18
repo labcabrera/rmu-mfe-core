@@ -7,13 +7,13 @@ import {
   fetchEnduranceManeuver,
   NumericInput,
   Section,
+  useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../ErrorContext';
 
 const EnduranceManeuverView: FC = () => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
 
   const [roll, setRoll] = useState<number | null>(null);
   const [result, setResult] = useState<EnduranceManeuverResult | null>(null);
@@ -23,7 +23,7 @@ const EnduranceManeuverView: FC = () => {
     if (roll !== null) {
       fetchEnduranceManeuver(roll, unusualEvent, auth)
         .then((data) => setResult(data))
-        .catch((err) => showError(err));
+        .catch((err) => notify.error(err));
     } else {
       setResult(null);
     }

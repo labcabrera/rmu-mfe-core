@@ -30,7 +30,7 @@ const ProfessionViewSkillCosts: FC<{
   if (skillEntries.length === 0) {
     return (
       <Paper sx={{ padding: 1 }}>
-        <Typography variant="body2">{t('No skill costs available.')}</Typography>
+        <Typography variant="body2">{t('no-skill-costs-available')}</Typography>
       </Paper>
     );
   }
@@ -40,9 +40,9 @@ const ProfessionViewSkillCosts: FC<{
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>{t('Category')}</TableCell>
-            <TableCell>{t('Cost')}</TableCell>
-            <TableCell>{t('Rating')}</TableCell>
+            <TableCell>{t('category')}</TableCell>
+            <TableCell>{t('cost')}</TableCell>
+            <TableCell>{t('rating')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

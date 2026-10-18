@@ -1,20 +1,19 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, Typography } from '@mui/material';
-import { Race, RaceTrait, deleteRaceTrait } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../../ErrorContext';
+import { deleteRaceTrait, Race, RaceTrait, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const ViewTraitDialog: FC<{
   race: Race;
-  setRace: Dispatch<SetStateAction<Race | undefined>>;
+  setRace: (race: Race) => void;
   trait: RaceTrait | null;
   open: boolean;
   onClose: () => void;
 }> = ({ race, setRace, trait, open, onClose }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
 
   if (!trait) return null;
 
@@ -25,7 +24,7 @@ const ViewTraitDialog: FC<{
         setRace(updated);
         onClose();
       })
-      .catch((err: Error) => showError(err.message));
+      .catch((err: Error) => notify.error(err));
   };
 
   return (

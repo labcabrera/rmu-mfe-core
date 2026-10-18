@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
-import { Race, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { imageBaseUrl } from '../../services/config';
+import { imageBaseUrl, Race, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const grayscale = 0.7;
 

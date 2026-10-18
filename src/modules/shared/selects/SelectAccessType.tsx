@@ -19,10 +19,10 @@ const SelectAccessType: FC<{
     <FormControl component="fieldset">
       <FormLabel component="legend">{t(label)}</FormLabel>
       <ToggleButtonGroup value={value ?? null} exclusive onChange={handleChange} aria-label={label} size="small">
-        <ToggleButton value="public" aria-label="public">
+        <ToggleButton value="public" aria-label={t('public')}>
           {t('public')}
         </ToggleButton>
-        <ToggleButton value="private" aria-label="private">
+        <ToggleButton value="private" aria-label={t('private')}>
           {t('private')}
         </ToggleButton>
       </ToggleButtonGroup>

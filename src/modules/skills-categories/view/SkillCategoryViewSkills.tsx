@@ -15,7 +15,7 @@ const SkillCategoryViewSkills: FC<{
     <>
       <Grid container spacing={1} sx={{ mt: 5 }}>
         <Grid size={12}>
-          <CategorySeparator text={t('Skills')}>
+          <CategorySeparator text={t('skills')}>
             <AddButton onClick={() => navigate(`/core/skills/create`)} />
           </CategorySeparator>
         </Grid>
@@ -33,7 +33,7 @@ const SkillCategoryViewSkills: FC<{
             ))}
           </Grid>
         </Grid>
-        <Grid size={12}>{skills.length === 0 ? <p>No skills found.</p> : null}</Grid>
+        <Grid size={12}>{skills.length === 0 ? <p>{t('no-results')}</p> : null}</Grid>
       </Grid>
     </>
   );

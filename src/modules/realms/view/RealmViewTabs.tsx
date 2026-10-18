@@ -2,8 +2,7 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, Tab, Box } from '@mui/material';
-import { AddButton, Realm } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { imageBaseUrl } from '../../services/config';
+import { AddButton, imageBaseUrl, Realm } from '@labcabrera-rmu/rmu-react-shared-lib';
 import RealmViewEnumerations from './RealmViewEnumerations';
 import RealmViewRaces from './RealmViewRaces';
 
@@ -31,7 +30,7 @@ const RealmViewTabs: FC<RealmViewTabsProps> = ({ realm, initialTab = 0 }) => {
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label="Realm view tabs"
+          aria-label={t('realm')}
           variant="scrollable"
           scrollButtons="auto"
           sx={{ flex: 1 }}

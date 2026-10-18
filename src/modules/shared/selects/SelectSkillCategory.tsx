@@ -1,39 +1,29 @@
 import React, { ChangeEvent, FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MenuItem, TextField } from '@mui/material';
-import { SkillCategory } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { EntitySelect, SkillCategory } from '@labcabrera-rmu/rmu-react-shared-lib';
 
+/** Skill category picker over an already fetched list. Clearing it reports an empty value. */
 const SelectSkillCategory: FC<{
   categories: SkillCategory[];
   value: string;
   label: string;
   required?: boolean;
+  /** Kept for compatibility: the select can always be cleared. */
   allowEmpty?: boolean;
   onChange: (event: ChangeEvent<{ value: string }>) => void;
-}> = ({ categories, label, value, required = false, allowEmpty = false, onChange }) => {
+}> = ({ categories, label, value, required = false, onChange }) => {
   const { t } = useTranslation();
-  if (!categories) return <p>Loading...</p>;
-
   return (
-    <TextField
-      select
+    <EntitySelect<SkillCategory>
+      options={categories || []}
+      value={value || null}
+      onChange={(id) => onChange({ target: { value: id ?? '' } } as ChangeEvent<{ value: string }>)}
+      getLabel={(category) => t(category.id)}
       label={label}
-      value={value === undefined || value === null || categories.length === 0 ? '' : value}
-      fullWidth
-      onChange={onChange}
-      error={required && !value}
-    >
-      {allowEmpty && (
-        <MenuItem value="">
-          <em>{t('all')}</em>
-        </MenuItem>
-      )}
-      {categories.map((option, index) => (
-        <MenuItem key={index} value={option.id}>
-          {t(option.id)}
-        </MenuItem>
-      ))}
-    </TextField>
+      name="category"
+      required={required}
+      loading={!categories}
+    />
   );
 };
 

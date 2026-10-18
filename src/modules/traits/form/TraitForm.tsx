@@ -1,25 +1,30 @@
-import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { FormControl, FormControlLabel, Grid, MenuItem, Switch, TextField } from '@mui/material';
-import { fetchEnumerationCategories, NumericInput, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
+import {
+  fetchEnumerationCategories,
+  LoadingState,
+  NumericInput,
+  Trait,
+  useNotify,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';
 
 const TraitForm: FC<{
   formData: Trait;
-  setFormData: Dispatch<SetStateAction<Trait>>;
+  setFormData: (data: Trait) => void;
 }> = ({ formData, setFormData }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [enumerationCategories, setEnumerationCategories] = useState<SelectOption[]>();
 
   const bindEnumerationCategories = () => {
     fetchEnumerationCategories(auth)
       .then((response) => setEnumerationCategories(response.map((e) => ({ value: e, description: t(e) }))))
-      .catch((err) => showError(err.message));
+      .catch((err) => notify.error(err));
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -33,14 +38,14 @@ const TraitForm: FC<{
       ...formData,
       isTierBased: checked,
       ...(checked ? { tierCost: null, maxTier: null } : { tierCost: undefined, maxTier: undefined }),
-    });
+    } as Trait);
   };
 
   useEffect(() => {
     bindEnumerationCategories();
   }, []);
 
-  if (!formData || !setFormData || !enumerationCategories) return <p>Loading...</p>;
+  if (!formData || !setFormData || !enumerationCategories) return <LoadingState />;
 
   return (
     <Grid container spacing={1}>
@@ -104,7 +109,7 @@ const TraitForm: FC<{
           label={t('adquisition-cost')}
           name="adquisitionCost"
           value={formData.adquisitionCost || null}
-          onChange={(e) => setFormData({ ...formData, adquisitionCost: e })}
+          onChange={(e) => setFormData({ ...formData, adquisitionCost: e as number })}
           integer
         />
       </Grid>
@@ -116,7 +121,7 @@ const TraitForm: FC<{
               label={t('tier-cost')}
               name="tierCost"
               value={formData.tierCost}
-              onChange={(e) => setFormData({ ...formData, tierCost: e })}
+              onChange={(e) => setFormData({ ...formData, tierCost: e as number })}
               integer
             />
           </Grid>
@@ -125,7 +130,7 @@ const TraitForm: FC<{
               label={t('max-tier')}
               name="maxTier"
               value={formData.maxTier}
-              onChange={(e) => setFormData({ ...formData, maxTier: e })}
+              onChange={(e) => setFormData({ ...formData, maxTier: e as number })}
               min={1}
               integer
             />

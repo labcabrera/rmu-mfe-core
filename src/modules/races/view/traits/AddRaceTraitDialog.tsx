@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, TextField } from '@mui/material';
@@ -9,8 +9,8 @@ import {
   TechnicalInfo,
   Trait,
   TraitSelector,
+  useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../../ErrorContext';
 
 const EMPTY_TEMPLATE = {
   traitId: '',
@@ -22,13 +22,13 @@ const EMPTY_TEMPLATE = {
 
 const AddRaceTraitDialog: FC<{
   race: Race;
-  setRace: Dispatch<SetStateAction<Race | undefined>>;
+  setRace: (race: Race) => void;
   open: boolean;
   onClose: () => void;
 }> = ({ race, setRace, open: open, onClose }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [trait, setTrait] = useState<Trait | null>();
   const [formData, setFormData] = useState<AddRaceTraitDto>(EMPTY_TEMPLATE);
 
@@ -56,7 +56,7 @@ const AddRaceTraitDialog: FC<{
         setTrait(null);
         onClose();
       })
-      .catch((err: Error) => showError(err.message));
+      .catch((err: Error) => notify.error(err));
   };
 
   return (
@@ -69,8 +69,7 @@ const AddRaceTraitDialog: FC<{
               onTraitChange={(v) => onTraitChange(v)}
               onTierChange={(v) => setFormData({ ...formData, tier: v || undefined })}
               onSpecializationChange={(v) => setFormData({ ...formData, specialization: v || undefined })}
-              onError={(err) => showError(err)}
-              t={(msg) => t(msg)}
+              onError={(err) => notify.error(err)}
             />
             <Grid size={12}>
               <TextField

@@ -1,14 +1,13 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, Paper, Typography } from '@mui/material';
-import { RmuTextCard, SkillCategory } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { imageBaseUrl } from '../../services/config';
+import { imageBaseUrl, LoadingState, RmuTextCard, SkillCategory } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const SkillCategoryViewInfo: FC<{
   skillCategory: SkillCategory;
 }> = ({ skillCategory }) => {
   const { t } = useTranslation();
-  if (!skillCategory) return <p>Loading...</p>;
+  if (!skillCategory) return <LoadingState />;
 
   function capitalize(str: string): string {
     if (!str) return str;
@@ -36,7 +35,7 @@ const SkillCategoryViewInfo: FC<{
         {skillCategory.realmBonus && skillCategory.realmBonus > 0 ? (
           <Grid size={{ xs: 12, md: 3 }}>
             <RmuTextCard
-              subtitle={t('Bonus')}
+              subtitle={t('bonus')}
               image={`${imageBaseUrl}images/generic/configuration.png`}
               value={getCategoryRealmBonusText()}
             />
@@ -44,7 +43,7 @@ const SkillCategoryViewInfo: FC<{
         ) : (
           <Grid size={{ xs: 12, md: 3 }}>
             <RmuTextCard
-              subtitle={t('Bonus')}
+              subtitle={t('bonus')}
               image={`${imageBaseUrl}images/generic/configuration.png`}
               value={getCategoryBonusText()}
             />

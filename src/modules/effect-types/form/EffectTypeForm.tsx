@@ -1,10 +1,11 @@
-import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormControl, FormControlLabel, Grid, MenuItem, Switch, TextField } from '@mui/material';
 import {
-  effectPropertyRequirements,
   EffectPropertyRequirement,
+  effectPropertyRequirements,
   EffectType,
+  LoadingState,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import SelectAccessType from '../../shared/selects/SelectAccessType';
 
@@ -36,7 +37,7 @@ const EffectRequirementSelect: FC<{
 
 const EffectTypeForm: FC<{
   formData: EffectType;
-  setFormData: Dispatch<SetStateAction<EffectType>>;
+  setFormData: (data: EffectType) => void;
   create: boolean;
 }> = ({ formData, setFormData, create }) => {
   const { t } = useTranslation();
@@ -45,7 +46,7 @@ const EffectTypeForm: FC<{
     setFormData({ ...formData, id: e.target.value });
   };
 
-  if (!formData || !setFormData) return <p>Loading...</p>;
+  if (!formData || !setFormData) return <LoadingState />;
 
   return (
     <Grid container spacing={1}>

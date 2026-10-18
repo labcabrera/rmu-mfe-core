@@ -1,15 +1,15 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
-import { NumericInput, STATS, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { LoadingState, NumericInput, Race, STATS } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const RaceFormStats: FC<{
   formData: Race;
-  setFormData: Dispatch<SetStateAction<Race>>;
+  setFormData: (data: Race) => void;
 }> = ({ formData, setFormData }) => {
   const { t } = useTranslation();
 
-  if (!formData.stats) return <p>Loading...</p>;
+  if (!formData.stats) return <LoadingState />;
 
   return (
     <Grid container columns={10} spacing={1}>

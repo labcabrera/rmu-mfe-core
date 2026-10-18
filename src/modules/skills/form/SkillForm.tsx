@@ -1,31 +1,37 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid, TextField, Button, ButtonGroup } from '@mui/material';
-import { SkillCategory, fetchSkillCategories, STATS, Skill } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
+import {
+  fetchSkillCategories,
+  LoadingState,
+  Skill,
+  SkillCategory,
+  STATS,
+  useNotify,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import SelectAccessType from '../../shared/selects/SelectAccessType';
 import SelectSkillCategory from '../../shared/selects/SelectSkillCategory';
 import SelectSkillSpecialization from '../../shared/selects/SelectSkillSpecialization';
 
 const SkillForm: FC<{
   formData: Skill;
-  setFormData: Dispatch<SetStateAction<Skill>>;
+  setFormData: (data: Skill) => void;
   create: boolean;
 }> = ({ formData, setFormData, create }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [categories, setCategories] = React.useState<SkillCategory[]>([]);
 
   useEffect(() => {
     fetchSkillCategories('', 0, 1000, auth)
       .then((data) => setCategories(data.content))
-      .catch((err) => showError(err.message));
+      .catch((err) => notify.error(err));
   }, []);
 
-  if (!formData || !setFormData) return <p>Loading...</p>;
+  if (!formData || !setFormData) return <LoadingState />;
 
   return (
     <>
@@ -72,10 +78,8 @@ const SkillForm: FC<{
   );
 };
 
-const StatsSelection: FC<{ formData: any; setFormData: Dispatch<SetStateAction<any>> }> = ({
-  formData,
-  setFormData,
-}) => {
+const StatsSelection: FC<{ formData: Skill; setFormData: (data: Skill) => void }> = ({ formData, setFormData }) => {
+  const { t } = useTranslation();
   const selected: string[] = Array.isArray(formData?.bonus) ? formData.bonus : [];
 
   const toggle = (stat: string) => {
@@ -85,7 +89,7 @@ const StatsSelection: FC<{ formData: any; setFormData: Dispatch<SetStateAction<a
   };
 
   return (
-    <ButtonGroup orientation="horizontal" fullWidth aria-label="stats-button-group" sx={{ width: '100%' }}>
+    <ButtonGroup orientation="horizontal" fullWidth aria-label={t('stats')} sx={{ width: '100%' }}>
       {STATS.map((stat) => (
         <Button
           key={stat}

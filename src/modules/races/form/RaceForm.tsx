@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
 import { CategorySeparator, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -10,7 +10,7 @@ import RaceFormStats from './RaceFormStats';
 const RaceForm: FC<{
   realmId: string;
   formData: Race;
-  setFormData: Dispatch<SetStateAction<Race>>;
+  setFormData: (data: Race) => void;
 }> = ({ realmId, formData, setFormData }) => {
   const { t } = useTranslation();
 

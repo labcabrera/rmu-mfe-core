@@ -3,9 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
-import { fetchRaces, Race, Realm, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
-import { gridSizeCard } from '../../services/display';
+import { fetchRaces, gridSizeCard, Race, Realm, RmuTextCard, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const RealmViewRaces: FC<{
   realm: Realm;
@@ -13,16 +11,16 @@ const RealmViewRaces: FC<{
   const navigate = useNavigate();
   const { t } = useTranslation();
   const auth = useAuth();
-  const { showError } = useError();
+  const notify = useNotify();
   const [races, setRaces] = useState<Race[]>([]);
 
   useEffect(() => {
     if (realm) {
       fetchRaces(`realmId==${realm.id}`, 0, 100, auth)
         .then((response) => setRaces(response.content))
-        .catch((err) => showError(err.message));
+        .catch((err) => notify.error(err));
     }
-  }, [realm, auth, showError]);
+  }, [realm, auth, notify]);
 
   return (
     <Grid container spacing={1}>
@@ -39,7 +37,7 @@ const RealmViewRaces: FC<{
       ))}
       {races.length === 0 && (
         <Typography variant="body1" color="textSecondary">
-          No races added
+          {t('no-results')}
         </Typography>
       )}
     </Grid>

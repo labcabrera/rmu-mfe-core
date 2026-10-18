@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, Stack, Typography } from '@mui/material';
-import { CategorySeparator, Enumeration, RmuCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { imageBaseUrl } from '../../services/config';
+import { CategorySeparator, Enumeration, imageBaseUrl, RmuCard } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const SkillViewSpecializations: FC<{
   enumerations: Enumeration[];
@@ -11,7 +10,7 @@ const SkillViewSpecializations: FC<{
   return (
     <Grid container spacing={1}>
       <Grid size={{ xs: 12 }}>
-        <CategorySeparator text={t('Available specializations')} />
+        <CategorySeparator text={t('available-specializations')} />
         <Grid container spacing={1}>
           {enumerations.map((e) => (
             <Grid key={e.id} size={{ xs: 12, md: 3 }}>

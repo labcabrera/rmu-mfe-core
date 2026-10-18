@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, ButtonGroup, Grid, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -6,7 +6,7 @@ import { Profession, RealmType, REALM_TYPES } from '@labcabrera-rmu/rmu-react-sh
 
 const ProfessionFormRealmTypes: FC<{
   formData: Profession;
-  setFormData: Dispatch<SetStateAction<Profession>>;
+  setFormData: (data: Profession) => void;
 }> = ({ formData, setFormData }) => {
   const { t } = useTranslation();
   const selectedAvailable = formData.availableRealmTypes || [];
@@ -27,10 +27,13 @@ const ProfessionFormRealmTypes: FC<{
     setFormData(update);
   };
 
+  const realmTypesLabelKey = (type: 'available' | 'fixed') =>
+    type === 'available' ? 'available-realms' : 'fixed-realms';
+
   const RealmTypButtonGroup = ({ selected, type }: { selected: RealmType[]; type: 'available' | 'fixed' }) => (
     <ButtonGroup
       variant="outlined"
-      aria-label="realm-types"
+      aria-label={t(realmTypesLabelKey(type))}
       orientation={isSmall ? 'vertical' : 'horizontal'}
       sx={{ flexWrap: 'wrap' }}
       size="small"
@@ -53,11 +56,11 @@ const ProfessionFormRealmTypes: FC<{
 
   return (
     <Grid container spacing={1}>
-      <Grid size={6}>Available</Grid>
+      <Grid size={6}>{t('available-realms')}</Grid>
       <Grid size={6}>
         <RealmTypButtonGroup selected={selectedAvailable} type="available" />
       </Grid>
-      <Grid size={6}>Fixed</Grid>
+      <Grid size={6}>{t('fixed-realms')}</Grid>
       <Grid size={6}>
         <RealmTypButtonGroup selected={selectedFixed} type="fixed" />
       </Grid>

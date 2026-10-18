@@ -1,23 +1,21 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Chip, Grid, Typography } from '@mui/material';
-import { EditableAvatar, Realm, updateRealm } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
-import { imageBaseUrl } from '../../services/config';
+import { EditableAvatar, imageBaseUrl, Realm, updateRealm, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const RealmViewResume: FC<{
   realm: Realm;
-  setRealm: Dispatch<SetStateAction<Realm | undefined>>;
+  setRealm: (realm: Realm) => void;
 }> = ({ realm, setRealm }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
 
   const onImageChange = (imageUrl: string) => {
     updateRealm(realm.id, { imageUrl }, auth)
       .then((updated) => setRealm(updated))
-      .catch((err) => showError(err.message));
+      .catch((err) => notify.error(err));
   };
 
   return (

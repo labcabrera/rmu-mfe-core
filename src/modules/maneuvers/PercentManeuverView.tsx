@@ -9,14 +9,14 @@ import {
   PercentManeuverResult,
   Section,
   SelectDifficulty,
+  useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../ErrorContext';
 import { openEndedRoll } from '../services/random-service';
 
 const PercentManeuverView: FC = () => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [roll, setRoll] = useState<number | null>(null);
   const [modifier, setModifier] = useState<number>(0);
   const [totalRoll, setTotalRoll] = useState<number | null>(null);
@@ -29,7 +29,7 @@ const PercentManeuverView: FC = () => {
       setTotalRoll(totalRoll);
       fetchPercentManeuver(totalRoll, auth)
         .then((data) => setResult(data))
-        .catch((err) => showError(err));
+        .catch((err) => notify.error(err));
     } else {
       setResult(null);
     }
@@ -62,7 +62,7 @@ const PercentManeuverView: FC = () => {
             </Grid>
             <Grid size={12} sx={{ mt: 1 }}>
               <Button variant="contained" color="primary" onClick={() => setRoll(openEndedRoll())}>
-                {t('Random')}
+                {t('random')}
               </Button>
             </Grid>
           </Grid>
@@ -80,7 +80,11 @@ const PercentManeuverView: FC = () => {
                 <Typography variant="body1" gutterBottom>
                   {t('percent')}: {result.percent}%
                 </Typography>
-                {result.critical && <Typography variant="body1">Critical: {result.critical}</Typography>}
+                {result.critical && (
+                  <Typography variant="body1">
+                    {t('critical')}: {result.critical}
+                  </Typography>
+                )}
               </Grid>
             </Paper>
           )}

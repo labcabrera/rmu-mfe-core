@@ -1,4 +1,4 @@
-import { imageBaseUrl } from '../services/config';
+import { imageBaseUrl } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 // Relative to RMU_MFE_ASSETS_URI: the value stored in new realms.
 export const DEFAULT_REALM_IMAGE_PATH = 'images/generic/realm.png';

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, FC, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid } from '@mui/material';
@@ -8,24 +8,24 @@ import {
   Culture,
   CultureSkillRank,
   fetchSkill,
+  gridSizeCard,
   NumericInput,
   RmuDialog,
   Skill,
   SkillSelector,
   TechnicalInfo,
+  useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../../ErrorContext';
-import { gridSizeCard } from '../../../services/display';
 
 const AddCultureFixedSkillDialog: FC<{
   open: boolean;
   culture: Culture;
-  setCulture: Dispatch<SetStateAction<Culture>>;
+  setCulture: (culture: Culture) => void;
   onClose: () => void;
 }> = ({ open, culture, setCulture, onClose }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [formData, setFormData] = useState<CultureSkillRank>({} as CultureSkillRank);
   const [validFormData, setValidFormData] = useState<boolean>(false);
   const [selectedSkill, setSelectedSkill] = useState<Skill>();
@@ -42,7 +42,7 @@ const AddCultureFixedSkillDialog: FC<{
         setSelectedSkill(response);
         setFormData({ ...formData, skillId });
       })
-      .catch((err) => showError(err.message));
+      .catch((err) => notify.error(err));
   };
 
   const onAddSkill = async () => {
@@ -52,7 +52,7 @@ const AddCultureFixedSkillDialog: FC<{
         resetForm();
         onClose();
       })
-      .catch((err) => showError(err.message));
+      .catch((err) => notify.error(err));
   };
 
   const isValid = (): boolean => {
@@ -84,7 +84,7 @@ const AddCultureFixedSkillDialog: FC<{
           <SkillSelector
             onSkillChange={(v) => onSelectedSkill(v || '')}
             onSpecializationChange={(v) => setFormData({ ...formData, specialization: v })}
-            onError={(err) => showError(err)}
+            onError={(err) => notify.error(err)}
           />
         </Grid>
         <Grid size={gridSizeCard} sx={{ mt: 5 }}>

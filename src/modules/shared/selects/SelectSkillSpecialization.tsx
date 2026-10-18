@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { MenuItem, TextField } from '@mui/material';
-import { fetchEnumerationCategories } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
+import { EntitySelect, fetchEnumerationCategories, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
 
+/** Picks the enumeration category that specializes a skill. Clearing it reports null. */
 const SelectSkillSpecialization: FC<{
   value: string | null;
   label: string;
@@ -12,36 +12,24 @@ const SelectSkillSpecialization: FC<{
 }> = ({ label, value, onSpecializationChange }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [categories, setCategories] = useState<string[]>();
 
-  const bindCategories = () => {
-    fetchEnumerationCategories(auth)
-      .then((response) => setCategories(response))
-      .catch((err) => showError(err.message));
-  };
-
   useEffect(() => {
-    bindCategories();
+    fetchEnumerationCategories(auth).then(setCategories).catch(notify.error);
   }, []);
 
-  if (!categories) return <p>Loading...</p>;
-
   return (
-    <TextField
-      select
+    <EntitySelect<string>
+      options={categories ?? []}
+      value={value}
+      onChange={(category) => onSpecializationChange(category)}
+      getId={(category) => category}
+      getLabel={(category) => t(category)}
       label={label}
-      value={value === undefined || value === null ? '' : value}
-      fullWidth
-      onChange={(e) => onSpecializationChange(e.target.value || null)}
-    >
-      <MenuItem>{t('none')}</MenuItem>
-      {categories.map((option, index) => (
-        <MenuItem key={index} value={option}>
-          {t(option)}
-        </MenuItem>
-      ))}
-    </TextField>
+      name="specialization"
+      loading={!categories}
+    />
   );
 };
 

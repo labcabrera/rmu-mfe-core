@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
@@ -8,19 +8,20 @@ import {
   DeleteButton,
   DeleteDialog,
   deleteRaceSkillBonus,
+  LoadingState,
   Race,
   RaceSkillBonus,
+  useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
 import AddRaceSkillDialog from './skills/AddRaceSkillDialog';
 
 const RaceViewSkills: FC<{
   race: Race;
-  setRace: Dispatch<SetStateAction<Race | undefined>>;
+  setRace: (race: Race) => void;
 }> = ({ race, setRace }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [skillToDelete, setSkillToDelete] = useState<RaceSkillBonus>();
@@ -38,10 +39,10 @@ const RaceViewSkills: FC<{
         setSkillToDelete(undefined);
         setDeleteDialogOpen(false);
       })
-      .catch((err) => showError(err.message));
+      .catch((err) => notify.error(err));
   };
 
-  if (!race) return <p>Loading...</p>;
+  if (!race) return <LoadingState />;
 
   return (
     <>
@@ -50,7 +51,7 @@ const RaceViewSkills: FC<{
       </CategorySeparator>
       {race.skillBonuses.length === 0 ? (
         <Typography variant="body1" color="textSecondary">
-          Race has no skills.
+          {t('race-has-no-skills')}
         </Typography>
       ) : (
         <TableContainer component={Paper}>
@@ -80,7 +81,7 @@ const RaceViewSkills: FC<{
       )}
       <AddRaceSkillDialog race={race} setRace={setRace} open={addDialogOpen} onClose={() => setAddDialogOpen(false)} />
       <DeleteDialog
-        message={`Are you sure you want to delete skill ${t(skillToDelete?.skillId || '')}? This action cannot be undone`}
+        message={t('confirmation-delete-message')}
         open={deleteDialogOpen}
         onDelete={() => onDeleteSkill()}
         onClose={() => setDeleteDialogOpen(false)}

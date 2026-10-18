@@ -2,8 +2,7 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Paper, Typography } from '@mui/material';
-import { RmuTextCard, Skill } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { imageBaseUrl } from '../../services/config';
+import { imageBaseUrl, LoadingState, RmuTextCard, Skill } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const SkillViewInfo: FC<{
   skill: Skill;
@@ -11,7 +10,7 @@ const SkillViewInfo: FC<{
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
-  if (!skill) return <p>Loading...</p>;
+  if (!skill) return <LoadingState />;
 
   const descriptionKey = skill.id.includes('@')
     ? `skill-${skill.id.split('@')[0]}-description`
@@ -57,7 +56,7 @@ const SkillViewInfo: FC<{
           {skill.specialization && (
             <Grid size={{ xs: 12, md: 3 }}>
               <RmuTextCard
-                subtitle="Specialization"
+                subtitle={t('specialization')}
                 image={`${imageBaseUrl}images/generic/configuration.png`}
                 onClick={() => navigate(`/core/catalogs/view/${skill.specialization}`)}
                 value={t(skill.specialization)}
@@ -72,7 +71,7 @@ const SkillViewInfo: FC<{
             {i18n.exists(descriptionKey) ? (
               <>{t(descriptionKey)}</>
             ) : (
-              <>{t('This skill has no associated description.')}</>
+              <>{t('this-skill-has-no-associated-description')}</>
             )}
           </Typography>
         </Paper>
