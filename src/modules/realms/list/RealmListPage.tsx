@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
+  EntityCard,
   FilterBar,
   fetchRealms,
   ListPage,
   Realm,
-  RmuTextCard,
   rsqlAnd,
   SearchField,
+  gridSizeShowcase,
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -37,12 +38,15 @@ export default function RealmListPage() {
           <SearchField value={name} onChange={setName} />
         </FilterBar>
       }
+      collection={{ modes: ['cards'], storageKey: 'core.realms', cardSize: gridSizeShowcase }}
       renderItem={(realm) => (
-        <RmuTextCard
-          value={realm.name}
-          subtitle={realm.shortDescription || t('no-description')}
+        <EntityCard
+          title={realm.name}
           image={realm.imageUrl || DEFAULT_REALM_IMAGE}
-          lock={realm.accessType === 'private'}
+          description={realm.shortDescription || t('no-description')}
+          metrics={[{ label: t('magic-presence'), value: t(realm.magicPresence) }]}
+          locked={realm.accessType === 'private'}
+          lockedLabel={t('private')}
           onClick={() => navigate(`/core/realms/view/${realm.id}`, { state: { realm } })}
         />
       )}

@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
+import { Chip } from '@mui/material';
 import {
   FilterBar,
   fetchProfessions,
   ListPage,
   Profession,
   ProfessionArchetype,
-  RmuTextCard,
+  EntityCard,
+  gridSizeShowcase,
   rsqlAnd,
   SearchField,
   useNotify,
@@ -50,13 +52,19 @@ export default function ProfessionListPage() {
           />
         </FilterBar>
       }
+      collection={{ modes: ['cards'], storageKey: 'core.professions', cardSize: gridSizeShowcase }}
       renderItem={(profession) => (
-        <RmuTextCard
-          value={t(profession.id)}
-          subtitle={t('profession')}
-          image={profession.imageUrl || ''}
-          grayscale={0.2}
-          lock={profession.accessType === 'private'}
+        <EntityCard
+          title={t(profession.id)}
+          subtitle={t(profession.archetype)}
+          image={profession.imageUrl}
+          imageRatio="square"
+          chips={profession.availableRealmTypes.map((realmType) => (
+            <Chip key={realmType} size="small" variant="outlined" label={t(realmType)} />
+          ))}
+          metrics={[{ label: t('professional-skills'), value: profession.professionalSkills.length }]}
+          locked={profession.accessType === 'private'}
+          lockedLabel={t('private')}
           onClick={() => navigate(`/core/professions/view/${profession.id}`, { state: { profession } })}
         />
       )}

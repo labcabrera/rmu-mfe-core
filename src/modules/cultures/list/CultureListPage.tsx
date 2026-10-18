@@ -6,7 +6,8 @@ import {
   Culture,
   fetchCultures,
   ListPage,
-  RmuTextCard,
+  EntityCard,
+  gridSizeShowcase,
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -30,11 +31,13 @@ export default function CultureListPage() {
       query={query}
       onAdd={() => navigate('/core/cultures/create')}
       filters={<NameRealmFilters onChange={setRsql} realmField="realm.id" />}
+      collection={{ modes: ['cards'], storageKey: 'core.cultures', cardSize: gridSizeShowcase }}
       renderItem={(culture) => (
-        <RmuTextCard
-          value={culture.name}
-          subtitle={t('culture')}
-          image={culture.imageUrl || ''}
+        <EntityCard
+          title={culture.name}
+          image={culture.imageUrl}
+          description={culture.description}
+          metrics={[{ label: t('skills'), value: culture.fixedSkillRanks.length }]}
           onClick={() => navigate(`/core/cultures/view/${culture.id}`, { state: { culture } })}
         />
       )}

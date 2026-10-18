@@ -6,7 +6,8 @@ import {
   fetchRaces,
   ListPage,
   Race,
-  RmuTextCard,
+  EntityCard,
+  gridSizeShowcase,
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -30,12 +31,20 @@ export default function RaceListPage() {
       breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('races') }]}
       query={query}
       filters={<NameRealmFilters onChange={setRsql} />}
+      collection={{ modes: ['cards'], storageKey: 'core.races', cardSize: gridSizeShowcase }}
       renderItem={(race) => (
-        <RmuTextCard
-          value={race.name}
-          subtitle={t(race.archetype || '-')}
-          image={race.imageUrl || ''}
-          lock={race.accessType === 'private'}
+        <EntityCard
+          title={race.name}
+          subtitle={race.archetype ? t(race.archetype) : undefined}
+          image={race.imageUrl}
+          imageRatio="square"
+          metrics={[
+            { label: t('size'), value: t(`size-${race.sizeId}`) },
+            { label: t('hit-points'), value: race.baseHits },
+            { label: t('base-dev-points'), value: race.baseDevPoints },
+          ]}
+          locked={race.accessType === 'private'}
+          lockedLabel={t('private')}
           onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
         />
       )}
