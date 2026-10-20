@@ -50,7 +50,7 @@ const RaceViewAttributes: FC<{
     },
     {
       value: race.baseDevPoints,
-      subtitle: t('base-dev-points'),
+      subtitle: t('race-bonus-dev-points'),
       image: `${imageBaseUrl}images/generic/trait-combat.png`,
     },
     {

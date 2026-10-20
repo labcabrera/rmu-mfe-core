@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Grid } from '@mui/material';
 import { Culture } from '@labcabrera-rmu/rmu-react-shared-lib';
 import CultureFormAttributes from './CultureFormAttributes';
+import CultureFormSkillRanks from './CultureFormSkillRanks';
 
 const CultureForm: FC<{
   formData: Culture;
@@ -11,6 +12,9 @@ const CultureForm: FC<{
     <Grid container spacing={1}>
       <Grid size={{ xs: 12, md: 12 }}>
         <CultureFormAttributes formData={formData} setFormData={setFormData} />
+      </Grid>
+      <Grid size={12}>
+        <CultureFormSkillRanks formData={formData} setFormData={setFormData} />
       </Grid>
     </Grid>
   );

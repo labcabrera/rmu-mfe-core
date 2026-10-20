@@ -59,7 +59,7 @@ const EMPTY_RACE = {
   enduranceBonus: 0,
   recoveryMultiplier: 1,
   baseHits: 0,
-  baseDevPoints: 60,
+  baseDevPoints: 0,
   baseAt: 1,
   talents: [],
   traits: [],

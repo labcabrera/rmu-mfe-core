@@ -96,8 +96,8 @@ const RaceFormAttributes: FC<{
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
-          label={t('base-dev-points')}
-          name="baseDevPointsMale"
+          label={t('race-bonus-dev-points')}
+          name="baseDevPoints"
           value={formData.baseDevPoints}
           onChange={(value) => setFormData({ ...formData, baseDevPoints: value || 0 })}
           min={0}
