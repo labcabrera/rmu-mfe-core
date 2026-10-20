@@ -12,6 +12,21 @@ import {
 import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
 import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';
 
+/**
+ * Specialization kinds that rmu-api-strategic resolves itself (stats, realms, skills of the catalog and weapon types).
+ * The enumeration categories are offered after them.
+ */
+const TRAIT_SPECIALIZATIONS = [
+  'stat',
+  'realm',
+  'skill',
+  'combat-skill',
+  'melee-combat-skill',
+  'ranged-combat-skill',
+  'melee-weapon-type',
+  'ranged-weapon-type',
+];
+
 const TraitForm: FC<{
   formData: Trait;
   setFormData: (data: Trait) => void;
@@ -23,7 +38,10 @@ const TraitForm: FC<{
 
   const bindEnumerationCategories = () => {
     fetchEnumerationCategories(auth)
-      .then((response) => setEnumerationCategories(response.map((e) => ({ value: e, description: t(e) }))))
+      .then((response) => {
+        const values = [...TRAIT_SPECIALIZATIONS, ...response.filter((e) => !TRAIT_SPECIALIZATIONS.includes(e))];
+        setEnumerationCategories(values.map((e) => ({ value: e, description: t(e) })));
+      })
       .catch((err) => notify.error(err));
   };
 
