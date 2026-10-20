@@ -37,7 +37,7 @@ export default function CultureListPage() {
           title={culture.name}
           image={culture.imageUrl}
           description={culture.description}
-          metrics={[{ label: t('skills'), value: culture.fixedSkillRanks.length }]}
+          metrics={[{ label: t('skills'), value: culture.skillRanks?.length ?? 0 }]}
           onClick={() => navigate(`/core/cultures/view/${culture.id}`, { state: { culture } })}
         />
       )}

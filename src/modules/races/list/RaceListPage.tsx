@@ -41,7 +41,7 @@ export default function RaceListPage() {
           metrics={[
             { label: t('size'), value: t(`size-${race.sizeId}`) },
             { label: t('hit-points'), value: race.baseHits },
-            { label: t('base-dev-points'), value: race.baseDevPoints },
+            { label: t('race-bonus-dev-points'), value: race.baseDevPoints },
           ]}
           locked={race.accessType === 'private'}
           lockedLabel={t('private')}

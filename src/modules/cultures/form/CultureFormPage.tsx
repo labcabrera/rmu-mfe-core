@@ -2,10 +2,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Box } from '@mui/material';
 import {
   createCulture,
   CreateCultureDto,
   Culture,
+  CultureSkillRank,
   EditableAvatar,
   fetchCulture,
   FormPage,
@@ -16,10 +18,15 @@ import {
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { FormMode, useFormData } from '../../shared/form/useFormData';
+import CultureDevelopmentCost from '../shared/CultureDevelopmentCost';
 import CultureForm from './CultureForm';
 
 const EMPTY_CULTURE = {
   name: '',
+  skillRanks: [] as CultureSkillRank[],
+  languages: [] as string[],
+  suggestedCrafts: '',
+  suggestedVocations: '',
   description: '',
   imageUrl: 'images/generic/cultures.png',
   accessType: 'private',
@@ -29,7 +36,7 @@ const isValid = (culture: Culture) => !!culture.name && !!culture.accessType;
 
 const toForm = (culture: Culture) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  const { id, ...rest } = culture;
+  const { id, developmentCost, owner, ...rest } = culture;
   return rest as Culture;
 };
 
@@ -75,10 +82,17 @@ export default function CultureFormPage({ mode }: { mode: FormMode }) {
       dirty={dirty}
       leftPanel={
         formData && (
-          <EditableAvatar
-            imageUrl={formData.imageUrl || ''}
-            onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl })}
-          />
+          <>
+            <EditableAvatar
+              imageUrl={formData.imageUrl || ''}
+              onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl })}
+            />
+            {mode === 'edit' && (
+              <Box sx={{ mt: 2 }}>
+                <CultureDevelopmentCost cost={existing.entity?.developmentCost} />
+              </Box>
+            )}
+          </>
         )
       }
     >
