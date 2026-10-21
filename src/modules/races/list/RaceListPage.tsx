@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { useNavigate } from 'react-router-dom';
 import {
   fetchRaces,
   ListPage,
@@ -10,6 +9,8 @@ import {
   gridSizeShowcase,
   useNotify,
   usePagedQuery,
+  useViewTransitionNavigate,
+  viewTransitionName,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import NameRealmFilters from '../../shared/filters/NameRealmFilters';
 
@@ -17,7 +18,7 @@ import NameRealmFilters from '../../shared/filters/NameRealmFilters';
 export default function RaceListPage() {
   const auth = useAuth();
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigate = useViewTransitionNavigate();
   const notify = useNotify();
   const [rsql, setRsql] = useState('');
   const query = usePagedQuery<Race>({
@@ -38,6 +39,7 @@ export default function RaceListPage() {
           subtitle={race.archetype ? t(race.archetype) : undefined}
           image={race.imageUrl}
           imageRatio="square"
+          imageTransitionName={viewTransitionName('race', race.id)}
           metrics={[
             { label: t('size'), value: t(`size-${race.sizeId}`) },
             { label: t('hit-points'), value: race.baseHits },

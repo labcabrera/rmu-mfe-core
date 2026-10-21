@@ -24,7 +24,7 @@ const SelectRaceSize: FC<{
     >
       {values.map((option, index) => (
         <MenuItem key={index} value={option}>
-          {t(option)}
+          {t(`size-${option}`)}
         </MenuItem>
       ))}
     </TextField>
