@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useParams } from 'react-router-dom';
 import {
+  CategorySeparator,
   DetailPage,
   fetchSkillCategory,
   fetchSkills,
@@ -12,6 +13,7 @@ import {
   useEntity,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
+import ManeuverProfileView from '../../shared/maneuver/ManeuverProfileView';
 import SkillCategoryViewInfo from './SkillCategoryViewInfo';
 import SkillCategoryViewSkills from './SkillCategoryViewSkills';
 
@@ -50,6 +52,12 @@ export default function SkillCategoryViewPage() {
       {(skillCategory) => (
         <>
           <SkillCategoryViewInfo skillCategory={skillCategory} />
+          {skillCategory.maneuver && Object.keys(skillCategory.maneuver).length > 0 && (
+            <>
+              <CategorySeparator text={t('maneuver-profile')} />
+              <ManeuverProfileView profile={skillCategory.maneuver} />
+            </>
+          )}
           <SkillCategoryViewSkills skills={skills} />
         </>
       )}
