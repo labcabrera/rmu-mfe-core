@@ -108,6 +108,8 @@ export default function SkillListPage() {
     );
   };
 
+  // Fixed widths for every column but the name: each category of the grouped view is its own table, and without
+  // them every group laid its columns out differently (spec 017).
   const columns: CollectionConfig<Skill>['columns'] = [
     {
       key: 'name',
@@ -128,6 +130,7 @@ export default function SkillListPage() {
     {
       key: 'stats',
       header: t('stats'),
+      width: 200,
       render: (skill) => (
         <Stack
           direction="row"
@@ -142,10 +145,11 @@ export default function SkillListPage() {
       key: 'maneuver',
       header: t('maneuver'),
       align: 'center',
+      width: 140,
       render: (skill) => <SkillManeuverIndicator profile={skill.maneuver} />,
     },
     ...(mode === 'table'
-      ? [{ key: 'category', header: t('category'), render: (skill: Skill) => t(skill.categoryId) }]
+      ? [{ key: 'category', header: t('category'), width: 220, render: (skill: Skill) => t(skill.categoryId) }]
       : []),
   ];
 
