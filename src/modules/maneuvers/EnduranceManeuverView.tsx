@@ -5,7 +5,8 @@ import { Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/materi
 import {
   EnduranceManeuverResult,
   fetchEnduranceManeuver,
-  NumericInput,
+  OPEN_D100,
+  RollField,
   Section,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -35,7 +36,7 @@ const EnduranceManeuverView: FC = () => {
         <Grid size={{ xs: 12, md: 4 }}>
           <Grid container spacing={2}>
             <Grid size={12}>
-              <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
+              <RollField spec={OPEN_D100} value={roll} onChange={(value) => setRoll(value.total)} />
             </Grid>
             <Grid size={12}>
               <FormControlLabel

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Button, Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
+import { Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
 import {
   AbsoluteManeuverResult,
   AbsoluteManeuverTable,
@@ -10,7 +10,8 @@ import {
   fetchAbsoluteManeuverTables,
   LoadingState,
   NumericInput,
-  OpenEndedRollDialog,
+  OPEN_D100,
+  RollField,
   Section,
   TechnicalInfo,
   useNotify,
@@ -23,7 +24,6 @@ export default function AbsoluteManeuverView() {
   const { t } = useTranslation();
   const notify = useNotify();
 
-  const [rollDialogOpen, setRollDialogOpen] = useState<boolean>(false);
   const [roll, setRoll] = useState<number | null>(null);
   const [modifier, setModifier] = useState<number>(0);
   const [totalRoll, setTotalRoll] = useState<number | null>(null);
@@ -89,25 +89,13 @@ export default function AbsoluteManeuverView() {
               />
             </Grid>
             <Grid size={12}>
-              <NumericInput
-                label={t('roll')}
-                value={roll}
-                onChange={(e) => setRoll(e)}
-                integer
-                min={-1000}
-                max={1000}
-              />
+              <RollField spec={OPEN_D100} value={roll} onChange={(value) => setRoll(value.total)} />
             </Grid>
             <Grid size={12}>
               <FormControlLabel
                 control={<Checkbox checked={unusualEvent} onChange={(e) => setUnusualEvent(e.target.checked)} />}
                 label={t('unusual-event')}
               />
-            </Grid>
-            <Grid size={12}>
-              <Button variant="contained" color="primary" onClick={() => setRollDialogOpen(true)}>
-                {t('roll')}
-              </Button>
             </Grid>
           </Grid>
         </Grid>
@@ -141,15 +129,6 @@ export default function AbsoluteManeuverView() {
           </TechnicalInfo>
         </Grid>
       </Grid>
-      <OpenEndedRollDialog
-        open={rollDialogOpen}
-        title={t('absolute-maneuver')}
-        onClose={() => setRollDialogOpen(false)}
-        onConfirm={(v) => {
-          setRoll(v);
-          setRollDialogOpen(false);
-        }}
-      />
     </Section>
   );
 }

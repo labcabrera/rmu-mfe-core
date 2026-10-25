@@ -1,13 +1,12 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, Button, Stack } from '@mui/material';
-import { NumericInput, ResistanceRollQuery } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Grid } from '@mui/material';
+import { NumericInput, OPEN_D100, ResistanceRollQuery, RollField } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const ResistanceRollViewForm: FC<{
   formData: ResistanceRollQuery;
   setFormData: Dispatch<SetStateAction<ResistanceRollQuery>>;
-  onRandom: () => void;
-}> = ({ formData, setFormData, onRandom }) => {
+}> = ({ formData, setFormData }) => {
   const { t } = useTranslation();
   return (
     <>
@@ -43,21 +42,11 @@ const ResistanceRollViewForm: FC<{
           />
         </Grid>
         <Grid size={12}>
-          <NumericInput
-            label={t('roll')}
-            value={formData.roll}
-            onChange={(value) => setFormData({ ...formData, roll: value || 0 })}
-            integer
-            min={-1000}
-            max={1000}
+          <RollField
+            spec={OPEN_D100}
+            value={formData.roll || null}
+            onChange={(value) => setFormData({ ...formData, roll: value.total })}
           />
-        </Grid>
-        <Grid size={12}>
-          <Stack spacing={1} direction="row">
-            <Button variant="contained" color="primary" onClick={onRandom}>
-              {t('random')}
-            </Button>
-          </Stack>
         </Grid>
       </Grid>
     </>
