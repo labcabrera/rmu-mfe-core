@@ -10,7 +10,6 @@ import {
   TechnicalInfo,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { openEndedRoll } from '../services/random-service';
 import ResistanceRollViewForm from './ResistanceRollViewForm';
 import ResistanceRollViewResult from './ResistanceRollViewResult';
 
@@ -20,10 +19,6 @@ export default function ResistanceRollView() {
   const { t } = useTranslation();
   const [formData, setFormData] = useState<ResistanceRollQuery>(emptyResistanceRollQuery);
   const [result, setResult] = useState<ResistanceRollResult>();
-
-  const onRandom = () => {
-    setFormData({ ...formData, roll: openEndedRoll() });
-  };
 
   const onSubmit = () => {
     resistanceRoll(formData, auth)
@@ -51,7 +46,7 @@ export default function ResistanceRollView() {
         { name: t('resistance-rolls') },
       ]}
     >
-      <ResistanceRollViewForm formData={formData} setFormData={setFormData} onRandom={onRandom} />
+      <ResistanceRollViewForm formData={formData} setFormData={setFormData} />
       <ResistanceRollViewResult result={result} />
       <TechnicalInfo>
         <pre>{JSON.stringify({ formData, result }, null, 2)}</pre>

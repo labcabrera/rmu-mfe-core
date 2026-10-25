@@ -1,17 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Button, Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import {
   fetchPercentManeuver,
   KeyValue,
   NumericInput,
+  OPEN_D100,
   PercentManeuverResult,
+  RollField,
   Section,
   SelectDifficulty,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { openEndedRoll } from '../services/random-service';
 
 const PercentManeuverView: FC = () => {
   const auth = useAuth();
@@ -58,12 +59,7 @@ const PercentManeuverView: FC = () => {
               />
             </Grid>
             <Grid size={12}>
-              <NumericInput label={t('roll')} value={roll} onChange={(e) => setRoll(e)} integer />
-            </Grid>
-            <Grid size={12} sx={{ mt: 1 }}>
-              <Button variant="contained" color="primary" onClick={() => setRoll(openEndedRoll())}>
-                {t('random')}
-              </Button>
+              <RollField spec={OPEN_D100} value={roll} onChange={(value) => setRoll(value.total)} />
             </Grid>
           </Grid>
         </Grid>
