@@ -124,7 +124,7 @@ const StyleCard: FC<{ style: FightingStyle; abilities: Map<string, StyleAbility>
   ];
 
   return (
-    <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
+    <Paper variant="outlined" sx={{ p: { xs: 1.5, sm: 2 }, height: '100%' }}>
       <Stack direction="row" spacing={1} sx={{ alignItems: 'baseline', flexWrap: 'wrap', mb: 1 }}>
         <Typography variant="h6">{t(style.id)}</Typography>
         <Typography variant="body2" color="text.secondary">
@@ -147,47 +147,49 @@ const StyleCard: FC<{ style: FightingStyle; abilities: Map<string, StyleAbility>
           </Typography>
         )}
       </Stack>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>{t('style-ability')}</TableCell>
-            <TableCell align="right">{t('cost')}</TableCell>
-            <TableCell>{t('requirements')}</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {[...style.abilities]
-            .sort((a, b) => t(`style-ability-${a.abilityId}`).localeCompare(t(`style-ability-${b.abilityId}`)))
-            .map((entry) => {
-              const ability = abilities.get(entry.abilityId);
-              return (
-                <TableRow key={entry.abilityId}>
-                  <TableCell>
-                    {t(`style-ability-${entry.abilityId}`)}
-                    {ability?.repeatable && (
-                      <Chip
-                        size="small"
-                        variant="outlined"
-                        sx={{ ml: 1 }}
-                        label={
-                          ability.maxTimes
-                            ? t('style-ability-repeatable-max', { times: ability.maxTimes })
-                            : t('style-ability-repeatable')
-                        }
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell align="right">{entry.cost}</TableCell>
-                  <TableCell>
-                    <Typography variant="caption" color="text.secondary">
-                      {ability ? abilityRequirements(ability, t) : ''}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
+      <Box sx={{ overflowX: 'auto' }}>
+        <Table size="small" sx={{ '& td, & th': { px: { xs: 0.75, sm: 2 } } }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>{t('style-ability')}</TableCell>
+              <TableCell align="right">{t('cost')}</TableCell>
+              <TableCell>{t('requirements')}</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {[...style.abilities]
+              .sort((a, b) => t(`style-ability-${a.abilityId}`).localeCompare(t(`style-ability-${b.abilityId}`)))
+              .map((entry) => {
+                const ability = abilities.get(entry.abilityId);
+                return (
+                  <TableRow key={entry.abilityId}>
+                    <TableCell>
+                      {t(`style-ability-${entry.abilityId}`)}
+                      {ability?.repeatable && (
+                        <Chip
+                          size="small"
+                          variant="outlined"
+                          sx={{ ml: 1 }}
+                          label={
+                            ability.maxTimes
+                              ? t('style-ability-repeatable-max', { times: ability.maxTimes })
+                              : t('style-ability-repeatable')
+                          }
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell align="right">{entry.cost}</TableCell>
+                    <TableCell>
+                      <Typography variant="caption" color="text.secondary">
+                        {ability ? abilityRequirements(ability, t) : ''}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </Box>
     </Paper>
   );
 };
