@@ -149,7 +149,7 @@ export default function SkillViewPage() {
                   key="specialization"
                   size="small"
                   variant="outlined"
-                  label={`${t('specialization')}: ${t(entity.specialization)}`}
+                  label={`${entity.specializationOptional ? t('specialization-optional') : t('specialization')}: ${t(entity.specialization)}`}
                   onClick={() => navigate(`/core/catalogs/view/${entity.specialization}`)}
                 />,
               ]

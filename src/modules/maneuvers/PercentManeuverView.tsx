@@ -1,54 +1,65 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid, LinearProgress, Stack, Typography } from '@mui/material';
 import {
+  DifficultyPicker,
   fetchPercentManeuver,
-  KeyValue,
+  MANEUVER_DIFFICULTIES,
   NumericInput,
   OPEN_D100,
   PercentManeuverResult,
   RollField,
   Section,
-  SelectDifficulty,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
+import ManeuverResultCard from './shared/ManeuverResultCard';
+import ManeuverTotal from './shared/ManeuverTotal';
+import { percentColor } from './shared/maneuver-colors';
+import { ManeuverTabProps } from './shared/maneuver-tab';
 
-const PercentManeuverView: FC = () => {
+const PercentManeuverView: FC<ManeuverTabProps> = ({
+  difficulty,
+  onDifficultyChange,
+  guide,
+  skillModifiers,
+  modifiersPanel,
+}) => {
   const auth = useAuth();
   const { t } = useTranslation();
   const notify = useNotify();
   const [roll, setRoll] = useState<number | null>(null);
   const [modifier, setModifier] = useState<number>(0);
-  const [totalRoll, setTotalRoll] = useState<number | null>(null);
-  const [difficulty, setDifficulty] = useState<KeyValue>({ key: 'm', value: 0 });
   const [result, setResult] = useState<PercentManeuverResult | null>(null);
 
+  const difficultyValue = MANEUVER_DIFFICULTIES.find((each) => each.key === difficulty)?.value ?? 0;
+  const parts = [
+    { label: t(`difficulty-${difficulty}`), value: difficultyValue },
+    { label: t('skill-modifiers'), value: skillModifiers },
+    { label: t('modifier'), value: modifier },
+  ];
+  const total = roll === null ? null : roll + difficultyValue + skillModifiers + modifier;
+
   useEffect(() => {
-    if (roll !== null && roll !== undefined) {
-      const totalRoll = roll + (difficulty?.value || 0) + modifier;
-      setTotalRoll(totalRoll);
-      fetchPercentManeuver(totalRoll, auth)
-        .then((data) => setResult(data))
-        .catch((err) => notify.error(err));
-    } else {
+    if (total === null) {
       setResult(null);
+      return;
     }
-  }, [roll, difficulty, modifier]);
+    fetchPercentManeuver(total, auth)
+      .then((data) => setResult(data))
+      .catch((err) => notify.error(err));
+  }, [total]);
 
   return (
-    <Section>
-      <Grid container>
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Grid container spacing={2} sx={{ p: 2 }}>
-            <Grid size={12}>
-              <SelectDifficulty
-                label={t('difficulty')}
-                value={difficulty?.key || 'm'}
-                onChange={(e) => setDifficulty(e)}
-              />
-            </Grid>
-            <Grid size={12}>
+    <Grid container spacing={2}>
+      <Grid size={{ xs: 12, md: 5 }}>
+        <Stack spacing={2}>
+          <Section>
+            <DifficultyPicker value={difficulty} onChange={onDifficultyChange} guide={guide} />
+          </Section>
+          {modifiersPanel}
+          <Section>
+            <Stack spacing={2}>
               <NumericInput
                 label={t('modifier')}
                 value={modifier}
@@ -57,36 +68,42 @@ const PercentManeuverView: FC = () => {
                 min={-1000}
                 max={1000}
               />
-            </Grid>
-            <Grid size={12}>
               <RollField spec={OPEN_D100} value={roll} onChange={(value) => setRoll(value.total)} />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
-          {result && (
-            <Paper sx={{ p: 2 }}>
-              <Grid size={{ xs: 12, md: 12 }}>
-                <Typography variant="h6" color="primary" gutterBottom>
-                  {t(result.message)}
-                </Typography>
-                <Typography variant="body1" color="secondary" gutterBottom>
-                  {t('total-roll')}: {totalRoll}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  {t('percent')}: {result.percent}%
-                </Typography>
+            </Stack>
+          </Section>
+        </Stack>
+      </Grid>
+      <Grid size={{ xs: 12, md: 7 }}>
+        <Section>
+          <Stack spacing={2}>
+            <ManeuverTotal roll={roll} parts={parts} />
+            {result ? (
+              <ManeuverResultCard
+                title={`${result.percent}%`}
+                color={percentColor(result.percent)}
+                message={t(result.message)}
+              >
+                <LinearProgress
+                  variant="determinate"
+                  value={Math.max(0, Math.min(100, result.percent))}
+                  color={percentColor(result.percent)}
+                  sx={{ mt: 1.5, height: 8, borderRadius: 4 }}
+                />
                 {result.critical && (
-                  <Typography variant="body1">
-                    {t('critical')}: {result.critical}
+                  <Typography variant="body2" sx={{ mt: 1 }}>
+                    {`${t('critical')}: ${result.critical}`}
                   </Typography>
                 )}
-              </Grid>
-            </Paper>
-          )}
-        </Grid>
+              </ManeuverResultCard>
+            ) : (
+              <Typography variant="body2" color="text.secondary">
+                {t('maneuver-roll-hint')}
+              </Typography>
+            )}
+          </Stack>
+        </Section>
       </Grid>
-    </Section>
+    </Grid>
   );
 };
 
