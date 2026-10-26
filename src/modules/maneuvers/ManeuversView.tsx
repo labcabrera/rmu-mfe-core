@@ -2,7 +2,7 @@ import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useSearchParams } from 'react-router-dom';
-import { Autocomplete, Box, Grid, Stack, TextField } from '@mui/material';
+import { Autocomplete, Box, Grid, Stack, TextField, Typography } from '@mui/material';
 import {
   fetchManeuverModifiers,
   fetchSkillCategories,
@@ -11,6 +11,7 @@ import {
   formatBonus,
   LayoutBase,
   ManeuverModifier,
+  ManeuverModifierList,
   Section,
   SectionNav,
   Skill,
@@ -95,10 +96,22 @@ const ManeuversView: FC = () => {
     if (value?.maneuver?.defaultType && tab !== 'endurance') setTab(value.maneuver.defaultType);
   };
 
-  const skillModifiers = modifiersTotal(modifiers, selections);
+  // Reference modifiers (OB/DB of combat skills) are listed apart and never added to the roll.
+  const maneuverModifiers = modifiers.filter((modifier) => !modifier.reference);
+  const referenceModifiers = modifiers.filter((modifier) => modifier.reference);
+  const skillModifiers = modifiersTotal(maneuverModifiers, selections);
   const modifiersPanel = skill ? (
     <Section title={`${t('skill-modifiers')}${skillModifiers ? ` (${formatBonus(skillModifiers)})` : ''}`}>
-      <SkillModifiersPanel modifiers={modifiers} selections={selections} onChange={setSelections} />
+      <SkillModifiersPanel modifiers={maneuverModifiers} selections={selections} onChange={setSelections} />
+      {referenceModifiers.length > 0 && (
+        <Box sx={{ mt: 2 }}>
+          <Typography variant="subtitle2">{t('combat-reference-modifiers')}</Typography>
+          <Typography variant="caption" color="text.secondary" component="div">
+            {t('combat-reference-modifiers-hint')}
+          </Typography>
+          <ManeuverModifierList modifiers={referenceModifiers} />
+        </Box>
+      )}
     </Section>
   ) : undefined;
   const tabProps = {

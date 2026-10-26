@@ -10,13 +10,14 @@ import {
   RollField,
   Section,
   useNotify,
+  translated,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import ManeuverResultCard from './shared/ManeuverResultCard';
 import { resultColor } from './shared/maneuver-colors';
 
 const EnduranceManeuverView: FC = () => {
   const auth = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const notify = useNotify();
 
   const [roll, setRoll] = useState<number | null>(null);
@@ -57,7 +58,11 @@ const EnduranceManeuverView: FC = () => {
       <Grid size={{ xs: 12, md: 7 }}>
         <Section>
           {result ? (
-            <ManeuverResultCard title={t(result.result)} color={resultColor(result.result)} message={result.message}>
+            <ManeuverResultCard
+              title={t(result.result)}
+              color={resultColor(result.result)}
+              message={translated(result.message, result.messageTranslations, i18n.language)}
+            >
               {effects.length > 0 && (
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mt: 1.5 }}>
                   {effects.map((effect) => (

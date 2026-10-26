@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { alpha, Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
-import { AbsoluteManeuverTable } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { AbsoluteManeuverTable, translated } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { resultColor } from './shared/maneuver-colors';
 
 const rangeText = (min: number | null, max: number | null) => {
@@ -12,7 +12,7 @@ const rangeText = (min: number | null, max: number | null) => {
 
 /** The absolute maneuver table, each row in the color of its result and the row of the current total marked. */
 const AbsoluteManeuverTableView: FC<{ table: AbsoluteManeuverTable; total: number | null }> = ({ table, total }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   // The last row (absolute success) has no min and an infinite max, which arrives as null: it starts after the
   // previous row.
   const rows = table.table.map((entry, index) => ({
@@ -54,7 +54,7 @@ const AbsoluteManeuverTableView: FC<{ table: AbsoluteManeuverTable; total: numbe
                 </TableCell>
                 <TableCell>
                   <Typography variant="body2" color={selected ? 'text.primary' : 'text.secondary'}>
-                    {entry.result.message}
+                    {translated(entry.result.message, entry.result.messageTranslations, i18n.language)}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -64,7 +64,7 @@ const AbsoluteManeuverTableView: FC<{ table: AbsoluteManeuverTable; total: numbe
       </Table>
       {table.unusualEvent && (
         <Typography variant="caption" color="text.secondary" component="div" sx={{ mt: 1 }}>
-          {`${t('unusual-event')}: ${table.unusualEvent}`}
+          {`${t('unusual-event')}: ${translated(table.unusualEvent, table.unusualEventTranslations, i18n.language)}`}
         </Typography>
       )}
     </Box>

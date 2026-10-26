@@ -16,6 +16,7 @@ import {
   RollField,
   Section,
   useNotify,
+  translated,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import SelectManeuverTable from '../shared/selects/SelectManeuverTable';
 import AbsoluteManeuverTableView from './AbsoluteManeuverTableView';
@@ -33,7 +34,7 @@ const AbsoluteManeuverView: FC<ManeuverTabProps> = ({
   modifiersPanel,
 }) => {
   const auth = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const notify = useNotify();
 
   const [roll, setRoll] = useState<number | null>(null);
@@ -120,7 +121,11 @@ const AbsoluteManeuverView: FC<ManeuverTabProps> = ({
           <Stack spacing={2}>
             <ManeuverTotal roll={roll} parts={parts} />
             {result ? (
-              <ManeuverResultCard title={t(result.result)} color={resultColor(result.result)} message={result.message}>
+              <ManeuverResultCard
+                title={t(result.result)}
+                color={resultColor(result.result)}
+                message={translated(result.message, result.messageTranslations, i18n.language)}
+              >
                 {!!result.penaltyUntilAbsoluteSuccess && (
                   <Typography variant="body2" sx={{ mt: 1 }}>
                     {`${t('penalty-until-absolute-success')}: ${result.penaltyUntilAbsoluteSuccess}`}
