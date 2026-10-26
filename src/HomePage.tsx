@@ -60,6 +60,12 @@ const OPTIONS = [
     to: '/core/catalogs',
   },
   {
+    value: 'fighting-styles',
+    subtitle: 'browse-fighting-styles',
+    image: `${imageBaseUrl}images/generic/trait-combat.png`,
+    to: '/core/fighting-styles',
+  },
+  {
     value: 'maneuvers',
     subtitle: 'execute-maneuvers',
     image: `${imageBaseUrl}images/generic/maneuver-penalty.png`,
