@@ -2,7 +2,7 @@
 import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Grid, TextField, Button, ButtonGroup } from '@mui/material';
+import { Grid, TextField, Button, ButtonGroup, FormControlLabel, Switch } from '@mui/material';
 import {
   fetchSkillCategories,
   LoadingState,
@@ -73,6 +73,19 @@ const SkillForm: FC<{
             onSpecializationChange={(e) => setFormData({ ...formData, specialization: e })}
           />
         </Grid>
+        {formData.specialization && (
+          <Grid size={12}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={formData.specializationOptional === true}
+                  onChange={(e) => setFormData({ ...formData, specializationOptional: e.target.checked })}
+                />
+              }
+              label={t('specialization-optional')}
+            />
+          </Grid>
+        )}
       </Grid>
     </>
   );
