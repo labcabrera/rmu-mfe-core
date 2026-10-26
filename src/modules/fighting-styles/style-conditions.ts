@@ -18,8 +18,9 @@ export const conditionLabel = (condition: StyleCondition, t: TFunction): string 
         ? `${t('style-condition-unarmed')} (${t(`style-condition-unarmed-${value}`)})`
         : t('style-condition-unarmed');
     case 'max-armor':
+      return t('style-condition-max-armor', { value });
     case 'max-shield':
-      return t(`style-condition-${condition.kind}`, { value });
+      return t(`style-condition-max-shield-${value}`, { defaultValue: value });
     default:
       return t(`style-condition-${condition.kind}`, { defaultValue: condition.kind });
   }
