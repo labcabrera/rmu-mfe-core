@@ -2,6 +2,10 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { MfeRoot, NotFound } from '@labcabrera-rmu/rmu-react-shared-lib';
 import HomePage from './HomePage';
+import AttackTablesHome from './modules/attack-tables/AttackTablesHome';
+import AttackTablesView from './modules/attack-tables/attack/AttackTablesView';
+import CriticalTablesView from './modules/attack-tables/critical/CriticalTablesView';
+import FumbleTablesView from './modules/attack-tables/fumble/FumbleTablesView';
 import CatalogListPage from './modules/catalogs/list/CatalogListPage';
 import CatalogViewPage from './modules/catalogs/view/CatalogViewPage';
 import CultureFormPage from './modules/cultures/form/CultureFormPage';
@@ -73,6 +77,10 @@ const App = () => {
         <Route path="/fighting-styles/abilities/:abilityId" element={<StyleAbilityView />} />
         <Route path="/maneuvers" element={<ManeuversView />} />
         <Route path="/resistance-rolls" element={<ResistanceRollView />} />
+        <Route path="/attack-tables" element={<AttackTablesHome />} />
+        <Route path="/attack-tables/attack" element={<AttackTablesView />} />
+        <Route path="/attack-tables/critical" element={<CriticalTablesView />} />
+        <Route path="/attack-tables/fumble" element={<FumbleTablesView />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </MfeRoot>

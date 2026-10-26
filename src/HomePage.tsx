@@ -72,6 +72,12 @@ const OPTIONS = [
     to: '/core/maneuvers',
   },
   {
+    value: 'attack-tables',
+    subtitle: 'browse-attack-tables',
+    image: `${imageBaseUrl}images/generic/warrior.png`,
+    to: '/core/attack-tables',
+  },
+  {
     value: 'resistance-rolls',
     subtitle: 'execute-resistance-rolls',
     image: `${imageBaseUrl}images/generic/poison.png`,
