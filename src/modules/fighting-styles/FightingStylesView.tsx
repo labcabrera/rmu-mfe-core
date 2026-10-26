@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
+import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
@@ -8,6 +9,7 @@ import {
   CircularProgress,
   Grid,
   InputAdornment,
+  Link,
   Paper,
   Stack,
   Tab,
@@ -42,7 +44,10 @@ const FightingStylesView: FC = () => {
   const auth = useAuth();
   const notify = useNotify();
   const [catalog, setCatalog] = useState<FightingStyles>();
-  const [skill, setSkill] = useState<FightingStyleSkill>(FIGHTING_STYLE_SKILLS[0]);
+  // The tab lives in the URL, so going back from an ability returns to it
+  const [params, setParams] = useSearchParams();
+  const skill = FIGHTING_STYLE_SKILLS.find((id) => id === params.get('skill')) ?? FIGHTING_STYLE_SKILLS[0];
+  const setSkill = (value: FightingStyleSkill) => setParams({ skill: value }, { replace: true });
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
@@ -164,7 +169,9 @@ const StyleCard: FC<{ style: FightingStyle; abilities: Map<string, StyleAbility>
                 return (
                   <TableRow key={entry.abilityId}>
                     <TableCell>
-                      {t(`style-ability-${entry.abilityId}`)}
+                      <Link component={RouterLink} to={`/core/fighting-styles/abilities/${entry.abilityId}`}>
+                        {t(`style-ability-${entry.abilityId}`)}
+                      </Link>
                       {ability?.repeatable && (
                         <Chip
                           size="small"

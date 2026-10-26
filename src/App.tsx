@@ -11,6 +11,7 @@ import EffectTypeFormPage from './modules/effect-types/form/EffectTypeFormPage';
 import EffectTypeListPage from './modules/effect-types/list/EffectTypeListPage';
 import EffectTypeViewPage from './modules/effect-types/view/EffectTypeViewPage';
 import FightingStylesView from './modules/fighting-styles/FightingStylesView';
+import StyleAbilityView from './modules/fighting-styles/StyleAbilityView';
 import ManeuversView from './modules/maneuvers/ManeuversView';
 import ProfessionFormPage from './modules/professions/form/ProfessionFormPage';
 import ProfessionListPage from './modules/professions/list/ProfessionListPage';
@@ -69,6 +70,7 @@ const App = () => {
         <Route path="/catalogs" element={<CatalogListPage />} />
         <Route path="/catalogs/view/:category" element={<CatalogViewPage />} />
         <Route path="/fighting-styles" element={<FightingStylesView />} />
+        <Route path="/fighting-styles/abilities/:abilityId" element={<StyleAbilityView />} />
         <Route path="/maneuvers" element={<ManeuversView />} />
         <Route path="/resistance-rolls" element={<ResistanceRollView />} />
         <Route path="*" element={<NotFound />} />
