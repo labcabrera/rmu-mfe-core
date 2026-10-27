@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, Paper, Typography } from '@mui/material';
+import { Chip, Grid, Paper, Stack, Typography } from '@mui/material';
 import { imageBaseUrl, RmuTextCard, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const TraitViewInfo: FC<{
@@ -62,11 +62,62 @@ const TraitViewInfo: FC<{
               />
             </Grid>
           )}
+          {trait.talentCategory && (
+            <Grid size={{ xs: 12, md: 4 }}>
+              <RmuTextCard
+                value={t(trait.talentCategory)}
+                subtitle={t('talent-category')}
+                image={`${imageBaseUrl}images/generic/trait.png`}
+              />
+            </Grid>
+          )}
+          {trait.source && (
+            <Grid size={{ xs: 12, md: 4 }}>
+              <RmuTextCard
+                value={t(trait.source)}
+                subtitle={t('source')}
+                image={`${imageBaseUrl}images/generic/trait.png`}
+              />
+            </Grid>
+          )}
         </Grid>
       </Grid>
 
+      {!!trait.prerequisites?.length && (
+        <Grid size={12}>
+          <Typography variant="subtitle2" color="primary">
+            {t('trait-prerequisites')}
+          </Typography>
+          <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap', mt: 0.5 }}>
+            {trait.prerequisites.map((prerequisite, index) => (
+              <Chip
+                key={index}
+                size="small"
+                title={prerequisite.description || undefined}
+                label={[
+                  t(`trait-prerequisite-${prerequisite.type}`),
+                  ...(prerequisite.value || []).map((value) => t(value, { defaultValue: value })),
+                ].join(': ')}
+              />
+            ))}
+          </Stack>
+        </Grid>
+      )}
+
+      {!!trait.possibleFlaws?.length && (
+        <Grid size={12}>
+          <Typography variant="subtitle2" color="primary">
+            {t('trait-possible-flaws')}
+          </Typography>
+          <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap', mt: 0.5 }}>
+            {trait.possibleFlaws.map((flaw) => (
+              <Chip key={flaw} size="small" variant="outlined" label={t(flaw, { defaultValue: flaw })} />
+            ))}
+          </Stack>
+        </Grid>
+      )}
+
       <Grid size={12}>
-        <Grid container spacing={1}></Grid>
         <Grid size={12}>
           <Paper sx={{ padding: 2, mt: 1 }}>
             <Typography variant="body1">{trait.description}</Typography>
