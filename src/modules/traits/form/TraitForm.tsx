@@ -25,7 +25,12 @@ const TRAIT_SPECIALIZATIONS = [
   'ranged-combat-skill',
   'melee-weapon-type',
   'ranged-weapon-type',
+  'skill-category',
+  'race',
+  'text',
 ];
+
+const TRAIT_SOURCES = ['core-law', 'character-companion'];
 
 const TraitForm: FC<{
   formData: Trait;
@@ -155,6 +160,33 @@ const TraitForm: FC<{
           </Grid>
         </>
       )}
+
+      <Grid size={{ xs: 12, md: 6 }}>
+        <TextField
+          label={t('talent-category')}
+          name="talentCategory"
+          value={formData.talentCategory || ''}
+          onChange={(e) => setFormData({ ...formData, talentCategory: e.target.value || null })}
+          fullWidth
+        />
+      </Grid>
+      <Grid size={{ xs: 12, md: 6 }}>
+        <TextField
+          select
+          label={t('source')}
+          name="source"
+          value={formData.source || ''}
+          onChange={(e) => setFormData({ ...formData, source: (e.target.value || null) as Trait['source'] })}
+          fullWidth
+        >
+          <MenuItem value="">{t('none')}</MenuItem>
+          {TRAIT_SOURCES.map((source) => (
+            <MenuItem key={source} value={source}>
+              {t(source)}
+            </MenuItem>
+          ))}
+        </TextField>
+      </Grid>
 
       <Grid size={12}>
         <TextField
