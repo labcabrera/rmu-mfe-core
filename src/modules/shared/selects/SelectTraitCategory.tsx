@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField } from '@mui/material';
 import { traitCategories } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { t } from 'i18next';
 
 const SelectTraitCategory: FC<{
   label: string;
@@ -11,6 +11,7 @@ const SelectTraitCategory: FC<{
   onChange: (e: string) => void;
   required?: boolean;
 }> = ({ label, value, name, onChange, addAllOption = false, required = false }) => {
+  const { t } = useTranslation();
   return (
     <TextField
       select
