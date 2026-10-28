@@ -52,6 +52,8 @@ const ProfessionCreationSkillCosts: FC<{
       if (value === null) {
         next[skillKey] = arr.length > 0 ? [arr[0]] : [];
       } else {
+        // The API takes a list of integers: the second cost before the first would leave a null hole.
+        arr[0] = arr[0] ?? 0;
         arr[1] = value;
         next[skillKey] = arr;
       }

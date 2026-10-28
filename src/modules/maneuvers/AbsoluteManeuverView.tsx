@@ -9,6 +9,7 @@ import {
   fetchAbsoluteManeuver,
   fetchAbsoluteManeuverTable,
   fetchAbsoluteManeuverTables,
+  formatBonus,
   LoadingState,
   MANEUVER_DIFFICULTIES,
   NumericInput,
@@ -126,14 +127,15 @@ const AbsoluteManeuverView: FC<ManeuverTabProps> = ({
                 color={resultColor(result.result)}
                 message={translated(result.message, result.messageTranslations, i18n.language)}
               >
+                {/* Both are modifiers added to the roll: the penalty is negative, the bonus positive (spec 044, decision 6). */}
                 {!!result.penaltyUntilAbsoluteSuccess && (
                   <Typography variant="body2" sx={{ mt: 1 }}>
-                    {`${t('penalty-until-absolute-success')}: ${result.penaltyUntilAbsoluteSuccess}`}
+                    {`${t('penalty-until-absolute-success')}: ${formatBonus(result.penaltyUntilAbsoluteSuccess)}`}
                   </Typography>
                 )}
                 {!!result.bonusUntilAbsoluteFailure && (
                   <Typography variant="body2" sx={{ mt: 1 }}>
-                    {`${t('bonus-until-absolute-failure')}: ${result.bonusUntilAbsoluteFailure}`}
+                    {`${t('bonus-until-absolute-failure')}: ${formatBonus(result.bonusUntilAbsoluteFailure)}`}
                   </Typography>
                 )}
               </ManeuverResultCard>
