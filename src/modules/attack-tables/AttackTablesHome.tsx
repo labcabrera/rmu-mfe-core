@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
-import { gridSizeCard, imageBaseUrl, LayoutBase, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { EntityCard, gridSizeShowcase, LayoutBase } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const OPTIONS = [
   { value: 'attack-tables-attack', subtitle: 'attack-tables-attack-subtitle', image: 'warrior.png', to: 'attack' },
@@ -18,13 +18,13 @@ const AttackTablesHome: FC = () => {
     <LayoutBase
       breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('attack-tables') }]}
     >
-      <Grid container spacing={1}>
+      <Grid container spacing={2}>
         {OPTIONS.map((c) => (
-          <Grid size={gridSizeCard} key={c.value}>
-            <RmuTextCard
-              value={t(c.value)}
-              subtitle={t(c.subtitle)}
-              image={`${imageBaseUrl}images/generic/${c.image}`}
+          <Grid size={gridSizeShowcase} key={c.value}>
+            <EntityCard
+              title={t(c.value)}
+              description={t(c.subtitle)}
+              image={`images/generic/${c.image}`}
               onClick={() => navigate(`/core/attack-tables/${c.to}`)}
             />
           </Grid>

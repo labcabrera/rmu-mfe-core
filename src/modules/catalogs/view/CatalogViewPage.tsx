@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useParams } from 'react-router-dom';
@@ -10,19 +9,18 @@ import {
   deleteEnumeration,
   Enumeration,
   fetchEnumerations,
-  fetchRealms,
   FilterBar,
   imageBaseUrl,
   ListPage,
-  Realm,
+  RealmPicker,
   RmuCard,
   rsqlAnd,
-  SearchField,
-  SelectRealm,
   TechnicalInfo,
+  useListFilters,
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { bindSingle, equalsFilter, FilterTextField, realmName, useRealms } from '../../shared/filters/list-filters';
 import AddEnumerationDialog from './AddEnumerationDialog';
 
 // Up to 1000 values of the category in a single page, as the page always did (no pagination).
@@ -34,9 +32,12 @@ export default function CatalogViewPage() {
   const { t } = useTranslation();
   const notify = useNotify();
   const { category } = useParams<{ category?: string }>();
-  const [realms, setRealms] = useState<Realm[]>([]);
-  const [name, setName] = useState('');
-  const [realmId, setRealmId] = useState('');
+  const realms = useRealms();
+  const filters = useListFilters<Enumeration>({
+    // The key is only searched from its third character, as the page always did.
+    q: { kind: 'text', label: t('name'), toRsql: (value) => (value.length > 2 ? `key=re=${value}` : undefined) },
+    realm: equalsFilter(t('realm'), 'realmId', { format: (id) => realmName(realms, id) }),
+  });
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const query = usePagedQuery<Enumeration>({
     fetcher: (q) =>
@@ -44,23 +45,15 @@ export default function CatalogViewPage() {
         ...response,
         pagination: { ...response.pagination, totalPages: 0 },
       })),
-    rsql: rsqlAnd([
-      ['category==', category],
-      ['key=re=', name.length > 2 ? name : undefined],
-      ['realmId==', realmId],
-    ]),
+    rsql: [rsqlAnd([['category==', category]]), filters.rsql].filter(Boolean).join(';'),
     enabled: !!category,
     onError: notify.error,
   });
 
-  useEffect(() => {
-    fetchRealms('', 0, 100, auth)
-      .then((response) => setRealms(response.content))
-      .catch(notify.error);
-  }, []);
+  const realmFilter = bindSingle(filters, 'realm');
 
   const getRealmName = (enumeration: Enumeration) =>
-    enumeration.realmId ? realms.find((realm) => realm.id === enumeration.realmId)?.name : undefined;
+    enumeration.realmId ? realms?.find((realm) => realm.id === enumeration.realmId)?.name : undefined;
 
   const onDelete = (enumeration: Enumeration) =>
     deleteEnumeration(enumeration.id, auth).then(query.refresh).catch(notify.error);
@@ -78,12 +71,13 @@ export default function CatalogViewPage() {
       filters={
         <>
           <CategorySeparator text={t(category || '')} />
-          <FilterBar>
-            <SearchField value={name} onChange={setName} />
-            <SelectRealm value={realmId} onChange={(id) => setRealmId(id ?? '')} realms={realms} />
+          <FilterBar activeCount={filters.activeCount}>
+            <FilterTextField filters={filters} filter="q" label={t('name')} />
+            <RealmPicker {...realmFilter} variant="select" realms={realms} />
           </FilterBar>
         </>
       }
+      filterState={filters}
       renderItem={(enumeration) => (
         <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`}>
           <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
@@ -101,7 +95,7 @@ export default function CatalogViewPage() {
       {category && (
         <AddEnumerationDialog
           category={category}
-          realms={realms}
+          realms={realms ?? []}
           open={addDialogOpen}
           onClose={() => setAddDialogOpen(false)}
           onAdd={query.refresh}

@@ -2,12 +2,14 @@ import React, { ChangeEvent, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormControl, FormControlLabel, Grid, MenuItem, Switch, TextField } from '@mui/material';
 import {
+  AccessType,
   EffectPropertyRequirement,
   effectPropertyRequirements,
   EffectType,
+  EnumPicker,
   LoadingState,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import SelectAccessType from '../../shared/selects/SelectAccessType';
+import { ACCESS_TYPES } from '../../shared/enums';
 
 const EffectRequirementSelect: FC<{
   label: string;
@@ -51,9 +53,11 @@ const EffectTypeForm: FC<{
   return (
     <Grid container spacing={1}>
       <Grid size={12}>
-        <SelectAccessType
+        <EnumPicker
+          label={t('access-type')}
+          values={ACCESS_TYPES}
           value={formData.accessType}
-          onChange={(value) => setFormData({ ...formData, accessType: value })}
+          onChange={(value) => value && setFormData({ ...formData, accessType: value as AccessType })}
         />
       </Grid>
       {create && (

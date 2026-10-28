@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid, TextField } from '@mui/material';
 import {
   CategorySeparator,
+  EnumPicker,
   fetchEnumerations,
   NumericInput,
   Race,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
-import SelectRaceSize from '../../shared/selects/SelectRaceSize';
+import { RACE_SIZES } from '../../shared/enums';
 
 const RaceFormAttributes: FC<{
   formData: Race;
@@ -20,16 +20,11 @@ const RaceFormAttributes: FC<{
   const auth = useAuth();
   const { t } = useTranslation();
   const notify = useNotify();
-  const [archetypes, setArchetypes] = useState<SelectOption[]>([]);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const [archetypes, setArchetypes] = useState<string[]>([]);
 
   useEffect(() => {
     fetchEnumerations('category==race-archetype', 0, 100, auth)
-      .then((response) => setArchetypes(response.content.map((e) => ({ value: e.key, description: e.key }))))
+      .then((response) => setArchetypes(response.content.map((e) => e.key)))
       .catch((err) => notify.error(err));
   }, []);
 
@@ -50,11 +45,11 @@ const RaceFormAttributes: FC<{
         />
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>
-        <RmuSelect
+        <EnumPicker
           label={t('archetype')}
-          value={formData.archetype}
-          options={archetypes}
-          onChange={(e) => setFormData({ ...formData, archetype: e })}
+          values={archetypes}
+          value={formData.archetype || null}
+          onChange={(archetype) => setFormData({ ...formData, archetype: archetype ?? '' })}
           required
         />
       </Grid>
@@ -118,7 +113,15 @@ const RaceFormAttributes: FC<{
         <CategorySeparator text={t('size')} />
       </Grid>
       <Grid size={{ xs: 12, md: 2 }}>
-        <SelectRaceSize label={t('race-size')} name="sizeId" value={formData.sizeId} onChange={handleChange} />
+        <EnumPicker
+          label={t('race-size')}
+          name="sizeId"
+          values={RACE_SIZES}
+          labelPrefix="size-"
+          variant="select"
+          value={formData.sizeId || null}
+          onChange={(sizeId) => setFormData({ ...formData, sizeId: sizeId ?? '' })}
+        />
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput

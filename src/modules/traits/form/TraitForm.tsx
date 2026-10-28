@@ -3,14 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { FormControl, FormControlLabel, Grid, MenuItem, Switch, TextField } from '@mui/material';
 import {
+  EnumPicker,
   fetchEnumerationCategories,
   LoadingState,
   NumericInput,
   Trait,
+  traitCategories,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
-import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';
+import { traitCategoryImage } from '../../services/trait-image-service';
 
 /**
  * Specialization kinds that rmu-api-strategic resolves itself (stats, realms, skills of the catalog and weapon types).
@@ -39,13 +40,13 @@ const TraitForm: FC<{
   const auth = useAuth();
   const { t } = useTranslation();
   const notify = useNotify();
-  const [enumerationCategories, setEnumerationCategories] = useState<SelectOption[]>();
+  const [enumerationCategories, setEnumerationCategories] = useState<string[]>();
 
   const bindEnumerationCategories = () => {
     fetchEnumerationCategories(auth)
       .then((response) => {
         const values = [...TRAIT_SPECIALIZATIONS, ...response.filter((e) => !TRAIT_SPECIALIZATIONS.includes(e))];
-        setEnumerationCategories(values.map((e) => ({ value: e, description: t(e) })));
+        setEnumerationCategories(values);
       })
       .catch((err) => notify.error(err));
   };
@@ -83,11 +84,15 @@ const TraitForm: FC<{
         />
       </Grid>
       <Grid size={12}>
-        <SelectTraitCategory
+        <EnumPicker
           label={t('category')}
           name="category"
-          value={formData.category || ''}
-          onChange={(e) => setFormData({ ...formData, category: e })}
+          values={traitCategories}
+          images={traitCategoryImage}
+          kind="trait"
+          value={formData.category || null}
+          onChange={(category) => setFormData({ ...formData, category: category ?? '' })}
+          clearable={false}
         />
       </Grid>
       <Grid size={12}>
@@ -105,11 +110,14 @@ const TraitForm: FC<{
       </Grid>
 
       <Grid size={12}>
-        <RmuSelect
+        <EnumPicker
           label={t('specialization')}
-          value={formData.specialization}
-          options={enumerationCategories}
-          onChange={(e) => setFormData({ ...formData, specialization: e !== '' ? e : null })}
+          name="specialization"
+          values={enumerationCategories}
+          value={formData.specialization || null}
+          allowAll
+          allLabel={t('none')}
+          onChange={(specialization) => setFormData({ ...formData, specialization: specialization || null })}
         />
       </Grid>
       <Grid size={12}>

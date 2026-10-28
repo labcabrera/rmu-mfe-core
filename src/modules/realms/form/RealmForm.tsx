@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, TextField } from '@mui/material';
-import { Realm } from '@labcabrera-rmu/rmu-react-shared-lib';
-import SelectAccessType from '../../shared/selects/SelectAccessType';
-import SelectMagicPresence from '../../shared/selects/SelectMagicPresence';
+import { AccessType, EnumPicker, MagicPresence, Realm } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { ACCESS_TYPES, MAGIC_PRESENCES } from '../../shared/enums';
 
 const RealmForm: FC<{
   formData: Realm;
@@ -14,10 +13,11 @@ const RealmForm: FC<{
   return (
     <Grid container spacing={2}>
       <Grid size={12}>
-        <SelectAccessType
-          value={formData.accessType}
+        <EnumPicker
           label={t('access-type')}
-          onChange={(value) => setFormData({ ...formData, accessType: value })}
+          values={ACCESS_TYPES}
+          value={formData.accessType}
+          onChange={(value) => value && setFormData({ ...formData, accessType: value as AccessType })}
         />
       </Grid>
       <Grid size={12}>
@@ -31,10 +31,12 @@ const RealmForm: FC<{
         />
       </Grid>
       <Grid size={12}>
-        <SelectMagicPresence
-          value={formData.magicPresence}
+        <EnumPicker
           label={t('magic-presence')}
-          onChange={(value) => setFormData({ ...formData, magicPresence: value })}
+          values={MAGIC_PRESENCES}
+          value={formData.magicPresence}
+          onChange={(value) => value && setFormData({ ...formData, magicPresence: value as MagicPresence })}
+          required
         />
       </Grid>
       <Grid size={12}>

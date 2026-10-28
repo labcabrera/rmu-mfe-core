@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Box, Chip, CircularProgress, Grid, Paper, Stack, Typography } from '@mui/material';
 import {
   AttackLookup,
+  AttackTablePicker,
   fetchAttackTable,
   fetchAttackTables,
   LayoutBase,
@@ -13,9 +14,7 @@ import {
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import CoreLawNotice from '../shared/CoreLawNotice';
-import TableSelect from '../shared/TableSelect';
 import { severityColor } from '../shared/severity-colors';
-import { tableName } from '../shared/table-labels';
 import { useWholeTable } from '../shared/useWholeTable';
 import AttackDamageChart from './AttackDamageChart';
 
@@ -75,12 +74,13 @@ const AttackTablesView: FC = () => {
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 4 }}>
           <Stack spacing={2}>
-            <TableSelect
-              label={t('attack-table')}
-              tables={tables}
+            <AttackTablePicker
+              tables={tables ?? []}
               value={table}
-              onChange={(value) => setParams({ table: value }, { replace: true })}
-              name={(id) => tableName(id, t)}
+              onChange={(value) => value && setParams({ table: value }, { replace: true })}
+              disabled={!tables}
+              helperText={tables ? undefined : t('loading')}
+              required
             />
             <NumericInput
               label={t('armor-type')}

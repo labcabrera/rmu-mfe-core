@@ -1,77 +1,88 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
-  FilterBar,
+  defaultImages,
+  EntityCard,
+  EnumPicker,
   fetchTraits,
+  FilterSection,
+  gridSizeShowcase,
   ListPage,
-  RmuTextCard,
-  rsqlAnd,
-  SearchField,
   Trait,
+  traitCategories,
+  useListFilters,
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { getTraitImage } from '../../services/trait-image-service';
-import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';
-import SelectTraitType from '../../shared/selects/SelectTraitType';
+import { traitCategoryImage } from '../../services/trait-image-service';
+import { TRAIT_TYPES } from '../../shared/enums';
+import { bindSingle, equalsFilter, FilterTextField, regexFilter } from '../../shared/filters/list-filters';
 
-const valueOrUndefined = (value: string | undefined) => (value && value !== 'all' ? value : undefined);
-
+/** Traits catalog (spec 046): filters in the side panel, kept in the URL. */
 export default function TraitListPage() {
   const auth = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const notify = useNotify();
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
-  const [type, setType] = useState('');
-  const traitType = valueOrUndefined(type);
+  const filters = useListFilters<Trait>({
+    q: regexFilter(t('name'), 'id'),
+    category: equalsFilter(t('category'), 'category', { options: traitCategories, format: (value) => t(value) }),
+    type: {
+      kind: 'single',
+      label: t('trait-type'),
+      options: TRAIT_TYPES,
+      format: (value) => t(value),
+      toRsql: (value) => (value ? `isTalent==${value === 'talent'}` : undefined),
+    },
+  });
   const query = usePagedQuery<Trait>({
     fetcher: (q, page, size) => fetchTraits(q, page, size, auth),
-    rsql: rsqlAnd([
-      ['id=re=', name],
-      ['category==', valueOrUndefined(category)],
-      ['isTalent==', traitType && String(traitType === 'talent')],
-    ]),
+    rsql: filters.rsql,
     onError: notify.error,
   });
-
-  const getTraitSubtitle = (trait: Trait): string =>
-    `${t(trait.isTalent ? t('trait') : t('flaw'))} • ${trait.category} • ${trait.adquisitionCost}`;
+  const category = bindSingle(filters, 'category');
+  const type = bindSingle(filters, 'type');
 
   return (
     <ListPage
       breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('traits') }]}
       query={query}
       onAdd={() => navigate('/core/traits/create')}
+      filtersLayout="side"
+      filterState={filters}
+      filtersStorageKey="core.traits"
       filters={
-        <FilterBar>
-          <SearchField value={name} onChange={setName} />
-          <SelectTraitCategory
-            value={category}
-            onChange={(value) => setCategory(value || '')}
-            addAllOption
-            label={t('category')}
-            name="category"
-          />
-          <SelectTraitType
-            value={type}
-            onChange={(e) => setType(e.target.value || '')}
-            addAllOption
-            label={t('trait-type')}
-            name="trait-type"
-          />
-        </FilterBar>
+        <>
+          <FilterSection title={t('search')} collapsible={false}>
+            <FilterTextField filters={filters} filter="q" label={t('name')} />
+          </FilterSection>
+          <FilterSection title={t('trait-type')}>
+            <EnumPicker {...type} variant="tiles" label={t('trait-type')} values={TRAIT_TYPES} />
+          </FilterSection>
+          <FilterSection title={t('category')}>
+            <EnumPicker
+              {...category}
+              variant="tiles"
+              label={t('category')}
+              values={traitCategories}
+              images={traitCategoryImage}
+              kind="trait"
+            />
+          </FilterSection>
+        </>
       }
+      collection={{ modes: ['cards'], storageKey: 'core.traits', cardSize: gridSizeShowcase }}
       renderItem={(trait) => (
-        <RmuTextCard
-          value={`${t(trait.name)}${trait.isTierBased ? ' *' : ''}`}
-          subtitle={getTraitSubtitle(trait)}
-          image={getTraitImage(trait)}
+        <EntityCard
+          title={`${t(trait.name)}${trait.isTierBased ? ' *' : ''}`}
+          subtitle={`${t(trait.isTalent ? 'trait' : 'flaw')} • ${t(trait.category)}`}
+          image={traitCategoryImage(trait.category)}
+          fallbackImages={[defaultImages.trait]}
+          imageFilter={trait.isTalent ? undefined : 'grayscale(0.8)'}
+          metrics={[{ label: t('adquisition-cost'), value: trait.adquisitionCost }]}
           onClick={() => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })}
-          grayscale={trait.isTalent ? 0 : 0.8}
         />
       )}
     />

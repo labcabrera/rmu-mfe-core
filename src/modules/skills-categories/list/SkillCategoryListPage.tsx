@@ -1,29 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
+  defaultImages,
+  EntityCard,
   FilterBar,
   fetchSkillCategories,
-  imageBaseUrl,
+  gridSizeShowcase,
   ListPage,
-  RmuTextCard,
-  rsqlAnd,
-  SearchField,
   SkillCategory,
+  useListFilters,
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
+import StatChips from '../../shared/display/StatChips';
+import { FilterTextField, regexFilter } from '../../shared/filters/list-filters';
 
 export default function SkillCategoryListPage() {
   const auth = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const notify = useNotify();
-  const [name, setName] = useState('');
+  const filters = useListFilters<SkillCategory>({ q: regexFilter(t('name'), 'id') });
   const query = usePagedQuery<SkillCategory>({
     fetcher: (q, page, size) => fetchSkillCategories(q, page, size, auth),
-    rsql: rsqlAnd([['id=re=', name]]),
+    rsql: filters.rsql,
     pageSize: 48,
     onError: notify.error,
   });
@@ -38,14 +40,17 @@ export default function SkillCategoryListPage() {
       query={query}
       filters={
         <FilterBar>
-          <SearchField value={name} onChange={setName} />
+          <FilterTextField filters={filters} filter="q" label={t('name')} />
         </FilterBar>
       }
+      filterState={filters}
+      collection={{ modes: ['cards'], storageKey: 'core.skill-categories', cardSize: gridSizeShowcase }}
       renderItem={(category) => (
-        <RmuTextCard
-          value={t(category.id)}
+        <EntityCard
+          title={t(category.id)}
           subtitle={t('skill-category')}
-          image={`${imageBaseUrl}images/generic/configuration.png`}
+          image={defaultImages['skill-category']}
+          chips={<StatChips stats={category.bonus} realmBonus={category.realmBonus} />}
           onClick={() => navigate(`/core/skill-categories/view/${category.id}`, { state: { skillCategory: category } })}
         />
       )}

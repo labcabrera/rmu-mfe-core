@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, TextField } from '@mui/material';
-import { CategorySeparator, Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
-import SelectAccessType from '../../shared/selects/SelectAccessType';
+import { AccessType, CategorySeparator, EnumPicker, Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { ACCESS_TYPES } from '../../shared/enums';
 import ProfessionFormAttributes from './ProfessionFormAttributes';
 import ProfessionFormProfessionalSkills from './ProfessionFormProfessionalSkills';
 import ProfessionFormRealmTypes from './ProfessionFormRealmTypes';
@@ -18,9 +18,11 @@ const ProfessionForm: FC<{
   return (
     <Grid container spacing={1}>
       <Grid size={12}>
-        <SelectAccessType
+        <EnumPicker
+          label={t('access-type')}
+          values={ACCESS_TYPES}
           value={formData.accessType}
-          onChange={(value) => setFormData({ ...formData, accessType: value })}
+          onChange={(value) => value && setFormData({ ...formData, accessType: value as AccessType })}
         />
       </Grid>
       <Grid size={12}>

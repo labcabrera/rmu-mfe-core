@@ -19,6 +19,7 @@ import {
   CRITICAL_SEVERITIES,
   CriticalSeverity,
   CriticalTableEntry,
+  EnumPicker,
   fetchCriticalTable,
   fetchCriticalTypes,
   LayoutBase,
@@ -26,7 +27,6 @@ import {
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import CoreLawNotice from '../shared/CoreLawNotice';
 import TableEntryDialog from '../shared/TableEntryDialog';
-import TableSelect from '../shared/TableSelect';
 import { severityColor } from '../shared/severity-colors';
 import { criticalTypeName, effectLabel, rollBand } from '../shared/table-labels';
 import { useWholeTable } from '../shared/useWholeTable';
@@ -72,12 +72,16 @@ const CriticalTablesView: FC = () => {
     >
       <Stack spacing={2}>
         <Box sx={{ maxWidth: 400 }}>
-          <TableSelect
+          <EnumPicker
             label={t('attack-tables-critical-type')}
-            tables={types}
+            values={types ?? []}
+            labelPrefix="critical-type-"
+            kind="attack-table"
             value={type}
-            onChange={(value) => setParams({ type: value }, { replace: true })}
-            name={(id) => criticalTypeName(id, t)}
+            onChange={(value) => value && setParams({ type: value }, { replace: true })}
+            disabled={!types}
+            helperText={types ? undefined : t('loading')}
+            required
           />
         </Box>
         {whole.forbidden && <CoreLawNotice />}
