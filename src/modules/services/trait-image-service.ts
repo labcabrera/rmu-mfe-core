@@ -1,12 +1,12 @@
-import { imageBaseUrl, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { defaultImages, imageBaseUrl, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
+
+const CATEGORIES_WITH_IMAGE = ['combat', 'magical', 'senses', 'discipline', 'racial', 'physical'];
+
+/** Asset path of the image of a trait category (`images/generic/trait-<category>.png`, or the generic trait one). */
+export const traitCategoryImage = (category: string | null | undefined): string =>
+  category && CATEGORIES_WITH_IMAGE.includes(category) ? `images/generic/trait-${category}.png` : defaultImages.trait;
 
 export const getTraitImage = (trait: Trait) => {
   if (!trait) return '';
-  if (trait.category === 'combat') return `${imageBaseUrl}images/generic/trait-combat.png`;
-  if (trait.category === 'magical') return `${imageBaseUrl}images/generic/trait-magical.png`;
-  if (trait.category === 'senses') return `${imageBaseUrl}images/generic/trait-senses.png`;
-  if (trait.category === 'discipline') return `${imageBaseUrl}images/generic/trait-discipline.png`;
-  if (trait.category === 'racial') return `${imageBaseUrl}images/generic/trait-racial.png`;
-  if (trait.category === 'physical') return `${imageBaseUrl}images/generic/trait-physical.png`;
-  return `${imageBaseUrl}images/generic/trait.png`;
+  return `${imageBaseUrl}${traitCategoryImage(trait.category)}`;
 };

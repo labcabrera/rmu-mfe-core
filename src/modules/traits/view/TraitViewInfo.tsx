@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Chip, Grid, Paper, Stack, Typography } from '@mui/material';
-import { imageBaseUrl, RmuTextCard, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { EntityCard, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const TraitViewInfo: FC<{
   trait: Trait;
@@ -19,65 +19,41 @@ const TraitViewInfo: FC<{
       <Grid size={12}>
         <Grid container spacing={1}>
           <Grid size={{ xs: 12, md: 4 }}>
-            <RmuTextCard
-              value={t(trait.category)}
-              image={`${imageBaseUrl}images/generic/trait.png`}
-              subtitle={t('category')}
-            />
+            <EntityCard title={t(trait.category)} subtitle={t('category')} imageRatio="none" />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <RmuTextCard
-              value={t(trait.isTalent ? t('trait') : t('flaw'))}
-              image={`${imageBaseUrl}images/generic/trait.png`}
-              subtitle={t('type')}
-            />
+            <EntityCard title={t(trait.isTalent ? t('trait') : t('flaw'))} subtitle={t('type')} imageRatio="none" />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <RmuTextCard
-              value={trait.specialization ? t(trait.specialization) : t('none')}
+            <EntityCard
+              title={String(trait.specialization ? t(trait.specialization) : t('none'))}
               subtitle={t('specialization')}
-              image={`${imageBaseUrl}images/generic/dev-points.png`}
+              imageRatio="none"
             />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <RmuTextCard
-              value={trait.isTierBased ? `1 - ${trait.maxTier}` : t('no')}
+            <EntityCard
+              title={String(trait.isTierBased ? `1 - ${trait.maxTier}` : t('no'))}
               subtitle={t('tier-based')}
-              image={`${imageBaseUrl}images/generic/dev-points.png`}
+              imageRatio="none"
             />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <RmuTextCard
-              value={trait.adquisitionCost}
-              subtitle={t('adquisition-cost')}
-              image={`${imageBaseUrl}images/generic/dev-points.png`}
-            />
+            <EntityCard title={String(trait.adquisitionCost)} subtitle={t('adquisition-cost')} imageRatio="none" />
           </Grid>
           {trait.tierCost && (
             <Grid size={{ xs: 12, md: 4 }}>
-              <RmuTextCard
-                value={trait.tierCost || ''}
-                subtitle={t('tier-cost')}
-                image={`${imageBaseUrl}images/generic/dev-points.png`}
-              />
+              <EntityCard title={String(trait.tierCost || '')} subtitle={t('tier-cost')} imageRatio="none" />
             </Grid>
           )}
           {trait.talentCategory && (
             <Grid size={{ xs: 12, md: 4 }}>
-              <RmuTextCard
-                value={t(trait.talentCategory)}
-                subtitle={t('talent-category')}
-                image={`${imageBaseUrl}images/generic/trait.png`}
-              />
+              <EntityCard title={t(trait.talentCategory)} subtitle={t('talent-category')} imageRatio="none" />
             </Grid>
           )}
           {trait.source && (
             <Grid size={{ xs: 12, md: 4 }}>
-              <RmuTextCard
-                value={t(trait.source)}
-                subtitle={t('source')}
-                image={`${imageBaseUrl}images/generic/trait.png`}
-              />
+              <EntityCard title={t(trait.source)} subtitle={t('source')} imageRatio="none" />
             </Grid>
           )}
         </Grid>

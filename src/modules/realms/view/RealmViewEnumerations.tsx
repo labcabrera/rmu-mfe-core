@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid, Typography } from '@mui/material';
-import { Enumeration, fetchEnumerations, Realm, RmuTextCard, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { EntityCard, Enumeration, fetchEnumerations, Realm, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const RealmViewEnumerations: FC<{
   realm: Realm;
@@ -26,8 +26,8 @@ const RealmViewEnumerations: FC<{
   return (
     <Grid container spacing={1}>
       {enumerations.map((language) => (
-        <Grid size={{ xs: 12, md: 3 }} key={language.id}>
-          <RmuTextCard key={language.id} value={language.key} subtitle={t(category)} image={imageUrl} />
+        <Grid size={{ xs: 12, sm: 6, md: 3 }} key={language.id}>
+          <EntityCard title={language.key} subtitle={t(category)} image={imageUrl} />
         </Grid>
       ))}
       {enumerations.length === 0 && (

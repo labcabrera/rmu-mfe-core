@@ -9,7 +9,7 @@ import {
   fetchRealms,
   LayoutBase,
   Realm,
-  SelectRealm,
+  RealmPicker,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 
@@ -19,7 +19,7 @@ const RaceFormRealmPicker: FC<{ onSelect: (realmId: string) => void }> = ({ onSe
   const { t } = useTranslation();
   const navigate = useNavigate();
   const notify = useNotify();
-  const [realms, setRealms] = useState<Realm[]>([]);
+  const [realms, setRealms] = useState<Realm[]>();
 
   useEffect(() => {
     fetchRealms('', 0, 100, auth)
@@ -39,7 +39,7 @@ const RaceFormRealmPicker: FC<{ onSelect: (realmId: string) => void }> = ({ onSe
     >
       <Stack spacing={2} sx={{ maxWidth: 480 }}>
         <Typography>{t('select-realm-to-continue')}</Typography>
-        <SelectRealm realms={realms} value={null} onChange={(realmId) => realmId && onSelect(realmId)} required />
+        <RealmPicker realms={realms} value={null} onChange={(realmId) => realmId && onSelect(realmId)} required />
       </Stack>
     </LayoutBase>
   );

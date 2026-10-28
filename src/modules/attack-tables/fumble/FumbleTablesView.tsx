@@ -19,12 +19,12 @@ import {
   fetchFumbleTable,
   fetchFumbleTables,
   FumbleTableEntry,
+  FumbleTablePicker,
   LayoutBase,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import CoreLawNotice from '../shared/CoreLawNotice';
 import TableEntryDialog from '../shared/TableEntryDialog';
-import TableSelect from '../shared/TableSelect';
 import { effectLabel, rollBand, tableName } from '../shared/table-labels';
 import { useWholeTable } from '../shared/useWholeTable';
 
@@ -62,12 +62,13 @@ const FumbleTablesView: FC = () => {
     >
       <Stack spacing={2}>
         <Box sx={{ maxWidth: 400 }}>
-          <TableSelect
-            label={t('fumble-table')}
-            tables={tables}
+          <FumbleTablePicker
+            tables={tables ?? []}
             value={id}
-            onChange={(value) => setParams({ table: value }, { replace: true })}
-            name={(table) => tableName(table, t)}
+            onChange={(value) => value && setParams({ table: value }, { replace: true })}
+            disabled={!tables}
+            helperText={tables ? undefined : t('loading')}
+            required
           />
         </Box>
         {whole.forbidden && <CoreLawNotice />}

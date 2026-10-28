@@ -1,27 +1,27 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Grid, MenuItem, TextField } from '@mui/material';
+import { Grid } from '@mui/material';
 import {
   CultureRegion,
   CultureSkillRank,
   CultureSkillRankType,
-  EntitySelect,
+  EnumPicker,
   fetchSkillCategories,
   fetchSkills,
   NumericInput,
   RmuDialog,
   Skill,
+  SkillCategory,
+  SkillCategoryPicker,
+  SkillPicker,
   SkillSelector,
   TechnicalInfo,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import MultiIdSelect from './MultiIdSelect';
 import {
   CULTURE_REGIONS,
   CULTURE_SKILL_RANK_TYPES,
-  cultureRegionLabel,
-  cultureSkillRankTypeLabel,
   isValidCultureSkillRank,
   normalizeCultureSkillRank,
 } from './culture-skill-ranks';
@@ -42,7 +42,7 @@ const AddCultureSkillRankDialog: FC<{
   const notify = useNotify();
   const [entry, setEntry] = useState<CultureSkillRank>(EMPTY_ENTRY);
   const [skills, setSkills] = useState<Skill[]>([]);
-  const [categoryIds, setCategoryIds] = useState<string[]>([]);
+  const [categories, setCategories] = useState<SkillCategory[]>([]);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const AddCultureSkillRankDialog: FC<{
       .then((page) => setSkills(page.content))
       .catch(notify.error);
     fetchSkillCategories('', 0, 100, auth)
-      .then((page) => setCategoryIds(page.content.map((category) => category.id)))
+      .then((page) => setCategories(page.content))
       .catch(notify.error);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
@@ -76,7 +76,6 @@ const AddCultureSkillRankDialog: FC<{
 
   const changeType = (type: CultureSkillRankType) => setEntry({ type, ranks: entry.ranks });
 
-  const skillIds = skills.map((skill) => skill.id);
   const usesMaxRanks = entry.type === 'skill-choice' || entry.type === 'category-pool';
 
   return (
@@ -90,19 +89,14 @@ const AddCultureSkillRankDialog: FC<{
     >
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 6 }}>
-          <TextField
-            select
+          <EnumPicker
             label={t('type')}
+            values={CULTURE_SKILL_RANK_TYPES}
+            labelPrefix="culture-skill-rank-type-"
             value={entry.type}
-            onChange={(e) => changeType(e.target.value as CultureSkillRankType)}
-            fullWidth
-          >
-            {CULTURE_SKILL_RANK_TYPES.map((type) => (
-              <MenuItem key={type} value={type}>
-                {cultureSkillRankTypeLabel(type, t)}
-              </MenuItem>
-            ))}
-          </TextField>
+            onChange={(type) => type && changeType(type as CultureSkillRankType)}
+            required
+          />
         </Grid>
         <Grid size={{ xs: 6, md: 3 }}>
           <NumericInput
@@ -139,9 +133,10 @@ const AddCultureSkillRankDialog: FC<{
         )}
         {entry.type === 'skill-choice' && (
           <Grid size={12}>
-            <MultiIdSelect
+            <SkillPicker
+              mode="multiple"
               label={t('skills')}
-              options={skillIds}
+              skills={skills}
               value={entry.skillIds || []}
               onChange={(ids) => setEntry({ ...entry, skillIds: ids })}
               required
@@ -150,9 +145,11 @@ const AddCultureSkillRankDialog: FC<{
         )}
         {entry.type === 'category-pool' && (
           <Grid size={12}>
-            <MultiIdSelect
+            <SkillCategoryPicker
+              mode="multiple"
+              variant="select"
               label={t('skill-categories')}
-              options={categoryIds}
+              categories={categories}
               value={entry.categoryIds || []}
               onChange={(ids) => setEntry({ ...entry, categoryIds: ids })}
               required
@@ -162,30 +159,23 @@ const AddCultureSkillRankDialog: FC<{
         {entry.type === 'region' && (
           <>
             <Grid size={{ xs: 12, md: 6 }}>
-              <EntitySelect<Skill>
+              <SkillPicker
                 label={t('skill')}
-                options={skills}
+                skills={skills}
                 value={entry.skillId}
-                getLabel={(skill) => t(skill.id)}
                 onChange={(skillId) => setEntry({ ...entry, skillId: skillId || undefined })}
                 required
               />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                select
+              <EnumPicker
                 label={t('region')}
-                value={entry.region || ''}
-                onChange={(e) => setEntry({ ...entry, region: e.target.value as CultureRegion })}
-                error={!entry.region}
-                fullWidth
-              >
-                {CULTURE_REGIONS.map((region) => (
-                  <MenuItem key={region} value={region}>
-                    {cultureRegionLabel(region, t)}
-                  </MenuItem>
-                ))}
-              </TextField>
+                values={CULTURE_REGIONS}
+                labelPrefix="culture-region-"
+                value={entry.region}
+                onChange={(region) => setEntry({ ...entry, region: (region ?? undefined) as CultureRegion })}
+                required
+              />
             </Grid>
           </>
         )}

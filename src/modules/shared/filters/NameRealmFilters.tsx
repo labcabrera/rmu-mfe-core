@@ -1,42 +1,30 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
-import { useAuth } from 'react-oidc-context';
-import { fetchRealms, FilterBar, Realm, rsqlAnd, SearchField, SelectRealm, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { FilterBar, FilterSchema, Realm, RealmPicker } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { TFunction } from 'i18next';
+import { bindSingle, equalsFilter, FilterAccess, FilterTextField, realmName, regexFilter } from './list-filters';
 
-/** Filters of the race and culture lists (name and realm), reported as an RSQL query. */
-export default function NameRealmFilters({
-  onChange,
-  realmField = 'realmId',
-}: {
-  onChange: (rsql: string) => void;
-  /** RSQL field of the realm id: `realmId` for races, `realm.id` for cultures. */
-  realmField?: string;
-}) {
-  const auth = useAuth();
-  const notify = useNotify();
-  const [realms, setRealms] = useState<Realm[]>([]);
-  const [name, setName] = useState('');
-  const [realmId, setRealmId] = useState('');
+/**
+ * Filters of the race and culture lists: name and realm. `realmField` is the RSQL field of the realm id: `realmId` for
+ * races, `realm.id` for cultures.
+ */
+export const nameRealmSchema = <T,>(
+  t: TFunction,
+  realms: Realm[] | undefined,
+  realmField = 'realmId'
+): FilterSchema<T> => ({
+  q: regexFilter<T>(t('name'), 'name'),
+  realm: equalsFilter<T>(t('realm'), realmField, { format: (id) => realmName(realms, id) }),
+});
 
-  useEffect(() => {
-    onChange(
-      rsqlAnd([
-        ['name=re=', name],
-        [`${realmField}==`, realmId],
-      ])
-    );
-  }, [name, realmId]);
-
-  useEffect(() => {
-    fetchRealms('', 0, 100, auth)
-      .then((response) => setRealms(response.content))
-      .catch(notify.error);
-  }, []);
-
+/** Name and realm filters of the race and culture lists, bound to their useListFilters state. */
+export default function NameRealmFilters({ filters, realms }: { filters: FilterAccess; realms: Realm[] | undefined }) {
+  const { t } = useTranslation();
+  const realm = bindSingle(filters, 'realm');
   return (
     <FilterBar>
-      <SearchField value={name} onChange={setName} />
-      <SelectRealm value={realmId} onChange={(id) => setRealmId(id ?? '')} realms={realms} />
+      <FilterTextField filters={filters} filter="q" label={t('name')} />
+      <RealmPicker {...realm} realms={realms} variant="select" />
     </FilterBar>
   );
 }

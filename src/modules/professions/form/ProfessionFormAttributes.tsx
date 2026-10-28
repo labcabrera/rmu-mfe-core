@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, TextField } from '@mui/material';
-import { Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
-import SelectProfessionArchetype from '../../shared/selects/SelectProfessionArchetype';
+import { EnumPicker, Profession, ProfessionArchetype } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { PROFESSION_ARCHETYPES } from '../../shared/enums';
 
 const ProfessionFormAttributes: FC<{
   formData: Profession;
@@ -26,11 +26,15 @@ const ProfessionFormAttributes: FC<{
         </Grid>
       )}
       <Grid size={12}>
-        <SelectProfessionArchetype
+        <EnumPicker
           label={t('archetype')}
           name="archetype"
+          values={PROFESSION_ARCHETYPES}
           value={formData.archetype}
-          onChange={(archetype) => setFormData({ ...formData, archetype })}
+          onChange={(archetype) =>
+            archetype && setFormData({ ...formData, archetype: archetype as ProfessionArchetype })
+          }
+          required
         />
       </Grid>
     </Grid>

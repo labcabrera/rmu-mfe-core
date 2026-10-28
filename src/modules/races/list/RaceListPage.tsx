@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import {
@@ -8,11 +8,13 @@ import {
   EntityCard,
   gridSizeShowcase,
   useNotify,
+  useListFilters,
   usePagedQuery,
   useViewTransitionNavigate,
   viewTransitionName,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import NameRealmFilters from '../../shared/filters/NameRealmFilters';
+import NameRealmFilters, { nameRealmSchema } from '../../shared/filters/NameRealmFilters';
+import { useRealms } from '../../shared/filters/list-filters';
 
 /** Races are created from their realm's page (they need a realmId), so this list has no add button. */
 export default function RaceListPage() {
@@ -20,10 +22,11 @@ export default function RaceListPage() {
   const { t } = useTranslation();
   const navigate = useViewTransitionNavigate();
   const notify = useNotify();
-  const [rsql, setRsql] = useState('');
+  const realms = useRealms();
+  const filters = useListFilters(nameRealmSchema<Race>(t, realms));
   const query = usePagedQuery<Race>({
     fetcher: (q, page, size) => fetchRaces(q, page, size, auth),
-    rsql,
+    rsql: filters.rsql,
     onError: notify.error,
   });
 
@@ -31,7 +34,8 @@ export default function RaceListPage() {
     <ListPage
       breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('races') }]}
       query={query}
-      filters={<NameRealmFilters onChange={setRsql} />}
+      filters={<NameRealmFilters filters={filters} realms={realms} />}
+      filterState={filters}
       collection={{ modes: ['cards'], storageKey: 'core.races', cardSize: gridSizeShowcase }}
       renderItem={(race) => (
         <EntityCard

@@ -6,6 +6,7 @@ import {
   AbsoluteManeuverResult,
   AbsoluteManeuverTable,
   DifficultyPicker,
+  EnumPicker,
   fetchAbsoluteManeuver,
   fetchAbsoluteManeuverTable,
   fetchAbsoluteManeuverTables,
@@ -19,7 +20,6 @@ import {
   useNotify,
   translated,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import SelectManeuverTable from '../shared/selects/SelectManeuverTable';
 import AbsoluteManeuverTableView from './AbsoluteManeuverTableView';
 import ManeuverResultCard from './shared/ManeuverResultCard';
 import ManeuverTotal from './shared/ManeuverTotal';
@@ -87,11 +87,12 @@ const AbsoluteManeuverView: FC<ManeuverTabProps> = ({
         <Stack spacing={2}>
           <Section>
             <Stack spacing={2}>
-              <SelectManeuverTable
+              <EnumPicker
                 value={tableName}
                 label={t('maneuver-table')}
-                tables={tableNames}
+                values={tableNames}
                 onChange={(value) => setTableName(value ?? 'generic')}
+                required
               />
               <DifficultyPicker value={difficulty} onChange={onDifficultyChange} guide={guide} />
             </Stack>

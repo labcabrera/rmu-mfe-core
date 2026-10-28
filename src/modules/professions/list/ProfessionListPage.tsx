@@ -1,36 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Chip } from '@mui/material';
 import {
+  EntityCard,
+  EnumPicker,
   FilterBar,
   fetchProfessions,
+  gridSizeShowcase,
   ListPage,
   Profession,
-  ProfessionArchetype,
-  EntityCard,
-  gridSizeShowcase,
-  rsqlAnd,
-  SearchField,
+  useListFilters,
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import SelectProfessionArchetype from '../../shared/selects/SelectProfessionArchetype';
+import { PROFESSION_ARCHETYPES } from '../../shared/enums';
+import { bindSingle, equalsFilter, FilterTextField, regexFilter } from '../../shared/filters/list-filters';
 
 export default function ProfessionListPage() {
   const auth = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const notify = useNotify();
-  const [name, setName] = useState('');
-  const [archetype, setArchetype] = useState<ProfessionArchetype | null>(null);
+  const filters = useListFilters<Profession>({
+    q: regexFilter(t('name'), 'id'),
+    archetype: equalsFilter(t('archetype'), 'archetype', {
+      options: PROFESSION_ARCHETYPES,
+      format: (value) => t(value),
+    }),
+  });
+  const archetype = bindSingle(filters, 'archetype');
   const query = usePagedQuery<Profession>({
     fetcher: (q, page, size) => fetchProfessions(q, page, size, auth),
-    rsql: rsqlAnd([
-      ['id=re=', name],
-      ['archetype==', archetype],
-    ]),
+    rsql: filters.rsql,
     onError: notify.error,
   });
 
@@ -41,17 +44,11 @@ export default function ProfessionListPage() {
       onAdd={() => navigate('/core/professions/create')}
       filters={
         <FilterBar>
-          <SearchField value={name} onChange={setName} />
-          <SelectProfessionArchetype
-            label={t('archetype')}
-            name="archetype"
-            value={archetype}
-            required={false}
-            allowAll
-            onChange={(value) => setArchetype(value || null)}
-          />
+          <FilterTextField filters={filters} filter="q" label={t('name')} />
+          <EnumPicker {...archetype} variant="select" label={t('archetype')} values={PROFESSION_ARCHETYPES} />
         </FilterBar>
       }
+      filterState={filters}
       collection={{ modes: ['cards'], storageKey: 'core.professions', cardSize: gridSizeShowcase }}
       renderItem={(profession) => (
         <EntityCard

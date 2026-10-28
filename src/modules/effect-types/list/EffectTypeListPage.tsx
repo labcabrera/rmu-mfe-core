@@ -1,41 +1,47 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
-import { MenuItem, TextField } from '@mui/material';
 import {
+  defaultImages,
   EffectType,
   effectPropertyRequirements,
+  EntityCard,
+  EntityPicker,
+  EnumPicker,
   FilterBar,
   fetchEffectTypes,
-  imageBaseUrl,
+  gridSizeShowcase,
   ListPage,
-  RmuTextCard,
-  rsqlAnd,
-  SearchField,
+  useListFilters,
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { bindSingle, equalsFilter, FilterTextField, regexFilter } from '../../shared/filters/list-filters';
 
-const valueOrUndefined = (value: string) => (value !== 'all' ? value : undefined);
+const BOOLEANS = ['true', 'false'];
+const booleanLabel = (value: string) => (value === 'true' ? 'yes' : 'no');
 
 export default function EffectTypeListPage() {
   const auth = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const notify = useNotify();
-  const [id, setId] = useState('');
-  const [isPersistent, setIsPersistent] = useState('all');
-  const [valueRequirement, setValueRequirement] = useState('all');
+  const filters = useListFilters<EffectType>({
+    q: regexFilter(t('id'), 'id'),
+    persistent: equalsFilter(t('is-persistent'), 'isPersistent', {
+      options: BOOLEANS,
+      format: (value) => t(booleanLabel(value)),
+    }),
+    value: equalsFilter(t('value'), 'value', { options: effectPropertyRequirements, format: (value) => t(value) }),
+  });
   const query = usePagedQuery<EffectType>({
     fetcher: (q, page, size) => fetchEffectTypes(q, page, size, auth),
-    rsql: rsqlAnd([
-      ['id=re=', id],
-      ['isPersistent==', valueOrUndefined(isPersistent)],
-      ['value==', valueOrUndefined(valueRequirement)],
-    ]),
+    rsql: filters.rsql,
     onError: notify.error,
   });
+  const persistent = bindSingle(filters, 'persistent');
+  const value = bindSingle(filters, 'value');
 
   return (
     <ListPage
@@ -44,39 +50,24 @@ export default function EffectTypeListPage() {
       onAdd={() => navigate('/core/effect-types/create')}
       filters={
         <FilterBar>
-          <SearchField value={id} onChange={setId} label={t('id')} name="id" />
-          <TextField
-            select
+          <FilterTextField filters={filters} filter="q" label={t('id')} />
+          <EntityPicker
+            {...persistent}
+            variant="select"
+            hideImages
             label={t('is-persistent')}
-            value={isPersistent}
-            onChange={(e) => setIsPersistent(e.target.value)}
-            fullWidth
-          >
-            <MenuItem value="all">{t('all')}</MenuItem>
-            <MenuItem value="true">{t('yes')}</MenuItem>
-            <MenuItem value="false">{t('no')}</MenuItem>
-          </TextField>
-          <TextField
-            select
-            label={t('value')}
-            value={valueRequirement}
-            onChange={(e) => setValueRequirement(e.target.value)}
-            fullWidth
-          >
-            <MenuItem value="all">{t('all')}</MenuItem>
-            {effectPropertyRequirements.map((requirement) => (
-              <MenuItem key={requirement} value={requirement}>
-                {t(requirement)}
-              </MenuItem>
-            ))}
-          </TextField>
+            options={BOOLEANS.map((id) => ({ id, label: t(booleanLabel(id)) }))}
+          />
+          <EnumPicker {...value} variant="select" label={t('value')} values={effectPropertyRequirements} />
         </FilterBar>
       }
+      filterState={filters}
+      collection={{ modes: ['cards'], storageKey: 'core.effect-types', cardSize: gridSizeShowcase }}
       renderItem={(effectType) => (
-        <RmuTextCard
-          value={t(effectType.id)}
+        <EntityCard
+          title={t(effectType.id)}
           subtitle={`${t(effectType.isPersistent ? 'persistent' : 'instant')} • ${t(effectType.value)}`}
-          image={`${imageBaseUrl}images/generic/configuration.png`}
+          image={defaultImages.generic}
           onClick={() => navigate(`/core/effect-types/view/${effectType.id}`, { state: { effectType } })}
         />
       )}

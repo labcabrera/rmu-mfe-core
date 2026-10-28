@@ -4,16 +4,18 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid, TextField, Button, ButtonGroup, FormControlLabel, Switch } from '@mui/material';
 import {
+  AccessType,
+  EnumPicker,
+  fetchEnumerationCategories,
   fetchSkillCategories,
   LoadingState,
   Skill,
   SkillCategory,
+  SkillCategoryPicker,
   STATS,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import SelectAccessType from '../../shared/selects/SelectAccessType';
-import SelectSkillCategory from '../../shared/selects/SelectSkillCategory';
-import SelectSkillSpecialization from '../../shared/selects/SelectSkillSpecialization';
+import { ACCESS_TYPES } from '../../shared/enums';
 
 const SkillForm: FC<{
   formData: Skill;
@@ -23,12 +25,14 @@ const SkillForm: FC<{
   const auth = useAuth();
   const { t } = useTranslation();
   const notify = useNotify();
-  const [categories, setCategories] = React.useState<SkillCategory[]>([]);
+  const [categories, setCategories] = React.useState<SkillCategory[]>();
+  const [specializations, setSpecializations] = React.useState<string[]>();
 
   useEffect(() => {
     fetchSkillCategories('', 0, 1000, auth)
       .then((data) => setCategories(data.content))
       .catch((err) => notify.error(err));
+    fetchEnumerationCategories(auth).then(setSpecializations).catch(notify.error);
   }, []);
 
   if (!formData || !setFormData) return <LoadingState />;
@@ -37,9 +41,11 @@ const SkillForm: FC<{
     <>
       <Grid container spacing={1}>
         <Grid size={12}>
-          <SelectAccessType
+          <EnumPicker
+            label={t('access-type')}
+            values={ACCESS_TYPES}
             value={formData.accessType}
-            onChange={(value) => setFormData({ ...formData, accessType: value })}
+            onChange={(value) => value && setFormData({ ...formData, accessType: value as AccessType })}
           />
         </Grid>
         {create && (
@@ -55,10 +61,11 @@ const SkillForm: FC<{
           </Grid>
         )}
         <Grid size={12}>
-          <SelectSkillCategory
+          <SkillCategoryPicker
             label={t('skill-category')}
-            value={formData.categoryId || ''}
-            onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+            name="category"
+            value={formData.categoryId || null}
+            onChange={(categoryId) => setFormData({ ...formData, categoryId: categoryId ?? '' })}
             categories={categories}
             required
           />
@@ -67,10 +74,13 @@ const SkillForm: FC<{
           <StatsSelection formData={formData} setFormData={setFormData} />
         </Grid>
         <Grid size={12}>
-          <SelectSkillSpecialization
-            value={formData.specialization || null}
+          <EnumPicker
             label={t('specialization')}
-            onSpecializationChange={(e) => setFormData({ ...formData, specialization: e })}
+            name="specialization"
+            values={specializations ?? []}
+            variant="select"
+            value={formData.specialization || null}
+            onChange={(specialization) => setFormData({ ...formData, specialization })}
           />
         </Grid>
         {formData.specialization && (

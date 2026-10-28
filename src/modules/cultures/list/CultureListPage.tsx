@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
@@ -9,19 +9,22 @@ import {
   EntityCard,
   gridSizeShowcase,
   useNotify,
+  useListFilters,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import NameRealmFilters from '../../shared/filters/NameRealmFilters';
+import NameRealmFilters, { nameRealmSchema } from '../../shared/filters/NameRealmFilters';
+import { useRealms } from '../../shared/filters/list-filters';
 
 export default function CultureListPage() {
   const auth = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const notify = useNotify();
-  const [rsql, setRsql] = useState('');
+  const realms = useRealms();
+  const filters = useListFilters(nameRealmSchema<Culture>(t, realms, 'realm.id'));
   const query = usePagedQuery<Culture>({
     fetcher: (q, page, size) => fetchCultures(q, page, size, auth),
-    rsql,
+    rsql: filters.rsql,
     onError: notify.error,
   });
 
@@ -30,7 +33,8 @@ export default function CultureListPage() {
       breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('cultures') }]}
       query={query}
       onAdd={() => navigate('/core/cultures/create')}
-      filters={<NameRealmFilters onChange={setRsql} realmField="realm.id" />}
+      filters={<NameRealmFilters filters={filters} realms={realms} />}
+      filterState={filters}
       collection={{ modes: ['cards'], storageKey: 'core.cultures', cardSize: gridSizeShowcase }}
       renderItem={(culture) => (
         <EntityCard

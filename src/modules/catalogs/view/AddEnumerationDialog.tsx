@@ -6,7 +6,7 @@ import {
   createEnumeration,
   CreateEnumerationDto,
   Realm,
-  SelectRealm,
+  RealmPicker,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 
@@ -58,10 +58,12 @@ const AddEnumerationDialog: FC<Props> = ({ open, category, realms, onClose, onAd
             />
           </Grid>
           <Grid size={{ xs: 12 }}>
-            <SelectRealm
-              value={form.realmId || ''}
+            <RealmPicker
+              value={form.realmId || null}
               onChange={(realmId) => setForm({ ...form, realmId: realmId ?? '' })}
               realms={realms}
+              allowAll
+              allLabel={t('none')}
             />
           </Grid>
         </Grid>

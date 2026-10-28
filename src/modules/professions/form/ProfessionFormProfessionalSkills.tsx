@@ -9,9 +9,9 @@ import {
   LoadingState,
   Profession,
   Skill,
+  SkillPicker,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import SelectSkill from '../../shared/selects/SelectSkill';
 
 const ProfessionFormProfessionalSkills: FC<{
   formData: Profession;
@@ -20,7 +20,7 @@ const ProfessionFormProfessionalSkills: FC<{
   const auth = useAuth();
   const { t } = useTranslation();
   const notify = useNotify();
-  const [allSkills, setAllSkills] = React.useState<string[]>([]);
+  const [allSkills, setAllSkills] = React.useState<Skill[]>([]);
   const [selectedSkillId, setSelectedSkillId] = React.useState<string | null>(null);
   // The lib DTO types professionalSkills as `[]`; it holds skill ids.
   const skills: string[] = formData.professionalSkills ?? [];
@@ -39,7 +39,7 @@ const ProfessionFormProfessionalSkills: FC<{
 
   useEffect(() => {
     fetchSkills('', 0, 500, auth)
-      .then((response) => setAllSkills(response.content.map((s: Skill) => s.id)))
+      .then((response) => setAllSkills(response.content))
       .catch((err: Error) => notify.error(err));
   }, []);
 
@@ -48,10 +48,9 @@ const ProfessionFormProfessionalSkills: FC<{
   return (
     <Grid container spacing={1}>
       <Grid size={6}>
-        <SelectSkill
+        <SkillPicker
           label={t('skill')}
-          value={selectedSkillId || undefined}
-          name={''}
+          value={selectedSkillId}
           onChange={(skillId) => setSelectedSkillId(skillId)}
           skills={allSkills}
         />
