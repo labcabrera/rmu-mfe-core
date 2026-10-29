@@ -83,9 +83,6 @@ export default function CatalogViewPage() {
           <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
             <Stack direction="column">
               <Typography>{t(enumeration.key, { defaultValue: enumeration.name ?? enumeration.key })}</Typography>
-              <Typography variant="caption" color="text.secondary">
-                {enumeration.key}
-              </Typography>
               <Typography color="secondary">
                 <em>{getRealmName(enumeration)}</em>
               </Typography>
