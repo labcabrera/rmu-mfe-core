@@ -27,7 +27,11 @@ const RealmViewEnumerations: FC<{
     <Grid container spacing={1}>
       {enumerations.map((language) => (
         <Grid size={{ xs: 12, sm: 6, md: 3 }} key={language.id}>
-          <EntityCard title={language.key} subtitle={t(category)} image={imageUrl} />
+          <EntityCard
+            title={t(language.key, { defaultValue: language.name ?? language.key })}
+            subtitle={t(category)}
+            image={imageUrl}
+          />
         </Grid>
       ))}
       {enumerations.length === 0 && (

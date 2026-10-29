@@ -20,6 +20,7 @@ import {
   useEntity,
   useNotify,
   useSectionParam,
+  useSpecializationLabel,
   viewTransitionName,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import RaceViewOverview from './RaceViewOverview';
@@ -32,6 +33,8 @@ type RaceSectionId = 'overview' | 'traits' | 'skills';
 export default function RaceViewPage() {
   const auth = useAuth();
   const { t } = useTranslation();
+  // Spec 050: catalog keys shown by their name
+  const specializationLabel = useSpecializationLabel();
   const navigate = useNavigate();
   const location = useLocation();
   const notify = useNotify();
@@ -108,7 +111,7 @@ export default function RaceViewPage() {
                   key="language"
                   size="small"
                   variant="outlined"
-                  label={`${t('default-language')}: ${t(entity.defaultLanguage, { defaultValue: entity.defaultLanguage })}`}
+                  label={`${t('default-language')}: ${specializationLabel(entity.defaultLanguage)}`}
                 />,
               ]
             : []),

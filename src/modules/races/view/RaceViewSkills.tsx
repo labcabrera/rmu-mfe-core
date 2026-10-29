@@ -16,6 +16,7 @@ import {
   Race,
   RaceSkillBonus,
   useNotify,
+  useSpecializationLabel,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import AddRaceSkillDialog from './skills/AddRaceSkillDialog';
 
@@ -26,6 +27,8 @@ const RaceViewSkills: FC<{
 }> = ({ race, setRace }) => {
   const auth = useAuth();
   const { t, i18n } = useTranslation();
+  // Spec 050: catalog keys shown by their name
+  const specializationLabel = useSpecializationLabel();
   const notify = useNotify();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [skillToDelete, setSkillToDelete] = useState<RaceSkillBonus>();
@@ -98,7 +101,7 @@ const RaceViewSkills: FC<{
                       </Link>
                       {skill.specialization && (
                         <Typography variant="caption" color="text.secondary" component="div">
-                          {t(skill.specialization)}
+                          {specializationLabel(skill.specialization)}
                         </Typography>
                       )}
                     </Box>

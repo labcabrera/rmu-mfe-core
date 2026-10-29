@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { Culture, fetchEnumerations, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Culture, fetchEnumerations, useNotify, useSpecializationLabel } from '@labcabrera-rmu/rmu-react-shared-lib';
 import MultiIdSelect from '../shared/MultiIdSelect';
 
 const CultureFormAttributes: FC<{
@@ -12,10 +12,12 @@ const CultureFormAttributes: FC<{
   const auth = useAuth();
   const { t } = useTranslation();
   const notify = useNotify();
+  // Spec 050: catalog keys shown by their name
+  const specializationLabel = useSpecializationLabel();
   const [languageOptions, setLanguageOptions] = useState<string[]>([]);
 
   useEffect(() => {
-    fetchEnumerations('category==language', 0, 500, auth)
+    fetchEnumerations('category==language', 0, 1000, auth)
       .then((page) => setLanguageOptions(Array.from(new Set(page.content.map((e) => e.key)))))
       .catch(notify.error);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,7 +53,7 @@ const CultureFormAttributes: FC<{
           options={languageOptions}
           value={formData.languages || []}
           onChange={(languages) => setFormData({ ...formData, languages })}
-          freeSolo
+          getLabel={specializationLabel}
           helperText={t('culture-languages-help')}
         />
       </Grid>

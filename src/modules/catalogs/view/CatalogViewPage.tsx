@@ -34,8 +34,8 @@ export default function CatalogViewPage() {
   const { category } = useParams<{ category?: string }>();
   const realms = useRealms();
   const filters = useListFilters<Enumeration>({
-    // The key is only searched from its third character, as the page always did.
-    q: { kind: 'text', label: t('name'), toRsql: (value) => (value.length > 2 ? `key=re=${value}` : undefined) },
+    // The name is only searched from its third character, as the page always did.
+    q: { kind: 'text', label: t('name'), toRsql: (value) => (value.length > 2 ? `name=re=${value}` : undefined) },
     realm: equalsFilter(t('realm'), 'realmId', { format: (id) => realmName(realms, id) }),
   });
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -82,7 +82,7 @@ export default function CatalogViewPage() {
         <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`}>
           <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
             <Stack direction="column">
-              <Typography>{t(enumeration.key)}</Typography>
+              <Typography>{t(enumeration.key, { defaultValue: enumeration.name ?? enumeration.key })}</Typography>
               <Typography color="secondary">
                 <em>{getRealmName(enumeration)}</em>
               </Typography>
