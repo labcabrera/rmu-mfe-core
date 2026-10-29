@@ -1,7 +1,12 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Paper, Table, TableBody, TableContainer, TableCell, TableHead, TableRow, Typography } from '@mui/material';
-import { CultureSkillRank, DeleteButton, DeleteDialog } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  CultureSkillRank,
+  DeleteButton,
+  DeleteDialog,
+  useSpecializationLabel,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { cultureSkillRankTarget, cultureSkillRankTypeLabel } from './culture-skill-ranks';
 
 /** Typed skill rank entries of a culture. Entries are deleted by their position in the list. */
@@ -10,6 +15,8 @@ const CultureSkillRankTable: FC<{
   onDelete?: (index: number) => void;
 }> = ({ entries, onDelete }) => {
   const { t } = useTranslation();
+  // Spec 050: re-renders when the names of the catalog keys arrive
+  useSpecializationLabel();
   const [selectedIndex, setSelectedIndex] = useState<number>();
 
   if (!entries || entries.length === 0) {

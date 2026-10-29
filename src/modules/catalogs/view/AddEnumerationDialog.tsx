@@ -7,6 +7,8 @@ import {
   CreateEnumerationDto,
   Realm,
   RealmPicker,
+  resetEnumerationNames,
+  toKey,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 
@@ -24,18 +26,22 @@ const AddEnumerationDialog: FC<Props> = ({ open, category, realms, onClose, onAd
   const notify = useNotify();
   const [form, setForm] = useState<CreateEnumerationDto>({
     category: category,
-    key: '',
+    name: '',
     realmId: null,
     accessType: 'public',
   });
 
   const onSave = () => {
-    createEnumeration(form!, auth)
-      .then(() => onAdd())
+    // The API derives the key from the name (spec 050)
+    createEnumeration({ ...form, name: form.name.trim() }, auth)
+      .then(() => {
+        resetEnumerationNames();
+        onAdd();
+      })
       .catch((err) => notify.error(err));
     setForm({
       category: category,
-      key: '',
+      name: '',
       realmId: null,
       accessType: 'public',
     });
@@ -49,12 +55,13 @@ const AddEnumerationDialog: FC<Props> = ({ open, category, realms, onClose, onAd
         <Grid container spacing={2} sx={{ pt: 1 }}>
           <Grid size={{ xs: 12 }}>
             <TextField
-              label={t('key')}
-              value={form.key}
-              onChange={(e) => setForm({ ...form, key: e.target.value })}
+              label={t('name')}
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
               fullWidth
               size="small"
               required
+              helperText={`${t('enumeration-key')}: ${toKey(form.name) || '—'}. ${t('enumeration-key-help')}`}
             />
           </Grid>
           <Grid size={{ xs: 12 }}>
@@ -70,7 +77,7 @@ const AddEnumerationDialog: FC<Props> = ({ open, category, realms, onClose, onAd
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>{t('cancel')}</Button>
-        <Button onClick={onSave} variant="contained" disabled={!form.key}>
+        <Button onClick={onSave} variant="contained" disabled={!toKey(form.name)}>
           {t('add')}
         </Button>
       </DialogActions>

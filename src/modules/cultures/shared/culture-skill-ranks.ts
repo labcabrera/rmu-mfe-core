@@ -1,4 +1,9 @@
-import { CultureRegion, CultureSkillRank, CultureSkillRankType } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  CultureRegion,
+  CultureSkillRank,
+  CultureSkillRankType,
+  specializationLabel,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { TFunction } from 'i18next';
 
 export const CULTURE_SKILL_RANK_TYPES: CultureSkillRankType[] = [
@@ -23,7 +28,9 @@ export const cultureRegionLabel = (region: CultureRegion, t: TFunction): string 
 export const cultureSkillRankTarget = (entry: CultureSkillRank, t: TFunction): string => {
   switch (entry.type) {
     case 'skill':
-      return entry.specialization ? `${t(entry.skillId || '')} (${t(entry.specialization)})` : t(entry.skillId || '');
+      return entry.specialization
+        ? `${t(entry.skillId || '')} (${specializationLabel(t, entry.specialization)})`
+        : t(entry.skillId || '');
     case 'skill-choice':
       return (entry.skillIds || []).map((id) => t(id)).join(', ');
     case 'category-pool':

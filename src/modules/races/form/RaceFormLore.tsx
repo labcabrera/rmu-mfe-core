@@ -3,7 +3,13 @@ import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid, TextField } from '@mui/material';
-import { EnumPicker, fetchEnumerations, Race, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  EnumPicker,
+  fetchEnumerations,
+  Race,
+  useNotify,
+  useSpecializationLabel,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const RaceFormLore: FC<{
   realmId: string;
@@ -13,11 +19,14 @@ const RaceFormLore: FC<{
   const auth = useAuth();
   const { t } = useTranslation();
   const notify = useNotify();
+  // Spec 050: catalog keys shown by their name
+  const specializationLabel = useSpecializationLabel();
   const [languages, setLanguages] = React.useState<string[]>([]);
 
   useEffect(() => {
     if (realmId) {
-      fetchEnumerations(`realmId==${realmId};category==language`, 0, 100, auth)
+      // The languages of the realm and the global ones
+      fetchEnumerations(`category==language;(realmId==${realmId},realmId==null)`, 0, 1000, auth)
         .then((data) => {
           setLanguages(data.content.map((e) => e.key));
         })
@@ -34,6 +43,7 @@ const RaceFormLore: FC<{
           value={formData.defaultLanguage || null}
           allowAll
           allLabel={t('none')}
+          formatLabel={specializationLabel}
           onChange={(language) => setFormData({ ...formData, defaultLanguage: language ?? '' })}
         />
       </Grid>

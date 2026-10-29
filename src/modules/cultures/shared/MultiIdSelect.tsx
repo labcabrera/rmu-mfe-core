@@ -11,7 +11,9 @@ const MultiIdSelect: FC<{
   required?: boolean;
   freeSolo?: boolean;
   helperText?: string;
-}> = ({ label, options, value, onChange, required = false, freeSolo = false, helperText }) => {
+  /** Label of an id instead of its translation */
+  getLabel?: (id: string) => string;
+}> = ({ label, options, value, onChange, required = false, freeSolo = false, helperText, getLabel }) => {
   const { t } = useTranslation();
   return (
     <Autocomplete<string, true, false, boolean>
@@ -19,7 +21,7 @@ const MultiIdSelect: FC<{
       freeSolo={freeSolo}
       options={options}
       value={value}
-      getOptionLabel={(option) => t(option)}
+      getOptionLabel={(option) => (getLabel ? getLabel(option) : t(option))}
       onChange={(_, selected) => onChange(selected.map((e) => String(e).trim()).filter((e) => !!e))}
       filterSelectedOptions
       noOptionsText={t('no-results')}
