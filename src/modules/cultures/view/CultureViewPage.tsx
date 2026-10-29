@@ -9,6 +9,7 @@ import {
   CategorySeparator,
   Culture,
   CultureSkillRank,
+  defaultImages,
   deleteCulture,
   deleteCultureSkillRank,
   DetailPage,
@@ -65,6 +66,7 @@ export default function CultureViewPage() {
         <>
           <EditableAvatar
             imageUrl={culture.imageUrl || ''}
+            altImageUrl={defaultImages.culture}
             onImageChange={(avatar) => onUpdateImage(culture, avatar)}
           />
           <Chip
