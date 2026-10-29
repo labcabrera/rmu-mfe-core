@@ -4,6 +4,7 @@ import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   Culture,
+  defaultImages,
   fetchCultures,
   ListPage,
   EntityCard,
@@ -38,8 +39,8 @@ export default function CultureListPage() {
       collection={{ modes: ['cards'], storageKey: 'core.cultures', cardSize: gridSizeShowcase }}
       renderItem={(culture) => (
         <EntityCard
-          title={culture.name}
-          image={culture.imageUrl}
+          title={t(culture.name)}
+          image={culture.imageUrl || defaultImages.culture}
           description={culture.description}
           metrics={[{ label: t('skills'), value: culture.skillRanks?.length ?? 0 }]}
           onClick={() => navigate(`/core/cultures/view/${culture.id}`, { state: { culture } })}
