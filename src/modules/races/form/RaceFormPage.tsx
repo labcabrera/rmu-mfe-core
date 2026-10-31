@@ -65,7 +65,7 @@ const EMPTY_RACE = {
   traits: [],
   defaultLanguage: null,
   description: '',
-  imageUrl: 'images/races/unknown-alt.png',
+  imageUrl: 'images/races/unknown.png',
 } as unknown as Race;
 
 /**
