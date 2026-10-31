@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Chip, Grid, Typography } from '@mui/material';
+import { Chip, Grid, Stack, Tooltip, Typography } from '@mui/material';
 import { EditableAvatar, imageBaseUrl, Realm, updateRealm, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const RealmViewResume: FC<{
@@ -25,12 +25,14 @@ const RealmViewResume: FC<{
           imageUrl={realm.imageUrl || `${imageBaseUrl}images/generic/realm.png`}
           onImageChange={(image) => onImageChange(image)}
         />
-        <Chip
-          size="small"
-          label={t(realm.accessType)}
-          color={realm.accessType === 'public' ? 'success' : 'error'}
-          sx={{ mt: 2 }}
-        />
+        <Stack direction="row" spacing={1} sx={{ mt: 2, flexWrap: 'wrap' }}>
+          <Chip size="small" label={t(realm.accessType)} color={realm.accessType === 'public' ? 'success' : 'error'} />
+          {realm.generic && (
+            <Tooltip title={t('realm-generic-help')}>
+              <Chip size="small" label={t('realm-generic')} color="info" variant="outlined" />
+            </Tooltip>
+          )}
+        </Stack>
       </Grid>
       <Grid size={12}>
         <Typography variant="h6" color="primary" gutterBottom>

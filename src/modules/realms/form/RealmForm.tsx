@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, TextField } from '@mui/material';
-import { AccessType, EnumPicker, MagicPresence, Realm } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { FormControlLabel, FormHelperText, Grid, Switch, TextField } from '@mui/material';
+import { AccessType, EnumPicker, MagicPresence, Realm, useIsAdmin } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { ACCESS_TYPES, MAGIC_PRESENCES } from '../../shared/enums';
 
 const RealmForm: FC<{
@@ -9,6 +9,8 @@ const RealmForm: FC<{
   setFormData: (data: Realm) => void;
 }> = ({ formData, setFormData }) => {
   const { t } = useTranslation();
+  // Only an admin marks a realm as generic (spec 055); the API refuses it to anyone else.
+  const admin = useIsAdmin();
 
   return (
     <Grid container spacing={2}>
@@ -30,6 +32,21 @@ const RealmForm: FC<{
           fullWidth
         />
       </Grid>
+      {admin && (
+        <Grid size={12}>
+          <FormControlLabel
+            control={
+              <Switch
+                name="generic"
+                checked={!!formData.generic}
+                onChange={(e) => setFormData({ ...formData, generic: e.target.checked })}
+              />
+            }
+            label={t('realm-generic')}
+          />
+          <FormHelperText sx={{ mt: 0 }}>{t('realm-generic-help')}</FormHelperText>
+        </Grid>
+      )}
       <Grid size={12}>
         <EnumPicker
           label={t('magic-presence')}
