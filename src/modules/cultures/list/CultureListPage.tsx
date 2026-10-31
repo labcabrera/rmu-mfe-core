@@ -8,7 +8,6 @@ import {
   fetchCultures,
   ListPage,
   EntityCard,
-  gridSizeShowcase,
   useNotify,
   useListFilters,
   usePagedQuery,
@@ -36,7 +35,7 @@ export default function CultureListPage() {
       onAdd={() => navigate('/core/cultures/create')}
       filters={<NameRealmFilters filters={filters} realms={realms} />}
       filterState={filters}
-      collection={{ modes: ['cards'], storageKey: 'core.cultures', cardSize: gridSizeShowcase }}
+      collection={{ modes: ['cards'], storageKey: 'core.cultures' }}
       renderItem={(culture) => (
         <EntityCard
           title={t(culture.name)}

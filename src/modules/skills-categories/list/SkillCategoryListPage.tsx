@@ -7,7 +7,6 @@ import {
   EntityCard,
   FilterBar,
   fetchSkillCategories,
-  gridSizeShowcase,
   ListPage,
   SkillCategory,
   useListFilters,
@@ -44,7 +43,7 @@ export default function SkillCategoryListPage() {
         </FilterBar>
       }
       filterState={filters}
-      collection={{ modes: ['cards'], storageKey: 'core.skill-categories', cardSize: gridSizeShowcase }}
+      collection={{ modes: ['cards'], storageKey: 'core.skill-categories' }}
       renderItem={(category) => (
         <EntityCard
           title={t(category.id)}

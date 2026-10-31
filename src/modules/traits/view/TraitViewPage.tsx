@@ -6,7 +6,7 @@ import {
   deleteTrait,
   DetailPage,
   fetchTrait,
-  GenericAvatar,
+  EntityImage,
   Trait,
   useEntity,
   useNotify,
@@ -43,7 +43,7 @@ export default function TraitViewPage() {
       summaryTitle={(entity) => t(entity.name)}
       onEdit={(trait) => navigate(`/core/traits/edit/${trait.id}`, { state: { trait } })}
       onDelete={onDelete}
-      leftPanel={(trait) => <GenericAvatar imageUrl={getTraitImage(trait)} />}
+      leftPanel={(trait) => <EntityImage image={getTraitImage(trait)} />}
     >
       {(trait) => <TraitViewInfo trait={trait} />}
     </DetailPage>

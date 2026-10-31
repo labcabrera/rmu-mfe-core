@@ -13,7 +13,7 @@ import {
   deleteCulture,
   deleteCultureSkillRank,
   DetailPage,
-  EditableAvatar,
+  EntityImage,
   fetchCulture,
   updateCulture,
   useEntity,
@@ -64,9 +64,9 @@ export default function CultureViewPage() {
       onDelete={onDelete}
       leftPanel={(culture) => (
         <>
-          <EditableAvatar
-            imageUrl={culture.imageUrl || ''}
-            altImageUrl={defaultImages.culture}
+          <EntityImage
+            image={culture.imageUrl || ''}
+            fallbackImages={[defaultImages.culture]}
             onImageChange={(avatar) => onUpdateImage(culture, avatar)}
           />
           <Chip

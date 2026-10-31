@@ -6,7 +6,7 @@ import { useLocation, useNavigate, useParams, useSearchParams } from 'react-rout
 import {
   createRace,
   CreateRaceDto,
-  EditableAvatar,
+  EntityImage,
   fetchRace,
   FormPage,
   LoadingState,
@@ -140,8 +140,8 @@ export default function RaceFormPage({ mode }: { mode: FormMode }) {
       dirty={dirty}
       leftPanel={
         formData && (
-          <EditableAvatar
-            imageUrl={formData.imageUrl || ''}
+          <EntityImage
+            image={formData.imageUrl || ''}
             onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl })}
           />
         )

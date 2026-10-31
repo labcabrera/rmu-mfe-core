@@ -7,7 +7,7 @@ import {
   CreateSkillDto,
   fetchSkill,
   FormPage,
-  GenericAvatar,
+  EntityImage,
   imageBaseUrl,
   LoadingState,
   Skill,
@@ -74,7 +74,7 @@ export default function SkillFormPage({ mode }: { mode: FormMode }) {
       saveDisabled={!isValid}
       dirty={dirty}
       leftPanel={
-        mode === 'edit' ? <GenericAvatar imageUrl={`${imageBaseUrl}images/generic/configuration.png`} /> : undefined
+        mode === 'edit' ? <EntityImage image={`${imageBaseUrl}images/generic/configuration.png`} /> : undefined
       }
     >
       {formData ? (

@@ -8,7 +8,7 @@ import {
   CreateCultureDto,
   Culture,
   CultureSkillRank,
-  EditableAvatar,
+  EntityImage,
   fetchCulture,
   FormPage,
   LoadingState,
@@ -83,8 +83,8 @@ export default function CultureFormPage({ mode }: { mode: FormMode }) {
       leftPanel={
         formData && (
           <>
-            <EditableAvatar
-              imageUrl={formData.imageUrl || ''}
+            <EntityImage
+              image={formData.imageUrl || ''}
               onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl })}
             />
             {mode === 'edit' && (

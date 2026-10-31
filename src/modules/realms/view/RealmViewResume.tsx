@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Chip, Grid, Stack, Tooltip, Typography } from '@mui/material';
-import { EditableAvatar, imageBaseUrl, Realm, updateRealm, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { EntityImage, imageBaseUrl, Realm, updateRealm, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const RealmViewResume: FC<{
   realm: Realm;
@@ -21,8 +21,8 @@ const RealmViewResume: FC<{
   return (
     <Grid container spacing={1}>
       <Grid size={12}>
-        <EditableAvatar
-          imageUrl={realm.imageUrl || `${imageBaseUrl}images/generic/realm.png`}
+        <EntityImage
+          image={realm.imageUrl || `${imageBaseUrl}images/generic/realm.png`}
           onImageChange={(image) => onImageChange(image)}
         />
         <Stack direction="row" spacing={1} sx={{ mt: 2, flexWrap: 'wrap' }}>

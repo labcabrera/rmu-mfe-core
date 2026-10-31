@@ -6,7 +6,6 @@ import {
   ListPage,
   Race,
   EntityCard,
-  gridSizeShowcase,
   useNotify,
   useListFilters,
   usePagedQuery,
@@ -36,13 +35,12 @@ export default function RaceListPage() {
       query={query}
       filters={<NameRealmFilters filters={filters} realms={realms} />}
       filterState={filters}
-      collection={{ modes: ['cards'], storageKey: 'core.races', cardSize: gridSizeShowcase }}
+      collection={{ modes: ['cards'], storageKey: 'core.races' }}
       renderItem={(race) => (
         <EntityCard
           title={race.name}
           subtitle={race.archetype ? t(race.archetype) : undefined}
           image={race.imageUrl}
-          imageRatio="square"
           imageTransitionName={viewTransitionName('race', race.id)}
           metrics={[
             { label: t('size'), value: t(`size-${race.sizeId}`) },

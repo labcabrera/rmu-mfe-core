@@ -114,7 +114,7 @@ export default function SkillCategoryViewPage() {
                       key={skill.id}
                       title={t(skill.id)}
                       subtitle={skill.specialization ? t(skill.specialization) : undefined}
-                      imageRatio="none"
+                      noImage
                       chips={<StatChips stats={skill.bonus} realmBonus={skill.realmBonus} />}
                       onClick={() => transitionNavigate(`/core/skills/view/${skill.id}`, { state: { skill } })}
                     />

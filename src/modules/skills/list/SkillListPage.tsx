@@ -151,7 +151,7 @@ export default function SkillListPage() {
       subtitle={[t(skill.categoryId), skill.specialization ? t(skill.specialization) : undefined]
         .filter(Boolean)
         .join(' · ')}
-      imageRatio="none"
+      noImage
       chips={
         <>
           <StatChips stats={skill.bonus} realmBonus={skill.realmBonus} />

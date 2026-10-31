@@ -11,7 +11,6 @@ import {
   EnumPicker,
   FilterBar,
   fetchEffectTypes,
-  gridSizeShowcase,
   ListPage,
   useListFilters,
   useNotify,
@@ -62,7 +61,7 @@ export default function EffectTypeListPage() {
         </FilterBar>
       }
       filterState={filters}
-      collection={{ modes: ['cards'], storageKey: 'core.effect-types', cardSize: gridSizeShowcase }}
+      collection={{ modes: ['cards'], storageKey: 'core.effect-types' }}
       renderItem={(effectType) => (
         <EntityCard
           title={t(effectType.id)}
