@@ -23,6 +23,7 @@ import {
   useSpecializationLabel,
   viewTransitionName,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { archetypeLabel, raceName } from '../race-format';
 import RaceViewOverview from './RaceViewOverview';
 import RaceViewSkills from './RaceViewSkills';
 import RaceViewTraits from './RaceViewTraits';
@@ -44,6 +45,8 @@ export default function RaceViewPage() {
     onError: notify.error,
   });
   const race = state.entity;
+  // Back to the list with the filters it had (spec 059)
+  const listUrl = `/core/races${typeof location.state?.from === 'string' ? location.state.from : ''}`;
   const [realm, setRealm] = useState<Realm>();
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
   const [section, setSection] = useSectionParam(sectionIds);
@@ -65,7 +68,7 @@ export default function RaceViewPage() {
 
   const overline = (entity: Race): ReactNode => (
     <Stack direction="row" component="span" sx={{ gap: 1, flexWrap: 'wrap' }}>
-      {entity.archetype && <span>{t(entity.archetype)}</span>}
+      {entity.archetype && <span>{archetypeLabel(entity.archetype, t)}</span>}
       {entity.archetype && <span>{'·'}</span>}
       <Link
         component={RouterLink}
@@ -89,15 +92,15 @@ export default function RaceViewPage() {
       breadcrumbs={[
         { name: t('home'), link: '/' },
         { name: t('core'), link: '/core' },
-        { name: t('races'), link: '/core/races' },
-        { name: race ? t(race.name) : t('view') },
+        { name: t('races'), link: listUrl },
+        { name: race ? raceName(race, t) : t('view') },
       ]}
       entity={state}
       technicalInfo={false}
       onEdit={(entity) => navigate(`/core/races/edit/${entity.id}`, { state: { race: entity } })}
       onDelete={onDelete}
       hero={(entity) => ({
-        title: t(entity.name),
+        title: raceName(entity, t),
         overline: overline(entity),
         image: entity.imageUrl,
         imageTransitionName: viewTransitionName('race', entity.id),

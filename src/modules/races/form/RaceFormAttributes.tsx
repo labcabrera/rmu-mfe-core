@@ -12,6 +12,7 @@ import {
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { RACE_SIZES } from '../../shared/enums';
+import { archetypeLabel, raceArchetypeKey } from '../race-format';
 
 const RaceFormAttributes: FC<{
   formData: Race;
@@ -24,7 +25,7 @@ const RaceFormAttributes: FC<{
 
   useEffect(() => {
     fetchEnumerations('category==race-archetype', 0, 100, auth)
-      .then((response) => setArchetypes(response.content.map((e) => e.key)))
+      .then((response) => setArchetypes(response.content.map((e) => raceArchetypeKey(e.key))))
       .catch((err) => notify.error(err));
   }, []);
 
@@ -48,8 +49,11 @@ const RaceFormAttributes: FC<{
         <EnumPicker
           label={t('archetype')}
           values={archetypes}
-          value={formData.archetype || null}
-          onChange={(archetype) => setFormData({ ...formData, archetype: archetype ?? '' })}
+          value={formData.archetype ? raceArchetypeKey(formData.archetype) : null}
+          formatLabel={(value) => archetypeLabel(value, t)}
+          onChange={(archetype) =>
+            setFormData({ ...formData, archetype: archetype ? raceArchetypeKey(archetype) : '' })
+          }
           required
         />
       </Grid>

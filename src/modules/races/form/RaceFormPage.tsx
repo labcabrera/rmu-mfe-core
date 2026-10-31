@@ -18,6 +18,7 @@ import {
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { FormMode, useFormData } from '../../shared/form/useFormData';
+import { raceArchetypeKey } from '../race-format';
 import RaceForm from './RaceForm';
 import RaceFormRealmPicker from './RaceFormRealmPicker';
 
@@ -113,10 +114,10 @@ export default function RaceFormPage({ mode }: { mode: FormMode }) {
   const onSave = () => {
     if (!formData) return;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-    const { id, ...rest } = formData;
+    const { id, ...rest } = { ...formData, archetype: raceArchetypeKey(formData.archetype ?? '') };
     const request =
       mode === 'create'
-        ? createRace(formData as unknown as CreateRaceDto, auth)
+        ? createRace({ ...rest } as unknown as CreateRaceDto, auth)
         : updateRace(raceId!, rest as unknown as UpdateRaceDto, auth);
     request.then((race) => navigate(`/core/races/view/${race.id}`, { state: { race } })).catch(notify.error);
   };

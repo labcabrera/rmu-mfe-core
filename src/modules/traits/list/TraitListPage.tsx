@@ -63,7 +63,7 @@ export default function TraitListPage() {
           <FilterSection title={t('category')}>
             <EnumPicker
               {...category}
-              variant="tiles"
+              variant="select"
               label={t('category')}
               values={traitCategories}
               images={traitCategoryImage}
