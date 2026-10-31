@@ -6,7 +6,7 @@ import { EntityCard, gridSizeShowcase, LayoutBase } from '@labcabrera-rmu/rmu-re
 
 const OPTIONS = [
   { value: 'attack-tables-attack', subtitle: 'attack-tables-attack-subtitle', image: 'warrior.png', to: 'attack' },
-  { value: 'attack-tables-critical', subtitle: 'attack-tables-critical-subtitle', image: 'hp.png', to: 'critical' },
+  { value: 'attack-tables-critical', subtitle: 'attack-tables-critical-subtitle', image: 'trait-combat.png', to: 'critical' },
   { value: 'attack-tables-fumble', subtitle: 'attack-tables-fumble-subtitle', image: 'physical.png', to: 'fumble' },
 ];
 
