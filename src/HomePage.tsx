@@ -44,13 +44,13 @@ const OPTIONS = [
   {
     value: 'traits',
     subtitle: 'manage-traits',
-    image: `${imageBaseUrl}images/generic/trait.png`,
+    image: `${imageBaseUrl}images/generic/traits.png`,
     to: '/core/traits',
   },
   {
     value: 'effect-types',
     subtitle: 'manage-effect-types',
-    image: `${imageBaseUrl}images/generic/configuration.png`,
+    image: `${imageBaseUrl}images/generic/effect-types.png`,
     to: '/core/effect-types',
   },
   {
@@ -68,7 +68,7 @@ const OPTIONS = [
   {
     value: 'maneuvers',
     subtitle: 'execute-maneuvers',
-    image: `${imageBaseUrl}images/generic/maneuver-penalty.png`,
+    image: `${imageBaseUrl}images/generic/maneuvers.png`,
     to: '/core/maneuvers',
   },
   {
