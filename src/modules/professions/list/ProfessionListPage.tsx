@@ -54,10 +54,9 @@ export default function ProfessionListPage() {
           title={t(profession.id)}
           subtitle={t(profession.archetype)}
           image={profession.imageUrl}
-          chips={profession.availableRealmTypes.map((realmType) => (
+          chips={profession.fixedRealmTypes.map((realmType) => (
             <Chip key={realmType} size="small" variant="outlined" label={t(realmType)} />
           ))}
-          metrics={[{ label: t('professional-skills'), value: profession.professionalSkills.length }]}
           locked={profession.accessType === 'private'}
           lockedLabel={t('private')}
           onClick={() => navigate(`/core/professions/view/${profession.id}`, { state: { profession } })}

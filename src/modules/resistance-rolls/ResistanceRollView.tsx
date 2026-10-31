@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
+import { Box, Typography } from '@mui/material';
 import {
   emptyResistanceRollQuery,
   LayoutBase,
+  Panel,
   resistanceRoll,
   ResistanceRollQuery,
   ResistanceRollResult,
@@ -13,6 +15,7 @@ import {
 import ResistanceRollViewForm from './ResistanceRollViewForm';
 import ResistanceRollViewResult from './ResistanceRollViewResult';
 
+/** Resistance roll calculator: the result is asked again whenever the levels and the roll are complete. */
 export default function ResistanceRollView() {
   const notify = useNotify();
   const auth = useAuth();
@@ -20,22 +23,15 @@ export default function ResistanceRollView() {
   const [formData, setFormData] = useState<ResistanceRollQuery>(emptyResistanceRollQuery);
   const [result, setResult] = useState<ResistanceRollResult>();
 
-  const onSubmit = () => {
+  useEffect(() => {
+    const { attackLevel, targetLevel, roll } = formData;
+    if (![attackLevel, targetLevel, roll].every((value) => typeof value === 'number')) {
+      setResult(undefined);
+      return;
+    }
     resistanceRoll(formData, auth)
       .then((result) => setResult(result))
       .catch((err) => notify.error(err));
-  };
-
-  const isValidForm = (): boolean => {
-    if (!formData || !formData.attackLevel || !formData.targetLevel || !formData.roll) return false;
-    return true;
-  };
-
-  useEffect(() => {
-    const isValid = isValidForm();
-    if (isValid) {
-      onSubmit();
-    }
   }, [formData]);
 
   return (
@@ -46,11 +42,29 @@ export default function ResistanceRollView() {
         { name: t('resistance-rolls') },
       ]}
     >
-      <ResistanceRollViewForm formData={formData} setFormData={setFormData} />
-      <ResistanceRollViewResult result={result} />
-      <TechnicalInfo>
-        <pre>{JSON.stringify({ formData, result }, null, 2)}</pre>
-      </TechnicalInfo>
+      <Typography color="text.secondary" sx={{ mb: 2, maxWidth: '80ch' }}>
+        {t('resistance-roll-help')}
+      </Typography>
+      <Box
+        sx={{
+          display: 'grid',
+          gap: 2,
+          gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(0, 5fr) minmax(0, 7fr)' },
+          alignItems: 'start',
+        }}
+      >
+        <Panel title={t('resistance-roll')} sx={{ height: 'auto' }}>
+          <ResistanceRollViewForm formData={formData} setFormData={setFormData} />
+        </Panel>
+        <Panel title={t('result')} sx={{ height: 'auto' }}>
+          <ResistanceRollViewResult result={result} />
+        </Panel>
+      </Box>
+      <Box sx={{ mt: 2 }}>
+        <TechnicalInfo>
+          <pre>{JSON.stringify({ formData, result }, null, 2)}</pre>
+        </TechnicalInfo>
+      </Box>
     </LayoutBase>
   );
 }
