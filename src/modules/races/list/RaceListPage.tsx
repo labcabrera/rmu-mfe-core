@@ -19,12 +19,15 @@ import { useRealms } from '../../shared/filters/list-filters';
 import { archetypeLabel, RACE_ARCHETYPES, raceName } from '../race-format';
 import RaceListFilters, { raceFilters } from './RaceListFilters';
 
-/** The API limit of a catalog page: the list loads every race matching the filters at once. */
-const RACE_LIST_MAX = 1000;
+/**
+ * The page size limit of the races API (it has no catalog-sized page): the list loads every race matching the filters
+ * at once, and warns when there are more.
+ */
+const RACE_LIST_MAX = 100;
 
 /**
  * The race list (spec 059). Races are created from their realm's page (they need a realmId), so it has no add button.
- * The RSQL filters go to the API with a catalog-sized page; the translated name is matched, sorted and paged on the
+ * The RSQL filters go to the API with one page of every race; the translated name is matched, sorted and paged on the
  * client.
  */
 export default function RaceListPage() {
