@@ -6,7 +6,7 @@ import { Typography } from '@mui/material';
 import {
   createProfession,
   CreateProfessionDto,
-  EditableAvatar,
+  EntityImage,
   fetchProfession,
   FormPage,
   LoadingState,
@@ -123,8 +123,8 @@ export default function ProfessionFormPage({ mode }: { mode: FormMode }) {
       leftPanel={
         formData && (
           <>
-            <EditableAvatar
-              imageUrl={formData.imageUrl || ''}
+            <EntityImage
+              image={formData.imageUrl || ''}
               onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl })}
             />
             {mode === 'edit' && (

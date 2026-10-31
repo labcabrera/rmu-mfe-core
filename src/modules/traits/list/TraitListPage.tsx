@@ -8,7 +8,6 @@ import {
   EnumPicker,
   fetchTraits,
   FilterSection,
-  gridSizeShowcase,
   ListPage,
   Trait,
   traitCategories,
@@ -73,7 +72,7 @@ export default function TraitListPage() {
           </FilterSection>
         </>
       }
-      collection={{ modes: ['cards'], storageKey: 'core.traits', cardSize: gridSizeShowcase }}
+      collection={{ modes: ['cards'], storageKey: 'core.traits' }}
       renderItem={(trait) => (
         <EntityCard
           title={`${t(trait.name)}${trait.isTierBased ? ' *' : ''}`}

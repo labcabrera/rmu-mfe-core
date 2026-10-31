@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Chip, Stack, Typography } from '@mui/material';
 import {
-  EditableAvatar,
+  EntityImage,
   LoadingState,
   Profession,
   updateProfession,
@@ -30,7 +30,7 @@ const ProfessionViewResume: FC<{
 
   return (
     <>
-      <EditableAvatar imageUrl={profession.imageUrl || ''} onImageChange={(avatar) => onUpdateImage(avatar)} />
+      <EntityImage image={profession.imageUrl || ''} onImageChange={(avatar) => onUpdateImage(avatar)} />
       <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
         <Chip
           label={t(profession.accessType)}

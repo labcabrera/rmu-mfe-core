@@ -8,7 +8,6 @@ import {
   EntityCard,
   FilterBar,
   fetchEnumerationCategories,
-  gridSizeShowcase,
   ListPage,
   normalizeText,
   useListFilters,
@@ -63,7 +62,7 @@ export default function CatalogListPage() {
         </FilterBar>
       }
       filterState={filters}
-      collection={{ modes: ['cards'], storageKey: 'core.catalogs', cardSize: gridSizeShowcase }}
+      collection={{ modes: ['cards'], storageKey: 'core.catalogs' }}
       renderItem={(category) => (
         <EntityCard
           title={t(category)}

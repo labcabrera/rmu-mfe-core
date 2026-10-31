@@ -19,41 +19,41 @@ const TraitViewInfo: FC<{
       <Grid size={12}>
         <Grid container spacing={1}>
           <Grid size={{ xs: 12, md: 4 }}>
-            <EntityCard title={t(trait.category)} subtitle={t('category')} imageRatio="none" />
+            <EntityCard title={t(trait.category)} subtitle={t('category')} noImage />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <EntityCard title={t(trait.isTalent ? t('trait') : t('flaw'))} subtitle={t('type')} imageRatio="none" />
+            <EntityCard title={t(trait.isTalent ? t('trait') : t('flaw'))} subtitle={t('type')} noImage />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <EntityCard
               title={String(trait.specialization ? t(trait.specialization) : t('none'))}
               subtitle={t('specialization')}
-              imageRatio="none"
+              noImage
             />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <EntityCard
               title={String(trait.isTierBased ? `1 - ${trait.maxTier}` : t('no'))}
               subtitle={t('tier-based')}
-              imageRatio="none"
+              noImage
             />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <EntityCard title={String(trait.adquisitionCost)} subtitle={t('adquisition-cost')} imageRatio="none" />
+            <EntityCard title={String(trait.adquisitionCost)} subtitle={t('adquisition-cost')} noImage />
           </Grid>
           {trait.tierCost && (
             <Grid size={{ xs: 12, md: 4 }}>
-              <EntityCard title={String(trait.tierCost || '')} subtitle={t('tier-cost')} imageRatio="none" />
+              <EntityCard title={String(trait.tierCost || '')} subtitle={t('tier-cost')} noImage />
             </Grid>
           )}
           {trait.talentCategory && (
             <Grid size={{ xs: 12, md: 4 }}>
-              <EntityCard title={t(trait.talentCategory)} subtitle={t('talent-category')} imageRatio="none" />
+              <EntityCard title={t(trait.talentCategory)} subtitle={t('talent-category')} noImage />
             </Grid>
           )}
           {trait.source && (
             <Grid size={{ xs: 12, md: 4 }}>
-              <EntityCard title={t(trait.source)} subtitle={t('source')} imageRatio="none" />
+              <EntityCard title={t(trait.source)} subtitle={t('source')} noImage />
             </Grid>
           )}
         </Grid>

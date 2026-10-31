@@ -8,7 +8,6 @@ import {
   fetchRealms,
   ListPage,
   Realm,
-  gridSizeShowcase,
   useListFilters,
   useNotify,
   usePagedQuery,
@@ -39,7 +38,7 @@ export default function RealmListPage() {
         </FilterBar>
       }
       filterState={filters}
-      collection={{ modes: ['cards'], storageKey: 'core.realms', cardSize: gridSizeShowcase }}
+      collection={{ modes: ['cards'], storageKey: 'core.realms' }}
       renderItem={(realm) => (
         <EntityCard
           title={realm.name}

@@ -4,7 +4,7 @@ import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   createRealm,
-  EditableAvatar,
+  EntityImage,
   fetchRealm,
   FormPage,
   LoadingState,
@@ -71,9 +71,9 @@ export default function RealmFormPage({ mode }: { mode: FormMode }) {
       dirty={dirty}
       leftPanel={
         formData && (
-          <EditableAvatar
-            imageUrl={formData.imageUrl}
-            altImageUrl={DEFAULT_REALM_IMAGE_PATH}
+          <EntityImage
+            image={formData.imageUrl}
+            fallbackImages={[DEFAULT_REALM_IMAGE_PATH]}
             onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl })}
           />
         )

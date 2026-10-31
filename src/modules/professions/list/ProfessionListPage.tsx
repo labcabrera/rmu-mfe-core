@@ -8,7 +8,6 @@ import {
   EnumPicker,
   FilterBar,
   fetchProfessions,
-  gridSizeShowcase,
   ListPage,
   Profession,
   useListFilters,
@@ -49,13 +48,12 @@ export default function ProfessionListPage() {
         </FilterBar>
       }
       filterState={filters}
-      collection={{ modes: ['cards'], storageKey: 'core.professions', cardSize: gridSizeShowcase }}
+      collection={{ modes: ['cards'], storageKey: 'core.professions' }}
       renderItem={(profession) => (
         <EntityCard
           title={t(profession.id)}
           subtitle={t(profession.archetype)}
           image={profession.imageUrl}
-          imageRatio="square"
           chips={profession.availableRealmTypes.map((realmType) => (
             <Chip key={realmType} size="small" variant="outlined" label={t(realmType)} />
           ))}

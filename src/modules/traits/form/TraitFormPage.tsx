@@ -6,7 +6,7 @@ import {
   createTrait,
   fetchTrait,
   FormPage,
-  GenericAvatar,
+  EntityImage,
   LoadingState,
   TechnicalInfo,
   Trait,
@@ -67,7 +67,7 @@ export default function TraitFormPage({ mode }: { mode: FormMode }) {
       saveDisabled={!formData?.name}
       dirty={dirty}
       leftPanel={
-        mode === 'edit' && existing.entity ? <GenericAvatar imageUrl={getTraitImage(existing.entity)} /> : undefined
+        mode === 'edit' && existing.entity ? <EntityImage image={getTraitImage(existing.entity)} /> : undefined
       }
     >
       {formData ? (

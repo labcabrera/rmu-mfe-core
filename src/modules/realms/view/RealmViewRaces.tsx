@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Grid, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import {
   EntityCard,
   fetchRaces,
-  gridSizeShowcase,
+  CardGrid,
   Race,
   Realm,
   useNotify,
@@ -39,27 +39,26 @@ const RealmViewRaces: FC<{
   }
 
   return (
-    <Grid container spacing={2}>
-      {races.map((race) => (
-        <Grid size={gridSizeShowcase} key={race.id}>
-          <EntityCard
-            title={t(race.name)}
-            subtitle={race.archetype ? t(race.archetype) : undefined}
-            image={race.imageUrl}
-            imageRatio="square"
-            imageTransitionName={viewTransitionName('race', race.id)}
-            metrics={[
-              { label: t('size'), value: t(`size-${race.sizeId}`) },
-              { label: t('hit-points'), value: race.baseHits },
-              { label: t('race-bonus-dev-points'), value: race.baseDevPoints },
-            ]}
-            locked={race.accessType === 'private'}
-            lockedLabel={t('private')}
-            onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
-          />
-        </Grid>
-      ))}
-    </Grid>
+    <CardGrid
+      items={races}
+      getKey={(race) => race.id}
+      renderItem={(race) => (
+        <EntityCard
+          title={t(race.name)}
+          subtitle={race.archetype ? t(race.archetype) : undefined}
+          image={race.imageUrl}
+          imageTransitionName={viewTransitionName('race', race.id)}
+          metrics={[
+            { label: t('size'), value: t(`size-${race.sizeId}`) },
+            { label: t('hit-points'), value: race.baseHits },
+            { label: t('race-bonus-dev-points'), value: race.baseDevPoints },
+          ]}
+          locked={race.accessType === 'private'}
+          lockedLabel={t('private')}
+          onClick={() => navigate(`/core/races/view/${race.id}`, { state: { race } })}
+        />
+      )}
+    />
   );
 };
 
