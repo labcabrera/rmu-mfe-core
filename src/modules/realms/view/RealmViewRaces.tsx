@@ -12,6 +12,7 @@ import {
   useViewTransitionNavigate,
   viewTransitionName,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { archetypeLabel, raceName } from '../../races/race-format';
 
 const RealmViewRaces: FC<{
   realm: Realm;
@@ -44,8 +45,8 @@ const RealmViewRaces: FC<{
       getKey={(race) => race.id}
       renderItem={(race) => (
         <EntityCard
-          title={t(race.name)}
-          subtitle={race.archetype ? t(race.archetype) : undefined}
+          title={raceName(race, t)}
+          subtitle={race.archetype ? archetypeLabel(race.archetype, t) : undefined}
           image={race.imageUrl}
           imageTransitionName={viewTransitionName('race', race.id)}
           metrics={[
