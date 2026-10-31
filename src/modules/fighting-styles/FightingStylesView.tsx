@@ -7,7 +7,6 @@ import {
   Box,
   Chip,
   CircularProgress,
-  Grid,
   InputAdornment,
   Link,
   Paper,
@@ -109,13 +108,11 @@ const FightingStylesView: FC = () => {
           {t('fighting-styles-not-found')}
         </Typography>
       ) : (
-        <Grid container spacing={2}>
+        <Stack spacing={2}>
           {styles.map((style) => (
-            <Grid key={style.id} size={{ xs: 12, lg: 6 }}>
-              <StyleCard style={style} abilities={abilities} />
-            </Grid>
+            <StyleCard key={style.id} style={style} abilities={abilities} />
           ))}
-        </Grid>
+        </Stack>
       )}
     </LayoutBase>
   );
@@ -129,77 +126,94 @@ const StyleCard: FC<{ style: FightingStyle; abilities: Map<string, StyleAbility>
   ];
 
   return (
-    <Paper variant="outlined" sx={{ p: { xs: 1.5, sm: 2 }, height: '100%' }}>
-      <Stack direction="row" spacing={1} sx={{ alignItems: 'baseline', flexWrap: 'wrap', mb: 1 }}>
-        <Typography variant="h6">{t(style.id)}</Typography>
-        <Typography variant="body2" color="text.secondary">
-          {t(style.skillId)}
-        </Typography>
-      </Stack>
-      <Stack spacing={0.5} sx={{ mb: 1.5 }}>
-        <Typography variant="body2">
-          <Box component="span" sx={{ color: 'text.secondary' }}>
-            {t('equipment')}:{' '}
-          </Box>
-          {equipmentLabel(style.equipment, t)}
-        </Typography>
+    <Paper variant="outlined" sx={{ p: { xs: 1.5, sm: 2.5 } }}>
+      <Typography variant="h5" component="h2">
+        {t(style.id)}
+      </Typography>
+      <Box
+        component="dl"
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'max-content 1fr',
+          columnGap: 2,
+          rowGap: 0.5,
+          mt: 1,
+          mb: 2,
+          '& dt': { color: 'text.secondary' },
+          '& dd': { m: 0 },
+        }}
+      >
+        <Typography component="dt">{t('equipment')}</Typography>
+        <Typography component="dd">{equipmentLabel(style.equipment, t)}</Typography>
         {requirements.length > 0 && (
-          <Typography variant="body2">
-            <Box component="span" sx={{ color: 'text.secondary' }}>
-              {t('requirements')}:{' '}
-            </Box>
-            {requirements.join(', ')}
-          </Typography>
+          <>
+            <Typography component="dt">{t('requirements')}</Typography>
+            <Typography component="dd">{requirements.join(', ')}</Typography>
+          </>
         )}
-      </Stack>
-      <Box sx={{ overflowX: 'auto' }}>
-        <Table size="small" sx={{ '& td, & th': { px: { xs: 0.75, sm: 2 } } }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>{t('style-ability')}</TableCell>
-              <TableCell align="right">{t('cost')}</TableCell>
-              <TableCell>{t('requirements')}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {[...style.abilities]
-              .sort((a, b) => t(`style-ability-${a.abilityId}`).localeCompare(t(`style-ability-${b.abilityId}`)))
-              .map((entry) => {
-                const ability = abilities.get(entry.abilityId);
-                return (
-                  <TableRow key={entry.abilityId}>
-                    <TableCell>
-                      <Link component={RouterLink} to={`/core/fighting-styles/abilities/${entry.abilityId}`}>
-                        {t(`style-ability-${entry.abilityId}`)}
-                      </Link>
-                      {ability?.repeatable && (
-                        <Chip
-                          size="small"
-                          variant="outlined"
-                          sx={{ ml: 1 }}
-                          label={
-                            ability.maxTimes
-                              ? t('style-ability-repeatable-max', { times: ability.maxTimes })
-                              : t('style-ability-repeatable')
-                          }
-                        />
-                      )}
-                    </TableCell>
-                    <TableCell align="right">{entry.cost}</TableCell>
-                    <TableCell>
-                      <Typography variant="caption" color="text.secondary">
-                        {ability ? abilityRequirements(ability, t) : ''}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
       </Box>
+      {/* The same columns in every style; on phones the requirements go under the ability. */}
+      <Table
+        size="small"
+        sx={{
+          tableLayout: 'fixed',
+          '& td, & th': { px: { xs: 1, sm: 2 }, fontSize: (theme) => theme.typography.body1.fontSize },
+          '& th': { color: 'text.secondary' },
+        }}
+      >
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ width: { sm: '38%' } }}>{t('style-ability')}</TableCell>
+            <TableCell align="right" sx={{ width: { xs: 64, sm: 88 } }}>
+              {t('cost')}
+            </TableCell>
+            <TableCell sx={wideOnly}>{t('requirements')}</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {[...style.abilities]
+            .sort((a, b) => t(`style-ability-${a.abilityId}`).localeCompare(t(`style-ability-${b.abilityId}`)))
+            .map((entry) => {
+              const ability = abilities.get(entry.abilityId);
+              return (
+                <TableRow key={entry.abilityId}>
+                  <TableCell>
+                    <Link component={RouterLink} to={`/core/fighting-styles/abilities/${entry.abilityId}`}>
+                      {t(`style-ability-${entry.abilityId}`)}
+                    </Link>
+                    {ability?.repeatable && (
+                      <Chip
+                        size="small"
+                        variant="outlined"
+                        sx={{ ml: 1 }}
+                        label={
+                          ability.maxTimes
+                            ? t('style-ability-repeatable-max', { times: ability.maxTimes })
+                            : t('style-ability-repeatable')
+                        }
+                      />
+                    )}
+                    {ability && (
+                      <Typography variant="body2" color="text.secondary" sx={{ display: { sm: 'none' }, mt: 0.25 }}>
+                        {abilityRequirements(ability, t)}
+                      </Typography>
+                    )}
+                  </TableCell>
+                  <TableCell align="right">{entry.cost}</TableCell>
+                  <TableCell sx={{ ...wideOnly, color: 'text.secondary' }}>
+                    {ability ? abilityRequirements(ability, t) : ''}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+        </TableBody>
+      </Table>
     </Paper>
   );
 };
+
+/** Shown from `sm` up. */
+const wideOnly = { display: { xs: 'none', sm: 'table-cell' } };
 
 const abilityRequirements = (ability: StyleAbility, t: TFunction): string => {
   const parts = [
