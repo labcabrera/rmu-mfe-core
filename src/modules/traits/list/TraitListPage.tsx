@@ -3,13 +3,17 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
+  bindSingle,
   defaultImages,
   EntityCard,
   EntitySourceChip,
   EnumPicker,
+  equalsFilter,
   fetchTraits,
+  FilterSearchField,
   FilterSection,
   ListPage,
+  regexFilter,
   Trait,
   traitCategories,
   useListFilters,
@@ -18,7 +22,6 @@ import {
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { traitCategoryImage } from '../../services/trait-image-service';
 import { TRAIT_TYPES } from '../../shared/enums';
-import { bindSingle, equalsFilter, FilterTextField, regexFilter } from '../../shared/filters/list-filters';
 
 /** Traits catalog (spec 046): filters in the side panel, kept in the URL. */
 export default function TraitListPage() {
@@ -56,7 +59,7 @@ export default function TraitListPage() {
       filters={
         <>
           <FilterSection title={t('search')} collapsible={false}>
-            <FilterTextField filters={filters} filter="q" label={t('name')} />
+            <FilterSearchField filters={filters} filter="q" label={t('name')} />
           </FilterSection>
           <FilterSection title={t('trait-type')}>
             <EnumPicker {...type} variant="tiles" label={t('trait-type')} values={TRAIT_TYPES} />

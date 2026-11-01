@@ -5,16 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import {
   Culture,
   defaultImages,
-  fetchCultures,
-  ListPage,
   EntityCard,
   EntitySourceChip,
-  useNotify,
+  fetchCultures,
+  ListPage,
   useListFilters,
+  useNotify,
   usePagedQuery,
+  useRealms,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import NameRealmFilters, { nameRealmSchema } from '../../shared/filters/NameRealmFilters';
-import { useRealms } from '../../shared/filters/list-filters';
 
 export default function CultureListPage() {
   const auth = useAuth();
@@ -34,8 +34,10 @@ export default function CultureListPage() {
       breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('cultures') }]}
       query={query}
       onAdd={() => navigate('/core/cultures/create')}
-      filters={<NameRealmFilters filters={filters} realms={realms} />}
+      filtersLayout="side"
       filterState={filters}
+      filtersStorageKey="core.cultures"
+      filters={<NameRealmFilters filters={filters} realms={realms} />}
       collection={{ modes: ['cards'], storageKey: 'core.cultures' }}
       renderItem={(culture) => (
         <EntityCard

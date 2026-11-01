@@ -5,15 +5,19 @@ import { useAuth } from 'react-oidc-context';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Chip, Link, Stack, Typography } from '@mui/material';
 import {
+  bindSingle,
   CollectionConfig,
   CollectionMode,
   CollectionModeSwitch,
   EntityCard,
   EntitySourceChip,
+  equalsFilter,
   fetchSkillCategories,
   fetchSkills,
+  FilterSearchField,
   FilterSection,
   ListPage,
+  regexFilter,
   Skill,
   SkillCategory,
   SkillCategoryPicker,
@@ -24,7 +28,6 @@ import {
   useViewTransitionNavigate,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import StatChips from '../../shared/display/StatChips';
-import { bindSingle, equalsFilter, FilterTextField, regexFilter } from '../../shared/filters/list-filters';
 import { skillDescriptionKey } from '../skill-utils';
 import SkillManeuverIndicator from './SkillManeuverIndicator';
 
@@ -181,7 +184,7 @@ export default function SkillListPage() {
       filters={
         <>
           <FilterSection title={t('search')} collapsible={false}>
-            <FilterTextField filters={filters} filter="q" label={t('name')} />
+            <FilterSearchField filters={filters} filter="q" label={t('name')} />
           </FilterSection>
           <FilterSection title={t('category')}>
             <SkillCategoryPicker {...categoryFilter} variant="select" label={t('category')} categories={categories} />

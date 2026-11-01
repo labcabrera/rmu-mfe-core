@@ -13,10 +13,10 @@ import {
   useListFilters,
   useLocalPagedQuery,
   useNotify,
+  useRealms,
   useViewTransitionNavigate,
   viewTransitionName,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useRealms } from '../../shared/filters/list-filters';
 import { archetypeLabel, RACE_ARCHETYPES, raceName } from '../race-format';
 import RaceListFilters, { raceFilters } from './RaceListFilters';
 

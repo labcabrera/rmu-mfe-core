@@ -2,27 +2,28 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useParams } from 'react-router-dom';
-import { Stack, Typography } from '@mui/material';
 import {
+  bindSingle,
   canEditEntity,
-  CategorySeparator,
   DeleteButton,
   deleteEnumeration,
+  EntityCard,
   EntitySourceChip,
   Enumeration,
+  equalsFilter,
   fetchEnumerations,
-  FilterBar,
-  imageBaseUrl,
+  FilterSearchField,
+  FilterSection,
   ListPage,
+  realmName,
   RealmPicker,
-  RmuCard,
   rsqlAnd,
   TechnicalInfo,
   useListFilters,
   useNotify,
   usePagedQuery,
+  useRealms,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { bindSingle, equalsFilter, FilterTextField, realmName, useRealms } from '../../shared/filters/list-filters';
 import AddEnumerationDialog from './AddEnumerationDialog';
 
 // Up to 1000 values of the category in a single page, as the page always did (no pagination).
@@ -66,34 +67,34 @@ export default function CatalogViewPage() {
         { name: t('home'), link: '/' },
         { name: t('core'), link: '/core' },
         { name: t('catalogs'), link: '/core/catalogs' },
-        { name: t('view') },
+        { name: category ? t(category) : t('view') },
       ]}
       query={query}
       onAdd={() => setAddDialogOpen(true)}
+      filtersLayout="side"
+      filterState={filters}
+      filtersStorageKey="core.catalog-values"
       filters={
         <>
-          <CategorySeparator text={t(category || '')} />
-          <FilterBar activeCount={filters.activeCount}>
-            <FilterTextField filters={filters} filter="q" label={t('name')} />
+          <FilterSection title={t('search')} collapsible={false}>
+            <FilterSearchField filters={filters} filter="q" label={t('name')} />
+          </FilterSection>
+          <FilterSection title={t('realm')}>
             <RealmPicker {...realmFilter} variant="select" realms={realms} />
-          </FilterBar>
+          </FilterSection>
         </>
       }
-      filterState={filters}
       renderItem={(enumeration) => (
-        <RmuCard image={`${imageBaseUrl}images/generic/configuration.png`}>
-          <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
-            <Stack direction="column">
-              <Typography>{t(enumeration.key, { defaultValue: enumeration.name ?? enumeration.key })}</Typography>
-              <Typography color="secondary">
-                <em>{getRealmName(enumeration)}</em>
-              </Typography>
-              <EntitySourceChip entity={enumeration} />
-            </Stack>
-            {/* Spec 063: rulebook values only for admins, user values for their owner. */}
-            {canEditEntity(enumeration, auth) && <DeleteButton onClick={() => onDelete(enumeration)} />}
-          </Stack>
-        </RmuCard>
+        <EntityCard
+          noImage
+          title={t(enumeration.key, { defaultValue: enumeration.name ?? enumeration.key })}
+          subtitle={getRealmName(enumeration)}
+          chips={<EntitySourceChip entity={enumeration} />}
+          actions={
+            // Spec 063: rulebook values only for admins, user values for their owner.
+            canEditEntity(enumeration, auth) && <DeleteButton onClick={() => onDelete(enumeration)} />
+          }
+        />
       )}
     >
       {category && (

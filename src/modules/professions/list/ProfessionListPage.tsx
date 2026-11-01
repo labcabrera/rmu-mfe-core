@@ -4,19 +4,22 @@ import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Chip } from '@mui/material';
 import {
+  bindSingle,
   EntityCard,
   EntitySourceChip,
   EnumPicker,
-  FilterBar,
+  equalsFilter,
   fetchProfessions,
+  FilterSearchField,
+  FilterSection,
   ListPage,
   Profession,
+  regexFilter,
   useListFilters,
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { PROFESSION_ARCHETYPES } from '../../shared/enums';
-import { bindSingle, equalsFilter, FilterTextField, regexFilter } from '../../shared/filters/list-filters';
 
 export default function ProfessionListPage() {
   const auth = useAuth();
@@ -42,13 +45,19 @@ export default function ProfessionListPage() {
       breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('professions') }]}
       query={query}
       onAdd={() => navigate('/core/professions/create')}
-      filters={
-        <FilterBar>
-          <FilterTextField filters={filters} filter="q" label={t('name')} />
-          <EnumPicker {...archetype} variant="select" label={t('archetype')} values={PROFESSION_ARCHETYPES} />
-        </FilterBar>
-      }
+      filtersLayout="side"
       filterState={filters}
+      filtersStorageKey="core.professions"
+      filters={
+        <>
+          <FilterSection title={t('search')} collapsible={false}>
+            <FilterSearchField filters={filters} filter="q" label={t('name')} />
+          </FilterSection>
+          <FilterSection title={t('archetype')}>
+            <EnumPicker {...archetype} variant="select" label={t('archetype')} values={PROFESSION_ARCHETYPES} />
+          </FilterSection>
+        </>
+      }
       collection={{ modes: ['cards'], storageKey: 'core.professions' }}
       renderItem={(profession) => (
         <EntityCard

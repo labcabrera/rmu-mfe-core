@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box, Chip, Collapse, IconButton, Stack, Typography } from '@mui/material';
 import {
   AddButton,
+  Bento,
   DeleteButton,
   DeleteDialog,
   deleteRaceTrait,
@@ -14,12 +15,12 @@ import {
   Panel,
   Race,
   RaceTrait,
+  span,
   Trait,
   TraitTypeChip,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { romanNumeral } from '../../shared/display/StatChips';
-import { Bento, span } from '../../shared/layout/Bento';
 import AddRaceTraitDialog from './traits/AddRaceTraitDialog';
 
 /** Development point cost of a trait at a tier, as strategic charges it. */
