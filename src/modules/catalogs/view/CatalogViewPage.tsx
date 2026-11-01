@@ -4,9 +4,11 @@ import { useAuth } from 'react-oidc-context';
 import { useParams } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 import {
+  canEditEntity,
   CategorySeparator,
   DeleteButton,
   deleteEnumeration,
+  EntitySourceChip,
   Enumeration,
   fetchEnumerations,
   FilterBar,
@@ -86,8 +88,10 @@ export default function CatalogViewPage() {
               <Typography color="secondary">
                 <em>{getRealmName(enumeration)}</em>
               </Typography>
+              <EntitySourceChip entity={enumeration} />
             </Stack>
-            <DeleteButton onClick={() => onDelete(enumeration)} />
+            {/* Spec 063: rulebook values only for admins, user values for their owner. */}
+            {canEditEntity(enumeration, auth) && <DeleteButton onClick={() => onDelete(enumeration)} />}
           </Stack>
         </RmuCard>
       )}

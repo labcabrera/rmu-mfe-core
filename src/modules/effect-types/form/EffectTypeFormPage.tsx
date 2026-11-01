@@ -3,11 +3,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Box } from '@mui/material';
 import {
   createEffectType,
   CreateEffectTypeDto,
   EffectType,
   fetchEffectType,
+  EntitySourceField,
   FormPage,
   LoadingState,
   TechnicalInfo,
@@ -47,7 +49,11 @@ export default function EffectTypeFormPage({ mode }: { mode: FormMode }) {
     (id) => fetchEffectType(id, auth),
     { initial: location.state?.effectType, onError: notify.error }
   );
-  const { formData, setFormData, dirty } = useFormData<EffectType>(mode, existing.entity, () => EMPTY_EFFECT_TYPE);
+  const { formData, setFormData, dirty, sourceField, withSource } = useFormData<EffectType>(
+    mode,
+    existing.entity,
+    () => EMPTY_EFFECT_TYPE
+  );
 
   const isValid = !!formData?.accessType && (mode === 'edit' || !!formData.id);
 
@@ -57,8 +63,8 @@ export default function EffectTypeFormPage({ mode }: { mode: FormMode }) {
     const { id, ...updateDto } = createDto;
     const request =
       mode === 'create'
-        ? createEffectType(createDto as CreateEffectTypeDto, auth)
-        : updateEffectType(effectTypeId!, updateDto as UpdateEffectTypeDto, auth);
+        ? createEffectType(withSource(createDto) as CreateEffectTypeDto, auth)
+        : updateEffectType(effectTypeId!, withSource(updateDto) as UpdateEffectTypeDto, auth);
     request
       .then((effectType) => navigate(`/core/effect-types/view/${effectType.id}`, { state: { effectType } }))
       .catch(notify.error);
@@ -87,6 +93,9 @@ export default function EffectTypeFormPage({ mode }: { mode: FormMode }) {
       {formData ? (
         <>
           <EffectTypeForm formData={formData} setFormData={setFormData} create={mode === 'create'} />
+          <Box sx={{ mt: 2 }}>
+            <EntitySourceField {...sourceField} />
+          </Box>
           <TechnicalInfo>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

@@ -25,7 +25,7 @@ const OPTIONS = [
   {
     value: 'cultures',
     subtitle: 'manage-cultures',
-    image: `${imageBaseUrl}images/generic/cultures.png`,
+    image: `${imageBaseUrl}images/cultures/culture-01.png`,
     to: '/core/cultures',
   },
   {

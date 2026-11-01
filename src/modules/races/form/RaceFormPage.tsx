@@ -3,10 +3,12 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Box } from '@mui/material';
 import {
   createRace,
   CreateRaceDto,
   EntityImage,
+  EntitySourceField,
   fetchRace,
   FormPage,
   LoadingState,
@@ -86,7 +88,7 @@ export default function RaceFormPage({ mode }: { mode: FormMode }) {
     initial: location.state?.race,
     onError: notify.error,
   });
-  const { formData, setFormData, dirty } = useFormData<Race>(mode, existing.entity, () => ({
+  const { formData, setFormData, dirty, sourceField, withSource } = useFormData<Race>(mode, existing.entity, () => ({
     ...EMPTY_RACE,
     realmId: queryRealmId || '',
   }));
@@ -117,8 +119,8 @@ export default function RaceFormPage({ mode }: { mode: FormMode }) {
     const { id, ...rest } = { ...formData, archetype: raceArchetypeKey(formData.archetype ?? '') };
     const request =
       mode === 'create'
-        ? createRace({ ...rest } as unknown as CreateRaceDto, auth)
-        : updateRace(raceId!, rest as unknown as UpdateRaceDto, auth);
+        ? createRace(withSource(rest) as unknown as CreateRaceDto, auth)
+        : updateRace(raceId!, withSource(rest) as unknown as UpdateRaceDto, auth);
     request.then((race) => navigate(`/core/races/view/${race.id}`, { state: { race } })).catch(notify.error);
   };
 
@@ -151,6 +153,9 @@ export default function RaceFormPage({ mode }: { mode: FormMode }) {
       {formData && formData.realmId ? (
         <>
           <RaceForm realmId={formData.realmId} formData={formData} setFormData={setFormData} />
+          <Box sx={{ mt: 2 }}>
+            <EntitySourceField {...sourceField} />
+          </Box>
           <TechnicalInfo>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

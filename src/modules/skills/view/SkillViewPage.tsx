@@ -5,8 +5,10 @@ import { useAuth } from 'react-oidc-context';
 import { Link as RouterLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Box, Chip, Link, Stack, Tooltip, Typography } from '@mui/material';
 import {
+  canEditEntity,
   deleteSkill,
   DetailPage,
+  EntitySourceChip,
   Enumeration,
   fetchEnumerations,
   fetchManeuverModifiers,
@@ -112,6 +114,9 @@ export default function SkillViewPage() {
       .catch(notify.error);
   }, [skill?.id, skill?.categoryId]);
 
+  // Spec 063: rulebook entities only for admins, user entities for their owner.
+  const editable = canEditEntity(state.entity, auth);
+
   const onDelete = (entity: Skill) =>
     deleteSkill(entity.id, auth)
       .then(() => navigate(`/core/skill-categories/view/${entity.categoryId}`))
@@ -132,8 +137,10 @@ export default function SkillViewPage() {
       ]}
       entity={state}
       technicalInfo={false}
-      onEdit={(entity) => navigate(`/core/skills/edit/${entity.id}`, { state: { skill: entity } })}
-      onDelete={onDelete}
+      onEdit={
+        editable ? (entity) => navigate(`/core/skills/edit/${entity.id}`, { state: { skill: entity } }) : undefined
+      }
+      onDelete={editable ? onDelete : undefined}
       hero={(entity) => ({
         title: t(entity.id),
         overline: (
@@ -143,6 +150,7 @@ export default function SkillViewPage() {
         ),
         chips: [
           <StatChips key="stats" stats={entity.bonus} realmBonus={entity.realmBonus} />,
+          <EntitySourceChip key="source" entity={entity} />,
           ...(entity.specialization
             ? [
                 <Chip

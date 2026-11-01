@@ -11,7 +11,7 @@ const OPTIONS = [
     image: 'trait-combat.png',
     to: 'critical',
   },
-  { value: 'attack-tables-fumble', subtitle: 'attack-tables-fumble-subtitle', image: 'physical.png', to: 'fumble' },
+  { value: 'attack-tables-fumble', subtitle: 'attack-tables-fumble-subtitle', image: 'fumble.png', to: 'fumble' },
 ];
 
 /** Entry of the attack, critical and fumble tables (spec 036). */

@@ -4,8 +4,9 @@ import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
 import {
-  addCultureSkillRank,
   AddButton,
+  addCultureSkillRank,
+  canEditEntity,
   CategorySeparator,
   Culture,
   CultureSkillRank,
@@ -14,6 +15,7 @@ import {
   deleteCultureSkillRank,
   DetailPage,
   EntityImage,
+  EntitySourceChip,
   fetchCulture,
   updateCulture,
   useEntity,
@@ -35,6 +37,8 @@ export default function CultureViewPage() {
     onError: notify.error,
   });
   const [addSkillOpen, setAddSkillOpen] = useState(false);
+  // Spec 063: rulebook entities only for admins, user entities for their owner.
+  const editable = canEditEntity(state.entity, auth);
 
   const onUpdateImage = (culture: Culture, imageUrl: string) =>
     updateCulture(culture.id, { imageUrl }, auth).then(state.setEntity).catch(notify.error);
@@ -60,21 +64,23 @@ export default function CultureViewPage() {
       ]}
       entity={state}
       summaryTitle={(entity) => t(entity.name)}
-      onEdit={(culture) => navigate(`/core/cultures/edit/${culture.id}`, { state: { culture } })}
-      onDelete={onDelete}
+      onEdit={editable ? (culture) => navigate(`/core/cultures/edit/${culture.id}`, { state: { culture } }) : undefined}
+      onDelete={editable ? onDelete : undefined}
       leftPanel={(culture) => (
         <>
           <EntityImage
             image={culture.imageUrl || ''}
             fallbackImages={[defaultImages.culture]}
-            onImageChange={(avatar) => onUpdateImage(culture, avatar)}
+            onImageChange={editable ? (avatar) => onUpdateImage(culture, avatar) : undefined}
           />
-          <Chip
-            label={t(culture.accessType)}
-            color={culture.accessType === 'public' ? 'success' : 'error'}
-            size="small"
-            sx={{ mt: 2 }}
-          />
+          <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+            <Chip
+              label={t(culture.accessType)}
+              color={culture.accessType === 'public' ? 'success' : 'error'}
+              size="small"
+            />
+            <EntitySourceChip entity={culture} />
+          </Stack>
           <Typography variant="h6" color="primary">
             {t(culture.name)}
           </Typography>
@@ -91,13 +97,13 @@ export default function CultureViewPage() {
         <>
           <Grid size={12}>
             <CategorySeparator text={t('culture-skill-ranks')}>
-              <AddButton onClick={() => setAddSkillOpen(true)} />
+              {editable && <AddButton onClick={() => setAddSkillOpen(true)} />}
             </CategorySeparator>
           </Grid>
           <Grid size={12}>
             <CultureSkillRankTable
               entries={culture.skillRanks}
-              onDelete={(index) => onDeleteSkillRank(culture, index)}
+              onDelete={editable ? (index) => onDeleteSkillRank(culture, index) : undefined}
             />
           </Grid>
           <Grid size={12}>

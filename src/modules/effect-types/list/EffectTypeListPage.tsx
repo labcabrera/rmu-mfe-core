@@ -7,6 +7,7 @@ import {
   EffectType,
   effectPropertyRequirements,
   EntityCard,
+  EntitySourceChip,
   EntityPicker,
   EnumPicker,
   FilterBar,
@@ -67,6 +68,7 @@ export default function EffectTypeListPage() {
           title={t(effectType.id)}
           subtitle={`${t(effectType.isPersistent ? 'persistent' : 'instant')} • ${t(effectType.value)}`}
           image={defaultImages.generic}
+          chips={<EntitySourceChip entity={effectType} />}
           onClick={() => navigate(`/core/effect-types/view/${effectType.id}`, { state: { effectType } })}
         />
       )}

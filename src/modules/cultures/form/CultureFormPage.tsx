@@ -9,6 +9,7 @@ import {
   Culture,
   CultureSkillRank,
   EntityImage,
+  EntitySourceField,
   fetchCulture,
   FormPage,
   LoadingState,
@@ -52,12 +53,19 @@ export default function CultureFormPage({ mode }: { mode: FormMode }) {
     initial: location.state?.culture,
     onError: notify.error,
   });
-  const { formData, setFormData, dirty } = useFormData<Culture>(mode, existing.entity, () => EMPTY_CULTURE, toForm);
+  const { formData, setFormData, dirty, sourceField, withSource } = useFormData<Culture>(
+    mode,
+    existing.entity,
+    () => EMPTY_CULTURE,
+    toForm
+  );
 
   const onSave = () => {
     if (!formData) return;
     const request =
-      mode === 'create' ? createCulture(formData as CreateCultureDto, auth) : updateCulture(cultureId!, formData, auth);
+      mode === 'create'
+        ? createCulture(withSource(formData) as CreateCultureDto, auth)
+        : updateCulture(cultureId!, withSource(formData), auth);
     request
       .then((culture) => navigate(`/core/cultures/view/${culture.id}`, { state: { culture } }))
       .catch(notify.error);
@@ -99,6 +107,9 @@ export default function CultureFormPage({ mode }: { mode: FormMode }) {
       {formData ? (
         <>
           <CultureForm formData={formData} setFormData={setFormData} />
+          <Box sx={{ mt: 2 }}>
+            <EntitySourceField {...sourceField} />
+          </Box>
           <TechnicalInfo>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

@@ -24,7 +24,9 @@ import AddRaceSkillDialog from './skills/AddRaceSkillDialog';
 const RaceViewSkills: FC<{
   race: Race;
   setRace: (race: Race) => void;
-}> = ({ race, setRace }) => {
+  /** Spec 063: without permission on the race its skills cannot be added or removed. */
+  editable?: boolean;
+}> = ({ race, setRace, editable = true }) => {
   const auth = useAuth();
   const { t, i18n } = useTranslation();
   // Spec 050: catalog keys shown by their name
@@ -63,7 +65,7 @@ const RaceViewSkills: FC<{
     .map(([category, skills]) => [category, skills.sort((a, b) => compare(t(a.skillId), t(b.skillId)))] as const);
 
   return (
-    <Panel title={t('skills')} extra={<AddButton onClick={() => setAddDialogOpen(true)} />}>
+    <Panel title={t('skills')} extra={editable ? <AddButton onClick={() => setAddDialogOpen(true)} /> : undefined}>
       {race.skillBonuses.length === 0 ? (
         <Typography variant="body2" color="text.secondary">
           {t('race-has-no-skills')}
@@ -108,7 +110,7 @@ const RaceViewSkills: FC<{
                     <Typography variant="body2" sx={{ fontWeight: 700, color: bonusColor(skill.bonus) }}>
                       {formatBonus(skill.bonus)}
                     </Typography>
-                    <DeleteButton onClick={() => setSkillToDelete(skill)} />
+                    {editable && <DeleteButton onClick={() => setSkillToDelete(skill)} />}
                   </Stack>
                 ))}
               </Stack>

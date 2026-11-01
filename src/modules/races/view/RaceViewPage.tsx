@@ -5,9 +5,11 @@ import { useAuth } from 'react-oidc-context';
 import { Link as RouterLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Box, Chip, Link, Stack } from '@mui/material';
 import {
+  canEditEntity,
   deleteRace,
   DetailPage,
   enterSx,
+  EntitySourceChip,
   fetchRace,
   fetchRealm,
   ImageSelectorDialog,
@@ -50,6 +52,8 @@ export default function RaceViewPage() {
   const [realm, setRealm] = useState<Realm>();
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
   const [section, setSection] = useSectionParam(sectionIds);
+  // Spec 063: rulebook entities only for admins, user entities for their owner.
+  const editable = canEditEntity(state.entity, auth);
 
   useEffect(() => {
     if (!race?.realmId) return;
@@ -83,8 +87,8 @@ export default function RaceViewPage() {
 
   const renderSection = (entity: Race): Record<RaceSectionId, ReactNode> => ({
     overview: <RaceViewOverview race={entity} />,
-    traits: <RaceViewTraits race={entity} setRace={state.setEntity} />,
-    skills: <RaceViewSkills race={entity} setRace={state.setEntity} />,
+    traits: <RaceViewTraits race={entity} setRace={state.setEntity} editable={editable} />,
+    skills: <RaceViewSkills race={entity} setRace={state.setEntity} editable={editable} />,
   });
 
   return (
@@ -97,15 +101,14 @@ export default function RaceViewPage() {
       ]}
       entity={state}
       technicalInfo={false}
-      onEdit={(entity) => navigate(`/core/races/edit/${entity.id}`, { state: { race: entity } })}
-      onDelete={onDelete}
+      onEdit={editable ? (entity) => navigate(`/core/races/edit/${entity.id}`, { state: { race: entity } }) : undefined}
+      onDelete={editable ? onDelete : undefined}
       hero={(entity) => ({
         title: raceName(entity, t),
         overline: overline(entity),
         image: entity.imageUrl,
         imageTransitionName: viewTransitionName('race', entity.id),
-        onImageClick: () => setImageDialogOpen(true),
-        imageActionLabel: t('change-image'),
+        ...(editable ? { onImageClick: () => setImageDialogOpen(true), imageActionLabel: t('change-image') } : {}),
         chips: [
           <Chip key="size" size="small" label={`${t('race-size')}: ${t(`size-${entity.sizeId}`)}`} />,
           ...(entity.defaultLanguage
@@ -125,6 +128,7 @@ export default function RaceViewPage() {
             label={t(entity.accessType)}
             color={entity.accessType === 'public' ? 'success' : 'error'}
           />,
+          <EntitySourceChip key="source" entity={entity} />,
         ],
         pills: [
           <StatPill key="hp" label={t('base-hit-points')} value={entity.baseHits} />,

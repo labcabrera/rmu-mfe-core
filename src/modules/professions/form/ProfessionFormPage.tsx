@@ -2,11 +2,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import {
   createProfession,
   CreateProfessionDto,
   EntityImage,
+  EntitySourceField,
   fetchProfession,
   FormPage,
   LoadingState,
@@ -83,7 +84,7 @@ export default function ProfessionFormPage({ mode }: { mode: FormMode }) {
     (id) => fetchProfession(id, auth),
     { initial: location.state?.profession, onError: notify.error }
   );
-  const { formData, setFormData, dirty } = useFormData<Profession>(
+  const { formData, setFormData, dirty, sourceField, withSource } = useFormData<Profession>(
     mode,
     existing.entity,
     () => EMPTY_PROFESSION,
@@ -94,8 +95,8 @@ export default function ProfessionFormPage({ mode }: { mode: FormMode }) {
     if (!formData) return;
     const request =
       mode === 'create'
-        ? createProfession(formData as unknown as CreateProfessionDto, auth)
-        : updateProfession(professionId!, formData, auth);
+        ? createProfession(withSource(formData) as unknown as CreateProfessionDto, auth)
+        : updateProfession(professionId!, withSource(formData), auth);
     request
       .then((profession) => navigate(`/core/professions/view/${profession.id}`, { state: { profession } }))
       .catch(notify.error);
@@ -139,6 +140,9 @@ export default function ProfessionFormPage({ mode }: { mode: FormMode }) {
       {formData ? (
         <>
           <ProfessionForm formData={formData} setFormData={setFormData} creationMode={mode === 'create'} />
+          <Box sx={{ mt: 2 }}>
+            <EntitySourceField {...sourceField} />
+          </Box>
           <TechnicalInfo>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

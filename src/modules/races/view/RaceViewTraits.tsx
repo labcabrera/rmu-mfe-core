@@ -56,11 +56,7 @@ const TraitRow: FC<{
           />
         )}
         {shown.length > 0 && (
-          <IconButton
-            size="small"
-            onClick={() => setOpen(!open)}
-            aria-label={t(open ? 'collapse' : 'expand')}
-          >
+          <IconButton size="small" onClick={() => setOpen(!open)} aria-label={t(open ? 'collapse' : 'expand')}>
             {open ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
           </IconButton>
         )}
@@ -89,7 +85,9 @@ const Rows = ({ children }: { children: ReactNode[] }) => (
 const RaceViewTraits: FC<{
   race: Race;
   setRace: (race: Race) => void;
-}> = ({ race, setRace }) => {
+  /** Spec 063: without permission on the race its traits cannot be added or removed. */
+  editable?: boolean;
+}> = ({ race, setRace, editable = true }) => {
   const auth = useAuth();
   const { t } = useTranslation();
   const notify = useNotify();
@@ -121,7 +119,7 @@ const RaceViewTraits: FC<{
   return (
     <Bento>
       <Box sx={span(12, talents.length > 0 ? 8 : 12)}>
-        <Panel title={t('traits')} extra={<AddButton onClick={() => setAddDialogOpen(true)} />}>
+        <Panel title={t('traits')} extra={editable ? <AddButton onClick={() => setAddDialogOpen(true)} /> : undefined}>
           {race.traits.length === 0 ? (
             <Typography variant="body2" color="text.secondary">
               {t('race-has-no-traits')}
@@ -141,7 +139,7 @@ const RaceViewTraits: FC<{
                       raceTrait.description ?? null,
                       trait?.description ?? null,
                     ]}
-                    action={<DeleteButton onClick={() => setTraitToDelete(raceTrait)} />}
+                    action={editable ? <DeleteButton onClick={() => setTraitToDelete(raceTrait)} /> : undefined}
                   />
                 );
               })}

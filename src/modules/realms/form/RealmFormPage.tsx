@@ -2,9 +2,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Box } from '@mui/material';
 import {
   createRealm,
   EntityImage,
+  EntitySourceField,
   fetchRealm,
   FormPage,
   LoadingState,
@@ -39,7 +41,7 @@ export default function RealmFormPage({ mode }: { mode: FormMode }) {
     initial: location.state?.realm,
     onError: notify.error,
   });
-  const { formData, setFormData, dirty } = useFormData<Realm>(
+  const { formData, setFormData, dirty, sourceField, withSource } = useFormData<Realm>(
     mode,
     existing.entity,
     () => ({ imageUrl: DEFAULT_REALM_IMAGE_PATH }) as unknown as Realm,
@@ -48,7 +50,8 @@ export default function RealmFormPage({ mode }: { mode: FormMode }) {
 
   const onSave = () => {
     if (!formData) return;
-    const request = mode === 'create' ? createRealm(formData, auth) : updateRealm(realmId!, formData, auth);
+    const request =
+      mode === 'create' ? createRealm(withSource(formData), auth) : updateRealm(realmId!, withSource(formData), auth);
     request.then((realm) => navigate(`/core/realms/view/${realm.id}`, { state: { realm } })).catch(notify.error);
   };
 
@@ -82,6 +85,9 @@ export default function RealmFormPage({ mode }: { mode: FormMode }) {
       {formData ? (
         <>
           <RealmForm formData={formData} setFormData={setFormData} />
+          <Box sx={{ mt: 2 }}>
+            <EntitySourceField {...sourceField} />
+          </Box>
           <TechnicalInfo>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Chip } from '@mui/material';
 import {
   EntityCard,
+  EntitySourceChip,
   EnumPicker,
   FilterBar,
   fetchProfessions,
@@ -54,9 +55,12 @@ export default function ProfessionListPage() {
           title={t(profession.id)}
           subtitle={t(profession.archetype)}
           image={profession.imageUrl}
-          chips={profession.fixedRealmTypes.map((realmType) => (
-            <Chip key={realmType} size="small" variant="outlined" label={t(realmType)} />
-          ))}
+          chips={[
+            ...profession.fixedRealmTypes.map((realmType) => (
+              <Chip key={realmType} size="small" variant="outlined" label={t(realmType)} />
+            )),
+            <EntitySourceChip key="source" entity={profession} />,
+          ]}
           locked={profession.accessType === 'private'}
           lockedLabel={t('private')}
           onClick={() => navigate(`/core/professions/view/${profession.id}`, { state: { profession } })}

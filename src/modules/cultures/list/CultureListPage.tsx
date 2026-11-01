@@ -8,6 +8,7 @@ import {
   fetchCultures,
   ListPage,
   EntityCard,
+  EntitySourceChip,
   useNotify,
   useListFilters,
   usePagedQuery,
@@ -40,6 +41,7 @@ export default function CultureListPage() {
         <EntityCard
           title={t(culture.name)}
           image={culture.imageUrl || defaultImages.culture}
+          chips={<EntitySourceChip entity={culture} />}
           description={culture.description}
           metrics={[{ label: t('skills'), value: culture.skillRanks?.length ?? 0 }]}
           onClick={() => navigate(`/core/cultures/view/${culture.id}`, { state: { culture } })}

@@ -4,6 +4,8 @@ import { Stack } from '@mui/material';
 import {
   ClearableTextField,
   CREATURE_SIZES,
+  ENTITY_SOURCES,
+  entitySourceFilter,
   EnumPicker,
   FilterSchema,
   FilterSection,
@@ -31,7 +33,7 @@ const range = (field: string, operator: '>=' | '<=') => (value: string | string[
 
 /**
  * Filters of the race list (spec 059), kept in the URL. The name is matched on the client against the translated
- * name; the rest go to the API as RSQL.
+ * name and the source (spec 063: no RSQL, the races are loaded whole); the rest go to the API as RSQL.
  */
 export const raceFilters = (t: TFunction, realms: Realm[] | undefined): FilterSchema<Race> => ({
   q: {
@@ -72,6 +74,7 @@ export const raceFilters = (t: TFunction, realms: Realm[] | undefined): FilterSc
     format: (value) => realmName(realms, value),
     toRsql: (value) => `realmId==${value}`,
   },
+  source: { ...entitySourceFilter<Race>(t), toRsql: undefined },
 });
 
 /** Sections of the side panel of the race list. `archetypes` are the archetype keys to offer. */
@@ -108,6 +111,7 @@ export default function RaceListFilters({
     size: multiple('size'),
     access: single('access'),
     realm: single('realm'),
+    source: single('source'),
     hitsMin: numberInput('hitsMin', 999),
     hitsMax: numberInput('hitsMax', 999),
     dpMin: numberInput('dpMin', 999),
@@ -134,6 +138,7 @@ export default function RaceListFilters({
         />
         <EnumPicker {...bind.size} variant="select" label={t('size')} values={CREATURE_SIZES} labelPrefix="size-" />
         <EnumPicker {...bind.access} label={t('access-type')} values={RACE_ACCESS_TYPES} />
+        <EnumPicker {...bind.source} label={t('entity-source')} values={ENTITY_SOURCES} labelPrefix="entity-source-" />
         <Stack direction="row" spacing={1}>
           <NumericInput {...bind.hitsMin} name="hitsMin" label={t('race-hits-min')} />
           <NumericInput {...bind.hitsMax} name="hitsMax" label={t('race-hits-max')} />

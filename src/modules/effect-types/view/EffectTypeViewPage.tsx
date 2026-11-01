@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
+  canEditEntity,
   deleteEffectType,
   DetailPage,
   EffectType,
+  EntitySourceChip,
   fetchEffectType,
   useEntity,
   useNotify,
@@ -24,6 +26,9 @@ export default function EffectTypeViewPage() {
     onError: notify.error,
   });
 
+  // Spec 063: rulebook entities only for admins, user entities for their owner.
+  const editable = canEditEntity(state.entity, auth);
+
   const onDelete = (effectType: EffectType) =>
     deleteEffectType(effectType.id, auth)
       .then(() => navigate('/core/effect-types'))
@@ -39,8 +44,13 @@ export default function EffectTypeViewPage() {
       ]}
       entity={state}
       summaryTitle={(entity) => t(entity.id)}
-      onEdit={(effectType) => navigate(`/core/effect-types/edit/${effectType.id}`, { state: { effectType } })}
-      onDelete={onDelete}
+      onEdit={
+        editable
+          ? (effectType) => navigate(`/core/effect-types/edit/${effectType.id}`, { state: { effectType } })
+          : undefined
+      }
+      onDelete={editable ? onDelete : undefined}
+      actions={(effectType) => [<EntitySourceChip key="source" entity={effectType} />]}
     >
       {(effectType) => <EffectTypeViewInfo effectType={effectType} />}
     </DetailPage>
