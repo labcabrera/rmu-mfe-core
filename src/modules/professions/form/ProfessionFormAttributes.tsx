@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, TextField } from '@mui/material';
-import { EnumPicker, Profession, ProfessionArchetype } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Grid, TextField, Typography } from '@mui/material';
+import { EnumPicker, NumericInput, Profession, ProfessionArchetype } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { PROFESSION_ARCHETYPES } from '../../shared/enums';
 
 const ProfessionFormAttributes: FC<{
@@ -36,6 +36,21 @@ const ProfessionFormAttributes: FC<{
           }
           required
         />
+      </Grid>
+      {/* Spec 064: Base lists of the profession a character develops as base; empty is no limit */}
+      <Grid size={12}>
+        <NumericInput
+          label={t('base-list-limit')}
+          name="baseListLimit"
+          value={formData.baseListLimit ?? null}
+          onChange={(value) => setFormData({ ...formData, baseListLimit: value && value >= 1 ? value : null })}
+          placeholder={t('base-list-limit-none')}
+          min={1}
+          integer
+        />
+        <Typography variant="caption" color="text.secondary">
+          {t('base-list-limit-hint')}
+        </Typography>
       </Grid>
     </Grid>
   );
