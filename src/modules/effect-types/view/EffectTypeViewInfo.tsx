@@ -7,7 +7,7 @@ export default function EffectTypeViewInfo({ effectType }: { effectType: EffectT
   const { t } = useTranslation();
 
   return (
-    <Section title={t(effectType.id)}>
+    <Section title={t('details')}>
       <Grid container spacing={2}>
         <Grid size={{ sm: 12, lg: 4 }}>
           <StatRow

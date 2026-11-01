@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Chip, Stack, Tooltip, Typography } from '@mui/material';
 import {
+  AccessTypeChip,
   canEditEntity,
   deleteRealm,
   DetailPage,
+  EntitySourceChip,
   fetchRealm,
+  ImageSelectorDialog,
   Realm,
+  updateRealm,
   useEntity,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import RealmViewResume from './RealmViewResume';
+import { DEFAULT_REALM_IMAGE } from '../../services/image-service';
 import RealmViewTabs from './RealmViewTabs';
 
 export default function RealmViewPage() {
@@ -25,9 +30,13 @@ export default function RealmViewPage() {
     initial: location.state?.realm,
     onError: notify.error,
   });
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
 
   // Spec 063: rulebook entities only for admins, user entities for their owner.
   const editable = canEditEntity(state.entity, auth);
+
+  const onUpdateImage = (realm: Realm, imageUrl: string) =>
+    updateRealm(realm.id, { imageUrl }, auth).then(state.setEntity).catch(notify.error);
 
   const onDelete = (realm: Realm) =>
     deleteRealm(realm.id, auth)
@@ -40,15 +49,46 @@ export default function RealmViewPage() {
         { name: t('home'), link: '/' },
         { name: t('core'), link: '/core' },
         { name: t('realms'), link: '/core/realms' },
-        { name: t('view') },
+        { name: state.entity ? state.entity.name : t('view') },
       ]}
       entity={state}
-      summaryTitle={(entity) => t(entity.name)}
+      technicalInfo={false}
       onEdit={editable ? (realm) => navigate(`/core/realms/edit/${realm.id}`, { state: { realm } }) : undefined}
       onDelete={editable ? onDelete : undefined}
-      leftPanel={(realm) => <RealmViewResume realm={realm} setRealm={state.setEntity} editable={editable} />}
+      hero={(realm) => ({
+        title: realm.name,
+        overline: t('realm'),
+        image: realm.imageUrl || DEFAULT_REALM_IMAGE,
+        ...(editable ? { onImageClick: () => setImageDialogOpen(true), imageActionLabel: t('change-image') } : {}),
+        chips: [
+          <AccessTypeChip key="access" accessType={realm.accessType} />,
+          <EntitySourceChip key="source" entity={realm} />,
+          ...(realm.generic
+            ? [
+                <Tooltip key="generic" title={t('realm-generic-help')}>
+                  <Chip size="small" label={t('realm-generic')} color="info" variant="outlined" />
+                </Tooltip>,
+              ]
+            : []),
+        ],
+      })}
     >
-      {(realm) => <RealmViewTabs realm={realm} />}
+      {(realm) => (
+        <Stack spacing={2}>
+          {realm.description && (
+            <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
+              {realm.description}
+            </Typography>
+          )}
+          <RealmViewTabs realm={realm} />
+          <ImageSelectorDialog
+            value={realm.imageUrl || undefined}
+            open={imageDialogOpen}
+            onClose={() => setImageDialogOpen(false)}
+            onSelect={(image) => onUpdateImage(realm, image)}
+          />
+        </Stack>
+      )}
     </DetailPage>
   );
 }
