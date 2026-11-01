@@ -2,7 +2,13 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import CasinoOutlinedIcon from '@mui/icons-material/CasinoOutlined';
 import { alpha, Box, Divider, Stack, Typography } from '@mui/material';
-import { bonusColor, formatBonus, ResistanceRollResult, StatPill } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  bonusColor,
+  formatBonus,
+  ResistanceRollResult,
+  SectionLabel,
+  StatPill,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 
 /** Total the roll must reach to resist; below it, the failure is the difference. */
 const RESIST_AT = 50;
@@ -61,9 +67,7 @@ const ResistanceRollViewResult: FC<{ result: ResistanceRollResult | undefined }>
       </Stack>
 
       <Box>
-        <Typography variant="overline" color="text.secondary">
-          {t('resistance-roll-bands')}
-        </Typography>
+        <SectionLabel>{t('resistance-roll-bands')}</SectionLabel>
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(5, minmax(0, 1fr))' }, gap: 0.5 }}>
           {BANDS.map((each) => {
             const current = each.key === band.key;
@@ -81,7 +85,7 @@ const ResistanceRollViewResult: FC<{ result: ResistanceRollResult | undefined }>
                   opacity: current ? 1 : 0.6,
                 })}
               >
-                <Typography variant="body2" sx={{ fontWeight: current ? 700 : 400 }}>
+                <Typography variant="body2" sx={{ fontWeight: current ? 600 : 400 }}>
                   {t(each.key)}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
@@ -94,9 +98,7 @@ const ResistanceRollViewResult: FC<{ result: ResistanceRollResult | undefined }>
       </Box>
 
       <Box>
-        <Typography variant="overline" color="text.secondary">
-          {t('modifiers')}
-        </Typography>
+        <SectionLabel>{t('modifiers')}</SectionLabel>
         <Stack divider={<Divider flexItem />} spacing={0.75}>
           {result.modifiers.map((modifier) => (
             <Stack key={modifier.key} direction="row" sx={{ justifyContent: 'space-between' }}>
@@ -107,8 +109,8 @@ const ResistanceRollViewResult: FC<{ result: ResistanceRollResult | undefined }>
             </Stack>
           ))}
           <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
-            <Typography sx={{ fontWeight: 700 }}>{t('total')}</Typography>
-            <Typography sx={{ fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>{result.totalRoll}</Typography>
+            <Typography sx={{ fontWeight: 600 }}>{t('total')}</Typography>
+            <Typography sx={{ fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{result.totalRoll}</Typography>
           </Stack>
         </Stack>
       </Box>

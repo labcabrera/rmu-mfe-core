@@ -2,19 +2,24 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useSearchParams } from 'react-router-dom';
-import { Box, Chip, CircularProgress, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
 import {
   AttackLookup,
   AttackTablePicker,
+  ChipRow,
+  criticalSeverityColor,
+  criticalSeverityTextColor,
   fetchAttackTable,
   fetchAttackTables,
   LayoutBase,
+  LoadingState,
   lookupAttackTable,
   NumericInput,
+  Panel,
+  Section,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import CoreLawNotice from '../shared/CoreLawNotice';
-import { severityColor } from '../shared/severity-colors';
 import { useWholeTable } from '../shared/useWholeTable';
 import AttackDamageChart from './AttackDamageChart';
 
@@ -103,7 +108,7 @@ const AttackTablesView: FC = () => {
           </Stack>
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
+          <Panel variant="outlined" sx={{ height: '100%' }}>
             {result ? (
               <Stack spacing={1}>
                 <Typography variant="h3">{result.text}</Typography>
@@ -114,7 +119,10 @@ const AttackTablesView: FC = () => {
                   <Box>
                     <Chip
                       label={`${t('critical')} ${result.criticalSeverity} ${result.criticalType}`}
-                      sx={{ bgcolor: severityColor(result.criticalSeverity), color: 'white' }}
+                      sx={{
+                        bgcolor: criticalSeverityColor(result.criticalSeverity),
+                        color: criticalSeverityTextColor(result.criticalSeverity),
+                      }}
                     />
                   </Box>
                 ) : (
@@ -124,27 +132,30 @@ const AttackTablesView: FC = () => {
             ) : (
               <Typography color="text.secondary">{t('attack-tables-lookup-hint')}</Typography>
             )}
-          </Paper>
+          </Panel>
         </Grid>
 
         <Grid size={12}>
-          <Typography variant="h6" gutterBottom>
-            {t('attack-tables-chart')}
-          </Typography>
-          <Stack direction="row" spacing={0.5} useFlexGap sx={{ flexWrap: 'wrap', mb: 1 }}>
-            {ARMOR_TYPES.map((at) => (
-              <Chip
-                key={at}
-                label={t('attack-tables-at-n', { at })}
-                color={chartTypes.includes(at) ? 'primary' : 'default'}
-                variant={chartTypes.includes(at) ? 'filled' : 'outlined'}
-                onClick={() => toggleChartType(at)}
-              />
-            ))}
-          </Stack>
-          {whole.forbidden && <CoreLawNotice />}
-          {whole.loading && <CircularProgress />}
-          {whole.data && whole.data.id === table && <AttackDamageChart table={whole.data} armorTypes={chartTypes} />}
+          <Section title={t('attack-tables-chart')}>
+            <Stack spacing={1}>
+              <ChipRow>
+                {ARMOR_TYPES.map((at) => (
+                  <Chip
+                    key={at}
+                    label={t('attack-tables-at-n', { at })}
+                    color={chartTypes.includes(at) ? 'primary' : 'default'}
+                    variant={chartTypes.includes(at) ? 'filled' : 'outlined'}
+                    onClick={() => toggleChartType(at)}
+                  />
+                ))}
+              </ChipRow>
+              {whole.forbidden && <CoreLawNotice />}
+              {whole.loading && <LoadingState />}
+              {whole.data && whole.data.id === table && (
+                <AttackDamageChart table={whole.data} armorTypes={chartTypes} />
+              )}
+            </Stack>
+          </Section>
         </Grid>
       </Grid>
     </LayoutBase>

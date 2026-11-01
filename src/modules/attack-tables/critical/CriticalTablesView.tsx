@@ -4,8 +4,6 @@ import { useAuth } from 'react-oidc-context';
 import { useSearchParams } from 'react-router-dom';
 import {
   Box,
-  CircularProgress,
-  Paper,
   Stack,
   Table,
   TableBody,
@@ -16,22 +14,26 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  CRITICAL_SEVERITIES,
+  criticalSeverityColor,
   CriticalSeverity,
   CriticalTableEntry,
   EnumPicker,
   fetchCriticalTable,
   fetchCriticalTypes,
   LayoutBase,
+  LoadingState,
+  Panel,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import CoreLawNotice from '../shared/CoreLawNotice';
 import TableEntryDialog from '../shared/TableEntryDialog';
-import { severityColor } from '../shared/severity-colors';
 import { criticalTypeName, effectLabel, rollBand } from '../shared/table-labels';
 import { useWholeTable } from '../shared/useWholeTable';
 
 type Selected = { severity: CriticalSeverity; entry: CriticalTableEntry };
+
+/** Severity columns of a critical table, in order (the lib's CRITICAL_SEVERITIES is now the A-I legend). */
+const TABLE_SEVERITIES: CriticalSeverity[] = ['A', 'B', 'C', 'D', 'E'];
 
 /**
  * Critical tables as the book prints them (spec 036): one row per roll band, one column per severity A-E, with the
@@ -57,7 +59,7 @@ const CriticalTablesView: FC = () => {
   }, []);
 
   const table = whole.data && whole.data.type === type ? whole.data : undefined;
-  const severities = CRITICAL_SEVERITIES.filter((severity) => table?.severities[severity]);
+  const severities = TABLE_SEVERITIES.filter((severity) => table?.severities[severity]);
   // Every severity has the same bands and locations (checked in the 15 tables)
   const bands = table ? (table.severities[severities[0]] ?? []) : [];
 
@@ -85,56 +87,59 @@ const CriticalTablesView: FC = () => {
           />
         </Box>
         {whole.forbidden && <CoreLawNotice />}
-        {whole.loading && <CircularProgress />}
+        {whole.loading && <LoadingState />}
         {table && (
-          <TableContainer component={Paper} variant="outlined">
-            <Table size="small" sx={{ tableLayout: 'fixed', minWidth: 900 }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ width: 70 }}>{t('roll')}</TableCell>
-                  {severities.map((severity) => (
-                    <TableCell key={severity} sx={{ borderTop: 4, borderTopColor: severityColor(severity) }}>
-                      {severity}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {bands.map((band, index) => (
-                  <TableRow key={band.rollMin}>
-                    <TableCell sx={{ verticalAlign: 'top' }}>
-                      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                        {rollBand(band.rollMin, band.rollMax)}
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        {band.location ? t(band.location) : ''}
-                      </Typography>
-                    </TableCell>
-                    {severities.map((severity) => {
-                      const entry = table.severities[severity]![index];
-                      return (
-                        <TableCell
-                          key={severity}
-                          onClick={() => setSelected({ severity, entry })}
-                          sx={{ verticalAlign: 'top', cursor: 'pointer', '&:hover': { bgcolor: 'action.hover' } }}
-                        >
-                          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                            +{entry.dmg}
-                          </Typography>
-                          <Typography variant="body2">{entry.message}</Typography>
-                          {(entry.effects ?? []).length > 0 && (
-                            <Typography variant="caption" color="primary">
-                              {(entry.effects ?? []).map((effect) => effectLabel(effect, t)).join(' · ')}
-                            </Typography>
-                          )}
-                        </TableCell>
-                      );
-                    })}
+          // Rule table kept on MUI Table (spec 066, decision 10): each cell is a clickable result.
+          <Panel variant="outlined">
+            <TableContainer>
+              <Table size="small" sx={{ tableLayout: 'fixed', minWidth: 900 }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ width: 70 }}>{t('roll')}</TableCell>
+                    {severities.map((severity) => (
+                      <TableCell key={severity} sx={{ borderTop: 4, borderTopColor: criticalSeverityColor(severity) }}>
+                        {severity}
+                      </TableCell>
+                    ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {bands.map((band, index) => (
+                    <TableRow key={band.rollMin}>
+                      <TableCell sx={{ verticalAlign: 'top' }}>
+                        <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                          {rollBand(band.rollMin, band.rollMax)}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {band.location ? t(band.location) : ''}
+                        </Typography>
+                      </TableCell>
+                      {severities.map((severity) => {
+                        const entry = table.severities[severity]![index];
+                        return (
+                          <TableCell
+                            key={severity}
+                            onClick={() => setSelected({ severity, entry })}
+                            sx={{ verticalAlign: 'top', cursor: 'pointer', '&:hover': { bgcolor: 'action.hover' } }}
+                          >
+                            <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                              +{entry.dmg}
+                            </Typography>
+                            <Typography variant="body2">{entry.message}</Typography>
+                            {(entry.effects ?? []).length > 0 && (
+                              <Typography variant="caption" color="primary">
+                                {(entry.effects ?? []).map((effect) => effectLabel(effect, t)).join(' · ')}
+                              </Typography>
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Panel>
         )}
       </Stack>
       <TableEntryDialog

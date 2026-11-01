@@ -2,25 +2,17 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useSearchParams } from 'react-router-dom';
+import { Box, Stack, Typography } from '@mui/material';
 import {
-  Box,
-  CircularProgress,
-  Paper,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
-import {
+  DataTable,
+  DataTableColumn,
   fetchFumbleTable,
   fetchFumbleTables,
   FumbleTableEntry,
   FumbleTablePicker,
   LayoutBase,
+  LoadingState,
+  Panel,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import CoreLawNotice from '../shared/CoreLawNotice';
@@ -50,6 +42,31 @@ const FumbleTablesView: FC = () => {
   }, []);
 
   const table = whole.data && whole.data.id === id ? whole.data : undefined;
+  const columns: DataTableColumn<FumbleTableEntry>[] = [
+    {
+      key: 'roll',
+      header: t('roll'),
+      width: 80,
+      cellSx: { verticalAlign: 'top' },
+      render: (entry) => (
+        <Typography variant="body2" sx={{ fontWeight: 600 }}>
+          {rollBand(entry.rollMin, entry.rollMax)}
+        </Typography>
+      ),
+    },
+    { key: 'text', header: t('text'), cellSx: { verticalAlign: 'top' }, render: (entry) => entry.text },
+    {
+      key: 'effects',
+      header: t('effects'),
+      width: '30%',
+      cellSx: { verticalAlign: 'top' },
+      render: (entry) => (
+        <Typography variant="caption" color="primary">
+          {(entry.effects ?? []).map((effect) => effectLabel(effect, t)).join(' · ')}
+        </Typography>
+      ),
+    },
+  ];
 
   return (
     <LayoutBase
@@ -72,41 +89,16 @@ const FumbleTablesView: FC = () => {
           />
         </Box>
         {whole.forbidden && <CoreLawNotice />}
-        {whole.loading && <CircularProgress />}
+        {whole.loading && <LoadingState />}
         {table && (
-          <TableContainer component={Paper} variant="outlined">
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ width: 80 }}>{t('roll')}</TableCell>
-                  <TableCell>{t('text')}</TableCell>
-                  <TableCell sx={{ width: '30%' }}>{t('effects')}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {table.entries.map((entry) => (
-                  <TableRow
-                    key={entry.rollMin}
-                    hover
-                    onClick={() => setSelected(entry)}
-                    sx={{ cursor: 'pointer', verticalAlign: 'top' }}
-                  >
-                    <TableCell>
-                      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                        {rollBand(entry.rollMin, entry.rollMax)}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>{entry.text}</TableCell>
-                    <TableCell>
-                      <Typography variant="caption" color="primary">
-                        {(entry.effects ?? []).map((effect) => effectLabel(effect, t)).join(' · ')}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Panel variant="outlined">
+            <DataTable
+              columns={columns}
+              rows={table.entries}
+              getKey={(entry) => String(entry.rollMin)}
+              onRowClick={setSelected}
+            />
+          </Panel>
         )}
       </Stack>
       <TableEntryDialog
