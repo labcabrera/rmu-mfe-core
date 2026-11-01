@@ -4,6 +4,7 @@ import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Chip, Stack } from '@mui/material';
 import {
+  canEditEntity,
   CategorySeparator,
   deleteProfession,
   DetailPage,
@@ -28,6 +29,9 @@ export default function ProfessionViewPage() {
     onError: notify.error,
   });
 
+  // Spec 063: rulebook entities only for admins, user entities for their owner.
+  const editable = canEditEntity(state.entity, auth);
+
   const onDelete = (profession: Profession) =>
     deleteProfession(profession.id, auth)
       .then(() => navigate('/core/professions'))
@@ -43,9 +47,15 @@ export default function ProfessionViewPage() {
       ]}
       entity={state}
       summaryTitle={(entity) => t(entity.id)}
-      onEdit={(profession) => navigate(`/core/professions/edit/${profession.id}`, { state: { profession } })}
-      onDelete={onDelete}
-      leftPanel={(profession) => <ProfessionViewResume profession={profession} setProfession={state.setEntity} />}
+      onEdit={
+        editable
+          ? (profession) => navigate(`/core/professions/edit/${profession.id}`, { state: { profession } })
+          : undefined
+      }
+      onDelete={editable ? onDelete : undefined}
+      leftPanel={(profession) => (
+        <ProfessionViewResume profession={profession} setProfession={state.setEntity} editable={editable} />
+      )}
     >
       {(profession) => (
         <>

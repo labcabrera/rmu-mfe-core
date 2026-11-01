@@ -9,6 +9,7 @@ import {
   CollectionMode,
   CollectionModeSwitch,
   EntityCard,
+  EntitySourceChip,
   fetchSkillCategories,
   fetchSkills,
   FilterSection,
@@ -156,6 +157,7 @@ export default function SkillListPage() {
         <>
           <StatChips stats={skill.bonus} realmBonus={skill.realmBonus} />
           {skill.maneuver && <SkillManeuverIndicator profile={skill.maneuver} />}
+          <EntitySourceChip entity={skill} />
         </>
       }
       description={i18n.exists(skillDescriptionKey(skill)) ? t(skillDescriptionKey(skill)) : undefined}

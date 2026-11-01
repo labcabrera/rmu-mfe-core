@@ -2,11 +2,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Box } from '@mui/material';
 import {
   createTrait,
   fetchTrait,
   FormPage,
   EntityImage,
+  EntitySourceField,
   LoadingState,
   TechnicalInfo,
   Trait,
@@ -41,11 +43,16 @@ export default function TraitFormPage({ mode }: { mode: FormMode }) {
     initial: location.state?.trait,
     onError: notify.error,
   });
-  const { formData, setFormData, dirty } = useFormData<Trait>(mode, existing.entity, () => EMPTY_TRAIT);
+  const { formData, setFormData, dirty, sourceField, withSource } = useFormData<Trait>(
+    mode,
+    existing.entity,
+    () => EMPTY_TRAIT
+  );
 
   const onSave = () => {
     if (!formData) return;
-    const request = mode === 'create' ? createTrait(formData, auth) : updateTrait(traitId!, formData, auth);
+    const request =
+      mode === 'create' ? createTrait(withSource(formData), auth) : updateTrait(traitId!, withSource(formData), auth);
     request.then((trait) => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })).catch(notify.error);
   };
 
@@ -73,6 +80,9 @@ export default function TraitFormPage({ mode }: { mode: FormMode }) {
       {formData ? (
         <>
           <TraitForm formData={formData} setFormData={setFormData} />
+          <Box sx={{ mt: 2 }}>
+            <EntitySourceField {...sourceField} />
+          </Box>
           <TechnicalInfo>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

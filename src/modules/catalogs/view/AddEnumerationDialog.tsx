@@ -5,6 +5,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, TextFi
 import {
   createEnumeration,
   CreateEnumerationDto,
+  EntitySourceField,
   Realm,
   RealmPicker,
   resetEnumerationNames,
@@ -71,6 +72,13 @@ const AddEnumerationDialog: FC<Props> = ({ open, category, realms, onClose, onAd
               realms={realms}
               allowAll
               allLabel={t('none')}
+            />
+          </Grid>
+          {/* Spec 063: admins only; the API stores `user` when it is not sent. */}
+          <Grid size={{ xs: 12 }}>
+            <EntitySourceField
+              value={form.entitySource}
+              onChange={(entitySource) => setForm({ ...form, entitySource })}
             />
           </Grid>
         </Grid>

@@ -4,6 +4,7 @@ import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
   EntityCard,
+  EntitySourceChip,
   FilterBar,
   fetchRealms,
   ListPage,
@@ -43,6 +44,7 @@ export default function RealmListPage() {
         <EntityCard
           title={realm.name}
           image={realm.imageUrl || DEFAULT_REALM_IMAGE}
+          chips={<EntitySourceChip entity={realm} />}
           description={realm.shortDescription || t('no-description')}
           metrics={[{ label: t('magic-presence'), value: t(realm.magicPresence) }]}
           locked={realm.accessType === 'private'}

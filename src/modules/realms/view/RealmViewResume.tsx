@@ -2,12 +2,21 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Chip, Grid, Stack, Tooltip, Typography } from '@mui/material';
-import { EntityImage, imageBaseUrl, Realm, updateRealm, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  EntityImage,
+  EntitySourceChip,
+  imageBaseUrl,
+  Realm,
+  updateRealm,
+  useNotify,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const RealmViewResume: FC<{
   realm: Realm;
   setRealm: (realm: Realm) => void;
-}> = ({ realm, setRealm }) => {
+  /** Spec 063: without permission the image cannot be changed. */
+  editable?: boolean;
+}> = ({ realm, setRealm, editable = true }) => {
   const auth = useAuth();
   const { t } = useTranslation();
   const notify = useNotify();
@@ -23,10 +32,11 @@ const RealmViewResume: FC<{
       <Grid size={12}>
         <EntityImage
           image={realm.imageUrl || `${imageBaseUrl}images/generic/realm.png`}
-          onImageChange={(image) => onImageChange(image)}
+          onImageChange={editable ? (image) => onImageChange(image) : undefined}
         />
         <Stack direction="row" spacing={1} sx={{ mt: 2, flexWrap: 'wrap' }}>
           <Chip size="small" label={t(realm.accessType)} color={realm.accessType === 'public' ? 'success' : 'error'} />
+          <EntitySourceChip entity={realm} />
           {realm.generic && (
             <Tooltip title={t('realm-generic-help')}>
               <Chip size="small" label={t('realm-generic')} color="info" variant="outlined" />

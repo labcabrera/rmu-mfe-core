@@ -2,12 +2,14 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Box } from '@mui/material';
 import {
   createSkill,
   CreateSkillDto,
   fetchSkill,
   FormPage,
   EntityImage,
+  EntitySourceField,
   imageBaseUrl,
   LoadingState,
   Skill,
@@ -47,7 +49,12 @@ export default function SkillFormPage({ mode }: { mode: FormMode }) {
     initial: location.state?.skill,
     onError: notify.error,
   });
-  const { formData, setFormData, dirty } = useFormData<Skill>(mode, existing.entity, () => EMPTY_SKILL, toForm);
+  const { formData, setFormData, dirty, sourceField, withSource } = useFormData<Skill>(
+    mode,
+    existing.entity,
+    () => EMPTY_SKILL,
+    toForm
+  );
 
   const isValid = !!formData?.categoryId && (mode === 'edit' || !!formData.id);
 
@@ -55,8 +62,8 @@ export default function SkillFormPage({ mode }: { mode: FormMode }) {
     if (!formData) return;
     const request =
       mode === 'create'
-        ? createSkill(formData as unknown as CreateSkillDto, auth)
-        : updateSkill(skillId!, formData as unknown as UpdateSkillDto, auth);
+        ? createSkill(withSource(formData) as unknown as CreateSkillDto, auth)
+        : updateSkill(skillId!, withSource(formData) as unknown as UpdateSkillDto, auth);
     request.then((skill) => navigate(`/core/skills/view/${skill.id}`, { state: { skill } })).catch(notify.error);
   };
 
@@ -80,6 +87,9 @@ export default function SkillFormPage({ mode }: { mode: FormMode }) {
       {formData ? (
         <>
           <SkillForm formData={formData} setFormData={setFormData} create={mode === 'create'} />
+          <Box sx={{ mt: 2 }}>
+            <EntitySourceField {...sourceField} />
+          </Box>
           <TechnicalInfo>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
           </TechnicalInfo>

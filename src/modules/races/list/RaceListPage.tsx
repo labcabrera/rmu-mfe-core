@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { Alert } from '@mui/material';
 import {
   EntityCard,
+  EntitySourceChip,
   fetchRaces,
   ListPage,
   Race,
@@ -108,6 +109,7 @@ export default function RaceListPage() {
           subtitle={race.archetype ? archetypeLabel(race.archetype, t) : undefined}
           image={race.imageUrl}
           imageTransitionName={viewTransitionName('race', race.id)}
+          chips={<EntitySourceChip entity={race} />}
           metrics={[
             { label: t('size'), value: t(`size-${race.sizeId}`) },
             { label: t('hit-points'), value: race.baseHits },

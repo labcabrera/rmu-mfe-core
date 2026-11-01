@@ -4,6 +4,7 @@ import { useAuth } from 'react-oidc-context';
 import { Chip, Stack, Typography } from '@mui/material';
 import {
   EntityImage,
+  EntitySourceChip,
   LoadingState,
   Profession,
   updateProfession,
@@ -14,7 +15,9 @@ import {
 const ProfessionViewResume: FC<{
   profession: Profession;
   setProfession: (profession: Profession) => void;
-}> = ({ profession, setProfession }) => {
+  /** Spec 063: without permission the image cannot be changed. */
+  editable?: boolean;
+}> = ({ profession, setProfession, editable = true }) => {
   const auth = useAuth();
   const { t } = useTranslation();
   const notify = useNotify();
@@ -30,7 +33,10 @@ const ProfessionViewResume: FC<{
 
   return (
     <>
-      <EntityImage image={profession.imageUrl || ''} onImageChange={(avatar) => onUpdateImage(avatar)} />
+      <EntityImage
+        image={profession.imageUrl || ''}
+        onImageChange={editable ? (avatar) => onUpdateImage(avatar) : undefined}
+      />
       <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
         <Chip
           label={t(profession.accessType)}
@@ -38,6 +44,7 @@ const ProfessionViewResume: FC<{
           sx={{ mt: 2 }}
         />
         <Chip label={t(profession.archetype)} sx={{ mt: 2 }} />
+        <EntitySourceChip entity={profession} size="medium" />
       </Stack>
       <Typography variant="h6" color="primary" gutterBottom>
         {t(profession.id)}

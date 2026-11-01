@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   defaultImages,
   EntityCard,
+  EntitySourceChip,
   EnumPicker,
   fetchTraits,
   FilterSection,
@@ -79,6 +80,7 @@ export default function TraitListPage() {
           subtitle={`${t(trait.isTalent ? 'trait' : 'flaw')} • ${t(trait.category)}`}
           image={traitCategoryImage(trait.category)}
           fallbackImages={[defaultImages.trait]}
+          chips={<EntitySourceChip entity={trait} />}
           imageFilter={trait.isTalent ? undefined : 'grayscale(0.8)'}
           metrics={[{ label: t('adquisition-cost'), value: trait.adquisitionCost }]}
           onClick={() => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })}

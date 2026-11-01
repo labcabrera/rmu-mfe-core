@@ -3,10 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
+  canEditEntity,
   deleteTrait,
   DetailPage,
-  fetchTrait,
   EntityImage,
+  EntitySourceChip,
+  fetchTrait,
   Trait,
   useEntity,
   useNotify,
@@ -26,6 +28,9 @@ export default function TraitViewPage() {
     onError: notify.error,
   });
 
+  // Spec 063: rulebook entities only for admins, user entities for their owner.
+  const editable = canEditEntity(state.entity, auth);
+
   const onDelete = (trait: Trait) =>
     deleteTrait(trait.id, auth)
       .then(() => navigate('/core/traits'))
@@ -41,8 +46,9 @@ export default function TraitViewPage() {
       ]}
       entity={state}
       summaryTitle={(entity) => t(entity.name)}
-      onEdit={(trait) => navigate(`/core/traits/edit/${trait.id}`, { state: { trait } })}
-      onDelete={onDelete}
+      onEdit={editable ? (trait) => navigate(`/core/traits/edit/${trait.id}`, { state: { trait } }) : undefined}
+      onDelete={editable ? onDelete : undefined}
+      actions={(trait) => [<EntitySourceChip key="source" entity={trait} />]}
       leftPanel={(trait) => <EntityImage image={getTraitImage(trait)} />}
     >
       {(trait) => <TraitViewInfo trait={trait} />}
