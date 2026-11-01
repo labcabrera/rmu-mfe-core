@@ -55,7 +55,7 @@ const OPTIONS = [
   {
     value: 'catalogs',
     subtitle: 'manage-catalogs',
-    image: `${imageBaseUrl}images/generic/language.png`,
+    image: `${imageBaseUrl}images/generic/catalogs.png`,
     to: '/core/catalogs',
   },
   {
