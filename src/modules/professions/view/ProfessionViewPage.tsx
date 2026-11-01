@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Chip, Stack } from '@mui/material';
+import { Chip, Stack, Typography } from '@mui/material';
 import {
   canEditEntity,
   CategorySeparator,
@@ -77,6 +77,12 @@ export default function ProfessionViewPage() {
                   <Chip key={index} label={t(rt)} color="primary" />
                 ))}
               </Stack>
+            </>
+          )}
+          {typeof profession.baseListLimit === 'number' && (
+            <>
+              <CategorySeparator text={t('base-list-limit')} />
+              <Typography variant="body2">{t('base-list-limit-value', { count: profession.baseListLimit })}</Typography>
             </>
           )}
           <CategorySeparator text={t('skill-costs')} />
