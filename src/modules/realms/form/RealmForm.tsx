@@ -1,7 +1,14 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormControlLabel, FormHelperText, Grid, Switch, TextField } from '@mui/material';
-import { AccessType, EnumPicker, MagicPresence, Realm, useIsAdmin } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  AccessType,
+  EnumPicker,
+  MagicPresence,
+  Realm,
+  useCanManageEntity,
+  useIsAdmin,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { ACCESS_TYPES, MAGIC_PRESENCES } from '../../shared/enums';
 
 const RealmForm: FC<{
@@ -11,6 +18,9 @@ const RealmForm: FC<{
   const { t } = useTranslation();
   // Only an admin marks a realm as generic (spec 055); the API refuses it to anyone else.
   const admin = useIsAdmin();
+  // Spec 069: a writer edits the realm, but its visibility stays with the owner and the admins. A new realm has no id.
+  const manager = useCanManageEntity(formData);
+  const canSetAccess = !formData.id || manager;
 
   return (
     <Grid container spacing={2}>
@@ -19,6 +29,7 @@ const RealmForm: FC<{
           label={t('access-type')}
           values={ACCESS_TYPES}
           value={formData.accessType}
+          disabled={!canSetAccess}
           onChange={(value) => value && setFormData({ ...formData, accessType: value as AccessType })}
         />
       </Grid>

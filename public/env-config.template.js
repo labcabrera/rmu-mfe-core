@@ -16,5 +16,7 @@ window.__RMU_CONFIG__ = {
   RMU_API_NPC_NAMES_URI: '${RMU_API_NPC_NAMES_URI}',
   RMU_API_NPCS_URI: '${RMU_API_NPCS_URI}',
   RMU_API_SPELLS_URI: '${RMU_API_SPELLS_URI}',
+  // users: the friends to share a realm with (spec 069).
+  RMU_API_USERS_URI: '${RMU_API_USERS_URI}',
   RMU_API_MEDIA_URI: '${RMU_API_MEDIA_URI}',
 };

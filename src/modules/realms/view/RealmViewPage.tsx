@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Chip, Stack, Tooltip, Typography } from '@mui/material';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Button, Chip, Stack, Tooltip, Typography } from '@mui/material';
 import {
   AccessTypeChip,
   canEditEntity,
+  canManageEntity,
   deleteRealm,
   DetailPage,
+  EntityAccessChip,
+  entityAccessChipKey,
   EntitySourceChip,
+  fetchFriends,
   fetchRealm,
+  Friend,
+  ShareDialog,
+  ShareLevel,
+  shareRealm,
+  unshareRealm,
   ImageSelectorDialog,
   Realm,
   updateRealm,
@@ -31,9 +42,38 @@ export default function RealmViewPage() {
     onError: notify.error,
   });
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [friends, setFriends] = useState<Friend[]>();
 
-  // Spec 063: rulebook entities only for admins, user entities for their owner.
+  // Spec 069: writers edit the realm (rulebook ones only admins); its owner and admins also delete and share it.
   const editable = canEditEntity(state.entity, auth);
+  const manageable = canManageEntity(state.entity, auth);
+  // Shared with the user (a chip of access and no manage): the user can give the access up.
+  const sharedWithMe = !manageable && !!entityAccessChipKey(state.entity);
+
+  useEffect(() => {
+    if (!shareOpen || friends) return;
+    fetchFriends(auth)
+      .then(setFriends)
+      .catch((err) => {
+        setFriends([]);
+        notify.error(err);
+      });
+  }, [shareOpen, friends, auth, notify]);
+
+  const onShare = (realm: Realm, userId: string, level: ShareLevel) =>
+    shareRealm(realm.id, userId, level, auth).then(state.setEntity).catch(notify.error);
+
+  const onUnshare = (realm: Realm, userId: string) =>
+    unshareRealm(realm.id, userId, auth).then(state.setEntity).catch(notify.error);
+
+  const onGiveUp = (realm: Realm) => {
+    const me = auth.user?.profile?.sub;
+    if (!me) return;
+    unshareRealm(realm.id, me, auth)
+      .then(() => navigate('/core/realms'))
+      .catch(notify.error);
+  };
 
   const onUpdateImage = (realm: Realm, imageUrl: string) =>
     updateRealm(realm.id, { imageUrl }, auth).then(state.setEntity).catch(notify.error);
@@ -54,7 +94,29 @@ export default function RealmViewPage() {
       entity={state}
       technicalInfo={false}
       onEdit={editable ? (realm) => navigate(`/core/realms/edit/${realm.id}`, { state: { realm } }) : undefined}
-      onDelete={editable ? onDelete : undefined}
+      onDelete={manageable ? onDelete : undefined}
+      actions={(realm) => [
+        ...(manageable
+          ? [
+              <Button key="share" variant="outlined" startIcon={<GroupAddIcon />} onClick={() => setShareOpen(true)}>
+                {t('share')}
+              </Button>,
+            ]
+          : []),
+        ...(sharedWithMe
+          ? [
+              <Button
+                key="give-up"
+                variant="outlined"
+                color="warning"
+                startIcon={<LogoutIcon />}
+                onClick={() => onGiveUp(realm)}
+              >
+                {t('share-give-up')}
+              </Button>,
+            ]
+          : []),
+      ]}
       hero={(realm) => ({
         title: realm.name,
         overline: t('realm'),
@@ -63,6 +125,7 @@ export default function RealmViewPage() {
         chips: [
           <AccessTypeChip key="access" accessType={realm.accessType} />,
           <EntitySourceChip key="source" entity={realm} />,
+          <EntityAccessChip key="shared" entity={realm} />,
           ...(realm.generic
             ? [
                 <Tooltip key="generic" title={t('realm-generic-help')}>
@@ -87,6 +150,18 @@ export default function RealmViewPage() {
             onClose={() => setImageDialogOpen(false)}
             onSelect={(image) => onUpdateImage(realm, image)}
           />
+          {manageable && (
+            <ShareDialog
+              open={shareOpen}
+              onClose={() => setShareOpen(false)}
+              entityName={realm.name}
+              shares={realm.shares ?? []}
+              friends={friends}
+              system={realm.entitySource === 'system'}
+              onShare={(userId, level) => onShare(realm, userId, level)}
+              onUnshare={(userId) => onUnshare(realm, userId)}
+            />
+          )}
         </Stack>
       )}
     </DetailPage>
