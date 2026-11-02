@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Chip, Paper, Typography, useTheme } from '@mui/material';
 import {
   ChipRow,
-  CRITICAL_SEVERITIES,
+  CRITICAL_SEVERITY_LEGEND,
   criticalSeverityColor,
   criticalSeverityTextColor,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -128,7 +128,7 @@ const AttackDamageChart: FC<{ table: AttackTable; armorTypes: number[] }> = ({ t
         </ResponsiveContainer>
       </Box>
       <ChipRow sx={{ mt: 1 }}>
-        {CRITICAL_SEVERITIES.map((severity) => (
+        {CRITICAL_SEVERITY_LEGEND.map((severity) => (
           <Chip
             key={severity}
             size="small"

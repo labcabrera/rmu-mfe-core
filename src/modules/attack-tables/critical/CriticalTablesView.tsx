@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import {
   criticalSeverityColor,
+  CRITICAL_SEVERITIES,
   CriticalSeverity,
   CriticalTableEntry,
   EnumPicker,
@@ -31,9 +32,6 @@ import { criticalTypeName, effectLabel, rollBand } from '../shared/table-labels'
 import { useWholeTable } from '../shared/useWholeTable';
 
 type Selected = { severity: CriticalSeverity; entry: CriticalTableEntry };
-
-/** Severity columns of a critical table, in order (the lib's CRITICAL_SEVERITIES is now the A-I legend). */
-const TABLE_SEVERITIES: CriticalSeverity[] = ['A', 'B', 'C', 'D', 'E'];
 
 /**
  * Critical tables as the book prints them (spec 036): one row per roll band, one column per severity A-E, with the
@@ -59,7 +57,7 @@ const CriticalTablesView: FC = () => {
   }, []);
 
   const table = whole.data && whole.data.type === type ? whole.data : undefined;
-  const severities = TABLE_SEVERITIES.filter((severity) => table?.severities[severity]);
+  const severities = CRITICAL_SEVERITIES.filter((severity) => table?.severities[severity]);
   // Every severity has the same bands and locations (checked in the 15 tables)
   const bands = table ? (table.severities[severities[0]] ?? []) : [];
 
