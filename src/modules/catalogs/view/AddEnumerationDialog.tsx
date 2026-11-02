@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, TextField } from '@mui/material';
 import {
   createEnumeration,
   CreateEnumerationDto,
@@ -9,6 +9,7 @@ import {
   Realm,
   RealmPicker,
   resetEnumerationNames,
+  RmuDialog,
   toKey,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -50,46 +51,50 @@ const AddEnumerationDialog: FC<Props> = ({ open, category, realms, onClose, onAd
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>{t('add-enumeration')}</DialogTitle>
-      <DialogContent dividers>
-        <Grid container spacing={2} sx={{ pt: 1 }}>
-          <Grid size={{ xs: 12 }}>
-            <TextField
-              label={t('name')}
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              fullWidth
-              size="small"
-              required
-              helperText={`${t('enumeration-key')}: ${toKey(form.name) || '—'}. ${t('enumeration-key-help')}`}
-            />
-          </Grid>
-          <Grid size={{ xs: 12 }}>
-            <RealmPicker
-              value={form.realmId || null}
-              onChange={(realmId) => setForm({ ...form, realmId: realmId ?? '' })}
-              realms={realms}
-              allowAll
-              allLabel={t('none')}
-            />
-          </Grid>
-          {/* Spec 063: admins only; the API stores `user` when it is not sent. */}
-          <Grid size={{ xs: 12 }}>
-            <EntitySourceField
-              value={form.entitySource}
-              onChange={(entitySource) => setForm({ ...form, entitySource })}
-            />
-          </Grid>
-        </Grid>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>{t('cancel')}</Button>
-        <Button onClick={onSave} variant="contained" disabled={!toKey(form.name)}>
+    <RmuDialog
+      open={open}
+      title={t('add-enumeration')}
+      maxWidth="sm"
+      onDismiss={onClose}
+      buttons={[
+        <Button key="cancel" onClick={onClose}>
+          {t('cancel')}
+        </Button>,
+        <Button key="add" onClick={onSave} variant="contained" disabled={!toKey(form.name)}>
           {t('add')}
-        </Button>
-      </DialogActions>
-    </Dialog>
+        </Button>,
+      ]}
+    >
+      <Grid container spacing={2} sx={{ pt: 1 }}>
+        <Grid size={{ xs: 12 }}>
+          <TextField
+            label={t('name')}
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            fullWidth
+            size="small"
+            required
+            helperText={`${t('enumeration-key')}: ${toKey(form.name) || '—'}. ${t('enumeration-key-help')}`}
+          />
+        </Grid>
+        <Grid size={{ xs: 12 }}>
+          <RealmPicker
+            value={form.realmId || null}
+            onChange={(realmId) => setForm({ ...form, realmId: realmId ?? '' })}
+            realms={realms}
+            allowAll
+            allLabel={t('none')}
+          />
+        </Grid>
+        {/* Spec 063: admins only; the API stores `user` when it is not sent. */}
+        <Grid size={{ xs: 12 }}>
+          <EntitySourceField
+            value={form.entitySource}
+            onChange={(entitySource) => setForm({ ...form, entitySource })}
+          />
+        </Grid>
+      </Grid>
+    </RmuDialog>
   );
 };
 
