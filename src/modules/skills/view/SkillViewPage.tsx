@@ -9,6 +9,7 @@ import {
   canEditEntity,
   deleteSkill,
   DetailPage,
+  EmptyState,
   EntitySourceChip,
   Enumeration,
   fetchEnumerations,
@@ -224,9 +225,7 @@ export default function SkillViewPage() {
                     ))}
                   </Stack>
                 ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    {t('no-results')}
-                  </Typography>
+                  <EmptyState dense title={t('no-results')} />
                 )}
               </Panel>
             </Box>

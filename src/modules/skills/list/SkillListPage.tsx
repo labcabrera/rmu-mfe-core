@@ -95,7 +95,7 @@ export default function SkillListPage() {
           to={`/core/skill-categories/view/${group}`}
           state={category ? { skillCategory: category } : undefined}
           underline="hover"
-          sx={{ fontWeight: 700 }}
+          sx={{ fontWeight: 600 }}
         >
           {t(group)}
         </Link>
@@ -112,7 +112,7 @@ export default function SkillListPage() {
       header: t('skill'),
       render: (skill) => (
         <Box>
-          <Typography variant="body2" sx={{ fontWeight: 700 }}>
+          <Typography variant="body2" sx={{ fontWeight: 600 }}>
             {t(skill.id)}
           </Typography>
           {skill.specialization && (

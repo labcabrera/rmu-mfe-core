@@ -4,6 +4,7 @@ import CasinoOutlinedIcon from '@mui/icons-material/CasinoOutlined';
 import { alpha, Box, Divider, Stack, Typography } from '@mui/material';
 import {
   bonusColor,
+  EmptyState,
   formatBonus,
   ResistanceRollResult,
   SectionLabel,
@@ -27,12 +28,7 @@ const ResistanceRollViewResult: FC<{ result: ResistanceRollResult | undefined }>
   const { t } = useTranslation();
 
   if (!result) {
-    return (
-      <Stack spacing={1} sx={{ alignItems: 'center', textAlign: 'center', py: 4, color: 'text.secondary' }}>
-        <CasinoOutlinedIcon sx={{ fontSize: 48 }} />
-        <Typography>{t('resistance-roll-empty')}</Typography>
-      </Stack>
-    );
+    return <EmptyState icon={<CasinoOutlinedIcon sx={{ fontSize: 48 }} />} title={t('resistance-roll-empty')} />;
   }
 
   const band = BANDS.find((each) => each.key === result.result) ?? BANDS[BANDS.length - 1];

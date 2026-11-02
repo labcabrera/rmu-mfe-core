@@ -2,9 +2,10 @@ import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Grid, Chip, Typography } from '@mui/material';
+import { Chip, Grid } from '@mui/material';
 import {
   AddButton,
+  EmptyState,
   fetchSkills,
   LoadingState,
   Profession,
@@ -60,7 +61,7 @@ const ProfessionFormProfessionalSkills: FC<{
       </Grid>
       <Grid size={12}>
         {skills.length === 0 ? (
-          <Typography>{t('no-results')}</Typography>
+          <EmptyState dense title={t('no-results')} />
         ) : (
           <Grid container spacing={1}>
             {skills.map((s, idx) => (

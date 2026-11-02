@@ -8,6 +8,7 @@ import {
   AddButton,
   Bento,
   DetailPage,
+  EmptyState,
   EntityCard,
   fetchManeuverModifiersByCategory,
   fetchSkillCategory,
@@ -95,9 +96,7 @@ export default function SkillCategoryViewPage() {
           <Box sx={span(12, 12)}>
             <Panel title={t('skills')} extra={<AddButton onClick={() => navigate('/core/skills/create')} />}>
               {skills.length === 0 ? (
-                <Typography variant="body2" color="text.secondary">
-                  {t('no-results')}
-                </Typography>
+                <EmptyState dense title={t('no-results')} />
               ) : (
                 <Box
                   sx={{

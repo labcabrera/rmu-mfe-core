@@ -11,6 +11,7 @@ import {
   DeleteButton,
   DeleteDialog,
   deleteRaceTrait,
+  EmptyState,
   fetchTraits,
   Panel,
   Race,
@@ -43,7 +44,7 @@ const TraitRow: FC<{
   return (
     <Box sx={{ py: 1 }}>
       <Stack direction="row" sx={{ alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-        <Typography variant="body2" sx={{ fontWeight: 700, flex: '1 1 160px', minWidth: 0 }}>
+        <Typography variant="body2" sx={{ fontWeight: 600, flex: '1 1 160px', minWidth: 0 }}>
           {name}
           {tier ? ` ${romanNumeral(tier)}` : ''}
         </Typography>
@@ -122,9 +123,7 @@ const RaceViewTraits: FC<{
       <Box sx={span(12, talents.length > 0 ? 8 : 12)}>
         <Panel title={t('traits')} extra={editable ? <AddButton onClick={() => setAddDialogOpen(true)} /> : undefined}>
           {race.traits.length === 0 ? (
-            <Typography variant="body2" color="text.secondary">
-              {t('race-has-no-traits')}
-            </Typography>
+            <EmptyState dense title={t('race-has-no-traits')} />
           ) : (
             <Rows>
               {race.traits.map((raceTrait) => {
