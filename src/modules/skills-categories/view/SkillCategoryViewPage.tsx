@@ -6,7 +6,9 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import {
   AddButton,
+  Bento,
   DetailPage,
+  EmptyState,
   EntityCard,
   fetchManeuverModifiersByCategory,
   fetchSkillCategory,
@@ -17,12 +19,12 @@ import {
   Panel,
   Skill,
   SkillCategory,
+  span,
   useEntity,
   useNotify,
   useViewTransitionNavigate,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import StatChips from '../../shared/display/StatChips';
-import { Bento, span } from '../../shared/layout/Bento';
 
 const hasProfile = (category: SkillCategory) => Boolean(category.maneuver && Object.keys(category.maneuver).length > 0);
 
@@ -94,9 +96,7 @@ export default function SkillCategoryViewPage() {
           <Box sx={span(12, 12)}>
             <Panel title={t('skills')} extra={<AddButton onClick={() => navigate('/core/skills/create')} />}>
               {skills.length === 0 ? (
-                <Typography variant="body2" color="text.secondary">
-                  {t('no-results')}
-                </Typography>
+                <EmptyState dense title={t('no-results')} />
               ) : (
                 <Box
                   sx={{

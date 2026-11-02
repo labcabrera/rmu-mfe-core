@@ -2,12 +2,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import {
   addRaceSkillBonus,
   NumericInput,
   Race,
   RaceSkillBonus,
+  RmuDialog,
   SkillSelector,
   TechnicalInfo,
   useNotify,
@@ -52,39 +53,43 @@ const AddRaceSkillDialog: FC<{
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="xl">
-        <DialogTitle>{t('add-skill')}</DialogTitle>
-        <DialogContent dividers>
-          <Grid container spacing={2} sx={{ pt: 1 }}>
-            <Grid size={{ xs: 12, md: 12 }}>
-              <SkillSelector
-                realmId={race.realmId}
-                onSkillChange={(s) => setFormData({ ...formData, skillId: s || '', specialization: null })}
-                onSpecializationChange={(s) => setFormData({ ...formData, specialization: s })}
-                onError={(err) => notify.error(err)}
-              />
-            </Grid>
-            <Grid size={12}>
-              <NumericInput
-                label={t('bonus')}
-                value={formData.bonus}
-                onChange={(v) => setFormData({ ...formData, bonus: v || 0 })}
-              />
-            </Grid>
-            <Grid size={12}>
-              <TechnicalInfo>
-                <pre>{JSON.stringify(formData, null, 2)}</pre>
-              </TechnicalInfo>
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>{t('cancel')}</Button>
-          <Button onClick={onSave} variant="contained" disabled={!validForm}>
+      <RmuDialog
+        open={open}
+        title={t('add-skill')}
+        maxWidth="md"
+        onDismiss={onClose}
+        buttons={[
+          <Button key="cancel" onClick={onClose}>
+            {t('cancel')}
+          </Button>,
+          <Button key="add" onClick={onSave} variant="contained" disabled={!validForm}>
             {t('add')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </Button>,
+        ]}
+      >
+        <Grid container spacing={2} sx={{ pt: 1 }}>
+          <Grid size={{ xs: 12, md: 12 }}>
+            <SkillSelector
+              realmId={race.realmId}
+              onSkillChange={(s) => setFormData({ ...formData, skillId: s || '', specialization: null })}
+              onSpecializationChange={(s) => setFormData({ ...formData, specialization: s })}
+              onError={(err) => notify.error(err)}
+            />
+          </Grid>
+          <Grid size={12}>
+            <NumericInput
+              label={t('bonus')}
+              value={formData.bonus}
+              onChange={(v) => setFormData({ ...formData, bonus: v || 0 })}
+            />
+          </Grid>
+          <Grid size={12}>
+            <TechnicalInfo>
+              <pre>{JSON.stringify(formData, null, 2)}</pre>
+            </TechnicalInfo>
+          </Grid>
+        </Grid>
+      </RmuDialog>
     </>
   );
 };

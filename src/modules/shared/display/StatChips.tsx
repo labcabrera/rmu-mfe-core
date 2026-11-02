@@ -30,17 +30,17 @@ const StatChips: FC<{
           <Tooltip key={item.key} title={item.hint}>
             <Box
               component="span"
-              sx={{
+              sx={(theme) => ({
                 px: 0.75,
                 py: 0.125,
-                borderRadius: 1,
+                borderRadius: `${theme.radius.sm}px`,
                 border: 1,
                 borderColor: 'divider',
                 fontSize: '0.7rem',
                 fontWeight: 600,
                 lineHeight: 1.6,
                 letterSpacing: '0.04em',
-              }}
+              })}
             >
               {item.label}
             </Box>

@@ -5,9 +5,11 @@ import { useAuth } from 'react-oidc-context';
 import { Link as RouterLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Box, Chip, Link, Stack, Tooltip, Typography } from '@mui/material';
 import {
+  Bento,
   canEditEntity,
   deleteSkill,
   DetailPage,
+  EmptyState,
   EntitySourceChip,
   Enumeration,
   fetchEnumerations,
@@ -22,12 +24,12 @@ import {
   ManeuverProfilePanel,
   Panel,
   Skill,
+  span,
   StatPill,
   useEntity,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import StatChips from '../../shared/display/StatChips';
-import { Bento, span } from '../../shared/layout/Bento';
 import { skillDescriptionKey } from '../skill-utils';
 
 /** Bonus of a character without ranks in the skill (chapter 3), applied by tactical to maneuvers. */
@@ -223,9 +225,7 @@ export default function SkillViewPage() {
                     ))}
                   </Stack>
                 ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    {t('no-results')}
-                  </Typography>
+                  <EmptyState dense title={t('no-results')} />
                 )}
               </Panel>
             </Box>

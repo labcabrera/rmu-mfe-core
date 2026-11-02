@@ -23,7 +23,7 @@ const ManeuverTotal: FC<{ roll: number | null; parts: { label: string; value: nu
       <Typography component="span" color="text.secondary">
         =
       </Typography>
-      <Chip color="primary" label={`${t('total-roll')} ${total ?? '—'}`} sx={{ fontWeight: 700 }} />
+      <Chip color="primary" label={`${t('total-roll')} ${total ?? '—'}`} sx={{ fontWeight: 600 }} />
     </Box>
   );
 };

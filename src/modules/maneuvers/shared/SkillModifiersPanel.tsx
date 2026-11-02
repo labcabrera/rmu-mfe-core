@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Chip, Stack, Tooltip, Typography } from '@mui/material';
-import { formatBonus, ManeuverModifier, NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { EmptyState, formatBonus, ManeuverModifier, NumericInput } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { modifierValue, ModifierSelections } from './skill-modifiers';
 
 /**
@@ -23,11 +23,7 @@ const SkillModifiersPanel: FC<{
   };
 
   if (modifiers.length === 0) {
-    return (
-      <Typography variant="body2" color="text.secondary">
-        {t('no-skill-modifiers')}
-      </Typography>
-    );
+    return <EmptyState dense title={t('no-skill-modifiers')} />;
   }
 
   return (

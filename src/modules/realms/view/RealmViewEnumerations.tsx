@@ -2,9 +2,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Typography } from '@mui/material';
 import {
   CardGrid,
+  EmptyState,
   EntityCard,
   Enumeration,
   fetchEnumerations,
@@ -31,11 +31,7 @@ const RealmViewEnumerations: FC<{
   }, [realm, notify]);
 
   if (enumerations.length === 0) {
-    return (
-      <Typography variant="body1" color="textSecondary">
-        {t('no-results')}
-      </Typography>
-    );
+    return <EmptyState dense title={t('no-results')} />;
   }
   return (
     <CardGrid

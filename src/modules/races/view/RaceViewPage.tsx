@@ -5,6 +5,7 @@ import { useAuth } from 'react-oidc-context';
 import { Link as RouterLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Box, Chip, Link, Stack } from '@mui/material';
 import {
+  AccessTypeChip,
   canEditEntity,
   deleteRace,
   DetailPage,
@@ -121,13 +122,7 @@ export default function RaceViewPage() {
                 />,
               ]
             : []),
-          <Chip
-            key="access"
-            size="small"
-            variant="outlined"
-            label={t(entity.accessType)}
-            color={entity.accessType === 'public' ? 'success' : 'error'}
-          />,
+          <AccessTypeChip key="access" accessType={entity.accessType} />,
           <EntitySourceChip key="source" entity={entity} />,
         ],
         pills: [

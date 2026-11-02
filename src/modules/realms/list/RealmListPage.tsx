@@ -5,16 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import {
   EntityCard,
   EntitySourceChip,
-  FilterBar,
   fetchRealms,
+  FilterBar,
+  FilterSearchField,
   ListPage,
   Realm,
+  regexFilter,
   useListFilters,
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { DEFAULT_REALM_IMAGE } from '../../services/image-service';
-import { FilterTextField, regexFilter } from '../../shared/filters/list-filters';
 
 export default function RealmListPage() {
   const auth = useAuth();
@@ -35,7 +36,7 @@ export default function RealmListPage() {
       onAdd={() => navigate('/core/realms/create')}
       filters={
         <FilterBar>
-          <FilterTextField filters={filters} filter="q" label={t('name')} />
+          <FilterSearchField filters={filters} filter="q" label={t('name')} />
         </FilterBar>
       }
       filterState={filters}

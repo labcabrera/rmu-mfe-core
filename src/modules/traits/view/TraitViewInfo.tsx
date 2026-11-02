@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Chip, Grid, Paper, Stack, Typography } from '@mui/material';
-import { EntityCard, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
+import { ChipRow, EntityCard, Section, SectionLabel, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const TraitViewInfo: FC<{
   trait: Trait;
@@ -9,62 +9,52 @@ const TraitViewInfo: FC<{
   const { t } = useTranslation();
 
   return (
-    <Grid container spacing={1}>
-      <Grid size={12}>
-        <Typography variant="h6" color="primary" gutterBottom>
-          {t(trait.name)}
-        </Typography>
-      </Grid>
-
-      <Grid size={12}>
-        <Grid container spacing={1}>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <EntityCard title={t(trait.category)} subtitle={t('category')} noImage />
-          </Grid>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <EntityCard title={t(trait.isTalent ? t('trait') : t('flaw'))} subtitle={t('type')} noImage />
-          </Grid>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <EntityCard
-              title={String(trait.specialization ? t(trait.specialization) : t('none'))}
-              subtitle={t('specialization')}
-              noImage
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <EntityCard
-              title={String(trait.isTierBased ? `1 - ${trait.maxTier}` : t('no'))}
-              subtitle={t('tier-based')}
-              noImage
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <EntityCard title={String(trait.adquisitionCost)} subtitle={t('adquisition-cost')} noImage />
-          </Grid>
-          {trait.tierCost && (
-            <Grid size={{ xs: 12, md: 4 }}>
-              <EntityCard title={String(trait.tierCost || '')} subtitle={t('tier-cost')} noImage />
-            </Grid>
-          )}
-          {trait.talentCategory && (
-            <Grid size={{ xs: 12, md: 4 }}>
-              <EntityCard title={t(trait.talentCategory)} subtitle={t('talent-category')} noImage />
-            </Grid>
-          )}
-          {trait.source && (
-            <Grid size={{ xs: 12, md: 4 }}>
-              <EntityCard title={t(trait.source)} subtitle={t('source')} noImage />
-            </Grid>
-          )}
+    <Stack spacing={2}>
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <EntityCard title={t(trait.category)} subtitle={t('category')} noImage />
         </Grid>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <EntityCard title={t(trait.isTalent ? t('trait') : t('flaw'))} subtitle={t('type')} noImage />
+        </Grid>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <EntityCard
+            title={String(trait.specialization ? t(trait.specialization) : t('none'))}
+            subtitle={t('specialization')}
+            noImage
+          />
+        </Grid>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <EntityCard
+            title={String(trait.isTierBased ? `1 - ${trait.maxTier}` : t('no'))}
+            subtitle={t('tier-based')}
+            noImage
+          />
+        </Grid>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <EntityCard title={String(trait.adquisitionCost)} subtitle={t('adquisition-cost')} noImage />
+        </Grid>
+        {trait.tierCost && (
+          <Grid size={{ xs: 12, md: 4 }}>
+            <EntityCard title={String(trait.tierCost || '')} subtitle={t('tier-cost')} noImage />
+          </Grid>
+        )}
+        {trait.talentCategory && (
+          <Grid size={{ xs: 12, md: 4 }}>
+            <EntityCard title={t(trait.talentCategory)} subtitle={t('talent-category')} noImage />
+          </Grid>
+        )}
+        {trait.source && (
+          <Grid size={{ xs: 12, md: 4 }}>
+            <EntityCard title={t(trait.source)} subtitle={t('source')} noImage />
+          </Grid>
+        )}
       </Grid>
 
       {!!trait.prerequisites?.length && (
-        <Grid size={12}>
-          <Typography variant="subtitle2" color="primary">
-            {t('trait-prerequisites')}
-          </Typography>
-          <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap', mt: 0.5 }}>
+        <Box>
+          <SectionLabel>{t('trait-prerequisites')}</SectionLabel>
+          <ChipRow>
             {trait.prerequisites.map((prerequisite, index) => (
               <Chip
                 key={index}
@@ -76,31 +66,25 @@ const TraitViewInfo: FC<{
                 ].join(': ')}
               />
             ))}
-          </Stack>
-        </Grid>
+          </ChipRow>
+        </Box>
       )}
 
       {!!trait.possibleFlaws?.length && (
-        <Grid size={12}>
-          <Typography variant="subtitle2" color="primary">
-            {t('trait-possible-flaws')}
-          </Typography>
-          <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap', mt: 0.5 }}>
+        <Box>
+          <SectionLabel>{t('trait-possible-flaws')}</SectionLabel>
+          <ChipRow>
             {trait.possibleFlaws.map((flaw) => (
               <Chip key={flaw} size="small" variant="outlined" label={t(flaw, { defaultValue: flaw })} />
             ))}
-          </Stack>
-        </Grid>
+          </ChipRow>
+        </Box>
       )}
 
-      <Grid size={12}>
-        <Grid size={12}>
-          <Paper sx={{ padding: 2, mt: 1 }}>
-            <Typography variant="body1">{trait.description}</Typography>
-          </Paper>
-        </Grid>
-      </Grid>
-    </Grid>
+      <Section title={t('description')}>
+        <Typography variant="body1">{trait.description}</Typography>
+      </Section>
+    </Stack>
   );
 };
 

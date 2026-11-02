@@ -2,21 +2,26 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
+import { Box, Chip, Stack, Typography } from '@mui/material';
 import {
+  AccessTypeChip,
   AddButton,
   addCultureSkillRank,
+  Bento,
   canEditEntity,
-  CategorySeparator,
+  ChipRow,
   Culture,
   CultureSkillRank,
   defaultImages,
   deleteCulture,
   deleteCultureSkillRank,
   DetailPage,
-  EntityImage,
   EntitySourceChip,
   fetchCulture,
+  ImageSelectorDialog,
+  Panel,
+  Section,
+  span,
   updateCulture,
   useEntity,
   useNotify,
@@ -37,6 +42,7 @@ export default function CultureViewPage() {
     onError: notify.error,
   });
   const [addSkillOpen, setAddSkillOpen] = useState(false);
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
   // Spec 063: rulebook entities only for admins, user entities for their owner.
   const editable = canEditEntity(state.entity, auth);
 
@@ -60,78 +66,76 @@ export default function CultureViewPage() {
         { name: t('home'), link: '/' },
         { name: t('core'), link: '/core' },
         { name: t('cultures'), link: '/core/cultures' },
-        { name: t('view') },
+        { name: state.entity ? t(state.entity.name) : t('view') },
       ]}
       entity={state}
-      summaryTitle={(entity) => t(entity.name)}
+      technicalInfo={false}
       onEdit={editable ? (culture) => navigate(`/core/cultures/edit/${culture.id}`, { state: { culture } }) : undefined}
       onDelete={editable ? onDelete : undefined}
-      leftPanel={(culture) => (
-        <>
-          <EntityImage
-            image={culture.imageUrl || ''}
-            fallbackImages={[defaultImages.culture]}
-            onImageChange={editable ? (avatar) => onUpdateImage(culture, avatar) : undefined}
-          />
-          <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
-            <Chip
-              label={t(culture.accessType)}
-              color={culture.accessType === 'public' ? 'success' : 'error'}
-              size="small"
-            />
-            <EntitySourceChip entity={culture} />
-          </Stack>
-          <Typography variant="h6" color="primary">
-            {t(culture.name)}
-          </Typography>
-          <Box sx={{ mt: 2 }}>
-            <CultureDevelopmentCost cost={culture.developmentCost} />
-          </Box>
-          <Typography variant="body1" color="textSecondary" sx={{ mt: 2, whiteSpace: 'pre-line' }}>
-            {culture.description}
-          </Typography>
-        </>
-      )}
+      hero={(culture) => ({
+        title: t(culture.name),
+        image: culture.imageUrl || defaultImages.culture,
+        ...(editable ? { onImageClick: () => setImageDialogOpen(true), imageActionLabel: t('change-image') } : {}),
+        chips: [
+          <AccessTypeChip key="access" accessType={culture.accessType} />,
+          <EntitySourceChip key="source" entity={culture} />,
+          <CultureDevelopmentCost key="cost" cost={culture.developmentCost} />,
+        ],
+      })}
     >
       {(culture) => (
-        <>
-          <Grid size={12}>
-            <CategorySeparator text={t('culture-skill-ranks')}>
-              {editable && <AddButton onClick={() => setAddSkillOpen(true)} />}
-            </CategorySeparator>
-          </Grid>
-          <Grid size={12}>
+        <Stack spacing={2}>
+          {culture.description && (
+            <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
+              {culture.description}
+            </Typography>
+          )}
+          <Section
+            title={t('culture-skill-ranks')}
+            actions={editable && <AddButton onClick={() => setAddSkillOpen(true)} />}
+          >
             <CultureSkillRankTable
               entries={culture.skillRanks}
               onDelete={editable ? (index) => onDeleteSkillRank(culture, index) : undefined}
             />
-          </Grid>
-          <Grid size={12}>
-            <CategorySeparator text={t('languages')} />
+          </Section>
+          <Section title={t('languages')}>
             <CultureLanguages languages={culture.languages} />
-          </Grid>
-          {culture.suggestedCrafts && (
-            <Grid size={{ xs: 12, md: 6 }}>
-              <CategorySeparator text={t('suggested-crafts')} />
-              <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-                {culture.suggestedCrafts}
-              </Typography>
-            </Grid>
-          )}
-          {culture.suggestedVocations && (
-            <Grid size={{ xs: 12, md: 6 }}>
-              <CategorySeparator text={t('suggested-vocations')} />
-              <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-                {culture.suggestedVocations}
-              </Typography>
-            </Grid>
+          </Section>
+          {(culture.suggestedCrafts || culture.suggestedVocations) && (
+            <Bento>
+              {culture.suggestedCrafts && (
+                <Box sx={span(6, 6)}>
+                  <Panel variant="outlined" title={t('suggested-crafts')} sx={{ height: '100%' }}>
+                    <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                      {culture.suggestedCrafts}
+                    </Typography>
+                  </Panel>
+                </Box>
+              )}
+              {culture.suggestedVocations && (
+                <Box sx={span(6, 6)}>
+                  <Panel variant="outlined" title={t('suggested-vocations')} sx={{ height: '100%' }}>
+                    <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                      {culture.suggestedVocations}
+                    </Typography>
+                  </Panel>
+                </Box>
+              )}
+            </Bento>
           )}
           <AddCultureSkillRankDialog
             open={addSkillOpen}
             onAdd={(entry) => onAddSkillRank(culture, entry)}
             onClose={() => setAddSkillOpen(false)}
           />
-        </>
+          <ImageSelectorDialog
+            value={culture.imageUrl || undefined}
+            open={imageDialogOpen}
+            onClose={() => setImageDialogOpen(false)}
+            onSelect={(image) => onUpdateImage(culture, image)}
+          />
+        </Stack>
       )}
     </DetailPage>
   );
@@ -143,10 +147,10 @@ function CultureLanguages({ languages }: { languages: string[] | undefined }) {
     return <Typography variant="body2">{t('culture-languages-all')}</Typography>;
   }
   return (
-    <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
+    <ChipRow>
       {languages.map((language) => (
         <Chip key={language} label={t(language)} size="small" />
       ))}
-    </Stack>
+    </ChipRow>
   );
 }

@@ -1,9 +1,14 @@
 import React, { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Chip, Paper, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Chip, Paper, Typography, useTheme } from '@mui/material';
+import {
+  ChipRow,
+  CRITICAL_SEVERITY_LEGEND,
+  criticalSeverityColor,
+  criticalSeverityTextColor,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import type { AttackTable, AttackTableCell } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { LEGEND_SEVERITIES, severityColor } from '../shared/severity-colors';
 import { rollBand } from '../shared/table-labels';
 
 type Point = { roll: number; hits: number };
@@ -37,7 +42,7 @@ const AttackDamageChart: FC<{ table: AttackTable; armorTypes: number[] }> = ({ t
   }));
 
   return (
-    <Paper variant="outlined" sx={{ p: 2 }}>
+    <Box>
       <Box sx={{ width: '100%', height: 420 }}>
         <ResponsiveContainer>
           <LineChart margin={{ top: 10, right: 40, bottom: 20, left: 0 }}>
@@ -45,7 +50,7 @@ const AttackDamageChart: FC<{ table: AttackTable; armorTypes: number[] }> = ({ t
               {armorTypes.map((at) => (
                 <linearGradient key={at} id={`attack-severity-at${at}`} x1="0" y1="0" x2="1" y2="0">
                   {rows.flatMap((row) => {
-                    const color = severityColor(row.results[at - 1].criticalSeverity);
+                    const color = criticalSeverityColor(row.results[at - 1].criticalSeverity);
                     return [
                       <stop key={`${row.rollMin}-a`} offset={offset(row.rollMin)} stopColor={color} />,
                       <stop key={`${row.rollMin}-b`} offset={offset(row.rollMax)} stopColor={color} />,
@@ -76,7 +81,11 @@ const AttackDamageChart: FC<{ table: AttackTable; armorTypes: number[] }> = ({ t
                     {armorTypes.map((at) => {
                       const result = cell(label, at);
                       return (
-                        <Typography key={at} variant="body2" sx={{ color: severityColor(result?.criticalSeverity) }}>
+                        <Typography
+                          key={at}
+                          variant="body2"
+                          sx={{ color: criticalSeverityColor(result?.criticalSeverity) }}
+                        >
                           {t('attack-tables-at-n', { at })}: {result?.text}
                         </Typography>
                       );
@@ -118,17 +127,17 @@ const AttackDamageChart: FC<{ table: AttackTable; armorTypes: number[] }> = ({ t
           </LineChart>
         </ResponsiveContainer>
       </Box>
-      <Stack direction="row" spacing={0.5} useFlexGap sx={{ flexWrap: 'wrap', mt: 1 }}>
-        {LEGEND_SEVERITIES.map((severity) => (
+      <ChipRow sx={{ mt: 1 }}>
+        {CRITICAL_SEVERITY_LEGEND.map((severity) => (
           <Chip
             key={severity}
             size="small"
             label={severity === 'none' ? t('attack-tables-no-critical') : severity}
-            sx={{ bgcolor: severityColor(severity), color: severity === 'A' || severity === 'B' ? 'black' : 'white' }}
+            sx={{ bgcolor: criticalSeverityColor(severity), color: criticalSeverityTextColor(severity) }}
           />
         ))}
-      </Stack>
-    </Paper>
+      </ChipRow>
+    </Box>
   );
 };
 

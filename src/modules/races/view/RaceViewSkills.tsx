@@ -10,11 +10,13 @@ import {
   DeleteButton,
   DeleteDialog,
   deleteRaceSkillBonus,
+  EmptyState,
   fetchSkills,
   formatBonus,
   Panel,
   Race,
   RaceSkillBonus,
+  SectionLabel,
   useNotify,
   useSpecializationLabel,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
@@ -67,14 +69,12 @@ const RaceViewSkills: FC<{
   return (
     <Panel title={t('skills')} extra={editable ? <AddButton onClick={() => setAddDialogOpen(true)} /> : undefined}>
       {race.skillBonuses.length === 0 ? (
-        <Typography variant="body2" color="text.secondary">
-          {t('race-has-no-skills')}
-        </Typography>
+        <EmptyState dense title={t('race-has-no-skills')} />
       ) : (
         <Stack spacing={2}>
           {sortedGroups.map(([category, skills]) => (
             <Box key={category || 'other'}>
-              <Typography variant="overline" color="text.secondary" component="div">
+              <SectionLabel>
                 {category ? (
                   <Link component={RouterLink} to={`/core/skill-categories/view/${category}`} underline="hover">
                     {t(category)}
@@ -82,7 +82,7 @@ const RaceViewSkills: FC<{
                 ) : (
                   t('other')
                 )}
-              </Typography>
+              </SectionLabel>
               <Stack divider={<Box sx={{ borderBottom: 1, borderColor: 'divider' }} />}>
                 {skills.map((skill) => (
                   <Stack
@@ -107,7 +107,7 @@ const RaceViewSkills: FC<{
                         </Typography>
                       )}
                     </Box>
-                    <Typography variant="body2" sx={{ fontWeight: 700, color: bonusColor(skill.bonus) }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: bonusColor(skill.bonus) }}>
                       {formatBonus(skill.bonus)}
                     </Typography>
                     {editable && <DeleteButton onClick={() => setSkillToDelete(skill)} />}

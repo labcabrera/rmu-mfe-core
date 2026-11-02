@@ -1,5 +1,6 @@
 import React, { FC, ReactNode } from 'react';
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import { DataTable, DataTableColumn } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 /**
  * Renders the subset of Markdown used by the converted rulebooks: paragraphs, "- " lists, "####" headings, pipe
@@ -19,28 +20,18 @@ const Block: FC<{ lines: string[] }> = ({ lines }) => {
     return <Typography variant="subtitle2">{inline(first.replace(/^#+\s*/, ''))}</Typography>;
   }
   if (first.startsWith('|')) {
-    const rows = lines.filter((line) => !/^\|[\s|:-]+\|$/.test(line)).map(cells);
+    const [header, ...rows] = lines.filter((line) => !/^\|[\s|:-]+\|$/.test(line)).map(cells);
+    const columns: DataTableColumn<{ index: number; cells: string[] }>[] = header.map((cell, index) => ({
+      key: String(index),
+      header: inline(cell),
+      render: (row) => inline(row.cells[index] ?? ''),
+    }));
     return (
-      <Box sx={{ overflowX: 'auto' }}>
-        <Table size="small" sx={{ width: 'auto', '& td, & th': { px: { xs: 0.75, sm: 2 } } }}>
-          <TableHead>
-            <TableRow>
-              {rows[0].map((cell, index) => (
-                <TableCell key={index}>{inline(cell)}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.slice(1).map((row, rowIndex) => (
-              <TableRow key={rowIndex}>
-                {row.map((cell, index) => (
-                  <TableCell key={index}>{inline(cell)}</TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Box>
+      <DataTable
+        columns={columns}
+        rows={rows.map((row, index) => ({ index, cells: row }))}
+        getKey={(row) => String(row.index)}
+      />
     );
   }
   if (first.startsWith('- ')) {

@@ -1,22 +1,17 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Box, Chip, Stack, Typography } from '@mui/material';
 import {
-  Box,
-  Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
-import { TableEffect, TableInjury, TechnicalInfo } from '@labcabrera-rmu/rmu-react-shared-lib';
+  ChipRow,
+  DataTable,
+  DataTableColumn,
+  EmptyState,
+  RmuDialog,
+  SectionLabel,
+  TableEffect,
+  TableInjury,
+  TechnicalInfo,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { rollBand } from './table-labels';
 
 /** The row of a critical or fumble table, as the API serves it. */
@@ -46,96 +41,83 @@ const TableEntryDialog: FC<{ title: string; entry: TableEntry | undefined; onClo
   if (entry.location !== undefined) summary.push([t('location'), entry.location ? t(entry.location) : '-']);
   if (entry.dmg !== undefined) summary.push([t('hits'), `+${entry.dmg}`]);
 
-  return (
-    <Dialog open onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>{title}</DialogTitle>
-      <DialogContent dividers>
-        <Stack spacing={2}>
-          <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
-            {summary.map(([label, value]) => (
-              <Chip key={label} label={`${label}: ${value}`} variant="outlined" />
+  const effectColumns: DataTableColumn<TableEffect>[] = [
+    {
+      key: 'status',
+      header: t('combat-tables-status'),
+      render: (effect) => (
+        <>
+          <Typography variant="body2">{t(effect.status)}</Typography>
+          <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace' }}>
+            {effect.status}
+          </Typography>
+        </>
+      ),
+    },
+    {
+      key: 'fields',
+      header: t('combat-tables-fields'),
+      render: (effect) => (
+        <ChipRow sx={{ gap: 0.5 }}>
+          {Object.entries(effect)
+            .filter(([field]) => field !== 'status')
+            .map(([field, value]) => (
+              <Chip
+                key={field}
+                size="small"
+                label={`${field}: ${fieldValue(value)}`}
+                sx={{ fontFamily: 'monospace' }}
+              />
             ))}
-          </Stack>
-          <Typography>{entry.message ?? entry.text}</Typography>
+        </ChipRow>
+      ),
+    },
+  ];
 
+  return (
+    <RmuDialog open title={title} maxWidth="md" onClose={onClose}>
+      <Stack spacing={2}>
+        <ChipRow>
+          {summary.map(([label, value]) => (
+            <Chip key={label} label={`${label}: ${value}`} variant="outlined" />
+          ))}
+        </ChipRow>
+        <Typography>{entry.message ?? entry.text}</Typography>
+
+        <Box>
+          <SectionLabel>{t('effects')}</SectionLabel>
+          <DataTable
+            columns={effectColumns}
+            rows={effects}
+            getKey={(effect) => `${effects.indexOf(effect)}`}
+            emptyTitle={t('combat-tables-no-effects')}
+          />
+        </Box>
+
+        {entry.injury !== undefined && (
           <Box>
-            <Typography variant="subtitle2" gutterBottom>
-              {t('effects')}
-            </Typography>
-            {effects.length === 0 ? (
-              <Typography variant="body2" color="text.secondary">
-                {t('combat-tables-no-effects')}
-              </Typography>
+            <SectionLabel>{t('combat-tables-injury')}</SectionLabel>
+            {entry.injury?.type ? (
+              <ChipRow sx={{ gap: 0.5 }}>
+                <Chip size="small" color="primary" label={t(`injury-type-${entry.injury.type}`)} />
+                {(entry.injury.secondary ?? []).map((type) => (
+                  <Chip key={type} size="small" variant="outlined" label={t(`injury-type-${type}`)} />
+                ))}
+                {(entry.injury.flags ?? []).map((flag) => (
+                  <Chip key={flag} size="small" color="warning" label={t(`injury-flag-${flag}`)} />
+                ))}
+              </ChipRow>
             ) : (
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>{t('combat-tables-status')}</TableCell>
-                    <TableCell>{t('combat-tables-fields')}</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {effects.map((effect, index) => (
-                    <TableRow key={index}>
-                      <TableCell>
-                        <Typography variant="body2">{t(effect.status)}</Typography>
-                        <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace' }}>
-                          {effect.status}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Stack direction="row" spacing={0.5} useFlexGap sx={{ flexWrap: 'wrap' }}>
-                          {Object.entries(effect)
-                            .filter(([field]) => field !== 'status')
-                            .map(([field, value]) => (
-                              <Chip
-                                key={field}
-                                size="small"
-                                label={`${field}: ${fieldValue(value)}`}
-                                sx={{ fontFamily: 'monospace' }}
-                              />
-                            ))}
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <EmptyState dense title={t('combat-tables-no-injury')} />
             )}
           </Box>
+        )}
 
-          {entry.injury !== undefined && (
-            <Box>
-              <Typography variant="subtitle2" gutterBottom>
-                {t('combat-tables-injury')}
-              </Typography>
-              {entry.injury?.type ? (
-                <Stack direction="row" spacing={0.5} useFlexGap sx={{ flexWrap: 'wrap' }}>
-                  <Chip size="small" color="primary" label={t(`injury-type-${entry.injury.type}`)} />
-                  {(entry.injury.secondary ?? []).map((type) => (
-                    <Chip key={type} size="small" variant="outlined" label={t(`injury-type-${type}`)} />
-                  ))}
-                  {(entry.injury.flags ?? []).map((flag) => (
-                    <Chip key={flag} size="small" color="warning" label={t(`injury-flag-${flag}`)} />
-                  ))}
-                </Stack>
-              ) : (
-                <Typography variant="body2" color="text.secondary">
-                  {t('combat-tables-no-injury')}
-                </Typography>
-              )}
-            </Box>
-          )}
-
-          <TechnicalInfo>
-            <pre>{JSON.stringify(entry, null, 2)}</pre>
-          </TechnicalInfo>
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>{t('close')}</Button>
-      </DialogActions>
-    </Dialog>
+        <TechnicalInfo>
+          <pre>{JSON.stringify(entry, null, 2)}</pre>
+        </TechnicalInfo>
+      </Stack>
+    </RmuDialog>
   );
 };
 

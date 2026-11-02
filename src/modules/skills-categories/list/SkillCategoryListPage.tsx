@@ -5,16 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import {
   defaultImages,
   EntityCard,
-  FilterBar,
   fetchSkillCategories,
+  FilterBar,
+  FilterSearchField,
   ListPage,
+  regexFilter,
   SkillCategory,
   useListFilters,
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import StatChips from '../../shared/display/StatChips';
-import { FilterTextField, regexFilter } from '../../shared/filters/list-filters';
 
 export default function SkillCategoryListPage() {
   const auth = useAuth();
@@ -39,7 +40,7 @@ export default function SkillCategoryListPage() {
       query={query}
       filters={
         <FilterBar>
-          <FilterTextField filters={filters} filter="q" label={t('name')} />
+          <FilterSearchField filters={filters} filter="q" label={t('name')} />
         </FilterBar>
       }
       filterState={filters}

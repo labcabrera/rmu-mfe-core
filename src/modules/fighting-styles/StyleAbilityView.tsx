@@ -2,21 +2,20 @@ import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Link as RouterLink, useParams } from 'react-router-dom';
+import { Box, Chip, Link, Stack, Typography } from '@mui/material';
 import {
-  Box,
-  Chip,
-  CircularProgress,
-  Link,
-  Paper,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
-import { FightingStyles, fetchFightingStyles, LayoutBase, useNotify } from '@labcabrera-rmu/rmu-react-shared-lib';
+  ChipRow,
+  DataTable,
+  DataTableColumn,
+  EmptyState,
+  FightingStyle,
+  FightingStyles,
+  fetchFightingStyles,
+  LayoutBase,
+  LoadingState,
+  Section,
+  useNotify,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import RulesText from './RulesText';
 import { equipmentLabel } from './style-conditions';
 
@@ -38,6 +37,19 @@ const StyleAbilityView: FC = () => {
   const grantedBy = (catalog?.styles ?? [])
     .flatMap((style) => style.abilities.filter((a) => a.abilityId === abilityId).map((a) => ({ style, cost: a.cost })))
     .sort((a, b) => t(a.style.id).localeCompare(t(b.style.id)));
+  const grantedColumns: DataTableColumn<{ style: FightingStyle; cost: number }>[] = [
+    {
+      key: 'style',
+      header: t('fighting-style'),
+      render: ({ style }) => (
+        <Link component={RouterLink} to={`/core/fighting-styles?skill=${style.skillId}`}>
+          {t(style.id)}
+        </Link>
+      ),
+    },
+    { key: 'skill', header: t('skill'), render: ({ style }) => t(style.skillId) },
+    { key: 'cost', header: t('cost'), align: 'right', render: ({ cost }) => cost },
+  ];
   const abilityLink = (id: string) => (
     <Link key={id} component={RouterLink} to={`/core/fighting-styles/abilities/${id}`}>
       {t(`style-ability-${id}`)}
@@ -54,16 +66,13 @@ const StyleAbilityView: FC = () => {
       ]}
     >
       {!catalog ? (
-        <CircularProgress size={24} />
+        <LoadingState />
       ) : !ability ? (
-        <Typography variant="body2" color="text.secondary">
-          {t('style-ability-not-found')}
-        </Typography>
+        <EmptyState dense title={t('style-ability-not-found')} />
       ) : (
         <Stack spacing={2} sx={{ maxWidth: 900 }}>
-          <Paper variant="outlined" sx={{ p: { xs: 1.5, sm: 2 } }}>
-            <Stack direction="row" spacing={1} useFlexGap sx={{ alignItems: 'center', flexWrap: 'wrap', mb: 1.5 }}>
-              <Typography variant="h5">{t(`style-ability-${ability.id}`)}</Typography>
+          <Section title={t(`style-ability-${ability.id}`)}>
+            <ChipRow sx={{ mb: 1.5 }}>
               {ability.types.map((type) => (
                 <Chip key={type} size="small" label={t(`style-ability-type-${type}`)} />
               ))}
@@ -78,7 +87,7 @@ const StyleAbilityView: FC = () => {
                   }
                 />
               )}
-            </Stack>
+            </ChipRow>
             <Stack spacing={0.5}>
               <Field label={t('equipment')}>{equipmentLabel(ability.equipment, t)}</Field>
               {ability.requiresAbilities.length > 0 && (
@@ -95,50 +104,23 @@ const StyleAbilityView: FC = () => {
                 </Field>
               )}
             </Stack>
-          </Paper>
+          </Section>
 
-          <Paper variant="outlined" sx={{ p: { xs: 1.5, sm: 2 } }}>
-            <Typography variant="h6" sx={{ mb: 1 }}>
-              {t('style-ability-granted-by')}
-            </Typography>
-            <Box sx={{ overflowX: 'auto' }}>
-              <Table size="small" sx={{ '& td, & th': { px: { xs: 0.75, sm: 2 } } }}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>{t('fighting-style')}</TableCell>
-                    <TableCell>{t('skill')}</TableCell>
-                    <TableCell align="right">{t('cost')}</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {grantedBy.map(({ style, cost }) => (
-                    <TableRow key={`${style.skillId}-${style.id}`}>
-                      <TableCell>
-                        <Link component={RouterLink} to={`/core/fighting-styles?skill=${style.skillId}`}>
-                          {t(style.id)}
-                        </Link>
-                      </TableCell>
-                      <TableCell>{t(style.skillId)}</TableCell>
-                      <TableCell align="right">{cost}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Paper>
+          <Section title={t('style-ability-granted-by')}>
+            <DataTable
+              columns={grantedColumns}
+              rows={grantedBy}
+              getKey={({ style }) => `${style.skillId}-${style.id}`}
+            />
+          </Section>
 
-          <Paper variant="outlined" sx={{ p: { xs: 1.5, sm: 2 } }}>
-            <Typography variant="h6" sx={{ mb: 1 }}>
-              {t('style-ability-rules-text')}
-            </Typography>
+          <Section title={t('style-ability-rules-text')}>
             {ability.description ? (
               <RulesText text={ability.description} />
             ) : (
-              <Typography variant="body2" color="text.secondary">
-                {t('style-ability-no-description')}
-              </Typography>
+              <EmptyState dense title={t('style-ability-no-description')} />
             )}
-          </Paper>
+          </Section>
         </Stack>
       )}
     </LayoutBase>

@@ -10,15 +10,15 @@ const ManeuverResultCard: FC<{
 }> = ({ title, color, message, children }) => (
   <Box
     role="status"
-    sx={{
+    sx={(theme) => ({
       p: 2,
       borderLeft: 4,
       borderColor: `${color}.main`,
-      borderRadius: 1,
-      bgcolor: (theme) => alpha(theme.palette[color].main, 0.08),
-    }}
+      borderRadius: `${theme.radius.md}px`,
+      bgcolor: alpha(theme.palette[color].main, 0.08),
+    })}
   >
-    <Typography variant="h6" color={`${color}.main`} sx={{ fontWeight: 700 }}>
+    <Typography variant="h6" color={`${color}.main`} sx={{ fontWeight: 600 }}>
       {title}
     </Typography>
     {message && (

@@ -2,11 +2,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Chip } from '@mui/material';
 import {
   canEditEntity,
   deleteTrait,
   DetailPage,
-  EntityImage,
   EntitySourceChip,
   fetchTrait,
   Trait,
@@ -42,14 +42,27 @@ export default function TraitViewPage() {
         { name: t('home'), link: '/' },
         { name: t('core'), link: '/core' },
         { name: t('traits'), link: '/core/traits' },
-        { name: t('view') },
+        { name: state.entity ? t(state.entity.name) : t('view') },
       ]}
       entity={state}
-      summaryTitle={(entity) => t(entity.name)}
+      technicalInfo={false}
       onEdit={editable ? (trait) => navigate(`/core/traits/edit/${trait.id}`, { state: { trait } }) : undefined}
       onDelete={editable ? onDelete : undefined}
-      actions={(trait) => [<EntitySourceChip key="source" entity={trait} />]}
-      leftPanel={(trait) => <EntityImage image={getTraitImage(trait)} />}
+      hero={(trait) => ({
+        title: t(trait.name),
+        overline: t(trait.category),
+        image: getTraitImage(trait),
+        chips: [
+          <Chip
+            key="type"
+            size="small"
+            color={trait.isTalent ? 'primary' : 'warning'}
+            variant="outlined"
+            label={t(trait.isTalent ? 'trait' : 'flaw')}
+          />,
+          <EntitySourceChip key="source" entity={trait} />,
+        ],
+      })}
     >
       {(trait) => <TraitViewInfo trait={trait} />}
     </DetailPage>

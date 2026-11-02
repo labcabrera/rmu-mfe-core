@@ -1,20 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Chip, Stack, Typography } from '@mui/material';
+import { Box, Chip, Stack, Typography } from '@mui/material';
 import {
+  AccessTypeChip,
   canEditEntity,
-  CategorySeparator,
+  ChipRow,
   deleteProfession,
   DetailPage,
+  EntitySourceChip,
   fetchProfession,
+  ImageSelectorDialog,
+  Panel,
   Profession,
+  Section,
+  SectionLabel,
+  updateProfession,
+  UpdateProfessionDto,
   useEntity,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import ProfessionViewProfessionalSkills from './ProfessionViewProfessionalSkills';
-import ProfessionViewResume from './ProfessionViewResume';
 import ProfessionViewSkillCosts from './ProfessionViewSkillCosts';
 
 export default function ProfessionViewPage() {
@@ -28,9 +35,15 @@ export default function ProfessionViewPage() {
     initial: location.state?.profession,
     onError: notify.error,
   });
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
 
   // Spec 063: rulebook entities only for admins, user entities for their owner.
   const editable = canEditEntity(state.entity, auth);
+
+  const onUpdateImage = (profession: Profession, imageUrl: string) =>
+    updateProfession(profession.id, { imageUrl } as UpdateProfessionDto, auth)
+      .then(state.setEntity)
+      .catch(notify.error);
 
   const onDelete = (profession: Profession) =>
     deleteProfession(profession.id, auth)
@@ -43,54 +56,88 @@ export default function ProfessionViewPage() {
         { name: t('home'), link: '/' },
         { name: t('core'), link: '/core' },
         { name: t('professions'), link: '/core/professions' },
-        { name: t('view') },
+        { name: state.entity ? t(state.entity.id) : t('view') },
       ]}
       entity={state}
-      summaryTitle={(entity) => t(entity.id)}
+      technicalInfo={false}
       onEdit={
         editable
           ? (profession) => navigate(`/core/professions/edit/${profession.id}`, { state: { profession } })
           : undefined
       }
       onDelete={editable ? onDelete : undefined}
-      leftPanel={(profession) => (
-        <ProfessionViewResume profession={profession} setProfession={state.setEntity} editable={editable} />
-      )}
+      hero={(profession) => ({
+        title: t(profession.id),
+        overline: t(profession.archetype),
+        image: profession.imageUrl,
+        ...(editable ? { onImageClick: () => setImageDialogOpen(true), imageActionLabel: t('change-image') } : {}),
+        chips: [
+          <AccessTypeChip key="access" accessType={profession.accessType} />,
+          <EntitySourceChip key="source" entity={profession} />,
+        ],
+      })}
     >
-      {(profession) => (
-        <>
-          {profession.availableRealmTypes.length > 0 && (
-            <>
-              <CategorySeparator text={t('available-realms')} />
-              <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
-                {profession.availableRealmTypes.map((rt, index) => (
-                  <Chip key={index} label={t(rt)} />
-                ))}
-              </Stack>
-            </>
-          )}
-          {profession.fixedRealmTypes.length > 0 && (
-            <>
-              <CategorySeparator text={t('fixed-realms')} />
-              <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
-                {profession.fixedRealmTypes.map((rt, index) => (
-                  <Chip key={index} label={t(rt)} color="primary" />
-                ))}
-              </Stack>
-            </>
-          )}
-          {typeof profession.baseListLimit === 'number' && (
-            <>
-              <CategorySeparator text={t('base-list-limit')} />
-              <Typography variant="body2">{t('base-list-limit-value', { count: profession.baseListLimit })}</Typography>
-            </>
-          )}
-          <CategorySeparator text={t('skill-costs')} />
-          <ProfessionViewSkillCosts profession={profession} />
-          <CategorySeparator text={t('professional-skills')} />
-          <ProfessionViewProfessionalSkills profession={profession} />
-        </>
-      )}
+      {(profession) => {
+        const hasRealms =
+          profession.availableRealmTypes.length > 0 ||
+          profession.fixedRealmTypes.length > 0 ||
+          typeof profession.baseListLimit === 'number';
+        return (
+          <Stack spacing={2}>
+            {profession.description && (
+              <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
+                {t(profession.description)}
+              </Typography>
+            )}
+            {hasRealms && (
+              <Panel variant="outlined">
+                <Stack spacing={1.5}>
+                  {profession.availableRealmTypes.length > 0 && (
+                    <Box>
+                      <SectionLabel>{t('available-realms')}</SectionLabel>
+                      <ChipRow>
+                        {profession.availableRealmTypes.map((rt, index) => (
+                          <Chip key={index} label={t(rt)} />
+                        ))}
+                      </ChipRow>
+                    </Box>
+                  )}
+                  {profession.fixedRealmTypes.length > 0 && (
+                    <Box>
+                      <SectionLabel>{t('fixed-realms')}</SectionLabel>
+                      <ChipRow>
+                        {profession.fixedRealmTypes.map((rt, index) => (
+                          <Chip key={index} label={t(rt)} color="primary" />
+                        ))}
+                      </ChipRow>
+                    </Box>
+                  )}
+                  {typeof profession.baseListLimit === 'number' && (
+                    <Box>
+                      <SectionLabel>{t('base-list-limit')}</SectionLabel>
+                      <Typography variant="body2">
+                        {t('base-list-limit-value', { count: profession.baseListLimit })}
+                      </Typography>
+                    </Box>
+                  )}
+                </Stack>
+              </Panel>
+            )}
+            <Section title={t('skill-costs')}>
+              <ProfessionViewSkillCosts profession={profession} />
+            </Section>
+            <Section title={t('professional-skills')}>
+              <ProfessionViewProfessionalSkills profession={profession} />
+            </Section>
+            <ImageSelectorDialog
+              value={profession.imageUrl || undefined}
+              open={imageDialogOpen}
+              onClose={() => setImageDialogOpen(false)}
+              onSelect={(image) => onUpdateImage(profession, image)}
+            />
+          </Stack>
+        );
+      }}
     </DetailPage>
   );
 }

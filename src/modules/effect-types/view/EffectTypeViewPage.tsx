@@ -4,6 +4,7 @@ import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   canEditEntity,
+  defaultImages,
   deleteEffectType,
   DetailPage,
   EffectType,
@@ -40,17 +41,22 @@ export default function EffectTypeViewPage() {
         { name: t('home'), link: '/' },
         { name: t('core'), link: '/core' },
         { name: t('effect-types'), link: '/core/effect-types' },
-        { name: t('view') },
+        { name: state.entity ? t(state.entity.id) : t('view') },
       ]}
       entity={state}
-      summaryTitle={(entity) => t(entity.id)}
+      technicalInfo={false}
       onEdit={
         editable
           ? (effectType) => navigate(`/core/effect-types/edit/${effectType.id}`, { state: { effectType } })
           : undefined
       }
       onDelete={editable ? onDelete : undefined}
-      actions={(effectType) => [<EntitySourceChip key="source" entity={effectType} />]}
+      hero={(effectType) => ({
+        title: t(effectType.id),
+        overline: t('effect-type'),
+        image: defaultImages.generic,
+        chips: [<EntitySourceChip key="source" entity={effectType} />],
+      })}
     >
       {(effectType) => <EffectTypeViewInfo effectType={effectType} />}
     </DetailPage>

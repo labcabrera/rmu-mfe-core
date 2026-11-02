@@ -129,7 +129,7 @@ export default function ProfessionFormPage({ mode }: { mode: FormMode }) {
               onImageChange={(imageUrl) => setFormData({ ...formData, imageUrl })}
             />
             {mode === 'edit' && (
-              <Typography variant="h6" sx={{ mt: 2 }}>
+              <Typography variant="subtitle1" sx={{ mt: 2, fontWeight: 600 }}>
                 {t(professionId!)}
               </Typography>
             )}

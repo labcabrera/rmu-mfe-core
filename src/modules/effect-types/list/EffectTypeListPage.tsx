@@ -3,21 +3,24 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import {
+  bindSingle,
   defaultImages,
-  EffectType,
   effectPropertyRequirements,
+  EffectType,
   EntityCard,
-  EntitySourceChip,
   EntityPicker,
+  EntitySourceChip,
   EnumPicker,
-  FilterBar,
+  equalsFilter,
   fetchEffectTypes,
+  FilterSearchField,
+  FilterSection,
   ListPage,
+  regexFilter,
   useListFilters,
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { bindSingle, equalsFilter, FilterTextField, regexFilter } from '../../shared/filters/list-filters';
 
 const BOOLEANS = ['true', 'false'];
 const booleanLabel = (value: string) => (value === 'true' ? 'yes' : 'no');
@@ -48,20 +51,28 @@ export default function EffectTypeListPage() {
       breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core'), link: '/core' }, { name: t('effect-types') }]}
       query={query}
       onAdd={() => navigate('/core/effect-types/create')}
-      filters={
-        <FilterBar>
-          <FilterTextField filters={filters} filter="q" label={t('id')} />
-          <EntityPicker
-            {...persistent}
-            variant="select"
-            hideImages
-            label={t('is-persistent')}
-            options={BOOLEANS.map((id) => ({ id, label: t(booleanLabel(id)) }))}
-          />
-          <EnumPicker {...value} variant="select" label={t('value')} values={effectPropertyRequirements} />
-        </FilterBar>
-      }
+      filtersLayout="side"
       filterState={filters}
+      filtersStorageKey="core.effect-types"
+      filters={
+        <>
+          <FilterSection title={t('search')} collapsible={false}>
+            <FilterSearchField filters={filters} filter="q" label={t('id')} />
+          </FilterSection>
+          <FilterSection title={t('is-persistent')}>
+            <EntityPicker
+              {...persistent}
+              variant="select"
+              hideImages
+              label={t('is-persistent')}
+              options={BOOLEANS.map((id) => ({ id, label: t(booleanLabel(id)) }))}
+            />
+          </FilterSection>
+          <FilterSection title={t('value')}>
+            <EnumPicker {...value} variant="select" label={t('value')} values={effectPropertyRequirements} />
+          </FilterSection>
+        </>
+      }
       collection={{ modes: ['cards'], storageKey: 'core.effect-types' }}
       renderItem={(effectType) => (
         <EntityCard

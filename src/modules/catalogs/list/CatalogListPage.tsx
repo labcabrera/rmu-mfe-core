@@ -6,15 +6,15 @@ import { useNavigate } from 'react-router-dom';
 import {
   defaultImages,
   EntityCard,
-  FilterBar,
   fetchEnumerationCategories,
+  FilterBar,
+  FilterSearchField,
   ListPage,
   normalizeText,
   useListFilters,
   useLocalPagedQuery,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { FilterTextField } from '../../shared/filters/list-filters';
 
 /** The categories endpoint is not paginated: the list is filtered by translated name on the client. */
 export default function CatalogListPage() {
@@ -58,7 +58,7 @@ export default function CatalogListPage() {
       getKey={(category) => category}
       filters={
         <FilterBar>
-          <FilterTextField filters={filters} filter="q" label={t('name')} />
+          <FilterSearchField filters={filters} filter="q" label={t('name')} />
         </FilterBar>
       }
       filterState={filters}

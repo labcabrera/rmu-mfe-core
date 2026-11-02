@@ -13,6 +13,7 @@ import {
   ManeuverModifier,
   ManeuverModifierList,
   Section,
+  SectionLabel,
   SectionNav,
   Skill,
   SkillCategory,
@@ -105,7 +106,7 @@ const ManeuversView: FC = () => {
       <SkillModifiersPanel modifiers={maneuverModifiers} selections={selections} onChange={setSelections} />
       {referenceModifiers.length > 0 && (
         <Box sx={{ mt: 2 }}>
-          <Typography variant="subtitle2">{t('combat-reference-modifiers')}</Typography>
+          <SectionLabel>{t('combat-reference-modifiers')}</SectionLabel>
           <Typography variant="caption" color="text.secondary" component="div">
             {t('combat-reference-modifiers-hint')}
           </Typography>

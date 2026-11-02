@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Typography } from '@mui/material';
 import {
+  CardGrid,
+  EmptyState,
   EntityCard,
   fetchRaces,
-  CardGrid,
   Race,
   Realm,
   useNotify,
@@ -32,11 +32,7 @@ const RealmViewRaces: FC<{
   }, [realm, auth, notify]);
 
   if (races.length === 0) {
-    return (
-      <Typography variant="body1" color="text.secondary">
-        {t('no-results')}
-      </Typography>
-    );
+    return <EmptyState dense title={t('no-results')} />;
   }
 
   return (

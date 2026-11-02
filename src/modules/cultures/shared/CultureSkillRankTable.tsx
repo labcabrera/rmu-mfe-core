@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Paper, Table, TableBody, TableContainer, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import {
   CultureSkillRank,
+  DataTable,
+  DataTableColumn,
   DeleteButton,
   DeleteDialog,
   useSpecializationLabel,
@@ -19,48 +20,41 @@ const CultureSkillRankTable: FC<{
   useSpecializationLabel();
   const [selectedIndex, setSelectedIndex] = useState<number>();
 
-  if (!entries || entries.length === 0) {
-    return <Typography>{t('no-skills-added')}</Typography>;
-  }
-
   const confirmDelete = () => {
     if (selectedIndex === undefined || !onDelete) return;
     onDelete(selectedIndex);
     setSelectedIndex(undefined);
   };
 
+  const columns: DataTableColumn<{ entry: CultureSkillRank; index: number }>[] = [
+    { key: 'type', header: t('type'), render: ({ entry }) => cultureSkillRankTypeLabel(entry.type, t) },
+    { key: 'target', header: t('target'), render: ({ entry }) => cultureSkillRankTarget(entry, t) },
+    { key: 'ranks', header: t('ranks'), align: 'right', render: ({ entry }) => entry.ranks },
+    {
+      key: 'max',
+      header: t('max-ranks-per-skill'),
+      align: 'right',
+      render: ({ entry }) => entry.maxRanksPerSkill,
+    },
+    ...(onDelete
+      ? [
+          {
+            key: 'delete',
+            header: '',
+            render: ({ index }: { index: number }) => <DeleteButton onClick={() => setSelectedIndex(index)} />,
+          },
+        ]
+      : []),
+  ];
+
   return (
     <>
-      <Paper>
-        <TableContainer>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">{t('type')}</TableCell>
-                <TableCell align="left">{t('target')}</TableCell>
-                <TableCell align="right">{t('ranks')}</TableCell>
-                <TableCell align="right">{t('max-ranks-per-skill')}</TableCell>
-                {onDelete && <TableCell align="left"></TableCell>}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {entries.map((entry, index) => (
-                <TableRow key={index}>
-                  <TableCell>{cultureSkillRankTypeLabel(entry.type, t)}</TableCell>
-                  <TableCell>{cultureSkillRankTarget(entry, t)}</TableCell>
-                  <TableCell align="right">{entry.ranks}</TableCell>
-                  <TableCell align="right">{entry.maxRanksPerSkill}</TableCell>
-                  {onDelete && (
-                    <TableCell>
-                      <DeleteButton onClick={() => setSelectedIndex(index)} />
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
+      <DataTable
+        columns={columns}
+        rows={(entries ?? []).map((entry, index) => ({ entry, index }))}
+        getKey={({ index }) => String(index)}
+        emptyTitle={t('no-skills-added')}
+      />
       <DeleteDialog
         message={t('confirmation-delete-message')}
         open={selectedIndex !== undefined}

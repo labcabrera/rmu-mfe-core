@@ -2,22 +2,22 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Stack } from '@mui/material';
 import {
-  ClearableTextField,
   CREATURE_SIZES,
   ENTITY_SOURCES,
   entitySourceFilter,
   EnumPicker,
   FilterSchema,
+  FilterSearchField,
   FilterSection,
   ListFilters,
   normalizeText,
   NumericInput,
   Race,
   Realm,
+  realmName,
   RealmPicker,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { TFunction } from 'i18next';
-import { realmName } from '../../shared/filters/list-filters';
 import { archetypeLabel, raceArchetypeKey, raceName } from '../race-format';
 
 /** Values of the access filter (`accessType` of a race). */
@@ -121,12 +121,7 @@ export default function RaceListFilters({
   return (
     <>
       <FilterSection title={t('search')} collapsible={false}>
-        <ClearableTextField
-          label={t('name')}
-          name="q"
-          value={filters.get('q')}
-          onChange={(value) => filters.set('q', value ?? '')}
-        />
+        <FilterSearchField filters={filters} filter="q" label={t('name')} />
       </FilterSection>
       <FilterSection title={t('race')}>
         <EnumPicker

@@ -1,12 +1,22 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { FilterBar, FilterSchema, Realm, RealmPicker } from '@labcabrera-rmu/rmu-react-shared-lib';
+import {
+  bindSingle,
+  equalsFilter,
+  FilterAccess,
+  FilterSchema,
+  FilterSearchField,
+  FilterSection,
+  Realm,
+  RealmPicker,
+  realmName,
+  regexFilter,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 import { TFunction } from 'i18next';
-import { bindSingle, equalsFilter, FilterAccess, FilterTextField, realmName, regexFilter } from './list-filters';
 
 /**
- * Filters of the race and culture lists: name and realm. `realmField` is the RSQL field of the realm id: `realmId` for
- * races, `realm.id` for cultures.
+ * Filters of the culture list: name and realm. `realmField` is the RSQL field of the realm id: `realmId` for races,
+ * `realm.id` for cultures.
  */
 export const nameRealmSchema = <T,>(
   t: TFunction,
@@ -17,14 +27,18 @@ export const nameRealmSchema = <T,>(
   realm: equalsFilter<T>(t('realm'), realmField, { format: (id) => realmName(realms, id) }),
 });
 
-/** Name and realm filters of the race and culture lists, bound to their useListFilters state. */
+/** Name and realm sections of the side filter panel (spec 066, decision 14), bound to their useListFilters state. */
 export default function NameRealmFilters({ filters, realms }: { filters: FilterAccess; realms: Realm[] | undefined }) {
   const { t } = useTranslation();
   const realm = bindSingle(filters, 'realm');
   return (
-    <FilterBar>
-      <FilterTextField filters={filters} filter="q" label={t('name')} />
-      <RealmPicker {...realm} realms={realms} variant="select" />
-    </FilterBar>
+    <>
+      <FilterSection title={t('search')} collapsible={false}>
+        <FilterSearchField filters={filters} filter="q" label={t('name')} />
+      </FilterSection>
+      <FilterSection title={t('realm')}>
+        <RealmPicker {...realm} realms={realms} variant="select" />
+      </FilterSection>
+    </>
   );
 }

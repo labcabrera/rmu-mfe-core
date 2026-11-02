@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Typography } from '@mui/material';
 import {
+  Bento,
   bonusColor,
   formatBonus,
   KeyValueList,
@@ -10,9 +11,9 @@ import {
   Race,
   RaceResistances,
   resistances,
+  span,
   StatBonusGrid,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { Bento, span } from '../../shared/layout/Bento';
 
 /** Signed, colored bonus for the value column of a key / value list. */
 const Bonus = ({ value }: { value: number }) => (

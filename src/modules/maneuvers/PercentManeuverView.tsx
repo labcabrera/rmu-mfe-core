@@ -87,7 +87,7 @@ const PercentManeuverView: FC<ManeuverTabProps> = ({
                   variant="determinate"
                   value={Math.max(0, Math.min(100, result.percent))}
                   color={percentColor(result.percent)}
-                  sx={{ mt: 1.5, height: 8, borderRadius: 4 }}
+                  sx={(theme) => ({ mt: 1.5, height: 8, borderRadius: `${theme.radius.pill}px` })}
                 />
                 {result.critical && (
                   <Typography variant="body2" sx={{ mt: 1 }}>

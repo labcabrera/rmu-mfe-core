@@ -49,7 +49,7 @@ const AbsoluteManeuverTableView: FC<{ table: AbsoluteManeuverTable; total: numbe
                 <TableCell sx={{ fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>
                   {rangeText(min, max)}
                 </TableCell>
-                <TableCell sx={{ color: `${color}.main`, fontWeight: selected ? 700 : 500 }}>
+                <TableCell sx={{ color: `${color}.main`, fontWeight: selected ? 600 : 400 }}>
                   {t(entry.result.result)}
                 </TableCell>
                 <TableCell>
