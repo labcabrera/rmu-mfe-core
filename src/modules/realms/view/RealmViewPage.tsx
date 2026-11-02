@@ -4,7 +4,7 @@ import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Button, Chip, Stack, Tooltip, Typography } from '@mui/material';
+import { Chip, Stack, Tooltip, Typography } from '@mui/material';
 import {
   AccessTypeChip,
   canEditEntity,
@@ -23,6 +23,7 @@ import {
   unshareRealm,
   ImageSelectorDialog,
   Realm,
+  RmuIconButton,
   updateRealm,
   useEntity,
   useNotify,
@@ -95,25 +96,29 @@ export default function RealmViewPage() {
       technicalInfo={false}
       onEdit={editable ? (realm) => navigate(`/core/realms/edit/${realm.id}`, { state: { realm } }) : undefined}
       onDelete={manageable ? onDelete : undefined}
+      // Icon buttons with a tooltip, like the rest of the header (refresh, delete); Edit is the only labelled one.
       actions={(realm) => [
         ...(manageable
           ? [
-              <Button key="share" variant="outlined" startIcon={<GroupAddIcon />} onClick={() => setShareOpen(true)}>
-                {t('share')}
-              </Button>,
+              <RmuIconButton
+                key="share"
+                Icon={GroupAddIcon}
+                tooltip="share"
+                ariaLabel="share"
+                onClick={() => setShareOpen(true)}
+              />,
             ]
           : []),
         ...(sharedWithMe
           ? [
-              <Button
+              <RmuIconButton
                 key="give-up"
-                variant="outlined"
+                Icon={LogoutIcon}
                 color="warning"
-                startIcon={<LogoutIcon />}
+                tooltip="share-give-up"
+                ariaLabel="share-give-up"
                 onClick={() => onGiveUp(realm)}
-              >
-                {t('share-give-up')}
-              </Button>,
+              />,
             ]
           : []),
       ]}
