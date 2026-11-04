@@ -3,6 +3,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Link as RouterLink, useLocation, useNavigate, useParams } from 'react-router-dom';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { Box, Chip, Link, Stack } from '@mui/material';
 import {
   AccessTypeChip,
@@ -13,9 +14,11 @@ import {
   EntitySourceChip,
   fetchRace,
   fetchRealm,
+  fetchRealms,
   ImageSelectorDialog,
   Race,
   Realm,
+  RmuIconButton,
   SectionNav,
   StatPill,
   updateRace,
@@ -27,6 +30,7 @@ import {
   viewTransitionName,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { archetypeLabel, raceName } from '../race-format';
+import CopyRaceDialog from './CopyRaceDialog';
 import RaceViewOverview from './RaceViewOverview';
 import RaceViewSkills from './RaceViewSkills';
 import RaceViewTraits from './RaceViewTraits';
@@ -52,6 +56,9 @@ export default function RaceViewPage() {
   const listUrl = `/core/races${typeof location.state?.from === 'string' ? location.state.from : ''}`;
   const [realm, setRealm] = useState<Realm>();
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
+  // Spec 074: the realms the user writes, where a copy of the race can go
+  const [writableRealms, setWritableRealms] = useState<Realm[]>([]);
+  const [copyOpen, setCopyOpen] = useState(false);
   const [section, setSection] = useSectionParam(sectionIds);
   // Spec 063: rulebook entities only for admins, user entities for their owner.
   const editable = canEditEntity(state.entity, auth);
@@ -60,6 +67,17 @@ export default function RaceViewPage() {
     if (!race?.realmId) return;
     fetchRealm(race.realmId, auth).then(setRealm).catch(notify.error);
   }, [race?.realmId]);
+
+  useEffect(() => {
+    fetchRealms('', 0, 100, auth)
+      .then((page) => setWritableRealms(page.content.filter((candidate) => canEditEntity(candidate, auth))))
+      .catch(notify.error);
+  }, []);
+
+  const onCopied = (copy: Race) => {
+    setCopyOpen(false);
+    navigate(`/core/races/view/${copy.id}`, { state: { race: copy } });
+  };
 
   const onUpdateImage = (entity: Race, imageUrl: string) =>
     updateRace(entity.id, { imageUrl } as UpdateRaceDto, auth)
@@ -102,6 +120,19 @@ export default function RaceViewPage() {
       ]}
       entity={state}
       technicalInfo={false}
+      actions={() =>
+        writableRealms.length > 0
+          ? [
+              <RmuIconButton
+                key="copy"
+                Icon={ContentCopyIcon}
+                tooltip="race-copy"
+                ariaLabel="race-copy"
+                onClick={() => setCopyOpen(true)}
+              />,
+            ]
+          : []
+      }
       onEdit={editable ? (entity) => navigate(`/core/races/edit/${entity.id}`, { state: { race: entity } }) : undefined}
       onDelete={editable ? onDelete : undefined}
       hero={(entity) => ({
@@ -151,6 +182,13 @@ export default function RaceViewPage() {
             open={imageDialogOpen}
             onClose={() => setImageDialogOpen(false)}
             onSelect={(image) => onUpdateImage(entity, image)}
+          />
+          <CopyRaceDialog
+            race={entity}
+            realms={writableRealms}
+            open={copyOpen}
+            onClose={() => setCopyOpen(false)}
+            onCopied={onCopied}
           />
         </Stack>
       )}
