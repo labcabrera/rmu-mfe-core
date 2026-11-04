@@ -3,14 +3,23 @@ import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 import { NumericInput, OPEN_D100, ResistanceRollQuery, RollField } from '@labcabrera-rmu/rmu-react-shared-lib';
 
-/** Levels of the attack and the target, other modifiers (negative too) and the open-ended roll. */
+/**
+ * Levels of the attack and the target, other modifiers (negative too) and the open-ended roll, in a grid of equal
+ * columns. A modifier of 0 shows as an empty field, like the others, so every label sits the same way.
+ */
 const ResistanceRollViewForm: FC<{
   formData: ResistanceRollQuery;
   setFormData: Dispatch<SetStateAction<ResistanceRollQuery>>;
 }> = ({ formData, setFormData }) => {
   const { t } = useTranslation();
   return (
-    <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' } }}>
+    <Box
+      sx={{
+        display: 'grid',
+        gap: 2,
+        gridTemplateColumns: { xs: 'minmax(0, 1fr)', sm: 'repeat(2, minmax(0, 1fr))', md: 'repeat(4, minmax(0, 1fr))' },
+      }}
+    >
       <NumericInput
         label={t('attack-level')}
         value={formData.attackLevel}
@@ -29,13 +38,14 @@ const ResistanceRollViewForm: FC<{
       />
       <NumericInput
         label={t('other-modifiers')}
-        value={formData.modifiers![0].value}
+        value={formData.modifiers![0].value || null}
         onChange={(value) => setFormData({ ...formData, modifiers: [{ key: 'other', value: value || 0 }] })}
         integer
         min={-1000}
         max={1000}
       />
       <RollField
+        fullWidth
         spec={OPEN_D100}
         value={formData.roll ?? null}
         onChange={(value) => setFormData({ ...formData, roll: value.total })}

@@ -23,7 +23,10 @@ const BANDS = [
   { key: 'extreme-failure', range: '101+', color: 'error.dark' },
 ] as const;
 
-/** Grade of the result, the scale of grades with the current one marked, and the breakdown of the total. */
+/**
+ * Grade of the result with the scale of grades (the current one marked) and, beside it on wide screens, the breakdown
+ * of the total.
+ */
 const ResistanceRollViewResult: FC<{ result: ResistanceRollResult | undefined }> = ({ result }) => {
   const { t } = useTranslation();
 
@@ -35,63 +38,72 @@ const ResistanceRollViewResult: FC<{ result: ResistanceRollResult | undefined }>
   const resisted = result.failure <= 0;
 
   return (
-    <Stack spacing={2.5}>
-      <Box
-        role="status"
-        sx={(theme) => ({
-          p: 2,
-          borderRadius: `${theme.radius.md}px`,
-          borderLeft: 4,
-          borderColor: band.color,
-          bgcolor: alpha(theme.palette.text.primary, 0.04),
-        })}
-      >
-        <Typography variant="h4" component="p" sx={{ color: band.color }}>
-          {t(result.result)}
-        </Typography>
-        <Typography color="text.secondary">
-          {resisted
-            ? t('resistance-roll-resisted', { total: RESIST_AT })
-            : t('resistance-roll-failed', { failure: result.failure })}
-        </Typography>
-      </Box>
-
-      <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', rowGap: 1 }}>
-        <StatPill label={t('total-roll')} value={result.totalRoll} />
-        <StatPill label={t('resistance-roll-needed')} value={RESIST_AT} />
-        <StatPill label={t('failure')} value={result.failure} />
-      </Stack>
-
-      <Box>
-        <SectionLabel>{t('resistance-roll-bands')}</SectionLabel>
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(5, minmax(0, 1fr))' }, gap: 0.5 }}>
-          {BANDS.map((each) => {
-            const current = each.key === band.key;
-            return (
-              <Box
-                key={each.key}
-                aria-current={current || undefined}
-                sx={(theme) => ({
-                  px: 1,
-                  py: 0.75,
-                  borderRadius: `${theme.radius.sm}px`,
-                  borderTop: 3,
-                  borderColor: each.color,
-                  bgcolor: current ? alpha(theme.palette.text.primary, 0.1) : 'transparent',
-                  opacity: current ? 1 : 0.6,
-                })}
-              >
-                <Typography variant="body2" sx={{ fontWeight: current ? 600 : 400 }}>
-                  {t(each.key)}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {each.range}
-                </Typography>
-              </Box>
-            );
+    <Box
+      sx={{
+        display: 'grid',
+        gap: 3,
+        gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(0, 3fr) minmax(0, 2fr)' },
+        alignItems: 'start',
+      }}
+    >
+      <Stack spacing={2.5}>
+        <Box
+          role="status"
+          sx={(theme) => ({
+            p: 2,
+            borderRadius: `${theme.radius.md}px`,
+            borderLeft: 4,
+            borderColor: band.color,
+            bgcolor: alpha(theme.palette.text.primary, 0.04),
           })}
+        >
+          <Typography variant="h4" component="p" sx={{ color: band.color }}>
+            {t(result.result)}
+          </Typography>
+          <Typography color="text.secondary">
+            {resisted
+              ? t('resistance-roll-resisted', { total: RESIST_AT })
+              : t('resistance-roll-failed', { failure: result.failure })}
+          </Typography>
         </Box>
-      </Box>
+
+        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', rowGap: 1 }}>
+          <StatPill label={t('total-roll')} value={result.totalRoll} />
+          <StatPill label={t('resistance-roll-needed')} value={RESIST_AT} />
+          <StatPill label={t('failure')} value={result.failure} />
+        </Stack>
+
+        <Box>
+          <SectionLabel>{t('resistance-roll-bands')}</SectionLabel>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(5, minmax(0, 1fr))' }, gap: 0.5 }}>
+            {BANDS.map((each) => {
+              const current = each.key === band.key;
+              return (
+                <Box
+                  key={each.key}
+                  aria-current={current || undefined}
+                  sx={(theme) => ({
+                    px: 1,
+                    py: 0.75,
+                    borderRadius: `${theme.radius.sm}px`,
+                    borderTop: 3,
+                    borderColor: each.color,
+                    bgcolor: current ? alpha(theme.palette.text.primary, 0.1) : 'transparent',
+                    opacity: current ? 1 : 0.6,
+                  })}
+                >
+                  <Typography variant="body2" sx={{ fontWeight: current ? 600 : 400 }}>
+                    {t(each.key)}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {each.range}
+                  </Typography>
+                </Box>
+              );
+            })}
+          </Box>
+        </Box>
+      </Stack>
 
       <Box>
         <SectionLabel>{t('modifiers')}</SectionLabel>
@@ -110,7 +122,7 @@ const ResistanceRollViewResult: FC<{ result: ResistanceRollResult | undefined }>
           </Stack>
         </Stack>
       </Box>
-    </Stack>
+    </Box>
   );
 };
 

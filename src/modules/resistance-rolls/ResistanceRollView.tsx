@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Box, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import {
   emptyResistanceRollQuery,
   LayoutBase,
@@ -9,7 +9,6 @@ import {
   resistanceRoll,
   ResistanceRollQuery,
   ResistanceRollResult,
-  TechnicalInfo,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import ResistanceRollViewForm from './ResistanceRollViewForm';
@@ -42,29 +41,17 @@ export default function ResistanceRollView() {
         { name: t('resistance-rolls') },
       ]}
     >
-      <Typography color="text.secondary" sx={{ mb: 2, maxWidth: '80ch' }}>
-        {t('resistance-roll-help')}
-      </Typography>
-      <Box
-        sx={{
-          display: 'grid',
-          gap: 2,
-          gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(0, 5fr) minmax(0, 7fr)' },
-          alignItems: 'start',
-        }}
-      >
+      <Stack spacing={2}>
         <Panel title={t('resistance-roll')} sx={{ height: 'auto' }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2, maxWidth: '90ch' }}>
+            {t('resistance-roll-help')}
+          </Typography>
           <ResistanceRollViewForm formData={formData} setFormData={setFormData} />
         </Panel>
         <Panel title={t('result')} sx={{ height: 'auto' }}>
           <ResistanceRollViewResult result={result} />
         </Panel>
-      </Box>
-      <Box sx={{ mt: 2 }}>
-        <TechnicalInfo>
-          <pre>{JSON.stringify({ formData, result }, null, 2)}</pre>
-        </TechnicalInfo>
-      </Box>
+      </Stack>
     </LayoutBase>
   );
 }
