@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
-import { ChipRow, EntityCard, Section, SectionLabel, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { ChipRow, EntityCard, Section, SectionLabel, Trait, traitPrerequisiteValues } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const TraitViewInfo: FC<{
   trait: Trait;
@@ -62,7 +62,7 @@ const TraitViewInfo: FC<{
                 title={prerequisite.description || undefined}
                 label={[
                   t(`trait-prerequisite-${prerequisite.type}`),
-                  ...(prerequisite.value || []).map((value) => t(value, { defaultValue: value })),
+                  ...traitPrerequisiteValues(prerequisite.value).map((value) => t(value, { defaultValue: value })),
                 ].join(': ')}
               />
             ))}
