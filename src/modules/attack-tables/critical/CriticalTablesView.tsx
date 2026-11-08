@@ -25,6 +25,7 @@ import {
   LoadingState,
   Panel,
   useNotify,
+  useTableText,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import CoreLawNotice from '../shared/CoreLawNotice';
 import TableEntryDialog from '../shared/TableEntryDialog';
@@ -39,6 +40,8 @@ type Selected = { severity: CriticalSeverity; entry: CriticalTableEntry };
  */
 const CriticalTablesView: FC = () => {
   const { t } = useTranslation();
+  // Workspace spec 086: the English text of a table entry, translated when there is one
+  const tableText = useTableText();
   const auth = useAuth();
   const notify = useNotify();
   const [params, setParams] = useSearchParams();
@@ -123,7 +126,7 @@ const CriticalTablesView: FC = () => {
                             <Typography variant="body2" sx={{ fontWeight: 600 }}>
                               +{entry.dmg}
                             </Typography>
-                            <Typography variant="body2">{entry.message}</Typography>
+                            <Typography variant="body2">{tableText(entry.message)}</Typography>
                             {(entry.effects ?? []).length > 0 && (
                               <Typography variant="caption" color="primary">
                                 {(entry.effects ?? []).map((effect) => effectLabel(effect, t)).join(' · ')}

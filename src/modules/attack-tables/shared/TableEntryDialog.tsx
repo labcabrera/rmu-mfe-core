@@ -11,6 +11,7 @@ import {
   TableEffect,
   TableInjury,
   TechnicalInfo,
+  useTableText,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { rollBand } from './table-labels';
 
@@ -35,6 +36,8 @@ const TableEntryDialog: FC<{ title: string; entry: TableEntry | undefined; onClo
   onClose,
 }) => {
   const { t } = useTranslation();
+  // Workspace spec 086: the English text of a table entry, translated when there is one
+  const tableText = useTableText();
   if (!entry) return null;
   const effects = entry.effects ?? [];
   const summary: [string, string][] = [[t('roll'), rollBand(entry.rollMin, entry.rollMax)]];
@@ -82,7 +85,7 @@ const TableEntryDialog: FC<{ title: string; entry: TableEntry | undefined; onClo
             <Chip key={label} label={`${label}: ${value}`} variant="outlined" />
           ))}
         </ChipRow>
-        <Typography>{entry.message ?? entry.text}</Typography>
+        <Typography>{tableText(entry.message ?? entry.text)}</Typography>
 
         <Box>
           <SectionLabel>{t('effects')}</SectionLabel>

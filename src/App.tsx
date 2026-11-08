@@ -38,7 +38,7 @@ import TraitViewPage from './modules/traits/view/TraitViewPage';
 
 const App = () => {
   return (
-    <MfeRoot sx={{ p: 2, minHeight: '600pt' }}>
+    <MfeRoot sx={{ p: 2, minHeight: '600pt' }} namespace="core">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/realms" element={<RealmListPage />} />
