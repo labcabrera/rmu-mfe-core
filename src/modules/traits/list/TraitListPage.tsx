@@ -20,7 +20,7 @@ import {
   useNotify,
   usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { traitCategoryImage } from '../../services/trait-image-service';
+import { traitCategoryImage, traitImage } from '../../services/trait-image-service';
 import { TRAIT_TYPES } from '../../shared/enums';
 
 /** Traits catalog (spec 046): filters in the side panel, kept in the URL. */
@@ -81,10 +81,9 @@ export default function TraitListPage() {
         <EntityCard
           title={`${t(trait.name)}${trait.isTierBased ? ' *' : ''}`}
           subtitle={`${t(trait.isTalent ? 'trait' : 'flaw')} • ${t(trait.category)}`}
-          image={traitCategoryImage(trait.category)}
+          image={traitImage(trait)}
           fallbackImages={[defaultImages.trait]}
           chips={<EntitySourceChip entity={trait} />}
-          imageFilter={trait.isTalent ? undefined : 'grayscale(0.8)'}
           metrics={[{ label: t('adquisition-cost'), value: trait.adquisitionCost }]}
           onClick={() => navigate(`/core/traits/view/${trait.id}`, { state: { trait } })}
         />
