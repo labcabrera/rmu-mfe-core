@@ -9,13 +9,13 @@ import {
   EntitySourceChip,
   fetchCultures,
   ListPage,
+  useCatalogByLabel,
   useListFilters,
   useNotify,
   useRealms,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { cultureDescription } from '../../shared/catalog-text';
 import NameRealmFilters, { nameRealmSchema } from '../../shared/filters/NameRealmFilters';
-import { useCatalogByLabel } from '../../shared/list/useCatalogByLabel';
 
 export default function CultureListPage() {
   const auth = useAuth();
