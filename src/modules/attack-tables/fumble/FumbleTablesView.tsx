@@ -14,6 +14,7 @@ import {
   LoadingState,
   Panel,
   useNotify,
+  useTableText,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import CoreLawNotice from '../shared/CoreLawNotice';
 import TableEntryDialog from '../shared/TableEntryDialog';
@@ -23,6 +24,8 @@ import { useWholeTable } from '../shared/useWholeTable';
 /** Fumble tables (spec 036): the rows of a column, and the technical model of each one on a click. */
 const FumbleTablesView: FC = () => {
   const { t } = useTranslation();
+  // Workspace spec 086: the English text of a table entry, translated when there is one
+  const tableText = useTableText();
   const auth = useAuth();
   const notify = useNotify();
   const [params, setParams] = useSearchParams();
@@ -54,7 +57,7 @@ const FumbleTablesView: FC = () => {
         </Typography>
       ),
     },
-    { key: 'text', header: t('text'), cellSx: { verticalAlign: 'top' }, render: (entry) => entry.text },
+    { key: 'text', header: t('text'), cellSx: { verticalAlign: 'top' }, render: (entry) => tableText(entry.text) },
     {
       key: 'effects',
       header: t('effects'),
