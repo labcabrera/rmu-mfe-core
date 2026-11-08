@@ -13,13 +13,13 @@ import {
   FilterSearchField,
   FilterSection,
   ListPage,
+  normalizeText,
   Profession,
-  regexFilter,
   useListFilters,
   useNotify,
-  usePagedQuery,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { PROFESSION_ARCHETYPES } from '../../shared/enums';
+import { useCatalogByLabel } from '../../shared/list/useCatalogByLabel';
 
 export default function ProfessionListPage() {
   const auth = useAuth();
@@ -27,16 +27,23 @@ export default function ProfessionListPage() {
   const navigate = useNavigate();
   const notify = useNotify();
   const filters = useListFilters<Profession>({
-    q: regexFilter(t('name'), 'id'),
+    q: {
+      kind: 'text',
+      label: t('name'),
+      match: (profession, value) => normalizeText(t(profession.id)).includes(normalizeText(String(value).trim())),
+    },
     archetype: equalsFilter(t('archetype'), 'archetype', {
       options: PROFESSION_ARCHETYPES,
       format: (value) => t(value),
     }),
   });
   const archetype = bindSingle(filters, 'archetype');
-  const query = usePagedQuery<Profession>({
+  const query = useCatalogByLabel<Profession>({
     fetcher: (q, page, size) => fetchProfessions(q, page, size, auth),
     rsql: filters.rsql,
+    resetKey: filters.key,
+    labelOf: (profession) => t(profession.id),
+    match: filters.match,
     onError: notify.error,
   });
 
