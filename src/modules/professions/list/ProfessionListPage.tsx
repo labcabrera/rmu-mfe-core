@@ -15,11 +15,11 @@ import {
   ListPage,
   normalizeText,
   Profession,
+  useCatalogByLabel,
   useListFilters,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { PROFESSION_ARCHETYPES } from '../../shared/enums';
-import { useCatalogByLabel } from '../../shared/list/useCatalogByLabel';
 
 export default function ProfessionListPage() {
   const auth = useAuth();
