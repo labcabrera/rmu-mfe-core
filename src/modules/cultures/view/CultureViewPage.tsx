@@ -26,6 +26,7 @@ import {
   useEntity,
   useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { cultureDescription } from '../../shared/catalog-text';
 import AddCultureSkillRankDialog from '../shared/AddCultureSkillRankDialog';
 import CultureDevelopmentCost from '../shared/CultureDevelopmentCost';
 import CultureSkillRankTable from '../shared/CultureSkillRankTable';
@@ -87,7 +88,7 @@ export default function CultureViewPage() {
         <Stack spacing={2}>
           {culture.description && (
             <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
-              {culture.description}
+              {cultureDescription(culture, t)}
             </Typography>
           )}
           <Section

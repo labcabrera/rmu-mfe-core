@@ -11,10 +11,11 @@ import {
   ListPage,
   useListFilters,
   useNotify,
-  usePagedQuery,
   useRealms,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { cultureDescription } from '../../shared/catalog-text';
 import NameRealmFilters, { nameRealmSchema } from '../../shared/filters/NameRealmFilters';
+import { useCatalogByLabel } from '../../shared/list/useCatalogByLabel';
 
 export default function CultureListPage() {
   const auth = useAuth();
@@ -22,10 +23,13 @@ export default function CultureListPage() {
   const navigate = useNavigate();
   const notify = useNotify();
   const realms = useRealms();
-  const filters = useListFilters(nameRealmSchema<Culture>(t, realms, 'realm.id'));
-  const query = usePagedQuery<Culture>({
+  const filters = useListFilters(nameRealmSchema<Culture>(t, realms, (culture) => t(culture.name), 'realm.id'));
+  const query = useCatalogByLabel<Culture>({
     fetcher: (q, page, size) => fetchCultures(q, page, size, auth),
     rsql: filters.rsql,
+    resetKey: filters.key,
+    labelOf: (culture) => t(culture.name),
+    match: filters.match,
     onError: notify.error,
   });
 
@@ -44,7 +48,7 @@ export default function CultureListPage() {
           title={t(culture.name)}
           image={culture.imageUrl || defaultImages.culture}
           chips={<EntitySourceChip entity={culture} />}
-          description={culture.description}
+          description={cultureDescription(culture, t)}
           metrics={[{ label: t('skills'), value: culture.skillRanks?.length ?? 0 }]}
           onClick={() => navigate(`/core/cultures/view/${culture.id}`, { state: { culture } })}
         />

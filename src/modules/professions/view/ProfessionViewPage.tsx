@@ -23,6 +23,7 @@ import {
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import ProfessionViewProfessionalSkills from './ProfessionViewProfessionalSkills';
 import ProfessionViewSkillCosts from './ProfessionViewSkillCosts';
+import { professionDescription } from '../../shared/catalog-text';
 
 export default function ProfessionViewPage() {
   const auth = useAuth();
@@ -86,7 +87,7 @@ export default function ProfessionViewPage() {
           <Stack spacing={2}>
             {profession.description && (
               <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
-                {t(profession.description)}
+                {professionDescription(profession, t)}
               </Typography>
             )}
             {hasRealms && (

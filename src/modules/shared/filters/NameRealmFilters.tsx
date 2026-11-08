@@ -7,23 +7,28 @@ import {
   FilterSchema,
   FilterSearchField,
   FilterSection,
+  normalizeText,
   Realm,
   RealmPicker,
   realmName,
-  regexFilter,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { TFunction } from 'i18next';
 
 /**
- * Filters of the culture list: name and realm. `realmField` is the RSQL field of the realm id: `realmId` for races,
- * `realm.id` for cultures.
+ * Filters of the culture list: the translated name (`nameOf`), matched on the client, and the realm. `realmField` is
+ * the RSQL field of the realm id: `realmId` for races, `realm.id` for cultures.
  */
 export const nameRealmSchema = <T,>(
   t: TFunction,
   realms: Realm[] | undefined,
+  nameOf: (entity: T) => string,
   realmField = 'realmId'
 ): FilterSchema<T> => ({
-  q: regexFilter<T>(t('name'), 'name'),
+  q: {
+    kind: 'text',
+    label: t('name'),
+    match: (entity, value) => normalizeText(nameOf(entity)).includes(normalizeText(String(value).trim())),
+  },
   realm: equalsFilter<T>(t('realm'), realmField, { format: (id) => realmName(realms, id) }),
 });
 
