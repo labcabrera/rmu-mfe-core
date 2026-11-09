@@ -1,6 +1,5 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from 'react-oidc-context';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Box, Chip, Link, Stack, Typography } from '@mui/material';
 import {
@@ -9,8 +8,6 @@ import {
   DataTableColumn,
   EmptyState,
   FightingStyle,
-  FightingStyles,
-  fetchFightingStyles,
   LayoutBase,
   LoadingState,
   Section,
@@ -18,20 +15,21 @@ import {
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import RulesText from './RulesText';
 import { equipmentLabel } from './style-conditions';
+import { useFightingStyles } from './useFightingStyles';
+import { useStyleAbilityText } from './useStyleAbilityText';
 
 /** One ability of the fighting styles catalog (spec 032): its requirements, the styles that grant it and its text. */
 const StyleAbilityView: FC = () => {
   const { t } = useTranslation();
-  const auth = useAuth();
+  const abilityText = useStyleAbilityText();
   const notify = useNotify();
   const { abilityId } = useParams<{ abilityId: string }>();
-  const [catalog, setCatalog] = useState<FightingStyles>();
+  const { data: catalog, error } = useFightingStyles();
 
   useEffect(() => {
-    fetchFightingStyles(auth)
-      .then(setCatalog)
-      .catch((err) => notify.error(err));
-  }, []);
+    if (error) notify.error(error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   const ability = catalog?.abilities.find((a) => a.id === abilityId);
   const grantedBy = (catalog?.styles ?? [])
@@ -42,7 +40,7 @@ const StyleAbilityView: FC = () => {
       key: 'style',
       header: t('fighting-style'),
       render: ({ style }) => (
-        <Link component={RouterLink} to={`/core/fighting-styles?skill=${style.skillId}`}>
+        <Link component={RouterLink} to={`/core/fighting-styles/view/${style.id}`}>
           {t(style.id)}
         </Link>
       ),
@@ -115,8 +113,8 @@ const StyleAbilityView: FC = () => {
           </Section>
 
           <Section title={t('style-ability-rules-text')}>
-            {ability.description ? (
-              <RulesText text={ability.description} />
+            {abilityText(ability) ? (
+              <RulesText text={abilityText(ability)} />
             ) : (
               <EmptyState dense title={t('style-ability-no-description')} />
             )}
