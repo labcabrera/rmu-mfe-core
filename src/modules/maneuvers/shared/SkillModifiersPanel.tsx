@@ -45,16 +45,14 @@ const SkillModifiersPanel: FC<{
                 </Typography>
               )}
             </Stack>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.5 }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mt: 0.5 }}>
               {modifier.type === 'choice' &&
                 (modifier.options ?? []).map((option) => {
                   const selected = selection === option.key;
                   return (
                     <Chip
                       key={option.key}
-                      size="small"
                       color={selected ? 'primary' : 'default'}
-                      variant={selected ? 'filled' : 'outlined'}
                       label={`${label(`${modifier.key}.${option.key}`)} ${formatBonus(option.value)}`}
                       onClick={() => select(modifier.key, selected ? null : option.key)}
                     />
@@ -62,9 +60,7 @@ const SkillModifiersPanel: FC<{
                 })}
               {modifier.type === 'flag' && (
                 <Chip
-                  size="small"
                   color={selection === true ? 'primary' : 'default'}
-                  variant={selection === true ? 'filled' : 'outlined'}
                   label={formatBonus(modifier.value ?? 0)}
                   onClick={() => select(modifier.key, selection === true ? null : true)}
                 />

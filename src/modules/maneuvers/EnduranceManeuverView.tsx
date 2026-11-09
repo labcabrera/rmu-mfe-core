@@ -47,8 +47,9 @@ const EnduranceManeuverView: FC = () => {
       <Grid size={{ xs: 12, md: 5 }}>
         <Section>
           <Stack spacing={2}>
-            <RollField spec={OPEN_D100} value={roll} onChange={(value) => setRoll(value.total)} />
+            <RollField spec={OPEN_D100} value={roll} onChange={(value) => setRoll(value.total)} fullWidth />
             <FormControlLabel
+              sx={{ alignSelf: 'flex-start', '&&': { ml: -1.375 } }}
               control={<Checkbox checked={unusualEvent} onChange={(e) => setUnusualEvent(e.target.checked)} />}
               label={t('unusual-event')}
             />

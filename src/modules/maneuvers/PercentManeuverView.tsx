@@ -68,7 +68,7 @@ const PercentManeuverView: FC<ManeuverTabProps> = ({
                 min={-1000}
                 max={1000}
               />
-              <RollField spec={OPEN_D100} value={roll} onChange={(value) => setRoll(value.total)} />
+              <RollField spec={OPEN_D100} value={roll} onChange={(value) => setRoll(value.total)} fullWidth />
             </Stack>
           </Section>
         </Stack>

@@ -108,8 +108,9 @@ const AbsoluteManeuverView: FC<ManeuverTabProps> = ({
                 min={-1000}
                 max={1000}
               />
-              <RollField spec={OPEN_D100} value={roll} onChange={(value) => setRoll(value.total)} />
+              <RollField spec={OPEN_D100} value={roll} onChange={(value) => setRoll(value.total)} fullWidth />
               <FormControlLabel
+                sx={{ alignSelf: 'flex-start', '&&': { ml: -1.375 } }}
                 control={<Checkbox checked={unusualEvent} onChange={(e) => setUnusualEvent(e.target.checked)} />}
                 label={t('unusual-event')}
               />
