@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -23,6 +23,7 @@ import {
   useEntity,
   useNotify,
   useViewTransitionNavigate,
+  fetchFullPage,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import StatChips from '../../shared/display/StatChips';
 
@@ -46,7 +47,7 @@ export default function SkillCategoryViewPage() {
 
   useEffect(() => {
     if (!skillCategory?.id) return;
-    fetchSkills(`categoryId==${skillCategory.id}`, 0, 100, auth)
+    fetchFullPage((rsql, page, size) => fetchSkills(rsql, page, size, auth), `categoryId==${skillCategory.id}`)
       .then((response) =>
         setSkills([...response.content].sort((a, b) => t(a.id).localeCompare(t(b.id), i18n.language)))
       )

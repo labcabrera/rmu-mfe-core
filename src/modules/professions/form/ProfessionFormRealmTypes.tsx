@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, ButtonGroup, Grid, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material';
 import { Profession, RealmType, REALM_TYPES } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const ProfessionFormRealmTypes: FC<{

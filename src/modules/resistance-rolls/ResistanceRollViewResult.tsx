@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import CasinoOutlinedIcon from '@mui/icons-material/CasinoOutlined';
 import { alpha, Box, Divider, Stack, Typography } from '@mui/material';

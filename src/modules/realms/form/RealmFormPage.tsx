@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -24,7 +23,7 @@ const isValid = (realm: Realm) => !!realm.name && !!realm.accessType && !!realm.
 
 // The form never sends the id: it is in the URL.
 const toForm = (realm: Realm) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id, ...rest } = realm;
   return rest as unknown as Realm;
 };

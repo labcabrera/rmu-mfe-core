@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { alpha, Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import { AbsoluteManeuverTable, translated } from '@labcabrera-rmu/rmu-react-shared-lib';

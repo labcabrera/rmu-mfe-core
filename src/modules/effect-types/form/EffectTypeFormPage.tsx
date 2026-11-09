@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, no-unused-vars */
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';

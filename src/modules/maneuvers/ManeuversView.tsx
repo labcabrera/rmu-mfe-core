@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useSearchParams } from 'react-router-dom';
@@ -20,6 +20,7 @@ import {
   SkillDifficultyGuide,
   useNotify,
   useSectionParam,
+  fetchFullPage,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import AbsoluteManeuverView from './AbsoluteManeuverView';
 import EnduranceManeuverView from './EnduranceManeuverView';
@@ -68,7 +69,7 @@ const ManeuversView: FC = () => {
     fetchSkills('', 0, 500, auth)
       .then((page) => setSkills(page.content))
       .catch((err) => notify.error(err));
-    fetchSkillCategories('', 0, 100, auth)
+    fetchFullPage((rsql, page, size) => fetchSkillCategories(rsql, page, size, auth), '')
       .then((page) => setCategories(page.content))
       .catch((err) => notify.error(err));
   }, []);

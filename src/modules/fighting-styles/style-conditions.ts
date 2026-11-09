@@ -2,7 +2,7 @@ import { StyleCondition } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { TFunction } from 'i18next';
 
 /** Readable label of an equipment condition of a style or an ability (spec 032). */
-export const conditionLabel = (condition: StyleCondition, t: TFunction): string => {
+const conditionLabel = (condition: StyleCondition, t: TFunction): string => {
   const value = condition.value;
   switch (condition.kind) {
     case 'weapon-skill': {

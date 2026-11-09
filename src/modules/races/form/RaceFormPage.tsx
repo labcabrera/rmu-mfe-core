@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -115,7 +115,7 @@ export default function RaceFormPage({ mode }: { mode: FormMode }) {
 
   const onSave = () => {
     if (!formData) return;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, ...rest } = { ...formData, archetype: raceArchetypeKey(formData.archetype ?? '') };
     const request =
       mode === 'create'

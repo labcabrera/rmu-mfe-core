@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid } from '@mui/material';
@@ -18,6 +18,7 @@ import {
   SkillSelector,
   TechnicalInfo,
   useNotify,
+  fetchFullPage,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import {
   CULTURE_REGIONS,
@@ -50,7 +51,7 @@ const AddCultureSkillRankDialog: FC<{
     fetchSkills('', 0, 500, auth)
       .then((page) => setSkills(page.content))
       .catch(notify.error);
-    fetchSkillCategories('', 0, 100, auth)
+    fetchFullPage((rsql, page, size) => fetchSkillCategories(rsql, page, size, auth), '')
       .then((page) => setCategories(page.content))
       .catch(notify.error);
     // eslint-disable-next-line react-hooks/exhaustive-deps

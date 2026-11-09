@@ -22,7 +22,7 @@ export const CULTURE_DEVELOPMENT_COST_LIMIT = 80;
 export const cultureSkillRankTypeLabel = (type: CultureSkillRankType, t: TFunction): string =>
   t(`culture-skill-rank-type-${type}`);
 
-export const cultureRegionLabel = (region: CultureRegion, t: TFunction): string => t(`culture-region-${region}`);
+const cultureRegionLabel = (region: CultureRegion, t: TFunction): string => t(`culture-region-${region}`);
 
 /** Human readable target of an entry: the skill, the skill options, the categories or the region. */
 export const cultureSkillRankTarget = (entry: CultureSkillRank, t: TFunction): string => {

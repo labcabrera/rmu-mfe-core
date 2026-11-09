@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -36,7 +35,7 @@ const EMPTY_CULTURE = {
 const isValid = (culture: Culture) => !!culture.name && !!culture.accessType;
 
 const toForm = (culture: Culture) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id, developmentCost, owner, ...rest } = culture;
   return rest as Culture;
 };
