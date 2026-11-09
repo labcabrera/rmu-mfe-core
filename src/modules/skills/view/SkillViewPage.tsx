@@ -28,9 +28,9 @@ import {
   StatPill,
   useEntity,
   useNotify,
+  useSkillText,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import StatChips from '../../shared/display/StatChips';
-import { skillDescriptionKey } from '../skill-utils';
 
 /** Bonus of a character without ranks in the skill (chapter 3), applied by tactical to maneuvers. */
 const UNSKILLED_BONUS = -25;
@@ -86,7 +86,8 @@ const BaseModifiersNote = ({ profile }: { profile: ManeuverProfile }) => {
 
 export default function SkillViewPage() {
   const auth = useAuth();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const skillText = useSkillText();
   const navigate = useNavigate();
   const location = useLocation();
   const notify = useNotify();
@@ -125,9 +126,7 @@ export default function SkillViewPage() {
       .catch(notify.error);
 
   const description = (entity: Skill) =>
-    i18n.exists(skillDescriptionKey(entity))
-      ? t(skillDescriptionKey(entity))
-      : t('this-skill-has-no-associated-description');
+    skillText.description(entity.id) || t('this-skill-has-no-associated-description');
 
   return (
     <DetailPage
