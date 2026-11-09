@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Link as RouterLink, useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -29,6 +29,7 @@ import {
   useEntity,
   useNotify,
   useSkillText,
+  fetchFullPage,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import StatChips from '../../shared/display/StatChips';
 
@@ -105,7 +106,7 @@ export default function SkillViewPage() {
       setEnumerations([]);
       return;
     }
-    fetchEnumerations(`category==${skill.specialization}`, 0, 100, auth)
+    fetchFullPage((rsql, page, size) => fetchEnumerations(rsql, page, size, auth), `category==${skill.specialization}`)
       .then((response) => setEnumerations(response.content))
       .catch(notify.error);
   }, [skill?.specialization]);

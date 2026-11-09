@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -27,6 +27,7 @@ import {
   usePagedQuery,
   useSkillText,
   useViewTransitionNavigate,
+  fetchFullPage,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import StatChips from '../../shared/display/StatChips';
 import SkillManeuverIndicator from './SkillManeuverIndicator';
@@ -66,7 +67,7 @@ export default function SkillListPage() {
   const categoryFilter = bindSingle(filters, 'category');
 
   useEffect(() => {
-    fetchSkillCategories('', 0, 100, auth)
+    fetchFullPage((rsql, page, size) => fetchSkillCategories(rsql, page, size, auth), '')
       .then((response) => setCategories(response.content))
       .catch(notify.error);
   }, []);

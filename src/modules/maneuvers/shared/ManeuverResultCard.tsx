@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { alpha, Box, Typography } from '@mui/material';
 
 /** The result of a maneuver, with a left border and a tint in the color of the result. */

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import {
@@ -10,6 +10,7 @@ import {
   fetchEnumerations,
   Realm,
   useNotify,
+  fetchFullPage,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const RealmViewEnumerations: FC<{
@@ -24,7 +25,7 @@ const RealmViewEnumerations: FC<{
 
   useEffect(() => {
     if (realm) {
-      fetchEnumerations(`realmId==${realm.id};category==${category}`, 0, 100, auth)
+      fetchFullPage((rsql, page, size) => fetchEnumerations(rsql, page, size, auth), `realmId==${realm.id};category==${category}`)
         .then((response) => setEnumerations(response.content))
         .catch((err) => notify.error(err));
     }

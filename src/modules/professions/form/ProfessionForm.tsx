@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid, TextField } from '@mui/material';
 import { AccessType, CategorySeparator, EnumPicker, Profession } from '@labcabrera-rmu/rmu-react-shared-lib';

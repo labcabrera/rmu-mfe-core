@@ -7,7 +7,7 @@ export type FormMode = 'create' | 'edit';
 /** The form never edits the owner, and the source only through the admin field (spec 063). */
 const withoutServerFields = <F>(data: F): F => {
   if (!data || typeof data !== 'object') return data;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { owner, entitySource, ...rest } = data as Record<string, unknown>;
   return rest as F;
 };

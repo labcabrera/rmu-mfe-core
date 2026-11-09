@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Link as RouterLink, useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -28,6 +28,7 @@ import {
   useSectionParam,
   useSpecializationLabel,
   viewTransitionName,
+  fetchFullPage,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { archetypeLabel, raceName } from '../race-format';
 import CopyRaceDialog from './CopyRaceDialog';
@@ -69,7 +70,7 @@ export default function RaceViewPage() {
   }, [race?.realmId]);
 
   useEffect(() => {
-    fetchRealms('', 0, 100, auth)
+    fetchFullPage((rsql, page, size) => fetchRealms(rsql, page, size, auth), '')
       .then((page) => setWritableRealms(page.content.filter((candidate) => canEditEntity(candidate, auth))))
       .catch(notify.error);
   }, []);

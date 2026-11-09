@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Chip, Stack, Typography } from '@mui/material';
 import {
@@ -16,7 +16,7 @@ import {
 import { rollBand } from './table-labels';
 
 /** The row of a critical or fumble table, as the API serves it. */
-export type TableEntry = {
+type TableEntry = {
   rollMin: number;
   rollMax: number;
   dmg?: number;

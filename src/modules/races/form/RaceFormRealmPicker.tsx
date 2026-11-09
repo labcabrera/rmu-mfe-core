@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import {
   Realm,
   RealmPicker,
   useNotify,
+  fetchFullPage,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 // Shown when the creation page is opened without a realmId query param.
@@ -22,7 +23,7 @@ const RaceFormRealmPicker: FC<{ onSelect: (realmId: string) => void }> = ({ onSe
   const [realms, setRealms] = useState<Realm[]>();
 
   useEffect(() => {
-    fetchRealms('', 0, 100, auth)
+    fetchFullPage((rsql, page, size) => fetchRealms(rsql, page, size, auth), '')
       .then((response) => setRealms(response.content))
       .catch((err) => notify.error(err));
   }, []);

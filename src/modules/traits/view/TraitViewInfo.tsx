@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
 import { ChipRow, EntityCard, Section, SectionLabel, Trait, traitPrerequisiteValues } from '@labcabrera-rmu/rmu-react-shared-lib';

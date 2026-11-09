@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Stack } from '@mui/material';
 import {
@@ -21,7 +20,7 @@ import { TFunction } from 'i18next';
 import { archetypeLabel, raceArchetypeKey, raceName } from '../race-format';
 
 /** Values of the access filter (`accessType` of a race). */
-export const RACE_ACCESS_TYPES = ['public', 'private'];
+const RACE_ACCESS_TYPES = ['public', 'private'];
 
 const list = (value: string | string[]) => (Array.isArray(value) ? value : [value]);
 const integer = (value: string | string[]) => {

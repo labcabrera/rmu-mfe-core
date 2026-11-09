@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import {
@@ -11,6 +11,7 @@ import {
   useNotify,
   useViewTransitionNavigate,
   viewTransitionName,
+  fetchFullPage,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { archetypeLabel, raceName } from '../../races/race-format';
 
@@ -25,7 +26,7 @@ const RealmViewRaces: FC<{
 
   useEffect(() => {
     if (realm) {
-      fetchRaces(`realmId==${realm.id}`, 0, 100, auth)
+      fetchFullPage((rsql, page, size) => fetchRaces(rsql, page, size, auth), `realmId==${realm.id}`)
         .then((response) => setRaces(response.content))
         .catch((err) => notify.error(err));
     }

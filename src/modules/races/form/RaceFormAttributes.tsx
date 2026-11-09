@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid, TextField } from '@mui/material';
@@ -10,6 +10,7 @@ import {
   NumericInput,
   Race,
   useNotify,
+  fetchFullPage,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { RACE_SIZES } from '../../shared/enums';
 import { archetypeLabel, raceArchetypeKey } from '../race-format';
@@ -24,7 +25,7 @@ const RaceFormAttributes: FC<{
   const [archetypes, setArchetypes] = useState<string[]>([]);
 
   useEffect(() => {
-    fetchEnumerations('category==race-archetype', 0, 100, auth)
+    fetchFullPage((rsql, page, size) => fetchEnumerations(rsql, page, size, auth), 'category==race-archetype')
       .then((response) => setArchetypes(response.content.map((e) => raceArchetypeKey(e.key))))
       .catch((err) => notify.error(err));
   }, []);

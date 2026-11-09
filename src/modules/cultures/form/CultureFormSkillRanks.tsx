@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
 import { AddButton, CategorySeparator, Culture } from '@labcabrera-rmu/rmu-react-shared-lib';
