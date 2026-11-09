@@ -25,10 +25,10 @@ import {
   useListFilters,
   useNotify,
   usePagedQuery,
+  useSkillText,
   useViewTransitionNavigate,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
 import StatChips from '../../shared/display/StatChips';
-import { skillDescriptionKey } from '../skill-utils';
 import SkillManeuverIndicator from './SkillManeuverIndicator';
 
 const modes: CollectionMode[] = ['grouped', 'table', 'cards'];
@@ -47,6 +47,7 @@ const pageSizeOf = (mode: CollectionMode) => (mode === 'grouped' ? 200 : 96);
 export default function SkillListPage() {
   const auth = useAuth();
   const { t, i18n } = useTranslation();
+  const skillText = useSkillText();
   const navigate = useNavigate();
   const transitionNavigate = useViewTransitionNavigate();
   const notify = useNotify();
@@ -163,7 +164,7 @@ export default function SkillListPage() {
           <EntitySourceChip entity={skill} />
         </>
       }
-      description={i18n.exists(skillDescriptionKey(skill)) ? t(skillDescriptionKey(skill)) : undefined}
+      description={skillText.summary(skill.id) || undefined}
       locked={skill.accessType === 'private'}
       lockedLabel={t('private')}
       onClick={() => openSkill(skill)}
