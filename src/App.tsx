@@ -16,7 +16,8 @@ const CultureViewPage = lazy(() => import('./modules/cultures/view/CultureViewPa
 const EffectTypeFormPage = lazy(() => import('./modules/effect-types/form/EffectTypeFormPage'));
 const EffectTypeListPage = lazy(() => import('./modules/effect-types/list/EffectTypeListPage'));
 const EffectTypeViewPage = lazy(() => import('./modules/effect-types/view/EffectTypeViewPage'));
-const FightingStylesView = lazy(() => import('./modules/fighting-styles/FightingStylesView'));
+const FightingStyleListPage = lazy(() => import('./modules/fighting-styles/list/FightingStyleListPage'));
+const FightingStyleViewPage = lazy(() => import('./modules/fighting-styles/view/FightingStyleViewPage'));
 const StyleAbilityView = lazy(() => import('./modules/fighting-styles/StyleAbilityView'));
 const ManeuversView = lazy(() => import('./modules/maneuvers/ManeuversView'));
 const ProfessionFormPage = lazy(() => import('./modules/professions/form/ProfessionFormPage'));
@@ -75,7 +76,8 @@ const App = () => {
         <Route path="/skill-categories/view/:skillCategoryId" element={<SkillCategoryViewPage />} />
         <Route path="/catalogs" element={<CatalogListPage />} />
         <Route path="/catalogs/view/:category" element={<CatalogViewPage />} />
-        <Route path="/fighting-styles" element={<FightingStylesView />} />
+        <Route path="/fighting-styles" element={<FightingStyleListPage />} />
+        <Route path="/fighting-styles/view/:styleId" element={<FightingStyleViewPage />} />
         <Route path="/fighting-styles/abilities/:abilityId" element={<StyleAbilityView />} />
         <Route path="/maneuvers" element={<ManeuversView />} />
         <Route path="/resistance-rolls" element={<ResistanceRollView />} />

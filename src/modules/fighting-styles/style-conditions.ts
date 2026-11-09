@@ -1,4 +1,4 @@
-import { StyleCondition } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { StyleAbility, StyleCondition } from '@labcabrera-rmu/rmu-react-shared-lib';
 import { TFunction } from 'i18next';
 
 /** Readable label of an equipment condition of a style or an ability (spec 032). */
@@ -31,3 +31,10 @@ export const equipmentLabel = (equipment: StyleCondition[][], t: TFunction): str
   equipment.length === 0
     ? t('style-condition-any')
     : equipment.map((all) => all.map((c) => conditionLabel(c, t)).join(' + ')).join(` ${t('or')} `);
+
+/** What an ability asks for besides its equipment: other abilities, skills and talents. */
+export const abilityRequirements = (ability: StyleAbility, t: TFunction): string[] => [
+  ...ability.requiresAbilities.map((id) => t(`style-ability-${id}`)),
+  ...ability.requiresSkills.map((id) => t(id.split('@')[0])),
+  ...ability.requiresTraits.map((id) => t(id)),
+];
