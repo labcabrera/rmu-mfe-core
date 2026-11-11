@@ -1,16 +1,17 @@
-import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, TextField } from '@mui/material';
 import {
   addRaceTrait,
   AddRaceTraitDto,
   Race,
+  RmuDialog,
   TechnicalInfo,
   Trait,
   TraitSelector,
+  useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../../ErrorContext';
 
 const EMPTY_TEMPLATE = {
   traitId: '',
@@ -22,13 +23,13 @@ const EMPTY_TEMPLATE = {
 
 const AddRaceTraitDialog: FC<{
   race: Race;
-  setRace: Dispatch<SetStateAction<Race | undefined>>;
+  setRace: (race: Race) => void;
   open: boolean;
   onClose: () => void;
 }> = ({ race, setRace, open: open, onClose }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [trait, setTrait] = useState<Trait | null>();
   const [formData, setFormData] = useState<AddRaceTraitDto>(EMPTY_TEMPLATE);
 
@@ -56,47 +57,50 @@ const AddRaceTraitDialog: FC<{
         setTrait(null);
         onClose();
       })
-      .catch((err: Error) => showError(err.message));
+      .catch((err: Error) => notify.error(err));
   };
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="xl">
-        <DialogTitle>{t('add-trait')}</DialogTitle>
-        <DialogContent dividers>
-          <Grid container spacing={1}>
-            <TraitSelector
-              onTraitChange={(v) => onTraitChange(v)}
-              onTierChange={(v) => setFormData({ ...formData, tier: v || undefined })}
-              onSpecializationChange={(v) => setFormData({ ...formData, specialization: v || undefined })}
-              onError={(err) => showError(err)}
-              t={(msg) => t(msg)}
-            />
-            <Grid size={12}>
-              <TextField
-                label={t('description')}
-                value={formData.description ?? ''}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value || undefined })}
-                fullWidth
-                multiline
-                rows={3}
-                size="small"
-              />
-            </Grid>
-            <Grid size={12}>
-              <TechnicalInfo>
-                <pre>{JSON.stringify(formData, null, 2)}</pre>
-              </TechnicalInfo>
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>{t('cancel')}</Button>
-          <Button onClick={onSave} variant="contained" disabled={!formData.traitId}>
+      <RmuDialog
+        open={open}
+        title={t('add-trait')}
+        maxWidth="md"
+        onDismiss={onClose}
+        buttons={[
+          <Button key="cancel" onClick={onClose}>
+            {t('cancel')}
+          </Button>,
+          <Button key="add" onClick={onSave} variant="contained" disabled={!formData.traitId}>
             {t('add')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </Button>,
+        ]}
+      >
+        <Grid container spacing={1}>
+          <TraitSelector
+            onTraitChange={(v) => onTraitChange(v)}
+            onTierChange={(v) => setFormData({ ...formData, tier: v || undefined })}
+            onSpecializationChange={(v) => setFormData({ ...formData, specialization: v || undefined })}
+            onError={(err) => notify.error(err)}
+          />
+          <Grid size={12}>
+            <TextField
+              label={t('description')}
+              value={formData.description ?? ''}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value || undefined })}
+              fullWidth
+              multiline
+              rows={3}
+              size="small"
+            />
+          </Grid>
+          <Grid size={12}>
+            <TechnicalInfo>
+              <pre>{JSON.stringify(formData, null, 2)}</pre>
+            </TechnicalInfo>
+          </Grid>
+        </Grid>
+      </RmuDialog>
     </>
   );
 };

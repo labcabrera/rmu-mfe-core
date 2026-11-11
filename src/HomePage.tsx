@@ -1,10 +1,7 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Grid } from '@mui/material';
-import { LayoutBase, RmuTextCard } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { imageBaseUrl } from './modules/services/config';
-import { gridSizeCard } from './modules/services/display';
+import { EntityCard, CardGrid, imageBaseUrl, LayoutBase } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const OPTIONS = [
   {
@@ -28,7 +25,7 @@ const OPTIONS = [
   {
     value: 'cultures',
     subtitle: 'manage-cultures',
-    image: `${imageBaseUrl}images/generic/cultures.png`,
+    image: `${imageBaseUrl}images/cultures/culture-01.png`,
     to: '/core/cultures',
   },
   {
@@ -46,26 +43,38 @@ const OPTIONS = [
   {
     value: 'traits',
     subtitle: 'manage-traits',
-    image: `${imageBaseUrl}images/generic/trait.png`,
+    image: `${imageBaseUrl}images/generic/traits.png`,
     to: '/core/traits',
   },
   {
     value: 'effect-types',
     subtitle: 'manage-effect-types',
-    image: `${imageBaseUrl}images/generic/configuration.png`,
+    image: `${imageBaseUrl}images/generic/effect-types.png`,
     to: '/core/effect-types',
   },
   {
     value: 'catalogs',
     subtitle: 'manage-catalogs',
-    image: `${imageBaseUrl}images/generic/language.png`,
+    image: `${imageBaseUrl}images/generic/catalogs.png`,
     to: '/core/catalogs',
+  },
+  {
+    value: 'fighting-styles',
+    subtitle: 'browse-fighting-styles',
+    image: `${imageBaseUrl}images/generic/trait-combat.png`,
+    to: '/core/fighting-styles',
   },
   {
     value: 'maneuvers',
     subtitle: 'execute-maneuvers',
-    image: `${imageBaseUrl}images/generic/maneuver-penalty.png`,
+    image: `${imageBaseUrl}images/generic/maneuvers.png`,
     to: '/core/maneuvers',
+  },
+  {
+    value: 'attack-tables',
+    subtitle: 'browse-attack-tables',
+    image: `${imageBaseUrl}images/generic/warrior.png`,
+    to: '/core/attack-tables',
   },
   {
     value: 'resistance-rolls',
@@ -81,13 +90,13 @@ const HomePage: FC = () => {
 
   return (
     <LayoutBase breadcrumbs={[{ name: t('home'), link: '/' }, { name: t('core') }]}>
-      <Grid container spacing={1}>
-        {OPTIONS.map((c) => (
-          <Grid size={gridSizeCard} key={c.value}>
-            <RmuTextCard value={t(c.value)} subtitle={t(c.subtitle)} image={c.image} onClick={() => navigate(c.to)} />
-          </Grid>
-        ))}
-      </Grid>
+      <CardGrid
+        items={OPTIONS}
+        getKey={(c) => c.value}
+        renderItem={(c) => (
+          <EntityCard title={t(c.value)} description={t(c.subtitle)} image={c.image} onClick={() => navigate(c.to)} />
+        )}
+      />
     </LayoutBase>
   );
 };

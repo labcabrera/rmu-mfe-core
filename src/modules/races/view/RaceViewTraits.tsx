@@ -1,130 +1,177 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import HelpIcon from '@mui/icons-material/Help';
-import {
-  IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Box, Chip, Collapse, IconButton, Stack, Typography } from '@mui/material';
 import {
   AddButton,
-  CategorySeparator,
+  Bento,
   DeleteButton,
   DeleteDialog,
   deleteRaceTrait,
-  fetchTrait,
+  EmptyState,
+  fetchTraits,
+  Panel,
   Race,
   RaceTrait,
+  span,
   Trait,
+  TraitTypeChip,
+  useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
+import { romanNumeral } from '../../shared/display/StatChips';
 import AddRaceTraitDialog from './traits/AddRaceTraitDialog';
-import ViewTraitDialog from './traits/ViewTraitDialog';
 
+/** Development point cost of a trait at a tier, as strategic charges it. */
+const traitCost = (trait: Trait, tier?: number) =>
+  (trait.adquisitionCost || 0) + (trait.isTierBased && tier && tier > 1 ? (tier - 1) * (trait.tierCost || 0) : 0);
+
+/** One trait or talent: name, type, tier and cost, with the description folded below. */
+const TraitRow: FC<{
+  name: string;
+  trait?: Trait;
+  tier?: number;
+  isTalent?: boolean;
+  details: ReactNode[];
+  action?: ReactNode;
+}> = ({ name, trait, tier, isTalent, details, action }) => {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const shown = details.filter(Boolean);
+  const talent = isTalent ?? trait?.isTalent;
+  return (
+    <Box sx={{ py: 1 }}>
+      <Stack direction="row" sx={{ alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+        <Typography variant="body2" sx={{ fontWeight: 600, flex: '1 1 160px', minWidth: 0 }}>
+          {name}
+          {tier ? ` ${romanNumeral(tier)}` : ''}
+        </Typography>
+        {talent !== undefined && <TraitTypeChip isTalent={talent} />}
+        {trait && (
+          <Chip
+            size="small"
+            variant="outlined"
+            label={t('trait-cost-dp', { cost: traitCost(trait, tier) })}
+            sx={{ fontWeight: 600 }}
+          />
+        )}
+        {shown.length > 0 && (
+          <IconButton size="small" onClick={() => setOpen(!open)} aria-label={t(open ? 'collapse' : 'expand')}>
+            {open ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+          </IconButton>
+        )}
+        {action}
+      </Stack>
+      {shown.length > 0 && (
+        <Collapse in={open} unmountOnExit>
+          <Stack spacing={0.5} sx={{ pt: 0.5 }}>
+            {shown.map((detail, index) => (
+              <Typography key={index} variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
+                {detail}
+              </Typography>
+            ))}
+          </Stack>
+        </Collapse>
+      )}
+    </Box>
+  );
+};
+
+const Rows = ({ children }: { children: ReactNode[] }) => (
+  <Stack divider={<Box sx={{ borderBottom: 1, borderColor: 'divider' }} />}>{children}</Stack>
+);
+
+/** Traits section of a race: its traits (with add and remove) and its talents, with the catalog cost and type. */
 const RaceViewTraits: FC<{
   race: Race;
-  setRace: Dispatch<SetStateAction<Race | undefined>>;
-}> = ({ race, setRace }) => {
+  setRace: (race: Race) => void;
+  /** Spec 063: without permission on the race its traits cannot be added or removed. */
+  editable?: boolean;
+}> = ({ race, setRace, editable = true }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
+  const notify = useNotify();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedTrait, setSelectedTrait] = useState<Trait>();
   const [traitToDelete, setTraitToDelete] = useState<RaceTrait>();
+  const [catalog, setCatalog] = useState<Map<string, Trait>>(new Map());
+  const talents = race.talents ?? [];
+  const ids = [...new Set([...race.traits.map((trait) => trait.traitId), ...talents])].sort();
 
-  const getRomanNumeral = (num: number) => {
-    const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
-    return romanNumerals[num - 1] || num.toString();
-  };
-
-  const onTraitDialogView = (raceTrait: RaceTrait) => {
-    fetchTrait(raceTrait.traitId, auth)
-      .then(setSelectedTrait)
-      .then(() => setDialogOpen(true))
-      .catch((err) => showError(err.message));
-  };
-
-  const onPrepareDelete = (raceTrait: RaceTrait) => {
-    setTraitToDelete(raceTrait);
-    setDeleteDialogOpen(true);
-  };
+  useEffect(() => {
+    if (ids.length === 0) return;
+    fetchTraits(`id=in=(${ids.join(',')})`, 0, ids.length, auth)
+      .then((response) => setCatalog(new Map(response.content.map((trait) => [trait.id, trait]))))
+      .catch(notify.error);
+  }, [ids.join(',')]);
 
   const onDeleteTrait = () => {
-    deleteRaceTrait(race.id, traitToDelete!.id, auth)
+    if (!traitToDelete) return;
+    deleteRaceTrait(race.id, traitToDelete.id, auth)
       .then((response) => {
         setRace(response);
         setTraitToDelete(undefined);
-        setDeleteDialogOpen(false);
       })
-      .catch((err) => showError(err.message));
+      .catch(notify.error);
   };
 
-  if (!race) return <p>Loading...</p>;
+  const traitName = (id: string) => t(id, { defaultValue: catalog.get(id)?.name ?? id });
 
   return (
-    <>
-      <CategorySeparator text={t('traits')}>
-        <AddButton onClick={() => setAddDialogOpen(true)} />
-      </CategorySeparator>
-      {race.traits.length === 0 ? (
-        <Typography variant="body1" color="textSecondary">
-          Race has no traits.
-        </Typography>
-      ) : (
-        <TableContainer component={Paper}>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>{t('trait')}</TableCell>
-                <TableCell>{t('tier')}</TableCell>
-                <TableCell>{t('description')}</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {race.traits.map((trait, index) => (
-                <TableRow key={index}>
-                  <TableCell>{t(trait.traitId)}</TableCell>
-                  <TableCell>{trait.tier ? getRomanNumeral(trait.tier) : '-'}</TableCell>
-                  <TableCell>{trait.description}</TableCell>
-                  <TableCell>
-                    <IconButton onClick={() => onTraitDialogView(trait)} color="primary">
-                      <HelpIcon />
-                    </IconButton>
-                    <DeleteButton onClick={() => onPrepareDelete(trait)} />
-                  </TableCell>
-                </TableRow>
+    <Bento>
+      <Box sx={span(12, talents.length > 0 ? 8 : 12)}>
+        <Panel title={t('traits')} extra={editable ? <AddButton onClick={() => setAddDialogOpen(true)} /> : undefined}>
+          {race.traits.length === 0 ? (
+            <EmptyState dense title={t('race-has-no-traits')} />
+          ) : (
+            <Rows>
+              {race.traits.map((raceTrait) => {
+                const trait = catalog.get(raceTrait.traitId);
+                return (
+                  <TraitRow
+                    key={raceTrait.id}
+                    name={traitName(raceTrait.traitId)}
+                    trait={trait}
+                    tier={raceTrait.tier}
+                    details={[
+                      raceTrait.modifier ? `${t('modifier')}: ${raceTrait.modifier}` : null,
+                      raceTrait.description ?? null,
+                      trait?.description ?? null,
+                    ]}
+                    action={editable ? <DeleteButton onClick={() => setTraitToDelete(raceTrait)} /> : undefined}
+                  />
+                );
+              })}
+            </Rows>
+          )}
+        </Panel>
+      </Box>
+      {talents.length > 0 && (
+        <Box sx={span(12, 4)}>
+          <Panel title={t('talents')}>
+            <Rows>
+              {talents.map((talent) => (
+                <TraitRow
+                  key={talent}
+                  name={traitName(talent)}
+                  trait={catalog.get(talent)}
+                  isTalent
+                  details={[catalog.get(talent)?.description ?? null]}
+                />
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
-      {selectedTrait && (
-        <ViewTraitDialog
-          race={race}
-          setRace={setRace}
-          trait={selectedTrait}
-          open={dialogOpen}
-          onClose={() => setDialogOpen(false)}
-        />
+            </Rows>
+          </Panel>
+        </Box>
       )}
       <AddRaceTraitDialog open={addDialogOpen} race={race} setRace={setRace} onClose={() => setAddDialogOpen(false)} />
       <DeleteDialog
-        message={`Are you sure you want to delete skill ${t(traitToDelete?.traitId || '')}? This action cannot be undone`}
-        open={deleteDialogOpen}
-        onDelete={() => onDeleteTrait()}
-        onClose={() => setDeleteDialogOpen(false)}
+        message={t('confirmation-delete-message')}
+        open={Boolean(traitToDelete)}
+        onDelete={onDeleteTrait}
+        onClose={() => setTraitToDelete(undefined)}
       />
-    </>
+    </Bento>
   );
 };
 

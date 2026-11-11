@@ -1,91 +1,93 @@
-import React, { FC } from 'react';
+import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Box, ThemeProvider } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import { NotFound } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { ErrorProvider } from './ErrorContext';
-import HomePage from './HomePage';
-import CatalogList from './modules/catalogs/list/CatalogList';
-import CatalogView from './modules/catalogs/view/CatalogView';
-import CultureCreation from './modules/cultures/create/CultureCreation';
-import CultureEdit from './modules/cultures/edit/CultureEdit';
-import CultureList from './modules/cultures/list/CultureList';
-import CultureView from './modules/cultures/view/CultureView';
-import EffectTypeCreation from './modules/effect-types/create/EffectTypeCreation';
-import EffectTypeEdit from './modules/effect-types/edit/EffectTypeEdit';
-import EffectTypeList from './modules/effect-types/list/EffectTypeList';
-import EffectTypeView from './modules/effect-types/view/EffectTypeView';
-import ManeuversView from './modules/maneuvers/ManeuversView';
-import ProfessionCreation from './modules/professions/create/ProfessionCreation';
-import ProfessionEdit from './modules/professions/edit/ProfessionEdit';
-import ProfessionList from './modules/professions/list/ProfessionList';
-import ProfessionView from './modules/professions/view/ProfessionView';
-import RaceCreation from './modules/races/create/RaceCreation';
-import RaceEdit from './modules/races/edit/RaceEdit';
-import RaceList from './modules/races/list/RaceList';
-import RaceView from './modules/races/view/RaceView';
-import RealmCreation from './modules/realms/create/RealmCreation';
-import RealmEdit from './modules/realms/edit/RealmEdit';
-import RealmList from './modules/realms/list/RealmList';
-import RealmView from './modules/realms/view/RealmView';
-import ResistanceRollView from './modules/resistance-rolls/ResistanceRollView';
-import SkillCategoryList from './modules/skills-categories/list/SkillCategoryList';
-import SkillCategoryView from './modules/skills-categories/view/SkillCategoryView';
-import SkillCreation from './modules/skills/create/SkillCreation';
-import SkillEdit from './modules/skills/edit/SkillEdit';
-import SkillList from './modules/skills/list/SkillList';
-import SkillView from './modules/skills/view/SkillView';
-import TraitCreation from './modules/traits/create/TraitCreation';
-import TraitEdit from './modules/traits/edit/TraitEdit';
-import TraitList from './modules/traits/list/TraitList';
-import TraitView from './modules/traits/view/TraitView';
+import { MfeRoot, NotFound } from '@labcabrera-rmu/rmu-react-shared-lib';
+
+// Workspace spec 091, E1: every page is its own chunk; the Suspense is in MfeRoot / the shell layout.
+const HomePage = lazy(() => import('./HomePage'));
+const AttackTablesHome = lazy(() => import('./modules/attack-tables/AttackTablesHome'));
+const AttackTablesView = lazy(() => import('./modules/attack-tables/attack/AttackTablesView'));
+const CriticalTablesView = lazy(() => import('./modules/attack-tables/critical/CriticalTablesView'));
+const FumbleTablesView = lazy(() => import('./modules/attack-tables/fumble/FumbleTablesView'));
+const CatalogListPage = lazy(() => import('./modules/catalogs/list/CatalogListPage'));
+const CatalogViewPage = lazy(() => import('./modules/catalogs/view/CatalogViewPage'));
+const CultureFormPage = lazy(() => import('./modules/cultures/form/CultureFormPage'));
+const CultureListPage = lazy(() => import('./modules/cultures/list/CultureListPage'));
+const CultureViewPage = lazy(() => import('./modules/cultures/view/CultureViewPage'));
+const EffectTypeFormPage = lazy(() => import('./modules/effect-types/form/EffectTypeFormPage'));
+const EffectTypeListPage = lazy(() => import('./modules/effect-types/list/EffectTypeListPage'));
+const EffectTypeViewPage = lazy(() => import('./modules/effect-types/view/EffectTypeViewPage'));
+const FightingStyleListPage = lazy(() => import('./modules/fighting-styles/list/FightingStyleListPage'));
+const FightingStyleViewPage = lazy(() => import('./modules/fighting-styles/view/FightingStyleViewPage'));
+const StyleAbilityView = lazy(() => import('./modules/fighting-styles/StyleAbilityView'));
+const ManeuversView = lazy(() => import('./modules/maneuvers/ManeuversView'));
+const ProfessionFormPage = lazy(() => import('./modules/professions/form/ProfessionFormPage'));
+const ProfessionListPage = lazy(() => import('./modules/professions/list/ProfessionListPage'));
+const ProfessionViewPage = lazy(() => import('./modules/professions/view/ProfessionViewPage'));
+const RaceFormPage = lazy(() => import('./modules/races/form/RaceFormPage'));
+const RaceListPage = lazy(() => import('./modules/races/list/RaceListPage'));
+const RaceViewPage = lazy(() => import('./modules/races/view/RaceViewPage'));
+const RealmFormPage = lazy(() => import('./modules/realms/form/RealmFormPage'));
+const RealmListPage = lazy(() => import('./modules/realms/list/RealmListPage'));
+const RealmViewPage = lazy(() => import('./modules/realms/view/RealmViewPage'));
+const ResistanceRollView = lazy(() => import('./modules/resistance-rolls/ResistanceRollView'));
+const SkillCategoryListPage = lazy(() => import('./modules/skills-categories/list/SkillCategoryListPage'));
+const SkillCategoryViewPage = lazy(() => import('./modules/skills-categories/view/SkillCategoryViewPage'));
+const SkillFormPage = lazy(() => import('./modules/skills/form/SkillFormPage'));
+const SkillListPage = lazy(() => import('./modules/skills/list/SkillListPage'));
+const SkillViewPage = lazy(() => import('./modules/skills/view/SkillViewPage'));
+const TraitFormPage = lazy(() => import('./modules/traits/form/TraitFormPage'));
+const TraitListPage = lazy(() => import('./modules/traits/list/TraitListPage'));
+const TraitViewPage = lazy(() => import('./modules/traits/view/TraitViewPage'));
 
 const App = () => {
   return (
-    <ThemeProvider theme={useTheme()}>
-      <ErrorProvider>
-        <Box sx={{ p: 2, minHeight: '600pt' }}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/realms" element={<RealmList />} />
-            <Route path="/realms/create" element={<RealmCreation />} />
-            <Route path="/realms/view/:realmId" element={<RealmView />} />
-            <Route path="/realms/edit/:realmId" element={<RealmEdit />} />
-            <Route path="/races" element={<RaceList />} />
-            <Route path="/races/create" element={<RaceCreation />} />
-            <Route path="/races/view/:raceId" element={<RaceView />} />
-            <Route path="/races/edit/:raceId" element={<RaceEdit />} />
-            <Route path="/cultures" element={<CultureList />} />
-            <Route path="/cultures/create" element={<CultureCreation />} />
-            <Route path="/cultures/view/:cultureId" element={<CultureView />} />
-            <Route path="/cultures/edit/:cultureId" element={<CultureEdit />} />
-            <Route path="/professions" element={<ProfessionList />} />
-            <Route path="/professions/create" element={<ProfessionCreation />} />
-            <Route path="/professions/view/:professionId" element={<ProfessionView />} />
-            <Route path="/professions/edit/:professionId" element={<ProfessionEdit />} />
-            <Route path="/traits" element={<TraitList />} />
-            <Route path="/traits/view/:traitId" element={<TraitView />} />
-            <Route path="/traits/create" element={<TraitCreation />} />
-            <Route path="/traits/edit/:traitId" element={<TraitEdit />} />
-            <Route path="/effect-types" element={<EffectTypeList />} />
-            <Route path="/effect-types/create" element={<EffectTypeCreation />} />
-            <Route path="/effect-types/view/:effectTypeId" element={<EffectTypeView />} />
-            <Route path="/effect-types/edit/:effectTypeId" element={<EffectTypeEdit />} />
-            <Route path="/skills" element={<SkillList />} />
-            <Route path="/skills/view/:skillId" element={<SkillView />} />
-            <Route path="/skills/edit/:skillId" element={<SkillEdit />} />
-            <Route path="/skills/create" element={<SkillCreation />} />
-            <Route path="/skill-categories" element={<SkillCategoryList />} />
-            <Route path="/skill-categories/view/:skillCategoryId" element={<SkillCategoryView />} />
-            <Route path="/catalogs" element={<CatalogList />} />
-            <Route path="/catalogs/view/:category" element={<CatalogView />} />
-            <Route path="/maneuvers" element={<ManeuversView />} />
-            <Route path="/resistance-rolls" element={<ResistanceRollView />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Box>
-      </ErrorProvider>
-    </ThemeProvider>
+    <MfeRoot sx={{ p: 2, minHeight: '600pt' }} namespace="core">
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/realms" element={<RealmListPage />} />
+        <Route path="/realms/create" element={<RealmFormPage mode="create" />} />
+        <Route path="/realms/view/:realmId" element={<RealmViewPage />} />
+        <Route path="/realms/edit/:realmId" element={<RealmFormPage mode="edit" />} />
+        <Route path="/races" element={<RaceListPage />} />
+        <Route path="/races/create" element={<RaceFormPage mode="create" />} />
+        <Route path="/races/view/:raceId" element={<RaceViewPage />} />
+        <Route path="/races/edit/:raceId" element={<RaceFormPage mode="edit" />} />
+        <Route path="/cultures" element={<CultureListPage />} />
+        <Route path="/cultures/create" element={<CultureFormPage mode="create" />} />
+        <Route path="/cultures/view/:cultureId" element={<CultureViewPage />} />
+        <Route path="/cultures/edit/:cultureId" element={<CultureFormPage mode="edit" />} />
+        <Route path="/professions" element={<ProfessionListPage />} />
+        <Route path="/professions/create" element={<ProfessionFormPage mode="create" />} />
+        <Route path="/professions/view/:professionId" element={<ProfessionViewPage />} />
+        <Route path="/professions/edit/:professionId" element={<ProfessionFormPage mode="edit" />} />
+        <Route path="/traits" element={<TraitListPage />} />
+        <Route path="/traits/view/:traitId" element={<TraitViewPage />} />
+        <Route path="/traits/create" element={<TraitFormPage mode="create" />} />
+        <Route path="/traits/edit/:traitId" element={<TraitFormPage mode="edit" />} />
+        <Route path="/effect-types" element={<EffectTypeListPage />} />
+        <Route path="/effect-types/create" element={<EffectTypeFormPage mode="create" />} />
+        <Route path="/effect-types/view/:effectTypeId" element={<EffectTypeViewPage />} />
+        <Route path="/effect-types/edit/:effectTypeId" element={<EffectTypeFormPage mode="edit" />} />
+        <Route path="/skills" element={<SkillListPage />} />
+        <Route path="/skills/view/:skillId" element={<SkillViewPage />} />
+        <Route path="/skills/edit/:skillId" element={<SkillFormPage mode="edit" />} />
+        <Route path="/skills/create" element={<SkillFormPage mode="create" />} />
+        <Route path="/skill-categories" element={<SkillCategoryListPage />} />
+        <Route path="/skill-categories/view/:skillCategoryId" element={<SkillCategoryViewPage />} />
+        <Route path="/catalogs" element={<CatalogListPage />} />
+        <Route path="/catalogs/view/:category" element={<CatalogViewPage />} />
+        <Route path="/fighting-styles" element={<FightingStyleListPage />} />
+        <Route path="/fighting-styles/view/:styleId" element={<FightingStyleViewPage />} />
+        <Route path="/fighting-styles/abilities/:abilityId" element={<StyleAbilityView />} />
+        <Route path="/maneuvers" element={<ManeuversView />} />
+        <Route path="/resistance-rolls" element={<ResistanceRollView />} />
+        <Route path="/attack-tables" element={<AttackTablesHome />} />
+        <Route path="/attack-tables/attack" element={<AttackTablesView />} />
+        <Route path="/attack-tables/critical" element={<CriticalTablesView />} />
+        <Route path="/attack-tables/fumble" element={<FumbleTablesView />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </MfeRoot>
   );
 };
 

@@ -1,31 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid, TextField } from '@mui/material';
-import { CategorySeparator, fetchEnumerations, NumericInput, Race } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
-import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
-import SelectRaceSize from '../../shared/selects/SelectRaceSize';
+import {
+  CategorySeparator,
+  EnumPicker,
+  fetchEnumerations,
+  NumericInput,
+  Race,
+  useNotify,
+  fetchFullPage,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
+import { RACE_SIZES } from '../../shared/enums';
+import { archetypeLabel, raceArchetypeKey } from '../race-format';
 
 const RaceFormAttributes: FC<{
   formData: Race;
-  setFormData: Dispatch<SetStateAction<Race>>;
+  setFormData: (data: Race) => void;
 }> = ({ formData, setFormData }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
-  const [archetypes, setArchetypes] = useState<SelectOption[]>([]);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const notify = useNotify();
+  const [archetypes, setArchetypes] = useState<string[]>([]);
 
   useEffect(() => {
-    fetchEnumerations('category==race-archetype', 0, 100, auth)
-      .then((response) => setArchetypes(response.content.map((e) => ({ value: e.key, description: e.key }))))
-      .catch((err) => showError(err.message));
+    fetchFullPage((rsql, page, size) => fetchEnumerations(rsql, page, size, auth), 'category==race-archetype')
+      .then((response) => setArchetypes(response.content.map((e) => raceArchetypeKey(e.key))))
+      .catch((err) => notify.error(err));
   }, []);
 
   return (
@@ -45,11 +47,14 @@ const RaceFormAttributes: FC<{
         />
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>
-        <RmuSelect
+        <EnumPicker
           label={t('archetype')}
-          value={formData.archetype}
-          options={archetypes}
-          onChange={(e) => setFormData({ ...formData, archetype: e })}
+          values={archetypes}
+          value={formData.archetype ? raceArchetypeKey(formData.archetype) : null}
+          formatLabel={(value) => archetypeLabel(value, t)}
+          onChange={(archetype) =>
+            setFormData({ ...formData, archetype: archetype ? raceArchetypeKey(archetype) : '' })
+          }
           required
         />
       </Grid>
@@ -91,8 +96,8 @@ const RaceFormAttributes: FC<{
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput
-          label={t('base-dev-points')}
-          name="baseDevPointsMale"
+          label={t('race-bonus-dev-points')}
+          name="baseDevPoints"
           value={formData.baseDevPoints}
           onChange={(value) => setFormData({ ...formData, baseDevPoints: value || 0 })}
           min={0}
@@ -113,7 +118,15 @@ const RaceFormAttributes: FC<{
         <CategorySeparator text={t('size')} />
       </Grid>
       <Grid size={{ xs: 12, md: 2 }}>
-        <SelectRaceSize label={t('race-size')} name="sizeId" value={formData.sizeId} onChange={handleChange} />
+        <EnumPicker
+          label={t('race-size')}
+          name="sizeId"
+          values={RACE_SIZES}
+          labelPrefix="size-"
+          variant="select"
+          value={formData.sizeId || null}
+          onChange={(sizeId) => setFormData({ ...formData, sizeId: sizeId ?? '' })}
+        />
       </Grid>
       <Grid size={{ xs: 5, md: 2 }}>
         <NumericInput

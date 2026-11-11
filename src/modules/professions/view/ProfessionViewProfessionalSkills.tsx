@@ -1,18 +1,19 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Chip, Grid } from '@mui/material';
-import { Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Chip } from '@mui/material';
+import { ChipRow, EmptyState, Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const ProfessionViewProfessionalSkills: FC<{
   profession: Profession;
 }> = ({ profession }) => {
   const { t } = useTranslation();
+  if (profession.professionalSkills.length === 0) return <EmptyState dense />;
   return (
-    <Grid container spacing={1} columns={10}>
+    <ChipRow>
       {profession.professionalSkills.map((skill, index) => (
         <Chip key={index} label={t(skill)} color="primary" />
       ))}
-    </Grid>
+    </ChipRow>
   );
 };
 

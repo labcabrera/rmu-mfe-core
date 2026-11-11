@@ -1,34 +1,50 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { Box, Link, Stack, Typography } from '@mui/material';
 import {
   AddButton,
-  CategorySeparator,
+  bonusColor,
   DeleteButton,
   DeleteDialog,
   deleteRaceSkillBonus,
+  EmptyState,
+  fetchSkills,
+  formatBonus,
+  Panel,
   Race,
   RaceSkillBonus,
+  SectionLabel,
+  useNotify,
+  useSpecializationLabel,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
 import AddRaceSkillDialog from './skills/AddRaceSkillDialog';
 
+/** Skills section of a race: its skill bonuses with sign, grouped by skill category. */
 const RaceViewSkills: FC<{
   race: Race;
-  setRace: Dispatch<SetStateAction<Race | undefined>>;
-}> = ({ race, setRace }) => {
+  setRace: (race: Race) => void;
+  /** Spec 063: without permission on the race its skills cannot be added or removed. */
+  editable?: boolean;
+}> = ({ race, setRace, editable = true }) => {
   const auth = useAuth();
-  const { t } = useTranslation();
-  const { showError } = useError();
+  const { t, i18n } = useTranslation();
+  // Spec 050: catalog keys shown by their name
+  const specializationLabel = useSpecializationLabel();
+  const notify = useNotify();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [skillToDelete, setSkillToDelete] = useState<RaceSkillBonus>();
+  const [categoryOf, setCategoryOf] = useState<Map<string, string>>(new Map());
+  const ids = [...new Set(race.skillBonuses.map((skill) => skill.skillId))].sort();
 
-  const onPrepareDelete = (skill: RaceSkillBonus) => {
-    setSkillToDelete(skill);
-    setDeleteDialogOpen(true);
-  };
+  useEffect(() => {
+    if (ids.length === 0) return;
+    fetchSkills(`id=in=(${ids.join(',')})`, 0, ids.length, auth)
+      .then((response) => setCategoryOf(new Map(response.content.map((skill) => [skill.id, skill.categoryId]))))
+      .catch(notify.error);
+  }, [ids.join(',')]);
 
   const onDeleteSkill = () => {
     if (!skillToDelete) return;
@@ -36,56 +52,80 @@ const RaceViewSkills: FC<{
       .then((response) => {
         setRace(response);
         setSkillToDelete(undefined);
-        setDeleteDialogOpen(false);
       })
-      .catch((err) => showError(err.message));
+      .catch(notify.error);
   };
 
-  if (!race) return <p>Loading...</p>;
+  const compare = (a: string, b: string) => a.localeCompare(b, i18n.language);
+  const groups = new Map<string, RaceSkillBonus[]>();
+  race.skillBonuses.forEach((skill) => {
+    const category = categoryOf.get(skill.skillId) ?? '';
+    groups.set(category, [...(groups.get(category) ?? []), skill]);
+  });
+  const sortedGroups = [...groups.entries()]
+    .sort(([a], [b]) => (a && b ? compare(t(a), t(b)) : a ? -1 : 1))
+    .map(([category, skills]) => [category, skills.sort((a, b) => compare(t(a.skillId), t(b.skillId)))] as const);
 
   return (
-    <>
-      <CategorySeparator text={t('skills')}>
-        <AddButton onClick={() => setAddDialogOpen(true)} />
-      </CategorySeparator>
+    <Panel title={t('skills')} extra={editable ? <AddButton onClick={() => setAddDialogOpen(true)} /> : undefined}>
       {race.skillBonuses.length === 0 ? (
-        <Typography variant="body1" color="textSecondary">
-          Race has no skills.
-        </Typography>
+        <EmptyState dense title={t('race-has-no-skills')} />
       ) : (
-        <TableContainer component={Paper}>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>{t('skill')}</TableCell>
-                <TableCell>{t('specialization')}</TableCell>
-                <TableCell>{t('bonus')}</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {race.skillBonuses.map((skill, index) => (
-                <TableRow key={index}>
-                  <TableCell>{t(skill.skillId)}</TableCell>
-                  <TableCell>{skill.specialization ? t(skill.specialization) : '-'}</TableCell>
-                  <TableCell>{skill.bonus}</TableCell>
-                  <TableCell>
-                    <DeleteButton onClick={() => onPrepareDelete(skill)} />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Stack spacing={2}>
+          {sortedGroups.map(([category, skills]) => (
+            <Box key={category || 'other'}>
+              <SectionLabel>
+                {category ? (
+                  <Link component={RouterLink} to={`/core/skill-categories/view/${category}`} underline="hover">
+                    {t(category)}
+                  </Link>
+                ) : (
+                  t('other')
+                )}
+              </SectionLabel>
+              <Stack divider={<Box sx={{ borderBottom: 1, borderColor: 'divider' }} />}>
+                {skills.map((skill) => (
+                  <Stack
+                    key={`${skill.skillId}-${skill.specialization ?? ''}`}
+                    direction="row"
+                    sx={{ alignItems: 'center', gap: 1, py: 0.5 }}
+                  >
+                    <Box sx={{ flex: 1, minWidth: 0 }}>
+                      <Link
+                        component={RouterLink}
+                        to={`/core/skills/view/${skill.skillId}`}
+                        underline="hover"
+                        color="inherit"
+                        variant="body2"
+                        sx={{ fontWeight: 600 }}
+                      >
+                        {t(skill.skillId)}
+                      </Link>
+                      {skill.specialization && (
+                        <Typography variant="caption" color="text.secondary" component="div">
+                          {specializationLabel(skill.specialization)}
+                        </Typography>
+                      )}
+                    </Box>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: bonusColor(skill.bonus) }}>
+                      {formatBonus(skill.bonus)}
+                    </Typography>
+                    {editable && <DeleteButton onClick={() => setSkillToDelete(skill)} />}
+                  </Stack>
+                ))}
+              </Stack>
+            </Box>
+          ))}
+        </Stack>
       )}
       <AddRaceSkillDialog race={race} setRace={setRace} open={addDialogOpen} onClose={() => setAddDialogOpen(false)} />
       <DeleteDialog
-        message={`Are you sure you want to delete skill ${t(skillToDelete?.skillId || '')}? This action cannot be undone`}
-        open={deleteDialogOpen}
-        onDelete={() => onDeleteSkill()}
-        onClose={() => setDeleteDialogOpen(false)}
+        message={t('confirmation-delete-message')}
+        open={Boolean(skillToDelete)}
+        onDelete={onDeleteSkill}
+        onClose={() => setSkillToDelete(undefined)}
       />
-    </>
+    </Panel>
   );
 };
 

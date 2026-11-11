@@ -1,25 +1,54 @@
-import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { FormControl, FormControlLabel, Grid, MenuItem, Switch, TextField } from '@mui/material';
-import { fetchEnumerationCategories, NumericInput, Trait } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
-import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
-import SelectTraitCategory from '../../shared/selects/SelectTraitCategory';
+import {
+  EnumPicker,
+  fetchEnumerationCategories,
+  LoadingState,
+  NumericInput,
+  Trait,
+  traitCategories,
+  useNotify,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
+import { traitCategoryImage } from '../../services/trait-image-service';
+
+/**
+ * Specialization kinds that rmu-api-strategic resolves itself (stats, realms, skills of the catalog and weapon types).
+ * The enumeration categories are offered after them.
+ */
+const TRAIT_SPECIALIZATIONS = [
+  'stat',
+  'realm',
+  'skill',
+  'combat-skill',
+  'melee-combat-skill',
+  'ranged-combat-skill',
+  'melee-weapon-type',
+  'ranged-weapon-type',
+  'skill-category',
+  'race',
+  'text',
+];
+
+const TRAIT_SOURCES = ['core-law', 'character-companion'];
 
 const TraitForm: FC<{
   formData: Trait;
-  setFormData: Dispatch<SetStateAction<Trait>>;
+  setFormData: (data: Trait) => void;
 }> = ({ formData, setFormData }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
-  const [enumerationCategories, setEnumerationCategories] = useState<SelectOption[]>();
+  const notify = useNotify();
+  const [enumerationCategories, setEnumerationCategories] = useState<string[]>();
 
   const bindEnumerationCategories = () => {
     fetchEnumerationCategories(auth)
-      .then((response) => setEnumerationCategories(response.map((e) => ({ value: e, description: t(e) }))))
-      .catch((err) => showError(err.message));
+      .then((response) => {
+        const values = [...TRAIT_SPECIALIZATIONS, ...response.filter((e) => !TRAIT_SPECIALIZATIONS.includes(e))];
+        setEnumerationCategories(values);
+      })
+      .catch((err) => notify.error(err));
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -33,14 +62,14 @@ const TraitForm: FC<{
       ...formData,
       isTierBased: checked,
       ...(checked ? { tierCost: null, maxTier: null } : { tierCost: undefined, maxTier: undefined }),
-    });
+    } as Trait);
   };
 
   useEffect(() => {
     bindEnumerationCategories();
   }, []);
 
-  if (!formData || !setFormData || !enumerationCategories) return <p>Loading...</p>;
+  if (!formData || !setFormData || !enumerationCategories) return <LoadingState />;
 
   return (
     <Grid container spacing={1}>
@@ -55,11 +84,15 @@ const TraitForm: FC<{
         />
       </Grid>
       <Grid size={12}>
-        <SelectTraitCategory
+        <EnumPicker
           label={t('category')}
           name="category"
-          value={formData.category || ''}
-          onChange={(e) => setFormData({ ...formData, category: e })}
+          values={traitCategories}
+          images={traitCategoryImage}
+          kind="trait"
+          value={formData.category || null}
+          onChange={(category) => setFormData({ ...formData, category: category ?? '' })}
+          clearable={false}
         />
       </Grid>
       <Grid size={12}>
@@ -77,11 +110,14 @@ const TraitForm: FC<{
       </Grid>
 
       <Grid size={12}>
-        <RmuSelect
+        <EnumPicker
           label={t('specialization')}
-          value={formData.specialization}
-          options={enumerationCategories}
-          onChange={(e) => setFormData({ ...formData, specialization: e !== '' ? e : null })}
+          name="specialization"
+          values={enumerationCategories}
+          value={formData.specialization || null}
+          allowAll
+          allLabel={t('none')}
+          onChange={(specialization) => setFormData({ ...formData, specialization: specialization || null })}
         />
       </Grid>
       <Grid size={12}>
@@ -104,7 +140,7 @@ const TraitForm: FC<{
           label={t('adquisition-cost')}
           name="adquisitionCost"
           value={formData.adquisitionCost || null}
-          onChange={(e) => setFormData({ ...formData, adquisitionCost: e })}
+          onChange={(e) => setFormData({ ...formData, adquisitionCost: e as number })}
           integer
         />
       </Grid>
@@ -116,7 +152,7 @@ const TraitForm: FC<{
               label={t('tier-cost')}
               name="tierCost"
               value={formData.tierCost}
-              onChange={(e) => setFormData({ ...formData, tierCost: e })}
+              onChange={(e) => setFormData({ ...formData, tierCost: e as number })}
               integer
             />
           </Grid>
@@ -125,13 +161,40 @@ const TraitForm: FC<{
               label={t('max-tier')}
               name="maxTier"
               value={formData.maxTier}
-              onChange={(e) => setFormData({ ...formData, maxTier: e })}
+              onChange={(e) => setFormData({ ...formData, maxTier: e as number })}
               min={1}
               integer
             />
           </Grid>
         </>
       )}
+
+      <Grid size={{ xs: 12, md: 6 }}>
+        <TextField
+          label={t('talent-category')}
+          name="talentCategory"
+          value={formData.talentCategory || ''}
+          onChange={(e) => setFormData({ ...formData, talentCategory: e.target.value || null })}
+          fullWidth
+        />
+      </Grid>
+      <Grid size={{ xs: 12, md: 6 }}>
+        <TextField
+          select
+          label={t('source')}
+          name="source"
+          value={formData.source || ''}
+          onChange={(e) => setFormData({ ...formData, source: (e.target.value || null) as Trait['source'] })}
+          fullWidth
+        >
+          <MenuItem value="">{t('none')}</MenuItem>
+          {TRAIT_SOURCES.map((source) => (
+            <MenuItem key={source} value={source}>
+              {t(source)}
+            </MenuItem>
+          ))}
+        </TextField>
+      </Grid>
 
       <Grid size={12}>
         <TextField

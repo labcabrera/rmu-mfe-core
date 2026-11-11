@@ -1,41 +1,50 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { Grid, TextField } from '@mui/material';
-import { Race, fetchEnumerations } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
-import { RmuSelect, SelectOption } from '../../shared/selects/RmuSelect';
+import {
+  EnumPicker,
+  fetchEnumerations,
+  Race,
+  useNotify,
+  useSpecializationLabel,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const RaceFormLore: FC<{
   realmId: string;
   formData: Race;
-  setFormData: Dispatch<SetStateAction<Race>>;
+  setFormData: (data: Race) => void;
 }> = ({ realmId, formData, setFormData }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
-  const [languages, setLanguages] = React.useState<SelectOption[]>([]);
+  const notify = useNotify();
+  // Spec 050: catalog keys shown by their name
+  const specializationLabel = useSpecializationLabel();
+  const [languages, setLanguages] = React.useState<string[]>([]);
 
   useEffect(() => {
     if (realmId) {
-      fetchEnumerations(`realmId==${realmId};category==language`, 0, 100, auth)
+      // The languages of the realm and the global ones
+      fetchEnumerations(`category==language;(realmId==${realmId},realmId==null)`, 0, 1000, auth)
         .then((data) => {
-          const mapped = data.content.map((e) => ({ value: e.key, description: e.key }));
-          setLanguages(mapped);
+          setLanguages(data.content.map((e) => e.key));
         })
-        .catch((err) => showError(err.message));
+        .catch((err) => notify.error(err));
     }
   }, [realmId]);
 
   return (
     <Grid container spacing={1} columns={10}>
       <Grid size={12}>
-        <RmuSelect
+        <EnumPicker
           label={t('language')}
-          value={formData.defaultLanguage}
-          options={languages}
-          onChange={(e) => setFormData({ ...formData, defaultLanguage: e })}
+          values={languages}
+          value={formData.defaultLanguage || null}
+          allowAll
+          allLabel={t('none')}
+          formatLabel={specializationLabel}
+          onChange={(language) => setFormData({ ...formData, defaultLanguage: language ?? '' })}
         />
       </Grid>
       <Grid size={12}>

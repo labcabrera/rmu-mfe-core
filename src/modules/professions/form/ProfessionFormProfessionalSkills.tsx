@@ -1,50 +1,57 @@
-import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Grid, Chip, Typography } from '@mui/material';
-import { AddButton, fetchSkills, Profession, Skill } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../../ErrorContext';
-import SelectSkill from '../../shared/selects/SelectSkill';
+import { Chip, Grid } from '@mui/material';
+import {
+  AddButton,
+  EmptyState,
+  fetchSkills,
+  LoadingState,
+  Profession,
+  Skill,
+  SkillPicker,
+  useNotify,
+} from '@labcabrera-rmu/rmu-react-shared-lib';
 
 const ProfessionFormProfessionalSkills: FC<{
   formData: Profession;
-  setFormData: Dispatch<SetStateAction<Profession | undefined>>;
+  setFormData: (data: Profession) => void;
 }> = ({ formData, setFormData }) => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const { showError } = useError();
-  const [allSkills, setAllSkills] = React.useState<string[]>([]);
+  const notify = useNotify();
+  const [allSkills, setAllSkills] = React.useState<Skill[]>([]);
   const [selectedSkillId, setSelectedSkillId] = React.useState<string | null>(null);
-  const skills = formData.professionalSkills ?? [];
+  // The lib DTO types professionalSkills as `[]`; it holds skill ids.
+  const skills: string[] = formData.professionalSkills ?? [];
 
   const handleDelete = (index: number) => {
     const next = [...skills];
     next.splice(index, 1);
-    setFormData({ ...formData, professionalSkills: next });
+    setFormData({ ...formData, professionalSkills: next as [] });
   };
 
   const onAddSkill = (skillId: string) => {
     const next = [...skills, skillId];
-    setFormData({ ...formData, professionalSkills: next });
+    setFormData({ ...formData, professionalSkills: next as [] });
     setSelectedSkillId(null);
   };
 
   useEffect(() => {
     fetchSkills('', 0, 500, auth)
-      .then((response) => setAllSkills(response.content.map((s: Skill) => s.id)))
-      .catch((err: Error) => showError(err.message));
+      .then((response) => setAllSkills(response.content))
+      .catch((err: Error) => notify.error(err));
   }, []);
 
-  if (!allSkills || allSkills.length === 0) return <p>Loading skills...</p>;
+  if (!allSkills || allSkills.length === 0) return <LoadingState />;
 
   return (
     <Grid container spacing={1}>
       <Grid size={6}>
-        <SelectSkill
+        <SkillPicker
           label={t('skill')}
-          value={selectedSkillId || undefined}
-          name={''}
+          value={selectedSkillId}
           onChange={(skillId) => setSelectedSkillId(skillId)}
           skills={allSkills}
         />
@@ -54,10 +61,10 @@ const ProfessionFormProfessionalSkills: FC<{
       </Grid>
       <Grid size={12}>
         {skills.length === 0 ? (
-          <Typography>No professional skills</Typography>
+          <EmptyState dense title={t('no-results')} />
         ) : (
           <Grid container spacing={1}>
-            {skills.map((s: any, idx: number) => (
+            {skills.map((s, idx) => (
               <Chip
                 key={`professional-skill-${idx}`}
                 label={t(s)}

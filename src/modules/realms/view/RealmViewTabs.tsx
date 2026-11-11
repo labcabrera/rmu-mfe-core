@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, Tab, Box } from '@mui/material';
-import { AddButton, Realm } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { imageBaseUrl } from '../../services/config';
+import { AddButton, canEditEntity, imageBaseUrl, Realm } from '@labcabrera-rmu/rmu-react-shared-lib';
 import RealmViewEnumerations from './RealmViewEnumerations';
 import RealmViewRaces from './RealmViewRaces';
 
@@ -16,6 +16,8 @@ const RealmViewTabs: FC<RealmViewTabsProps> = ({ realm, initialTab = 0 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [value, setValue] = useState<number>(initialTab);
+  // Spec 069: who writes the realm adds races to it.
+  const writable = canEditEntity(realm, useAuth());
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -31,7 +33,7 @@ const RealmViewTabs: FC<RealmViewTabsProps> = ({ realm, initialTab = 0 }) => {
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label="Realm view tabs"
+          aria-label={t('realm')}
           variant="scrollable"
           scrollButtons="auto"
           sx={{ flex: 1 }}
@@ -43,7 +45,7 @@ const RealmViewTabs: FC<RealmViewTabsProps> = ({ realm, initialTab = 0 }) => {
           <Tab label={t('historic')} />
         </Tabs>
 
-        <Box sx={{ ml: 2, display: value === 0 ? 'block' : 'none' }}>
+        <Box sx={{ ml: 2, display: value === 0 && writable ? 'block' : 'none' }}>
           <AddButton onClick={onAddRace} />
         </Box>
       </Box>

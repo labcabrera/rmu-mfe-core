@@ -1,12 +1,12 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, TextField } from '@mui/material';
-import { Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
-import SelectProfessionArchetype from '../../shared/selects/SelectProfessionArchetype';
+import { Grid, TextField, Typography } from '@mui/material';
+import { EnumPicker, NumericInput, Profession, ProfessionArchetype } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { PROFESSION_ARCHETYPES } from '../../shared/enums';
 
 const ProfessionFormAttributes: FC<{
   formData: Profession;
-  setFormData: Dispatch<SetStateAction<Profession>>;
+  setFormData: (data: Profession) => void;
   creationMode: boolean;
 }> = ({ formData, setFormData, creationMode }) => {
   const { t } = useTranslation();
@@ -26,12 +26,31 @@ const ProfessionFormAttributes: FC<{
         </Grid>
       )}
       <Grid size={12}>
-        <SelectProfessionArchetype
+        <EnumPicker
           label={t('archetype')}
           name="archetype"
+          values={PROFESSION_ARCHETYPES}
           value={formData.archetype}
-          onChange={(archetype) => setFormData({ ...formData, archetype })}
+          onChange={(archetype) =>
+            archetype && setFormData({ ...formData, archetype: archetype as ProfessionArchetype })
+          }
+          required
         />
+      </Grid>
+      {/* Spec 064: Base lists of the profession a character develops as base; empty is no limit */}
+      <Grid size={12}>
+        <NumericInput
+          label={t('base-list-limit')}
+          name="baseListLimit"
+          value={formData.baseListLimit ?? null}
+          onChange={(value) => setFormData({ ...formData, baseListLimit: value && value >= 1 ? value : null })}
+          placeholder={t('base-list-limit-none')}
+          min={1}
+          integer
+        />
+        <Typography variant="caption" color="text.secondary">
+          {t('base-list-limit-hint')}
+        </Typography>
       </Grid>
     </Grid>
   );

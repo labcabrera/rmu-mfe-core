@@ -1,46 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
+import { Stack, Typography } from '@mui/material';
 import {
   emptyResistanceRollQuery,
   LayoutBase,
+  Panel,
   resistanceRoll,
   ResistanceRollQuery,
   ResistanceRollResult,
-  TechnicalInfo,
+  useNotify,
 } from '@labcabrera-rmu/rmu-react-shared-lib';
-import { useError } from '../../ErrorContext';
-import { openEndedRoll } from '../services/random-service';
 import ResistanceRollViewForm from './ResistanceRollViewForm';
 import ResistanceRollViewResult from './ResistanceRollViewResult';
 
+/** Resistance roll calculator: the result is asked again whenever the levels and the roll are complete. */
 export default function ResistanceRollView() {
-  const { showError } = useError();
+  const notify = useNotify();
   const auth = useAuth();
   const { t } = useTranslation();
   const [formData, setFormData] = useState<ResistanceRollQuery>(emptyResistanceRollQuery);
   const [result, setResult] = useState<ResistanceRollResult>();
 
-  const onRandom = () => {
-    setFormData({ ...formData, roll: openEndedRoll() });
-  };
-
-  const onSubmit = () => {
+  useEffect(() => {
+    const { attackLevel, targetLevel, roll } = formData;
+    if (![attackLevel, targetLevel, roll].every((value) => typeof value === 'number')) {
+      setResult(undefined);
+      return;
+    }
     resistanceRoll(formData, auth)
       .then((result) => setResult(result))
-      .catch((err) => showError(err.message));
-  };
-
-  const isValidForm = (): boolean => {
-    if (!formData || !formData.attackLevel || !formData.targetLevel || !formData.roll) return false;
-    return true;
-  };
-
-  useEffect(() => {
-    const isValid = isValidForm();
-    if (isValid) {
-      onSubmit();
-    }
+      .catch((err) => notify.error(err));
   }, [formData]);
 
   return (
@@ -51,12 +41,17 @@ export default function ResistanceRollView() {
         { name: t('resistance-rolls') },
       ]}
     >
-      <ResistanceRollViewForm formData={formData} setFormData={setFormData} onRandom={onRandom} />
-      <ResistanceRollViewResult result={result} />
-      <TechnicalInfo>
-        <pre>FormData: {JSON.stringify(formData, null, 2)}</pre>
-        <pre>Result: {JSON.stringify(result, null, 2)}</pre>
-      </TechnicalInfo>
+      <Stack spacing={2}>
+        <Panel title={t('resistance-roll')} sx={{ height: 'auto' }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2, maxWidth: '90ch' }}>
+            {t('resistance-roll-help')}
+          </Typography>
+          <ResistanceRollViewForm formData={formData} setFormData={setFormData} />
+        </Panel>
+        <Panel title={t('result')} sx={{ height: 'auto' }}>
+          <ResistanceRollViewResult result={result} />
+        </Panel>
+      </Stack>
     </LayoutBase>
   );
 }

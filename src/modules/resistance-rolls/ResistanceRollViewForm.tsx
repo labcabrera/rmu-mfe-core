@@ -1,66 +1,56 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, Button, Stack } from '@mui/material';
-import { NumericInput, ResistanceRollQuery } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Box } from '@mui/material';
+import { NumericInput, OPEN_D100, ResistanceRollQuery, RollField } from '@labcabrera-rmu/rmu-react-shared-lib';
 
+/**
+ * Levels of the attack and the target, other modifiers (negative too) and the open-ended roll, in a grid of equal
+ * columns. A modifier of 0 shows as an empty field, like the others, so every label sits the same way.
+ */
 const ResistanceRollViewForm: FC<{
   formData: ResistanceRollQuery;
   setFormData: Dispatch<SetStateAction<ResistanceRollQuery>>;
-  onRandom: () => void;
-}> = ({ formData, setFormData, onRandom }) => {
+}> = ({ formData, setFormData }) => {
   const { t } = useTranslation();
   return (
-    <>
-      <Grid container spacing={1}>
-        <Grid size={12}>
-          <NumericInput
-            label={t('attack-level')}
-            value={formData.attackLevel}
-            onChange={(value) => setFormData({ ...formData, attackLevel: value || 0 })}
-            integer
-            min={0}
-            max={1000}
-          />
-        </Grid>
-        <Grid size={12}>
-          <NumericInput
-            label={t('target-level')}
-            value={formData.targetLevel}
-            onChange={(value) => setFormData({ ...formData, targetLevel: value || 0 })}
-            integer
-            min={0}
-            max={1000}
-          />
-        </Grid>
-        <Grid size={12}>
-          <NumericInput
-            label={t('other-modifiers')}
-            value={formData.modifiers![0].value}
-            onChange={(value) => setFormData({ ...formData, modifiers: [{ key: 'other', value: value || 0 }] })}
-            integer
-            min={0}
-            max={1000}
-          />
-        </Grid>
-        <Grid size={12}>
-          <NumericInput
-            label={t('roll')}
-            value={formData.roll}
-            onChange={(value) => setFormData({ ...formData, roll: value || 0 })}
-            integer
-            min={-1000}
-            max={1000}
-          />
-        </Grid>
-        <Grid size={12}>
-          <Stack spacing={1} direction="row">
-            <Button variant="contained" color="primary" onClick={onRandom}>
-              {t('random')}
-            </Button>
-          </Stack>
-        </Grid>
-      </Grid>
-    </>
+    <Box
+      sx={{
+        display: 'grid',
+        gap: 2,
+        gridTemplateColumns: { xs: 'minmax(0, 1fr)', sm: 'repeat(2, minmax(0, 1fr))', md: 'repeat(4, minmax(0, 1fr))' },
+      }}
+    >
+      <NumericInput
+        label={t('attack-level')}
+        value={formData.attackLevel}
+        onChange={(value) => setFormData({ ...formData, attackLevel: value ?? null })}
+        integer
+        min={0}
+        max={1000}
+      />
+      <NumericInput
+        label={t('target-level')}
+        value={formData.targetLevel}
+        onChange={(value) => setFormData({ ...formData, targetLevel: value ?? null })}
+        integer
+        min={0}
+        max={1000}
+      />
+      <NumericInput
+        label={t('other-modifiers')}
+        value={formData.modifiers![0].value || null}
+        onChange={(value) => setFormData({ ...formData, modifiers: [{ key: 'other', value: value || 0 }] })}
+        integer
+        min={-1000}
+        max={1000}
+      />
+      <RollField
+        fullWidth
+        spec={OPEN_D100}
+        value={formData.roll ?? null}
+        onChange={(value) => setFormData({ ...formData, roll: value.total })}
+      />
+    </Box>
   );
 };
 

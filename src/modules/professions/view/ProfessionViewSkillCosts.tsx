@@ -1,74 +1,53 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import CircleIcon from '@mui/icons-material/Circle';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
-import {
-  Typography,
-  Paper,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Rating,
-} from '@mui/material';
-import { Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
+import { Rating } from '@mui/material';
+import { DataTable, DataTableColumn, Profession } from '@labcabrera-rmu/rmu-react-shared-lib';
+
+type SkillCostEntry = [string, number[]];
+
+const getRatingValue = (cost: number) => Math.max(0, 6 - Math.ceil(cost));
 
 const ProfessionViewSkillCosts: FC<{
   profession: Profession;
 }> = ({ profession }) => {
   const { t } = useTranslation();
-  const skillEntries = (Object.entries(profession.skillCosts || {}) as [string, number[]][]).filter(
+  const skillEntries = (Object.entries(profession.skillCosts || {}) as SkillCostEntry[]).filter(
     ([, vals]) => Array.isArray(vals) && vals.length > 0
   );
 
-  const getRatingValue = (cost: number) => {
-    return Math.max(0, 6 - Math.ceil(cost));
-  };
-
-  if (skillEntries.length === 0) {
-    return (
-      <Paper sx={{ padding: 1 }}>
-        <Typography variant="body2">{t('No skill costs available.')}</Typography>
-      </Paper>
-    );
-  }
+  const columns: DataTableColumn<SkillCostEntry>[] = [
+    { key: 'category', header: t('category'), render: ([skillKey]) => t(skillKey) },
+    {
+      key: 'cost',
+      header: t('cost'),
+      render: ([, values]) => `${values[0]}${values.length > 1 ? ` / ${values[1]}` : ''}`,
+    },
+    {
+      key: 'rating',
+      header: t('rating'),
+      render: ([, values]) => (
+        <Rating
+          name="size-small"
+          defaultValue={getRatingValue(values[0])}
+          size="small"
+          readOnly
+          icon={<CircleIcon fontSize="inherit" />}
+          emptyIcon={<CircleOutlinedIcon fontSize="inherit" />}
+          sx={{ color: 'primary.main' }}
+        />
+      ),
+    },
+  ];
 
   return (
-    <TableContainer component={Paper}>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>{t('Category')}</TableCell>
-            <TableCell>{t('Cost')}</TableCell>
-            <TableCell>{t('Rating')}</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {skillEntries.map(([skillKey, values]) => (
-            <TableRow key={skillKey}>
-              <TableCell>{t(skillKey)}</TableCell>
-              <TableCell>
-                {values[0]}
-                {values.length > 1 ? ` / ${values[1]}` : ''}
-              </TableCell>
-              <TableCell>
-                <Rating
-                  name="size-small"
-                  defaultValue={getRatingValue(values[0])}
-                  size="small"
-                  readOnly
-                  icon={<CircleIcon fontSize="inherit" />}
-                  emptyIcon={<CircleOutlinedIcon fontSize="inherit" />}
-                  sx={{ color: 'primary.main' }}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <DataTable
+      columns={columns}
+      rows={skillEntries}
+      getKey={([skillKey]) => skillKey}
+      emptyTitle={t('no-skill-costs-available')}
+    />
   );
 };
 
